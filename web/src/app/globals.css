@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import 'react-calendar-heatmap/dist/styles.css';
+
+.react-calendar-heatmap .color-empty { fill: #eeeeee; }
+
+.react-calendar-heatmap .color-blue-1 { fill: #c6dbef; }
+.react-calendar-heatmap .color-blue-2 { fill: #9ecae1; }
+.react-calendar-heatmap .color-blue-3 { fill: #6baed6; }
+.react-calendar-heatmap .color-blue-4 { fill: #3182bd; }
+.react-calendar-heatmap .color-blue-5 { fill: #08519c; }
+
+.react-calendar-heatmap .color-green-1 { fill: #c7e9c0; }
+.react-calendar-heatmap .color-green-2 { fill: #a1d99b; }
+.react-calendar-heatmap .color-green-3 { fill: #74c476; }
+.react-calendar-heatmap .color-green-4 { fill: #31a354; }
+.react-calendar-heatmap .color-green-5 { fill: #006d2c; }
+
+.react-calendar-heatmap .color-yellow-1 { fill: #fee391; }
+.react-calendar-heatmap .color-yellow-2 { fill: #fec44f; }
+.react-calendar-heatmap .color-yellow-3 { fill: #fe9929; }
+.react-calendar-heatmap .color-yellow-4 { fill: #ec7014; }
+.react-calendar-heatmap .color-yellow-5 { fill: #cc4c02; }
+
+.dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+   
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+   
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+   
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+   
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+   
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+   
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+   
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+   
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
