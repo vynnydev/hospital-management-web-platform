@@ -20,28 +20,28 @@ const routes = [
         label: 'Visão geral',
     },
     {
-        href: '/planner-task-management',
-        label: 'Gerenciamento de Tarefas',
+        href: '/bed-management',
+        label: 'Gestão de Leitos',
+    },
+    {
+        href: '/patient-management',
+        label: 'Gestão de Pacientes',
+    },
+    {
+        href: '/team-management',
+        label: 'Gestão de Equipes',
     },
     {
         href: '/predictive-analysis',
         label: 'Análise Preditiva',
     },
     {
-        href: '/crop-management',
-        label: 'Gestão de Culturas',
+        href: '/inventory-resources',
+        label: 'Recursos & Inventário',
     },
     {
-        href: '/marketplace-resources',
-        label: 'Marketplace & Recursos',
-    },
-    {
-        href: '/agriculture-tecnology',
-        label: 'FarmingTec',
-    },
-    {
-        href: '/settings-iot',
-        label: 'Configurações & IOT',
+        href: '/settings',
+        label: 'Configurações',
     },
 ]
 

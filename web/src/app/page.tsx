@@ -7,7 +7,7 @@ import { MenuItem } from "@/utils/types"
 import { HomeHeader } from "@/components/ui/organisms/HomeHeader"
 
 const MENUITEMS: MenuItem[] = [
-  { label: 'Entenda a TerraFarming', href: '/site' }
+  { label: 'Entenda a H24', href: '/site' }
 ]
 
 const HomePage = () => {

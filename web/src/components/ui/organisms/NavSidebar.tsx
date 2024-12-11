@@ -1,6 +1,5 @@
 'use client'
 import { IconMenu2 } from '@tabler/icons-react'
-import Link from 'next/link'
 import { Sidebar } from './Sidebar'
 import { useDialogState } from '@/utils/hooks/dialog'
 

@@ -5,7 +5,7 @@ type Props = {
     children: React.ReactNode
 }
 
-const EducationCommunityLayout = ({ children }: Props) => {
+const InventoryResourcesLayout = ({ children }: Props) => {
     return (
         <>  
             <Header />
@@ -17,4 +17,4 @@ const EducationCommunityLayout = ({ children }: Props) => {
     )
 }
 
-export default EducationCommunityLayout
+export default InventoryResourcesLayout

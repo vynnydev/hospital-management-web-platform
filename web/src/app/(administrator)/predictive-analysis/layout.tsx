@@ -5,7 +5,7 @@ type Props = {
     children: React.ReactNode
 }
 
-const PredictiveAnalysisLayout = ({ children }: Props) => {
+const PredictiveAnalisysLayout = ({ children }: Props) => {
     return (
         <>  
             <Header />
@@ -17,4 +17,4 @@ const PredictiveAnalysisLayout = ({ children }: Props) => {
     )
 }
 
-export default PredictiveAnalysisLayout
+export default PredictiveAnalisysLayout

@@ -5,7 +5,7 @@ type Props = {
     children: React.ReactNode
 }
 
-const TaskManagementLayout = ({ children }: Props) => {
+const BedManagementLayout = ({ children }: Props) => {
     return (
         <>  
             <Header />
@@ -17,4 +17,4 @@ const TaskManagementLayout = ({ children }: Props) => {
     )
 }
 
-export default TaskManagementLayout
+export default BedManagementLayout

@@ -1,5 +1,4 @@
 // app/(platform)/layout.tsx
-import { ThemeProvider } from "@/components/ui/layout/ThemeProvider"
 import { Header } from "@/components/ui/organisms/Header"
 import { FooterApplication } from "@/components/ui/templates/FooterApplication"
 

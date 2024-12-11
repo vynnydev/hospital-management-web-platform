@@ -5,7 +5,7 @@ type Props = {
     children: React.ReactNode
 }
 
-const MarketplaceResourcesLayout = ({ children }: Props) => {
+const PaientManagementLayout = ({ children }: Props) => {
     return (
         <>  
             <Header />
@@ -17,4 +17,4 @@ const MarketplaceResourcesLayout = ({ children }: Props) => {
     )
 }
 
-export default MarketplaceResourcesLayout
+export default PaientManagementLayout
