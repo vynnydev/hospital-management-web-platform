@@ -36,7 +36,7 @@ export default function SignUpPage() {
             </div>
           </div>
           <div className='h-full bg-cyan-700 hidden lg:flex items-center justify-center'>
-            <Image src='/hospital-logo.svg' height={300} width={300} alt='logo'/>
+            <Image src='/hospital-logo.png' height={300} width={300} alt='logo'/>
           </div>
         </div>
       </Container>
