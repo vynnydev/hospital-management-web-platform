@@ -352,7 +352,8 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
                 transition={{ duration: 0.5 }}
                 className="w-full"
             >
-                <div className="max-w-[1920px] mx-auto mt-20 bg-slate-100 dark:bg-slate-800 p-6">
+              
+                <div className="max-w-[1920px] mx-auto mt-20 bg-slate-100 dark:bg-slate-800 p-6 rounded-md">
                     <div className="flex items-center justify-between mb-8">
                         <div className="flex items-center gap-4">
                             <h2 className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
@@ -369,10 +370,17 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
                         </div>
                         <button
                             onClick={handleRefresh}
-                            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white transition-colors"
+                            className={`w-48 items-center border-2 shadow-md rounded-md p-4 border-cyan-600 bg-white/10 hover:bg-white/20 text-white dark:hover:bg-green-700 dark:text-green-100
+                                ${theme === 'dark'
+                                    ? 'bg-[linear-gradient(135deg,#0F172A,#155E75)] shadow-[0_0_20px_rgba(15,23,42,0.5),0_0_40px_rgba(21,94,117,0.3)]'
+                                    : 'bg-[linear-gradient(135deg,#BAE6FD,#99F6E4)] shadow-lg'
+                                }
+                            `}
                         >
-                            <ArrowPathIcon className="h-5 w-5" />
-                            Atualizar Dados
+                            <div className='flex flex-row space-x-2'>
+                                <ArrowPathIcon className="h-5 w-5" />
+                                <p>Atualizar Dados</p>
+                            </div>
                         </button>
                     </div>
 
