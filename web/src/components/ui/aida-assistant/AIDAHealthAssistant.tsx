@@ -1,15 +1,17 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
+import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import { Sparkles } from 'lucide-react';
 
 import aiAssistant from '@/assets/ai-assistant.png'
 
-const IAgrixiAssistant: React.FC = () => {
+const AIDAHealthAssistant: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState('');
-  const [aiMessage] = useState('Aqui estará a mensagem gerada pela inteligência artificial...');
+  const [aiMessage, setAiMessage] = useState('Aqui estará a mensagem gerada pela inteligência artificial...');
+  const { theme } = useTheme();
 
   const toggleAssistant = () => setIsOpen(!isOpen);
 
@@ -59,7 +61,7 @@ const IAgrixiAssistant: React.FC = () => {
     <>
       <button
         onClick={toggleAssistant}
-        className="fixed bottom-8 left-[1450px] text-white rounded-full p-6 shadow-lg transition-all duration-300 z-50 w-24 h-24 flex items-center justify-center hover:scale-110 ai-gradient-bg"
+        className="fixed bottom-8 left-[1550px] text-white rounded-full p-6 shadow-lg transition-all duration-300 z-50 w-24 h-24 flex items-center justify-center hover:scale-110 ai-gradient-bg"
         aria-label="Open Agrixi Assistant"
       >
         <Image
@@ -71,7 +73,6 @@ const IAgrixiAssistant: React.FC = () => {
           priority // Carrega a imagem com prioridade por ser um elemento importante
         />
       </button>
-
 
       {isOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50">
@@ -92,6 +93,7 @@ const IAgrixiAssistant: React.FC = () => {
                 ))}
               </div>
 
+              {/* Campo de mensagem da IA */}
               <div className="bg-gray-700 bg-opacity-50 rounded-lg p-4 flex items-center mb-4 h-full">
                 <Sparkles className="h-6 w-6 text-gray-400 mr-3" />
                 <p className="text-gray-300 italic">{aiMessage}</p>
@@ -134,7 +136,6 @@ const IAgrixiAssistant: React.FC = () => {
 
       <style jsx global>{`
         .ai-gradient-bg {
-          position: relative;
           background: linear-gradient(135deg, #0F172A, #155E75);
           box-shadow: 0 0 20px rgba(15,23,42,0.5), 0 0 40px rgba(21,94,117,0.3);
         }
@@ -160,7 +161,7 @@ const IAgrixiAssistant: React.FC = () => {
 
         .colorful-border {
           position: absolute;
-          inset: -2px;
+          inset: -5%;
           background: linear-gradient(
             45deg,
             #0F172A,
@@ -184,10 +185,10 @@ const IAgrixiAssistant: React.FC = () => {
             #1E293B
           );
           background-size: 300% 300%;
-          animation: gradient 20s ease infinite;
+          animation: gradient 15s ease infinite;
         }
 
-        @keyframes animatedBorder {
+        @keyframes rotate {
           0% {
             transform: rotate(0deg);
           }
@@ -291,4 +292,4 @@ const IAgrixiAssistant: React.FC = () => {
   );
 };
 
-export default IAgrixiAssistant;
+export default AIDAHealthAssistant;

@@ -214,7 +214,7 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
                     content: cleanText(extractSection(analysis, "**Impacto das Variações Recentes**", "**2. PONTOS CRÍTICOS**"))
                 }
             ],
-            actionPlan: cleanText(extractSection(analysis, "**Plano de Ação para Situação Atual:**", "**2. PONTOS CRÍTICOS**")),
+            actionPlan: cleanText(extractSection(analysis, "**Planos de Ação para Situação Atual:**", "**2. PONTOS CRÍTICOS**")),
         },
         {
             title: "2. PONTOS CRÍTICOS",
@@ -246,7 +246,7 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
                     content: cleanText(extractSection(analysis, "**Variações Significativas**", "**3. RECOMENDAÇÕES DE AÇÃO**"))
                 }
             ],
-            actionPlan: cleanText(extractSection(analysis, "**Plano de Ação para Pontos Críticos:**", "**3. RECOMENDAÇÕES DE AÇÃO**")),
+            actionPlan: cleanText(extractSection(analysis, "**Planos de Ação para Pontos Críticos:**", "**3. RECOMENDAÇÕES DE AÇÃO**")),
         },
         {
             title: "3. RECOMENDAÇÕES DE AÇÃO",
@@ -278,7 +278,7 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
                     content: cleanText(extractSection(analysis, "**Medidas Preventivas:**", "**4. PREVISÕES"))
                 }
             ],
-            actionPlan: cleanText(extractSection(analysis, "**Plano de Ação para Recomendações:**", "**4. PREVISÕES**")),
+            actionPlan: cleanText(extractSection(analysis, "**Planos de Ação para Recomendações:**", "**4. PREVISÕES**")),
         },
         {
             title: "4. PREVISÕES 24-48h",
@@ -310,7 +310,7 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
                     content: cleanText(extractSection(analysis, "**Planos de Ação:**", ""))
                 }
             ],
-            actionPlan: cleanText(extractSection(analysis, "**Plano de Ação para Previsões:**", "")),
+            actionPlan: cleanText(extractSection(analysis, "**Planos de Ação para Previsões:**", "")),
         }
     ];
 
@@ -350,9 +350,9 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="w-full p-6"
+                className="w-full"
             >
-                <div className="max-w-[1920px] mx-auto mt-20">
+                <div className="max-w-[1920px] mx-auto mt-20 bg-slate-100 dark:bg-slate-800 p-6">
                     <div className="flex items-center justify-between mb-8">
                         <div className="flex items-center gap-4">
                             <h2 className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
@@ -377,7 +377,7 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
                     </div>
 
                     {!analysis && (
-                        <div className="text-center p-4 bg-gray-100 rounded-lg">
+                        <div className="text-center p-4rounded-lg bg-slate-100 dark:bg-slate-900">
                             <p>Aguardando dados da análise...</p>
                         </div>
                     )}
