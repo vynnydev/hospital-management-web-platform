@@ -2,6 +2,8 @@
 import { Header } from "@/components/ui/organisms/Header"
 import { FooterApplication } from "@/components/ui/templates/FooterApplication"
 
+import { TooltipProvider } from '@/components/ui/tooltip';
+
 type Props = {
     children: React.ReactNode
 }
@@ -11,7 +13,9 @@ const OverviewLayout = ({ children }: Props) => {
         <div>
             <Header />
             <main className="px-3 lg:px-14">
-                {children}
+                <TooltipProvider>
+                    {children}
+                </TooltipProvider>
             </main>
             <FooterApplication />
         </div>
