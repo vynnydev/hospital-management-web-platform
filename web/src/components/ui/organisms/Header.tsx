@@ -16,8 +16,8 @@ export const Header = () => {
     return (
         <header className={`px-4 py-8 lg:px-14 pb-36
             ${theme === 'dark'
-                ? 'bg-[linear-gradient(135deg,#0F172A,#155E75)] shadow-[0_0_20px_rgba(15,23,42,0.5),0_0_40px_rgba(21,94,117,0.3)]'
-                : 'bg-[linear-gradient(135deg,#BAE6FD,#99F6E4)] shadow-lg'
+                ? 'bg-[linear-gradient(135deg,#1E293B,#164E63)] shadow-[0_0_20px_rgba(30,41,59,0.5),0_0_40px_rgba(22,78,99,0.3)]'
+                : 'bg-[linear-gradient(135deg,#E0F2FE,#A5F3FC)] shadow-lg'
             }`
         }>
             <div className="max-w-screen-2xl mx-auto">
@@ -27,22 +27,41 @@ export const Header = () => {
                         <HeaderNavigation />
                     </div>
                     <div className="flex items-center gap-x-4">
-                        <Button 
-                            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                            variant="outline" 
-                            size="icon" 
-                            className={`bg-white/10 hover:bg-white/20 text-white dark:hover:bg-green-700 dark:text-green-100
-                                    ${theme === 'dark'
-                                        ? 'bg-[linear-gradient(135deg,#1a365d,#2f855a)] shadow-[0_0_20px_rgba(26,54,93,0.5),0_0_40px_rgba(47,133,90,0.3)]'
-                                        : 'bg-gradient-to-b from-green-300 to-green-100 shadow-lg'
-                                    }
-                                `}
-                        >
-                            {theme === 'dark' 
-                                ? <Sun className="h-[1.2rem] w-[1.2rem]" />
-                                : <Moon className="h-[1.2rem] w-[1.2rem]" />
+                    <Button 
+                        onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                        variant="outline" 
+                        size="icon" 
+                        className={`
+                            relative
+                            before:content-['']
+                            before:absolute
+                            before:inset-[-2px]
+                            before:rounded-lg
+                            before:bg-gradient-to-r
+                            before:from-[#38BDF8]
+                            before:via-[#22D3EE]
+                            before:to-[#2DD4BF]
+                            before:-z-10
+                            before:transition-opacity
+                            before:duration-300
+                            hover:before:opacity-80
+                            transition-all
+                            bg-white/10 
+                            hover:bg-white/20 
+                            text-white 
+                            dark:hover:bg-green-700 
+                            dark:text-green-100
+                            ${theme === 'dark'
+                                ? 'bg-[linear-gradient(135deg,#0F172A,#155E75)] shadow-[0_0_20px_rgba(15,23,42,0.5),0_0_40px_rgba(21,94,117,0.3)]'
+                                : 'bg-[linear-gradient(135deg,#BAE6FD,#99F6E4)] shadow-lg'
                             }
-                        </Button>
+                        `}
+                    >
+                        {theme === 'dark' 
+                            ? <Sun className="h-[1.2rem] w-[1.2rem] relative z-10" />
+                            : <Moon className="h-[1.2rem] w-[1.2rem] relative z-10" />
+                        }
+                    </Button>
                         <ClerkLoaded>
                             <UserButton 
                                 signInUrl="/sign-in"

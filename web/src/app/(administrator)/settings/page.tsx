@@ -11,7 +11,7 @@ import Subscription from './components/Subscription';
 import AlexaIntegration from './components/AlexaIntegration';
 import Community from './components/Community';
 import PaymentMethodCard from '@/components/ui/payments/PaymentMethodCard';
-import IAgrixiAssistant from '@/components/ui/agrixi-assistant/IAgrixiAssistant';
+import IAgrixiAssistant from '@/components/ui/aida-assistant/AIDAHealthAssistant';
 import AccessibilitySettings from './components/AccessibilitySettings';
 
 const SettingsPage: React.FC = () => {
