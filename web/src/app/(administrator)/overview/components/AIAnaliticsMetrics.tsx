@@ -39,7 +39,7 @@ interface Section {
     content: string;
     tooltip: string;
     subCards: SubCard[];
-    columns: ColumnContent[];
+    lines: ColumnContent[];
     actionPlan: string; // Novo campo
 }
 
@@ -72,7 +72,7 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
                 section.subCards.forEach(card => {
                     console.log(`SubCard ${card.title}:`, card.content);
                 });
-                section.columns.forEach(column => {
+                section.lines.forEach(column => {
                     console.log(`Coluna ${column.title}:`, column.content);
                 });
             });
@@ -204,7 +204,7 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
                     content: cleanText(extractSection(analysis, "**Comparação com Padrões do Setor**", "**Padrões nas Tendências Atuais**"))
                 }
             ],
-            columns: [
+            lines: [
                 {
                     title: "Tendências Atuais",
                     content: cleanText(extractSection(analysis, "**Padrões nas Tendências Atuais**", "**Impacto das Variações Recentes**"))
@@ -236,7 +236,7 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
                     content: cleanText(extractSection(analysis, "**Gargalos Operacionais**", "**Riscos Potenciais**"))
                 }
             ],
-            columns: [
+            lines: [
                 {
                     title: "Riscos Potenciais",
                     content: cleanText(extractSection(analysis, "**Riscos Potenciais**", "**Variações Significativas**"))
@@ -268,7 +268,7 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
                     content: cleanText(extractSection(analysis, "**Gestão de Recursos:**", "**Melhorias de Processo:**"))
                 }
             ],
-            columns: [
+            lines: [
                 {
                     title: "Melhorias de Processo",
                     content: cleanText(extractSection(analysis, "**Melhorias de Processo:**", "**Medidas Preventivas:**"))
@@ -300,7 +300,7 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
                     content: cleanText(extractSection(analysis, "**Necessidades de Recursos:**", "**Cenários e Contingências:**"))
                 }
             ],
-            columns: [
+            lines: [
                 {
                     title: "Cenários e Contingências",
                     content: cleanText(extractSection(analysis, "**Cenários e Contingências:**", "**Planos de Ação:**"))
@@ -332,10 +332,10 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
         );
     };
 
-    const ContentColumn = ({ title, content }: ColumnContent) => {
+    const ContentLine = ({ title, content }: ColumnContent) => {
         console.log(`Renderizando coluna ${title}:`, content);
         return (
-            <div className="flex-1">
+            <div className="flex-1 bg-white/10 p-6 rounded-xl">
                 <h4 className="text-white/90 font-medium mb-2 text-lg">{title}</h4>
                 <div className="text-white/80 text-sm leading-relaxed">
                     {content || "Conteúdo não disponível"}
@@ -396,7 +396,7 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
                                 {sections.map((section, index) => {
                                     console.log(`Renderizando seção ${section.title}:`, {
                                         content: section.content,
-                                        columns: section.columns
+                                        lines: section.lines
                                     });
                                     return (
                                         <motion.div
@@ -450,10 +450,10 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
                                                                 ))}
                                                             </div>
                                                             
-                                                            <div className="border-t border-white/10 pt-4">
-                                                                <div className="flex flex-col md:flex-row gap-6">
-                                                                    {section.columns.map((column, colIndex) => (
-                                                                        <ContentColumn key={colIndex} {...column} />
+                                                            <div className="border-t rounded-xl border-white/10 pt-4">
+                                                                <div className="flex flex-col gap-6">
+                                                                    {section.lines.map((column, colIndex) => (
+                                                                        <ContentLine key={colIndex} {...column} />
                                                                     ))}
                                                                 </div>
                                                             </div>
