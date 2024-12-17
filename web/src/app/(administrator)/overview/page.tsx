@@ -21,7 +21,7 @@ const Overview: React.FC = () => {
       <div className="flex justify-end mb-4">
         <button
           onClick={handleRefreshAnalysis}
-          className={`border-2 rounded-md p-2 border-cyan-600 bg-white/10 hover:bg-white/20 text-white dark:hover:bg-green-700 dark:text-green-100
+          className={`border-2 shadow-md rounded-md p-2 border-cyan-600 bg-white/10 hover:bg-white/20 text-white dark:hover:bg-green-700 dark:text-green-100
             ${theme === 'dark'
                 ? 'bg-[linear-gradient(135deg,#0F172A,#155E75)] shadow-[0_0_20px_rgba(15,23,42,0.5),0_0_40px_rgba(21,94,117,0.3)]'
                 : 'bg-[linear-gradient(135deg,#BAE6FD,#99F6E4)] shadow-lg'
