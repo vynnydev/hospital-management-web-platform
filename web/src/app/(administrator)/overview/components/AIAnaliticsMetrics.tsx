@@ -377,7 +377,7 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
                     </div>
 
                     {!analysis && (
-                        <div className="text-center p-4rounded-lg bg-slate-100 dark:bg-slate-900">
+                        <div className="text-center p-4rounded-lg bg-slate-100 dark:bg-slate-800">
                             <p>Aguardando dados da análise...</p>
                         </div>
                     )}
@@ -473,13 +473,13 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
                     )}
 
                     {isLoading && (
-                        <div className="flex justify-center items-center mt-8">
+                        <div className="flex justify-center items-center mt-8 bg-slate-100 dark:bg-slate-800">
                             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500" />
                         </div>
                     )}
 
                     {error && (
-                        <div className="mt-8 p-4 bg-red-100 text-red-700 rounded-lg">
+                        <div className="mt-8 p-4 bg-slate-100 dark:bg-slate-800 text-red-700 rounded-lg">
                             <p>Erro ao carregar os dados. Por favor, tente novamente.</p>
                         </div>
                     )}
