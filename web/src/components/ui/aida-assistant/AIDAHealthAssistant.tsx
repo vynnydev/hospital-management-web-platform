@@ -10,32 +10,182 @@ import { Sparkles, Loader } from 'lucide-react';
 import AnimatedAIText from './AnimatedAIText';
 import aiAssistant from '@/assets/ai-assistant.png'
 
+import { PatientRiskAnalysis } from '@/services/AI/aida-assistant/patientAnalysis';
+
+import ReportModal from './ReportModal';
+
+type ReportType = 'evolucao' | 'medicacao' | 'exames' | 'cirurgia' | 'completo';
+
 interface AIResponse {
   response: string;
   confidence: number;
   metadata?: any;
 }
 
+// Tipos para os prompts de gestão de pacientes
+
+type CardTitle = 
+| 'Gestão de Pacientes'
+| 'Prontuário Digital'
+| 'Agenda Médica'
+| 'Gestão de Medicamentos'
+| 'Resultados de Exames'
+| 'Suporte à Decisão Clínica';
+
+interface Card {
+  icon: string;
+  title: CardTitle;
+  description: string;
+  aiHandler?: (data: any) => Promise<any>;
+}
+
+// Então, defina o objeto usando Record
+const cardInitialMessages: Record<CardTitle, string> = {
+  'Gestão de Pacientes': 
+    "🏥 Iniciando módulo de Gestão de Pacientes\n\n" +
+    "Funcionalidades disponíveis:\n" +
+    "• Monitoramento em tempo real de sinais vitais\n" +
+    "• Análise de histórico médico e evolução\n" +
+    "• Avaliação de riscos e complicações\n" +
+    "• Alertas automáticos para alterações críticas\n\n" +
+    "Por favor, informe o ID do paciente para iniciar a análise.",
+
+  'Prontuário Digital':
+    "📋 Acessando Prontuário Digital\n\n" +
+    "Funcionalidades disponíveis:\n" +
+    "• Visualização completa do histórico médico\n" +
+    "• Acesso a exames e resultados\n" +
+    "• Histórico de prescrições médicas\n" +
+    "• Evolução detalhada do tratamento\n\n" +
+    "Por favor, informe o ID do prontuário para consulta.",
+
+  'Agenda Médica':
+    "🗓️ Sistema de Agenda Médica\n\n" +
+    "Funcionalidades disponíveis:\n" +
+    "• Gerenciamento de consultas e retornos\n" +
+    "• Agendamento de procedimentos e cirurgias\n" +
+    "• Sistema inteligente de priorização\n" +
+    "• Organização de escalas médicas\n\n" +
+    "Como posso ajudar com sua agenda hoje?",
+
+  'Gestão de Medicamentos':
+    "💊 Sistema de Gestão de Medicamentos\n\n" +
+    "Funcionalidades disponíveis:\n" +
+    "• Controle de estoque e validade\n" +
+    "• Análise de interações medicamentosas\n" +
+    "• Monitoramento de dispensação\n" +
+    "• Alertas de necessidade de reposição\n\n" +
+    "Qual aspecto da gestão de medicamentos você precisa consultar?",
+
+  'Resultados de Exames':
+    "🔬 Central de Resultados de Exames\n\n" +
+    "Funcionalidades disponíveis:\n" +
+    "• Visualização de exames laboratoriais\n" +
+    "• Acesso a exames de imagem\n" +
+    "• Análise comparativa de resultados\n" +
+    "• Histórico completo de exames\n\n" +
+    "Por favor, informe o ID do exame ou paciente para consulta.",
+
+  'Suporte à Decisão Clínica':
+    "⚕️ Suporte à Decisão Clínica\n\n" +
+    "Funcionalidades disponíveis:\n" +
+    "• Análise baseada em evidências\n" +
+    "• Sugestões de diagnóstico diferencial\n" +
+    "• Recomendações de tratamento\n" +
+    "• Análise de casos similares\n\n" +
+    "Por favor, descreva o caso clínico para análise."
+};
+
 const initialMessage = 'Olá! Sou AIDA, sua assistente virtual especializada em saúde. ' +
 'Posso ajudar com gestão de pacientes, análise de prontuários, agendamentos e muito mais. ' +
 'Como posso auxiliar você hoje?';
 
+interface TrendEmojis {
+  melhorando: string;
+  estável: string;
+  deteriorando: string;
+  variável: string;
+}
+
+interface RiskEmojis {
+  Baixo: string;
+  Médio: string;
+  Alto: string;
+}
+
+function formatAIResponse(result: any): string {
+  const {
+    analysis,
+    riskAnalysis,
+    predictedOutcomes
+  } = result;
+
+  // Definir os emojis com tipos corretos
+  const riskEmoji: RiskEmojis = {
+    'Baixo': '🟢',
+    'Médio': '🟡',
+    'Alto': '🔴'
+  };
+
+  const trendEmoji: TrendEmojis = {
+    'melhorando': '📈',
+    'estável': '➡️',
+    'deteriorando': '📉',
+    'variável': '↕️'
+  };
+
+  // Usar as interfaces para acessar os emojis de forma segura
+  const selectedRiskEmoji = riskEmoji[analysis.riskLevel as keyof RiskEmojis] || '⚪';
+  const selectedTrendEmoji = trendEmoji[analysis.trend as keyof TrendEmojis] || '➡️';
+
+  const message = `
+🏥 *Análise do Paciente*
+
+*Status Atual:*
+${selectedRiskEmoji} Nível de Risco: ${analysis.riskLevel}
+${selectedTrendEmoji} Tendência: ${analysis.trend}
+
+*Alertas Importantes:*
+${analysis.alerts.length > 0 
+  ? analysis.alerts.map((alert: any) => `⚠️ ${alert}`).join('\n')
+  : '✅ Nenhum alerta crítico'}
+
+*Recomendações Principais:*
+${analysis.recommendations.map((rec: any) => `• ${rec}`).join('\n')}
+
+*Previsões:*
+📊 Tempo estimado de internação: ${predictedOutcomes.estimatedLOS} dias
+🎯 Probabilidade de complicações: ${predictedOutcomes.complicationRisk.probability.toFixed(2)}%
+📋 Trajetória prevista: ${predictedOutcomes.recoveryTrajectory}
+
+*Análise de Medicamentos:*
+${riskAnalysis.medicationImpact.interactions.length > 0
+  ? riskAnalysis.medicationImpact.interactions.map((interaction: any) => `⚕️ ${interaction}`).join('\n')
+  : '✅ Sem interações medicamentosas identificadas'}
+
+*Observações dos Sinais Vitais:*
+${riskAnalysis.currentStatus.abnormalities.length > 0
+  ? riskAnalysis.currentStatus.abnormalities.map((abnormality: any) => `📊 ${abnormality}`).join('\n')
+  : '✅ Sinais vitais dentro dos parâmetros normais'}
+
+${riskAnalysis.overallRisk.mitigationStrategies.length > 0
+  ? `\n*Estratégias de Mitigação de Risco:*\n${riskAnalysis.overallRisk.mitigationStrategies.map((strategy: any) => `💡 ${strategy}`).join('\n')}`
+  : ''}
+`;
+
+  return message.trim();
+}
+
 const AIDAHealthAssistant: React.FC = () => {
+  const { theme, setTheme } = useTheme()
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState('');
-  const [aiMessage, setAiMessage] = useState(initialMessage);
+  const [aiMessage, setAiMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
-  const { theme } = useTheme();
-
-  const getCurrentContext = () => {
-    // Implementar lógica para obter contexto específico baseado na funcionalidade selecionada
-    return {
-      selectedCard,
-      currentTime: new Date().toISOString(),
-      // Adicionar outros dados contextuais relevantes
-    };
-  };
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [reportType, setReportType] = useState<ReportType>('evolucao');
+  const [reportData, setReportData] = useState<any>(null); // Adicione este estado para os dados do relatório
 
   // Modificar a função toggleAssistant para resetar o estado quando fechar
   const toggleAssistant = () => {
@@ -47,38 +197,30 @@ const AIDAHealthAssistant: React.FC = () => {
     }
     setIsOpen(!isOpen);
   };
-
-  // Modificar o handleCardClick para tratar erros adequadamente
+  
   const handleCardClick = async (cardTitle: string) => {
     setSelectedCard(cardTitle);
     setLoading(true);
-    try {
-      const response = await fetch('/api/ai-analysis', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          functionality: cardTitle,
-          query: message,
-          context: getCurrentContext()
-        })
-      });
-      
-      if (!response.ok) {
-        throw new Error('Erro na resposta da API');
-      }
   
-      const data: AIResponse = await response.json();
-      setAiMessage(data.response);
-    } catch (error: any) {
-      // Define apenas a mensagem de erro
-      setAiMessage('Desculpe, ocorreu um erro ao processar sua solicitação. ');
-      // Após 3 segundos, substitui pela mensagem inicial
-      setTimeout(() => {
-        setAiMessage(initialMessage);
-        setSelectedCard(null);
-      }, 3000);
+    try {
+      setAiMessage(cardInitialMessages[cardTitle as CardTitle]);
+      const selectedCardData = cards.find(card => card.title === cardTitle);
+  
+      if (selectedCardData?.aiHandler && message) {
+        const result = await selectedCardData.aiHandler(message);
+  
+        if (result.report) {
+          setReportData(result.report);
+          setReportType(cardTitle.toLowerCase() as ReportType);
+          setIsReportModalOpen(true);
+        }
+  
+        setAiMessage(formatAIResponse(result));
+      }
+    } catch (error: any) { // Adicione o tipo any para o error
+      console.error('Erro ao processar card:', error);
+      // Use template string com crase (`), não aspas simples
+      setAiMessage(`Erro ao processar: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -99,36 +241,349 @@ const AIDAHealthAssistant: React.FC = () => {
     return () => document.removeEventListener('keydown', handleEscape);
   }, []);
 
-  const cards = [
+  const cards: Card[] = [
     { 
       icon: '🏥', 
       title: 'Gestão de Pacientes', 
-      description: 'Monitore em tempo real sinais vitais, histórico médico e evolução dos pacientes. Alertas automáticos para alterações críticas.'
+      description: 'Monitore em tempo real sinais vitais, histórico médico e evolução dos pacientes. Alertas automáticos para alterações críticas.',
+      aiHandler: async (patientId: string) => {
+        const response = await fetch(`http://localhost:3001/patients/${patientId}`);
+        if (!response.ok) throw new Error('Paciente não encontrado');
+        
+        const patientData = await response.json();
+        const riskAnalyzer = new PatientRiskAnalysis();
+        const analysis = await riskAnalyzer.analyzePatient(patientData);
+
+        // Formata os dados para o relatório
+        const reportData = {
+          title: 'Relatório de Análise do Paciente',
+          sections: [
+            {
+              title: 'Informações do Paciente',
+              content: `
+                Nome: ${patientData.name}
+                ID: ${patientData.id}
+                Idade: ${patientData.age}
+                Último Atendimento: ${new Date(patientData.lastVisit).toLocaleDateString()}
+              `
+            },
+            {
+              title: 'Análise de Risco',
+              content: `
+                Nível de Risco: ${analysis.riskAnalysis.overallRisk.level}
+                Tendência: ${analysis.riskAnalysis.vitalTrends}
+                Alertas: ${analysis.analysis.alerts.join(', ')}
+              `
+            },
+            {
+              title: 'Recomendações',
+              content: analysis.analysis.recommendations.join('\n')
+            }
+          ],
+          downloadable: true,
+          charts: [
+            {
+              type: 'line',
+              title: 'Evolução dos Sinais Vitais',
+              data: analysis.analysis.vitalSignsTrend
+            }
+          ]
+        };
+
+        <ReportModal
+          isOpen={isReportModalOpen}
+          onClose={() => setIsReportModalOpen(false)}
+          reportType={reportType}
+          patientData={reportData}
+        />
+
+        return {
+          analysis,
+          report: reportData
+        };
+      }
     },
     { 
       icon: '📋', 
       title: 'Prontuário Digital', 
-      description: 'Acesse e atualize prontuários eletrônicos com histórico completo, exames, prescrições e evolução do tratamento de forma integrada.'
+      description: 'Acesse e atualize prontuários eletrônicos com histórico completo, exames, prescrições e evolução do tratamento de forma integrada.',
+      aiHandler: async (recordId: string) => {
+        const response = await fetch(`http://localhost:3001/patients/${recordId}/records`);
+        if (!response.ok) throw new Error('Prontuário não encontrado');
+        
+        const recordData = await response.json();
+        const riskAnalyzer = new PatientRiskAnalysis();
+        const analysis = await riskAnalyzer.analyzePatient(recordData);
+
+        const reportData = {
+          title: 'Relatório do Prontuário Digital',
+          sections: [
+            {
+              title: 'Histórico de Tratamentos',
+              content: recordData.treatments.map((t: any) => 
+                `${t.date}: ${t.procedure} - ${t.outcome}`
+              ).join('\n')
+            },
+            {
+              title: 'Exames Recentes',
+              content: recordData.exams.map((e: any) => 
+                `${e.date}: ${e.type} - ${e.result}`
+              ).join('\n')
+            },
+            {
+              title: 'Medicações Atuais',
+              content: recordData.medications.map((m: any) => 
+                `${m.name}: ${m.dosage} - ${m.frequency}`
+              ).join('\n')
+            }
+          ],
+          downloadable: true
+        };
+
+        <ReportModal
+          isOpen={isReportModalOpen}
+          onClose={() => setIsReportModalOpen(false)}
+          reportType={reportType}
+          patientData={reportData}
+        />
+
+        return {
+          recordAnalysis: analysis,
+          report: reportData
+        };
+      }
     },
     { 
       icon: '🗓️', 
       title: 'Agenda Médica', 
-      description: 'Gerencie consultas, procedimentos e cirurgias. Sistema inteligente de priorização e distribuição de horários com base na urgência.'
+      description: 'Gerencie consultas, procedimentos e cirurgias. Sistema inteligente de priorização e distribuição de horários com base na urgência.',
+      aiHandler: async (scheduleQuery: string) => {
+        const response = await fetch(`http://localhost:3001/staff/schedule`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: scheduleQuery })
+        });
+        
+        if (!response.ok) throw new Error('Erro ao acessar agenda');
+        
+        const scheduleData = await response.json();
+
+        const reportData = {
+          title: 'Relatório de Agenda Médica',
+          sections: [
+            {
+              title: 'Horários Disponíveis',
+              content: scheduleData.slots.map((s: any) => 
+                `${s.date} ${s.time}: ${s.type}`
+              ).join('\n')
+            },
+            {
+              title: 'Casos Urgentes',
+              content: scheduleData.urgent.map((u: any) => 
+                `Paciente: ${u.patient} - Prioridade: ${u.priority}`
+              ).join('\n')
+            },
+            {
+              title: 'Recomendações de Agendamento',
+              content: scheduleData.recommendations.join('\n')
+            }
+          ],
+          downloadable: true,
+          charts: [
+            {
+              type: 'calendar',
+              title: 'Visão Mensal',
+              data: scheduleData.monthlyView
+            }
+          ]
+        };
+
+        <ReportModal
+          isOpen={isReportModalOpen}
+          onClose={() => setIsReportModalOpen(false)}
+          reportType={reportType}
+          patientData={reportData}
+        />
+
+        return {
+          scheduleData,
+          report: reportData
+        };
+      }
     },
     { 
       icon: '💊', 
       title: 'Gestão de Medicamentos', 
-      description: 'Controle estoque, validade e dispensação de medicamentos. Alertas de interações medicamentosas e necessidade de reposição.'
+      description: 'Controle estoque, validade e dispensação de medicamentos. Alertas de interações medicamentosas e necessidade de reposição.',
+      aiHandler: async (medicationQuery: string) => {
+        const response = await fetch(`http://localhost:3001/medications/inventory`);
+        if (!response.ok) throw new Error('Erro ao acessar inventário de medicamentos');
+        
+        const medicationData = await response.json();
+        const riskAnalyzer = new PatientRiskAnalysis();
+        const interactions = await riskAnalyzer.checkMedicationInteractions(medicationData.medications);
+
+        const reportData = {
+          title: 'Relatório de Gestão de Medicamentos',
+          sections: [
+            {
+              title: 'Status do Inventário',
+              content: medicationData.stock.map((s: any) => 
+                `${s.name}: ${s.quantity} unidades - Validade: ${s.expiration}`
+              ).join('\n')
+            },
+            {
+              title: 'Alertas de Validade',
+              content: medicationData.expiring.map((e: any) => 
+                `${e.name}: Vence em ${e.daysUntilExpiration} dias`
+              ).join('\n')
+            },
+            {
+              title: 'Interações Medicamentosas',
+              content: interactions.map((i: any) => 
+                `${i.drugs.join(' + ')}: ${i.severity} - ${i.effect}`
+              ).join('\n')
+            }
+          ],
+          downloadable: true,
+          charts: [
+            {
+              type: 'bar',
+              title: 'Níveis de Estoque',
+              data: medicationData.stockLevels
+            }
+          ]
+        };
+
+        <ReportModal
+          isOpen={isReportModalOpen}
+          onClose={() => setIsReportModalOpen(false)}
+          reportType={reportType}
+          patientData={reportData}
+        />
+
+        return {
+          inventoryData: medicationData,
+          report: reportData
+        };
+      }
     },
     { 
       icon: '🔬', 
       title: 'Resultados de Exames', 
-      description: 'Acesse resultados de exames laboratoriais e de imagem, com análise comparativa e histórico completo do paciente.'
+      description: 'Acesse resultados de exames laboratoriais e de imagem, com análise comparativa e histórico completo do paciente.',
+      aiHandler: async (examId: string) => {
+        const response = await fetch(`http://localhost:3001/patients/exams/${examId}`);
+        if (!response.ok) throw new Error('Resultados não encontrados');
+        
+        const examData = await response.json();
+        const riskAnalyzer = new PatientRiskAnalysis();
+        const comparison = await riskAnalyzer.compareExamHistory(examData.history);
+
+        const reportData = {
+          title: 'Relatório de Resultados de Exames',
+          sections: [
+            {
+              title: 'Resultados Atuais',
+              content: examData.results.map((r: any) => 
+                `${r.test}: ${r.value} ${r.unit} (Ref: ${r.reference})`
+              ).join('\n')
+            },
+            {
+              title: 'Análise Comparativa',
+              content: comparison.map((c: any) => 
+                `${c.test}: ${c.trend} (Variação: ${c.variation})`
+              ).join('\n')
+            },
+            {
+              title: 'Recomendações',
+              content: examData.recommendations.join('\n')
+            }
+          ],
+          downloadable: true,
+          charts: [
+            {
+              type: 'line',
+              title: 'Evolução Temporal',
+              data: examData.history
+            }
+          ]
+        };
+
+        <ReportModal
+          isOpen={isReportModalOpen}
+          onClose={() => setIsReportModalOpen(false)}
+          reportType={reportType}
+          patientData={reportData}
+        />
+
+        return {
+          examData,
+          report: reportData
+        };
+      }
     },
     { 
       icon: '⚕️', 
       title: 'Suporte à Decisão Clínica', 
-      description: 'Recomendações baseadas em evidências para diagnósticos e tratamentos, utilizando IA para análise de casos similares.'
+      description: 'Recomendações baseadas em evidências para diagnósticos e tratamentos, utilizando IA para análise de casos similares.',
+      aiHandler: async (caseData: string) => {
+        const response = await fetch(`http://localhost:3001/clinical-support`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ case: caseData })
+        });
+        
+        if (!response.ok) throw new Error('Erro na análise clínica');
+        
+        const clinicalData = await response.json();
+        const riskAnalyzer = new PatientRiskAnalysis();
+        const similarCases = await riskAnalyzer.analyzeSimilarCases(clinicalData.cases);
+
+        const reportData = {
+          title: 'Relatório de Suporte à Decisão Clínica',
+          sections: [
+            {
+              title: 'Sugestões de Diagnóstico',
+              content: clinicalData.diagnoses.map((d: any) => 
+                `${d.condition} (${d.probability}%) - ${d.evidence}`
+              ).join('\n')
+            },
+            {
+              title: 'Opções de Tratamento',
+              content: clinicalData.treatments.map((t: any) => 
+                `${t.treatment}: ${t.efficacy} - ${t.considerations}`
+              ).join('\n')
+            },
+            {
+              title: 'Casos Similares',
+              content: similarCases.map((c: any) => 
+                `Caso ${c.id}: ${c.outcome} (${c.similarity}% similar)`
+              ).join('\n')
+            }
+          ],
+          downloadable: true,
+          charts: [
+            {
+              type: 'radar',
+              title: 'Análise Multifatorial',
+              data: clinicalData.factors
+            }
+          ]
+        };
+
+        <ReportModal
+          isOpen={isReportModalOpen}
+          onClose={() => setIsReportModalOpen(false)}
+          reportType={reportType}
+          patientData={reportData}
+        />
+
+        return {
+          clinicalData,
+          report: reportData
+        };
+      }
     }
   ];
 
