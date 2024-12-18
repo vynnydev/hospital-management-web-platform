@@ -19,7 +19,6 @@ import { formatDate } from '@/utils/dateFormatter';
 
 interface DashboardMetricsProps {
   onRefresh?: () => void;
-  autoRefreshInterval?: number;
 }
 
 const getDefaultMetricValues = (): HospitalMetrics => ({
@@ -121,15 +120,14 @@ const getDefaultMetricValues = (): HospitalMetrics => ({
     }
   });
 
-const DashboardMetrics: React.FC<DashboardMetricsProps> = ({ 
-  onRefresh, 
-  autoRefreshInterval = 300000
-}) => {
+const DashboardMetrics: React.FC<DashboardMetricsProps> = ({ onRefresh }) => {
   const { theme } = useTheme();
   const [metrics, setMetrics] = useState<HospitalMetrics>(getDefaultMetricValues());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
+  // Novo estado para controlar se os dados foram carregados inicialmente
+  const [initialLoadDone, setInitialLoadDone] = useState(false);
 
   const {
     calculateTurnoverRate,
@@ -156,14 +154,16 @@ const DashboardMetrics: React.FC<DashboardMetricsProps> = ({
       setMetrics(getDefaultMetricValues());
     } finally {
       setLoading(false);
+      setInitialLoadDone(true);
     }
   };
 
+  // Carrega os dados apenas uma vez quando o componente é montado
   useEffect(() => {
-    fetchMetrics();
-    const interval = setInterval(fetchMetrics, autoRefreshInterval);
-    return () => clearInterval(interval);
-  }, [autoRefreshInterval]);
+    if (!initialLoadDone) {
+      fetchMetrics();
+    }
+  }, [initialLoadDone]);
 
   const handleRefresh = () => {
     fetchMetrics();
@@ -174,7 +174,7 @@ const DashboardMetrics: React.FC<DashboardMetricsProps> = ({
   const turnoverTrend = calculateTurnoverTrend();
   const admissionsLast24h = calculateAdmissionsLast24h();
 
-  if (loading) return (
+  if (loading && !initialLoadDone) return (
     <div className="flex justify-center items-center h-64">
       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
     </div>
@@ -188,16 +188,19 @@ const DashboardMetrics: React.FC<DashboardMetricsProps> = ({
         </div>
         <button
           onClick={handleRefresh}
-          className={`w-48 items-center border-2 shadow-md rounded-md p-2 border-cyan-600 bg-white/10 hover:bg-white/20 text-white dark:hover:bg-green-700 dark:text-green-100"
-                ${theme === 'dark'
-                    ? 'bg-[linear-gradient(135deg,#0F172A,#155E75)] shadow-[0_0_20px_rgba(15,23,42,0.5),0_0_40px_rgba(21,94,117,0.3)]'
-                    : 'bg-[linear-gradient(135deg,#aecddc,#459bc6)] shadow-lg'
-                }
-            `}>
-                <div className='flex flex-row items-center justify-center space-x-2'>
-                    <ArrowPathIcon className="h-5 w-5 mr-2" />
-                    Atualizar Análise
-                </div>
+          className={`w-48 items-center border-2 shadow-md rounded-md p-2 border-cyan-600 text-white
+            transition-all duration-300 ease-in-out
+            ${theme === 'dark'
+              ? 'bg-[linear-gradient(90deg,#0F172A,#155E75)] hover:bg-[linear-gradient(90deg,#1e3a8a,#1e4976)] shadow-[0_0_20px_rgba(15,23,42,0.5)]'
+              : 'bg-[linear-gradient(90deg,#aecddc,#459bc6)] hover:bg-[linear-gradient(90deg,#1e3a8a,#1e4976)] shadow-lg'
+            }
+            hover:transform hover:-translate-y-1 hover:shadow-[0_4px_12px_rgba(30,58,138,0.3)]
+          `}
+        >
+          <div className='flex flex-row items-center justify-center space-x-2'>
+            <ArrowPathIcon className="h-5 w-5 mr-2" />
+            Atualizar Análise
+          </div>
         </button>
       </div>
 

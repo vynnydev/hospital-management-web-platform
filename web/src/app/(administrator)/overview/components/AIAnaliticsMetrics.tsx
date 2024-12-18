@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useHospitalAnalytics } from '@/services/hooks/AI/useHospitalAnalytics';
 import {
     ChartBarIcon,
@@ -47,6 +48,15 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
     const [expandedSections, setExpandedSections] = useState<boolean[]>(Array(4).fill(false));
     const { loading: isLoading, setLoading, error, setError, analyzeMetrics } = useHospitalAnalytics();
     const [analysis, setAnalysis] = useState<string>('');
+    const updateTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const lastUpdateRef = useRef<number>(Date.now());
+    const [updateCount, setUpdateCount] = useState(0);
+
+    const shouldUpdate = useCallback(() => {
+        const now = Date.now();
+        const timeSinceLastUpdate = now - lastUpdateRef.current;
+        return timeSinceLastUpdate >= 5000; // 5 segundos entre atualizações
+    }, []);
 
     useEffect(() => {
         if (analysis) {
@@ -59,12 +69,14 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
         }
     }, [analysis]);
     
-    const fetchAnalysis = async () => {
+    const fetchAnalysis = useCallback(async (force: boolean = false) => {
+        if (!force && !shouldUpdate()) {
+            console.log('Atualização ignorada - muito próxima da última');
+            return;
+        }
+
         try {
-            // Iniciar loading
             setLoading(true);
-    
-            // Fazer chamada à API
             const apiData = await metricsCalcService.getMetrics();
     
             // Preparar os dados para análise
@@ -86,10 +98,15 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
             };
     
             // Enviar para análise
-            console.log(metricsData)
             const analysisResult = await analyzeMetrics(metricsData);
-            console.log(analysisResult)
-            setAnalysis(analysisResult);
+            // Atualiza o estado de forma otimizada
+            setAnalysis(prev => {
+                if (prev === analysisResult) return prev;
+                return analysisResult;
+            });
+
+            lastUpdateRef.current = Date.now();
+            setUpdateCount(count => count + 1);
     
         } catch (error) {
             console.error('Erro ao buscar análise:', error);
@@ -97,7 +114,7 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
         } finally {
             setLoading(false);
         }
-    };
+    }, [shouldUpdate, analyzeMetrics])
 
     const extractSection = (text: string, startMarker: string, endMarker: string) => {
         if (!text) {
@@ -137,32 +154,42 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
         }
     };
 
+    // Gerenciamento otimizado de atualizações periódicas
     useEffect(() => {
-        fetchAnalysis().catch(err => {
-            console.error('Erro no useEffect:', err);
-            setError(err instanceof Error ? err.message : 'Erro ao carregar dados');
-        });
-    }, []);
+        const startPeriodicUpdate = () => {
+            updateTimeoutRef.current = setTimeout(() => {
+                fetchAnalysis(false).then(() => {
+                    startPeriodicUpdate();
+                });
+            }, 300000); // 5 minutos
+        };
 
-    const startPeriodicUpdate = useCallback(() => {
-        const updateInterval = setInterval(() => {
-            fetchAnalysis();
-        }, 300000); // Atualiza a cada 5 minutos
-    
-        return () => clearInterval(updateInterval);
-    }, []);
+        startPeriodicUpdate();
 
-    useEffect(() => {
-        const cleanup = startPeriodicUpdate();
-        return () => cleanup();
-    }, [startPeriodicUpdate]);
+        return () => {
+            if (updateTimeoutRef.current) {
+                clearTimeout(updateTimeoutRef.current);
+            }
+        };
+    }, [fetchAnalysis]);
 
+    // Função de refresh otimizada
     const handleRefresh = useCallback(async () => {
-        await fetchAnalysis();
+        await fetchAnalysis(true);
         if (onRefresh) {
             onRefresh();
         }
-    }, [analyzeMetrics, onRefresh]);
+    }, [fetchAnalysis, onRefresh]);
+
+    // Otimização do useEffect inicial
+    useEffect(() => {
+        const initialLoad = async () => {
+            if (!analysis) {
+                await fetchAnalysis(true);
+            }
+        };
+        initialLoad();
+    }, []);
 
     const toggleSection = (index: number) => {
         const newExpandedSections = [...expandedSections];
@@ -356,13 +383,15 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
                         </div>
                         <button
                             onClick={handleRefresh}
-                            className={`w-48 items-center border-2 shadow-md rounded-md p-2 border-cyan-600 bg-white/10 hover:bg-white/20 text-white dark:hover:bg-green-700 dark:text-green-100
+                            className={`w-48 items-center border-2 shadow-md rounded-md p-2 border-cyan-600 text-white
+                                transition-all duration-300 ease-in-out
                                 ${theme === 'dark'
-                                    ? 'bg-[linear-gradient(135deg,#0F172A,#155E75)] shadow-[0_0_20px_rgba(15,23,42,0.5),0_0_40px_rgba(21,94,117,0.3)]'
-                                    : 'bg-[linear-gradient(135deg,#aecddc,#459bc6)] shadow-lg'
+                                    ? 'bg-[linear-gradient(90deg,#0F172A,#155E75)] hover:bg-[linear-gradient(90deg,#1e3a8a,#1e4976)] shadow-[0_0_20px_rgba(15,23,42,0.5)]'
+                                    : 'bg-[linear-gradient(90deg,#aecddc,#459bc6)] hover:bg-[linear-gradient(90deg,#1e3a8a,#1e4976)] shadow-lg'
                                 }
+                                hover:transform hover:-translate-y-1 hover:shadow-[0_4px_12px_rgba(30,58,138,0.3)]
                             `}
-                        >
+                            >
                             <div className='flex flex-row items-center justify-center space-x-2'>
                                 <ArrowPathIcon className="h-5 w-5" />
                                 <p>Atualizar Dados</p>

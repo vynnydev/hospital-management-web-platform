@@ -1,23 +1,98 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import React, { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
-import { Sparkles } from 'lucide-react';
+import { Sparkles, Loader } from 'lucide-react';
 
+import AnimatedAIText from './AnimatedAIText';
 import aiAssistant from '@/assets/ai-assistant.png'
+
+interface AIResponse {
+  response: string;
+  confidence: number;
+  metadata?: any;
+}
+
+const initialMessage = 'Olá! Sou AIDA, sua assistente virtual especializada em saúde. ' +
+'Posso ajudar com gestão de pacientes, análise de prontuários, agendamentos e muito mais. ' +
+'Como posso auxiliar você hoje?';
 
 const AIDAHealthAssistant: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState('');
-  const [aiMessage, setAiMessage] = useState('Aqui estará a mensagem gerada pela inteligência artificial...');
+  const [aiMessage, setAiMessage] = useState(initialMessage);
+  const [loading, setLoading] = useState(false);
+  const [selectedCard, setSelectedCard] = useState<string | null>(null);
   const { theme } = useTheme();
 
-  const toggleAssistant = () => setIsOpen(!isOpen);
+  const getCurrentContext = () => {
+    // Implementar lógica para obter contexto específico baseado na funcionalidade selecionada
+    return {
+      selectedCard,
+      currentTime: new Date().toISOString(),
+      // Adicionar outros dados contextuais relevantes
+    };
+  };
 
+  // Modificar a função toggleAssistant para resetar o estado quando fechar
+  const toggleAssistant = () => {
+    if (isOpen) {
+      // Reset todos os estados relevantes quando fechar
+      setMessage('');
+      setAiMessage(initialMessage);
+      setSelectedCard(null);
+    }
+    setIsOpen(!isOpen);
+  };
+
+  // Modificar o handleCardClick para tratar erros adequadamente
+  const handleCardClick = async (cardTitle: string) => {
+    setSelectedCard(cardTitle);
+    setLoading(true);
+    try {
+      const response = await fetch('/api/ai-analysis', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          functionality: cardTitle,
+          query: message,
+          context: getCurrentContext()
+        })
+      });
+      
+      if (!response.ok) {
+        throw new Error('Erro na resposta da API');
+      }
+  
+      const data: AIResponse = await response.json();
+      setAiMessage(data.response);
+    } catch (error: any) {
+      // Define apenas a mensagem de erro
+      setAiMessage('Desculpe, ocorreu um erro ao processar sua solicitação. ');
+      // Após 3 segundos, substitui pela mensagem inicial
+      setTimeout(() => {
+        setAiMessage(initialMessage);
+        setSelectedCard(null);
+      }, 3000);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Modificar o useEffect do Escape key para também resetar os estados
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setIsOpen(false);
+      if (event.key === 'Escape') {
+        setIsOpen(false);
+        setMessage('');
+        setAiMessage(initialMessage);
+        setSelectedCard(null);
+      }
     };
 
     document.addEventListener('keydown', handleEscape);
@@ -61,61 +136,103 @@ const AIDAHealthAssistant: React.FC = () => {
     <>
       <button
         onClick={toggleAssistant}
-        className="fixed bottom-8 left-[1550px] text-white rounded-full p-6 shadow-lg transition-all duration-300 z-50 w-24 h-24 flex items-center justify-center hover:scale-110 ai-gradient-bg"
-        aria-label="Open Agrixi Assistant"
+        className={`fixed bottom-8 left-[1550px] rounded-full p-6 shadow-lg transition-all duration-300 z-50 w-24 h-24 flex items-center justify-center hover:scale-110
+          ${theme === 'dark' 
+            ? 'dark-assistant-button' 
+            : 'light-assistant-button'
+          }`}
+        aria-label="Open AIDA Assistant"
       >
         <Image
-          src={aiAssistant} // Substitua pelo caminho correto da sua imagem
+          src={aiAssistant}
           alt="AI Assistant Icon"
-          width={64} // Tamanho em pixels
-          height={64} // Tamanho em pixels
-          className="object-contain" // Mantém a proporção da imagem
-          priority // Carrega a imagem com prioridade por ser um elemento importante
+          width={64}
+          height={64}
+          className="object-contain"
+          priority
         />
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50">
+        <div className={`fixed inset-0 backdrop-blur-sm flex justify-center items-center z-50 
+          ${theme === 'dark' ? 'bg-black/50' : 'bg-gray-500/30'}`}>
           <div className="relative w-full max-w-4xl h-[90vh] m-4">
             <div className="absolute inset-0 overflow-hidden rounded-lg" style={{ margin: '-12px' }}>
-              <div className="colorful-border"></div>
+              <div className={`colorful-border ${theme === 'dark' ? 'dark-border' : 'light-border'}`}></div>
             </div>
-            <div className="relative z-10 bg-gray-800 bg-opacity-80 backdrop-blur-md rounded-lg shadow-xl h-full p-6 flex flex-col">
-              <h2 className="text-2xl font-bold mb-6 text-white">Explore</h2>
+            <div className={`relative z-10 rounded-lg shadow-xl h-full p-6 flex flex-col
+              ${theme === 'dark' 
+                ? 'bg-gray-800/80 backdrop-blur-md' 
+                : 'bg-gray-200/90 backdrop-blur-md'}`}>
+              <h2 className={`text-2xl font-bold mb-6 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                Explore
+              </h2>
 
               <div className="grid grid-cols-3 gap-4 mb-6">
                 {cards.map((card, index) => (
-                  <div key={index} className="bg-gray-700 bg-opacity-50 p-4 rounded-lg">
+                  <div
+                    key={index}
+                    onClick={() => handleCardClick(card.title)}
+                    className={`p-4 rounded-lg cursor-pointer transition-all duration-300 hover:scale-105
+                      ${theme === 'dark' 
+                        ? 'bg-gray-700/50 hover:bg-gradient-to-r hover:from-blue-900 hover:to-cyan-800' 
+                        : 'bg-gray-300/70 hover:bg-gradient-to-r hover:from-blue-400 hover:to-cyan-500'}
+                      ${selectedCard === card.title ? 'ring-2 ring-blue-500' : ''}`}
+                  >
                     <div className="text-3xl mb-2">{card.icon}</div>
-                    <h3 className="text-lg font-semibold text-white mb-1">{card.title}</h3>
-                    <p className="text-sm text-gray-300">{card.description}</p>
+                    <h3 className={`text-lg font-semibold mb-1 
+                      ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                      {card.title}
+                    </h3>
+                    <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
+                      {card.description}
+                    </p>
                   </div>
                 ))}
               </div>
 
-              {/* Campo de mensagem da IA */}
-              <div className="bg-gray-700 bg-opacity-50 rounded-lg p-4 flex items-center mb-4 h-full">
-                <Sparkles className="h-6 w-6 text-gray-400 mr-3" />
-                <p className="text-gray-300 italic">{aiMessage}</p>
+              <div className={`rounded-lg p-4 flex items-center mb-4 h-full
+                ${theme === 'dark' ? 'bg-gray-700/50' : 'bg-gray-300/70'}`}>
+                {loading ? (
+                  <div className="flex items-center justify-center w-full">
+                    <Loader className="animate-spin h-6 w-6 mr-2" />
+                    <span>Processando...</span>
+                  </div>
+                ) : (
+                  <>
+                    <Sparkles className={`h-6 w-6 mr-3 
+                      ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`} />
+                    <AnimatedAIText 
+                      text={aiMessage} 
+                      className={`italic ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}
+                    />
+                  </>
+                )}
               </div>
 
               <div className="mt-auto">
-                <div className="bg-gray-700 bg-opacity-50 rounded-full overflow-hidden flex items-center p-2">
+                <div className={`rounded-full overflow-hidden flex items-center p-2
+                  ${theme === 'dark' ? 'bg-gray-700/50' : 'bg-gray-300/70'}`}>
                   <input
                     type="text"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder="Ask me anything..."
-                    className="flex-grow px-4 py-2 bg-transparent focus:outline-none text-white"
+                    className={`flex-grow px-4 py-2 bg-transparent focus:outline-none
+                      ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}
                   />
                   <button
-                    className="colorful-button text-white px-6 py-2 rounded-full"
+                    className={`colorful-button text-white px-6 py-2 rounded-full
+                      ${theme === 'dark' ? 'dark-button' : 'light-button'}
+                      ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                     onClick={() => {
-                      console.log(message);
-                      setMessage('');
+                      if (!loading && selectedCard) {
+                        handleCardClick(selectedCard);
+                      }
                     }}
+                    disabled={loading}
                   >
-                    Enviar
+                    {loading ? 'Enviando...' : 'Enviar'}
                   </button>
                 </div>
               </div>
@@ -123,8 +240,9 @@ const AIDAHealthAssistant: React.FC = () => {
 
             <button
               onClick={() => setIsOpen(false)}
-              className="absolute top-2 right-2 text-gray-400 hover:text-white z-20"
-              aria-label="Close Agrixi Assistant"
+              className={`absolute top-2 right-2 hover:text-white z-20
+                ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}
+              aria-label="Close AIDA Assistant"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -135,12 +253,12 @@ const AIDAHealthAssistant: React.FC = () => {
       )}
 
       <style jsx global>{`
-        .ai-gradient-bg {
+        .dark-assistant-button {
           background: linear-gradient(135deg, #0F172A, #155E75);
           box-shadow: 0 0 20px rgba(15,23,42,0.5), 0 0 40px rgba(21,94,117,0.3);
         }
 
-        .ai-gradient-bg::before {
+        .dark-assistant-button::before {
           content: '';
           position: absolute;
           top: -2px;
@@ -159,9 +277,31 @@ const AIDAHealthAssistant: React.FC = () => {
           animation: animatedBorder 8s linear infinite;
         }
 
-        .colorful-border {
+        .light-assistant-button {
+          background: linear-gradient(135deg, #64748B, #0EA5E9);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .light-assistant-button::before {
+          content: '';
           position: absolute;
-          inset: -5%;
+          top: -2px;
+          left: -2px;
+          right: -2px;
+          bottom: -2px;
+          background: linear-gradient(
+            45deg,
+            #64748B,
+            #0EA5E9,
+            #38BDF8,
+            #7DD3FC
+          );
+          border-radius: inherit;
+          z-index: -1;
+          animation: animatedBorder 8s linear infinite;
+        }
+
+        .dark-border {
           background: linear-gradient(
             45deg,
             #0F172A,
@@ -169,6 +309,41 @@ const AIDAHealthAssistant: React.FC = () => {
             #155E75,
             #1E293B
           );
+        }
+
+        .light-border {
+          background: linear-gradient(
+            45deg,
+            #64748B,
+            #0EA5E9,
+            #38BDF8,
+            #7DD3FC
+          );
+        }
+
+        .dark-button {
+          background: linear-gradient(
+            45deg,
+            #0F172A,
+            #164E63,
+            #155E75,
+            #1E293B
+          );
+        }
+
+        .light-button {
+          background: linear-gradient(
+            45deg,
+            #64748B,
+            #0EA5E9,
+            #38BDF8,
+            #7DD3FC
+          );
+        }
+
+        .colorful-border {
+          position: absolute;
+          inset: -5%;
           border-radius: inherit;
           filter: blur(8px);
           opacity: 0.8;
@@ -177,15 +352,66 @@ const AIDAHealthAssistant: React.FC = () => {
 
         .colorful-button {
           position: relative;
-          background: linear-gradient(
-            45deg,
-            #0F172A,
-            #164E63,
-            #155E75,
-            #1E293B
-          );
           background-size: 300% 300%;
           animation: gradient 15s ease infinite;
+        }
+
+        .ai-text-container {
+          position: relative;
+          background: linear-gradient(45deg, rgba(0,128,255,0.1), rgba(0,255,255,0.1));
+          border-radius: 8px;
+          padding: 1rem;
+          overflow: hidden;
+        }
+
+        .ai-text-container::before {
+          content: '';
+          position: absolute;
+          top: -2px;
+          left: -2px;
+          right: -2px;
+          bottom: -2px;
+          background: linear-gradient(45deg, #00f, #0ff);
+          z-index: -1;
+          filter: blur(10px);
+          opacity: 0.2;
+          animation: borderFlow 3s infinite linear;
+        }
+
+        .colorful-button {
+          background: linear-gradient(90deg, #2c5282 0%, #2b6cb0 100%);
+          transition: all 0.3s ease;
+        }
+
+        .colorful-button:hover:not(:disabled) {
+          background: linear-gradient(90deg, #2747a8 0%, #275c8f 100%);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+        }
+
+        .colorful-button:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
+        }
+
+        .dark-button {
+          background: linear-gradient(90deg, #2c5282 0%, #2b6cb0 100%);
+        }
+
+        .light-button {
+          background: linear-gradient(90deg, #2c5282 0%, #2b6cb0 100%);
+        }
+
+        @keyframes borderFlow {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
         }
 
         @keyframes rotate {
@@ -222,43 +448,6 @@ const AIDAHealthAssistant: React.FC = () => {
           100% {
             background-position: 0% 50%;
           }
-        }
-
-        .ai-gradient-bg::after {
-          content: '';
-          position: absolute;
-          inset: 0;
-          border-radius: inherit;
-          padding: 2px;
-          background: linear-gradient(
-            45deg,
-            #0F172A,
-            #164E63,
-            #155E75,
-            #1E293B
-          );
-          -webkit-mask: 
-            linear-gradient(#fff 0 0) content-box, 
-            linear-gradient(#fff 0 0);
-          -webkit-mask-composite: xor;
-          mask-composite: exclude;
-          animation: borderGlow 8s linear infinite;
-        }
-
-        .relative.w-full.max-w-4xl::after {
-          content: '';
-          position: absolute;
-          inset: -2px;
-          border-radius: inherit;
-          background: linear-gradient(
-            45deg,
-            #0F172A,
-            #164E63,
-            #155E75,
-            #1E293B
-          );
-          z-index: -1;
-          animation: glowPulse 3s ease-in-out infinite;
         }
 
         @keyframes borderGlow {
