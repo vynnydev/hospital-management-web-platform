@@ -89,7 +89,7 @@ const MetricCard: React.FC<MetricCardProps> = ({
       <div className="flex justify-between items-start">
         <div className="flex items-center space-x-3">
           {icon}
-          <h3 className="text-gray-600 dark:text-gray-400 text-sm font-medium">
+          <h3 className="text-gray-500 dark:text-gray-400 text-sm font-medium">
             {title}
           </h3>
         </div>
@@ -100,7 +100,7 @@ const MetricCard: React.FC<MetricCardProps> = ({
         <span className="text-3xl font-semibold">
           {value}
         </span>
-        <span className="ml-1 text-gray-600 text-xl">
+        <span className="ml-1 text-gray-500 text-xl">
           {unit}
         </span>
       </div>
@@ -133,7 +133,7 @@ const MetricCard: React.FC<MetricCardProps> = ({
           <div className="mt-2 space-y-2">
             {details.breakdown.map((item, index) => (
               <div key={index} className="flex justify-between items-center">
-                <span className="text-sm text-gray-600 dark:text-gray-400">
+                <span className="text-sm text-gray-500 dark:text-gray-400">
                   {item.label}
                 </span>
                 <div className="flex items-center space-x-2">

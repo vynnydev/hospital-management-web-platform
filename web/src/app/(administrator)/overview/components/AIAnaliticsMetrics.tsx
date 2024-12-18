@@ -342,7 +342,7 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
                 <div className="max-w-[1920px] mx-auto mt-20 bg-slate-100 dark:bg-slate-800 p-6 rounded-md">
                     <div className="flex items-center justify-between mb-8">
                         <div className="flex items-center gap-4">
-                            <h2 className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
+                            <h2 className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-400'}`}>
                                 Análise de Dados Hospitalares
                             </h2>
                             <Tooltip>
@@ -372,7 +372,7 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
 
                     {!analysis && (
                         <div className="text-center p-4rounded-lg bg-slate-100 dark:bg-slate-800">
-                            <p>Aguardando dados da análise...</p>
+                            <p className='text-gray-500 dark:text-white'>Aguardando dados da análise...</p>
                         </div>
                     )}
 

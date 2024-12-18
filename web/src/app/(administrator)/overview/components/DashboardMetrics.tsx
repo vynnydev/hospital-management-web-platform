@@ -183,7 +183,7 @@ const DashboardMetrics: React.FC<DashboardMetricsProps> = ({
   return (
     <div className="space-y-6 -mt-16">
       <div className="flex justify-between items-center mb-4">
-        <div className="text-sm text-gray-500">
+        <div className="text-sm text-gray-100 px-4 mt-4">
           Última atualização: {formatDate(lastUpdate)}
         </div>
         <button
