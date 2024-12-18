@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 import React, { useEffect, useState, useCallback } from 'react';
-import { useHospitalAnalytics } from '@/services/AI/hooks/useHospitalAnalytics';
+import { useHospitalAnalytics } from '@/services/hooks/AI/useHospitalAnalytics';
 import {
     ChartBarIcon,
     ExclamationTriangleIcon, 
@@ -19,6 +20,7 @@ import {
 import { useTheme } from 'next-themes'
 import { motion, AnimatePresence } from 'framer-motion';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { metricsCalcService } from '@/services/calcs/metricsCalcService';
 
 interface ColumnContent {
     title: string;
@@ -32,25 +34,8 @@ interface SubCard {
     content: string;
 }
 
-interface Section {
-    title: string;
-    icon: React.ReactNode;
-    gradient: string;
-    content: string;
-    tooltip: string;
-    subCards: SubCard[];
-    lines: ColumnContent[];
-    actionPlan: string; // Novo campo
-}
-
 interface AIAnaliticsMetricsProps {
     onRefresh?: () => void;
-}
-
-interface DebugInfo {
-    hookAnalysis?: string;
-    analysisResult?: string;
-    error?: unknown;
 }
 
 const cleanText = (text: string) => {
@@ -59,21 +44,16 @@ const cleanText = (text: string) => {
 
 const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) => {
     const { theme } = useTheme();
-    const [expandedSections, setExpandedSections] = useState<boolean[]>(Array(4).fill(true));
-    const { loading: isLoading, error, analysis: hookAnalysis, analyzeMetrics } = useHospitalAnalytics();
+    const [expandedSections, setExpandedSections] = useState<boolean[]>(Array(4).fill(false));
+    const { loading: isLoading, setLoading, error, setError, analyzeMetrics } = useHospitalAnalytics();
     const [analysis, setAnalysis] = useState<string>('');
-    const [debugInfo, setDebugInfo] = useState<DebugInfo | null>(null);
 
     useEffect(() => {
         if (analysis) {
-            console.log('Análise completa recebida:', analysis);
             sections.forEach(section => {
-                console.log(`\nSeção: ${section.title}`);
                 section.subCards.forEach(card => {
-                    console.log(`SubCard ${card.title}:`, card.content);
                 });
                 section.lines.forEach(column => {
-                    console.log(`Coluna ${column.title}:`, column.content);
                 });
             });
         }
@@ -81,41 +61,46 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
     
     const fetchAnalysis = async () => {
         try {
-            const initialMetrics = {
-                occupancyRate: 75,
-                totalPatients: 150,
-                availableBeds: 50,
-                avgStayDuration: 5,
-                turnoverRate: 8,
-                departmentOccupancy: [
-                    { department: "UTI", rate: 80 },
-                    { department: "Emergência", rate: 70 }
-                ],
-                trends: [
-                    { metric: "Ocupação", value: 5, direction: "up" },
-                    { metric: "Rotatividade", value: 3, direction: "down" }
-                ]
+            // Iniciar loading
+            setLoading(true);
+    
+            // Fazer chamada à API
+            const apiData = await metricsCalcService.getMetrics();
+    
+            // Preparar os dados para análise
+            const metricsData = {
+                occupancyRate: apiData.overall.occupancyRate,
+                totalPatients: apiData.overall.totalPatients,
+                availableBeds: apiData.overall.availableBeds,
+                avgStayDuration: apiData.overall.avgStayDuration,
+                turnoverRate: apiData.overall.turnoverRate,
+                departmentOccupancy: Object.entries(apiData.departmental).map(([department, data]) => ({
+                    department: department.toUpperCase(),
+                    rate: data.occupancy
+                })),
+                trends: Object.entries(apiData.overall.periodComparison).map(([metric, data]) => ({
+                    metric: metric.charAt(0).toUpperCase() + metric.slice(1),
+                    value: data.value,
+                    direction: data.trend
+                })),
             };
     
-            const analysisResult = await analyzeMetrics(initialMetrics);
-            console.log('Resultado da análise:', analysisResult);
+            // Enviar para análise
+            console.log(metricsData)
+            const analysisResult = await analyzeMetrics(metricsData);
+            console.log(analysisResult)
             setAnalysis(analysisResult);
-            setDebugInfo((prev: DebugInfo | null) => ({ 
-                ...(prev || {}), 
-                analysisResult 
-            }));
+    
         } catch (error) {
             console.error('Erro ao buscar análise:', error);
-            setDebugInfo((prev: DebugInfo | null) => ({ 
-                ...(prev || {}), 
-                error 
-            }));
+            setError(error instanceof Error ? error.message : 'Erro ao processar dados');
+        } finally {
+            setLoading(false);
         }
     };
 
     const extractSection = (text: string, startMarker: string, endMarker: string) => {
         if (!text) {
-            console.log(`Texto vazio para marcadores: ${startMarker} - ${endMarker}`);
             return "";
         }
         
@@ -127,7 +112,6 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
             // Procura pelo início da seção
             let startIndex = text.indexOf(cleanStartMarker);
             if (startIndex === -1) {
-                console.log(`Marcador inicial não encontrado: ${cleanStartMarker}`);
                 return "";
             }
             
@@ -154,21 +138,24 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
     };
 
     useEffect(() => {
-        if (analysis) {
-            setDebugInfo((prev: DebugInfo | null) => ({
-                ...(prev || {}),
-                hookAnalysis: analysis,
-                sections: sections.map(section => ({
-                    title: section.title,
-                    content: section.content
-                }))
-            }));
-        }
-    }, [analysis]);
+        fetchAnalysis().catch(err => {
+            console.error('Erro no useEffect:', err);
+            setError(err instanceof Error ? err.message : 'Erro ao carregar dados');
+        });
+    }, []);
+
+    const startPeriodicUpdate = useCallback(() => {
+        const updateInterval = setInterval(() => {
+            fetchAnalysis();
+        }, 300000); // Atualiza a cada 5 minutos
+    
+        return () => clearInterval(updateInterval);
+    }, []);
 
     useEffect(() => {
-        fetchAnalysis();
-    }, [analyzeMetrics]);
+        const cleanup = startPeriodicUpdate();
+        return () => cleanup();
+    }, [startPeriodicUpdate]);
 
     const handleRefresh = useCallback(async () => {
         await fetchAnalysis();
@@ -333,7 +320,6 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
     };
 
     const ContentLine = ({ title, content }: ColumnContent) => {
-        console.log(`Renderizando coluna ${title}:`, content);
         return (
             <div className="flex-1 bg-white/10 p-6 rounded-xl">
                 <h4 className="text-white/90 font-medium mb-2 text-lg">{title}</h4>
@@ -370,14 +356,14 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
                         </div>
                         <button
                             onClick={handleRefresh}
-                            className={`w-48 items-center border-2 shadow-md rounded-md p-4 border-cyan-600 bg-white/10 hover:bg-white/20 text-white dark:hover:bg-green-700 dark:text-green-100
+                            className={`w-48 items-center border-2 shadow-md rounded-md p-2 border-cyan-600 bg-white/10 hover:bg-white/20 text-white dark:hover:bg-green-700 dark:text-green-100
                                 ${theme === 'dark'
                                     ? 'bg-[linear-gradient(135deg,#0F172A,#155E75)] shadow-[0_0_20px_rgba(15,23,42,0.5),0_0_40px_rgba(21,94,117,0.3)]'
-                                    : 'bg-[linear-gradient(135deg,#BAE6FD,#99F6E4)] shadow-lg'
+                                    : 'bg-[linear-gradient(135deg,#aecddc,#459bc6)] shadow-lg'
                                 }
                             `}
                         >
-                            <div className='flex flex-row space-x-2'>
+                            <div className='flex flex-row items-center justify-center space-x-2'>
                                 <ArrowPathIcon className="h-5 w-5" />
                                 <p>Atualizar Dados</p>
                             </div>
@@ -394,10 +380,6 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-6">
                             <AnimatePresence>
                                 {sections.map((section, index) => {
-                                    console.log(`Renderizando seção ${section.title}:`, {
-                                        content: section.content,
-                                        lines: section.lines
-                                    });
                                     return (
                                         <motion.div
                                             key={index}

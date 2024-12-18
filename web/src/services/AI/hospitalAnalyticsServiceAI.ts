@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-export class HospitalAnalyticsService {
+export class HospitalAnalyticsServiceAI {
   private genAI: GoogleGenerativeAI;
   private model: any;
 
@@ -110,10 +110,12 @@ export class HospitalAnalyticsService {
 
       Forneça sua análise de forma clara e objetiva, priorizando informações acionáveis e destacando pontos críticos que requerem atenção imediata.
     `;
+    console.log(prompt)
 
     try {
       const result = await this.model.generateContent(prompt);
       const response = await result.response;
+      console.log(response)
       return response.text();
     } catch (error) {
       console.error('Erro na análise:', error);

@@ -1,6 +1,6 @@
 'use client';
 
-import { Role } from '@/utils/types'
+import { Role } from '@/utils/types/maps'
 import { BrandIcon } from './BrandIcon'
 import { useEffect, useState } from 'react';
 
@@ -33,10 +33,10 @@ export const Brand = ({
             <BrandIcon />
             <div>
               <div className="flex gap-1">
-                <h1 className='text-slate-800 dark:text-slate-100 text-sm'>H24</h1>
+                <h1 className='text-slate-100 dark:text-slate-100 text-sm'>H24</h1>
                 {type ? <span className="text-xs text-gray-600 dark:text-gray-400">{type}</span> : null}
               </div>
-              <h1 className="text-xs text-gray-700 dark:text-gray-500">VMB</h1>
+              <h1 className="text-xs text-slate-100 dark:text-gray-500">VMB</h1>
             </div>
           </div>
         ) : (
@@ -44,10 +44,10 @@ export const Brand = ({
             <BrandIcon />
             <div>
               <div className="flex gap-1">
-                <h1 className='text-slate-800 dark:text-slate-100'>H24</h1>
+                <h1 className='text-slate-100 dark:text-slate-100'>H24</h1>
                 {type ? <span className="text-xs text-gray-600 dark:text-gray-400">{type}</span> : null}
               </div>
-              <h1 className="text-xs text-gray-700 dark:text-gray-500">VMB</h1>
+              <h1 className="text-xs text-slate-100 dark:text-gray-500">VMB</h1>
             </div>
           </div>
         )}

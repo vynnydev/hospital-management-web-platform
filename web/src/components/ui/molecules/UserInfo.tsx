@@ -1,4 +1,4 @@
-import { BaseComponent } from '@/utils/types'
+import { BaseComponent } from '@/utils/types/maps'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 

@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // hooks/useHospitalAnalytics.ts
 import { useState, useCallback } from 'react';
-import { HospitalAnalyticsService } from '@/services/AI/hospitalAnalytics';
+import { HospitalAnalyticsServiceAI } from '@/services/AI/hospitalAnalyticsServiceAI';
 
-const analyticsService = new HospitalAnalyticsService();
+const analyticsService = new HospitalAnalyticsServiceAI();
 
 export function useHospitalAnalytics() {
     const [loading, setLoading] = useState(false);
@@ -29,16 +30,13 @@ export function useHospitalAnalytics() {
         }
     }, []);
 
-    console.log({
-        loading,
-        error,
-        analysis,
-        analyzeMetrics
-    })
+    console.log(analysis)
 
     return {
         loading,
+        setLoading,
         error,
+        setError,
         analysis,
         analyzeMetrics
     };

@@ -1,4 +1,4 @@
-import { MenuItem } from '@/utils/types'
+import { MenuItem } from '@/utils/types/maps'
 import Link from 'next/link'
 
 export interface IMenuItemProps {

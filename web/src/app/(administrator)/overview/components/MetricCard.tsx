@@ -1,29 +1,4 @@
-// types/metrics.ts
-interface TrendData {
-  value: number;
-  direction: 'up' | 'down' | 'stable';
-}
-
-interface BreakdownItem {
-  label: string;
-  value: string;
-}
-
-interface DetailsData {
-  subtitle: string;
-  breakdown: BreakdownItem[];
-}
-
-interface MetricCardProps {
-  title: string;
-  value: number;
-  unit: string;
-  trend?: TrendData;
-  status: 'critical' | 'warning' | 'normal';
-  timestamp: Date;
-  icon?: React.ReactNode;
-  details?: DetailsData;
-}
+import { MetricCardProps } from "@/services/types/metrics";
 
 // components/StatusBadge.tsx
 const StatusBadge: React.FC<{ status: string }> = ({ status }) => {

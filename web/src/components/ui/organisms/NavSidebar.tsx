@@ -3,7 +3,7 @@ import { IconMenu2 } from '@tabler/icons-react'
 import { Sidebar } from './Sidebar'
 import { useDialogState } from '@/utils/hooks/dialog'
 
-import { MenuItem } from '@/utils/types'
+import { MenuItem } from '@/utils/types/maps'
 import { LogoutButton } from '../molecules/LogoutButton'
 import { UserInfo } from '../molecules/UserInfo'
 import { Menus } from './Menus'
