@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 
-import IAgrixiAssistant from '@/components/ui/aida-assistant/AIDAHealthAssistant';
+import AIDAHealthAssistant from '@/components/ui/aida-assistant/AIDAHealthAssistant';
 
 const BedManagement: React.FC = () => {
   return (
@@ -9,7 +9,7 @@ const BedManagement: React.FC = () => {
       <div className="flex h-full">
         Bed Management
       </div>
-      <IAgrixiAssistant />
+      <AIDAHealthAssistant />
     </div>
   );
 };

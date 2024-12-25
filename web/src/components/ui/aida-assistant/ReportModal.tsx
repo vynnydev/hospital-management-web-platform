@@ -1,164 +1,202 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from "react";
+import { RefreshCw, Copy, Printer, X, Share2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
 
-// Tipos para os relatórios
-type ReportType = 'evolucao' | 'medicacao' | 'exames' | 'cirurgia' | 'completo';
-
-interface ReportTemplate {
-  title: string;
-  description: string;
-  fields: string[];
-}
-
-const reportTemplates: Record<ReportType, ReportTemplate> = {
-  evolucao: {
-    title: 'Relatório de Evolução',
-    description: 'Análise detalhada da evolução do paciente',
-    fields: ['status', 'sinaisVitais', 'medicacoes', 'observacoes']
-  },
-  medicacao: {
-    title: 'Relatório de Medicações',
-    description: 'Histórico e controle de medicações',
-    fields: ['medicamentos', 'dosagem', 'frequencia', 'interacoes']
-  },
-  exames: {
-    title: 'Relatório de Exames',
-    description: 'Resultados e análises de exames',
-    fields: ['tipoExame', 'resultado', 'dataRealizacao', 'comparativo']
-  },
-  cirurgia: {
-    title: 'Relatório Cirúrgico',
-    description: 'Detalhamento de procedimentos cirúrgicos',
-    fields: ['procedimento', 'equipe', 'duracao', 'observacoes']
-  },
-  completo: {
-    title: 'Relatório Completo',
-    description: 'Análise completa do histórico do paciente',
-    fields: ['dadosPessoais', 'historico', 'tratamentos', 'prognostico']
-  }
-};
-
-// Componente do Modal de Relatório
 interface ReportModalProps {
   isOpen: boolean;
   onClose: () => void;
-  reportType: ReportType;
-  patientData: any;
+  data: any;
+  type: string;
 }
 
-const ReportModal = ({ isOpen, onClose, reportType, patientData }: ReportModalProps) => {
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [report, setReport] = useState<string>('');
+export const ReportModal: React.FC<ReportModalProps> = ({ isOpen, onClose, data }) => {
+  const [copied, setCopied] = useState(false);
 
-  // Função para gerar o relatório baseado no tipo e dados do paciente
-  const generateReportContent = async () => {
-    setIsGenerating(true);
-    try {
-      let reportContent = '';
-      
-      switch (reportType) {
-        case 'evolucao':
-          reportContent = `
-            EVOLUÇÃO DO PACIENTE
-            
-            Status: ${patientData.status}
-            Sinais Vitais: ${patientData.sinaisVitais}
-            Medicações: ${patientData.medicacoes}
-            Observações: ${patientData.observacoes}
-          `;
-          break;
-
-        case 'medicacao':
-          reportContent = `
-            RELATÓRIO DE MEDICAÇÕES
-            
-            Medicamentos: ${patientData.medicamentos}
-            Dosagem: ${patientData.dosagem}
-            Frequência: ${patientData.frequencia}
-            Interações: ${patientData.interacoes}
-          `;
-          break;
-
-        // Adicione casos para outros tipos de relatório
-        default:
-          reportContent = 'Tipo de relatório não suportado';
-      }
-
-      setReport(reportContent);
-    } catch (error) {
-      console.error('Erro ao gerar relatório:', error);
-      setReport('Erro ao gerar relatório. Por favor, tente novamente.');
-    } finally {
-      setIsGenerating(false);
-    }
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(data?.content || '');
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
-  // Chama generateReportContent quando o modal é aberto
-  useEffect(() => {
-    if (isOpen) {
-      generateReportContent();
+  const handlePrint = () => {
+    const printContent = data?.content || 'Nenhum dado disponível';
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Análise do Paciente</title>
+            <style>
+              body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                padding: 20px;
+              }
+              pre {
+                white-space: pre-wrap;
+                font-family: monospace;
+              }
+            </style>
+          </head>
+          <body>
+            <h1>Análise do Paciente</h1>
+            <pre>${printContent}</pre>
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
+      printWindow.print();
     }
-  }, [isOpen, reportType, patientData]);
-
-  const handleDownload = () => {
-    const blob = new Blob([report], { type: 'text/plain' });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `relatorio_${reportType}_${new Date().toISOString()}.txt`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
   };
 
   return (
-    <div className={`fixed inset-0 z-50 ${isOpen ? 'flex' : 'hidden'} items-center justify-center`}>
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative w-full max-w-4xl bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl shadow-2xl p-6 m-4 overflow-hidden">
-        {/* Efeito de AI */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0 bg-grid-pattern animate-pulse" />
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 animate-gradient" />
-        </div>
+    <>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[60] flex items-center justify-center p-4"
+          >
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/30 backdrop-blur-sm"
+              onClick={onClose}
+            />
+            
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ type: "spring", duration: 0.5 }}
+              className="relative w-full max-w-4xl overflow-hidden"
+            >
+              {/* Gradiente de fundo animado */}
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-pink-500/10 animate-gradient-slow" />
+              
+              <div className="relative bg-gray-900/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/10">
+                {/* Cabeçalho */}
+                <div className="p-6 border-b border-white/10">
+                  <div className="flex justify-between items-center">
+                    <h2 className="text-2xl font-bold text-white">Análise do Paciente</h2>
+                    
+                    <div className="flex items-center space-x-2">
+                      {/* Botões de ação com tooltips */}
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="p-2 hover:bg-white/10 rounded-full transition-colors relative group"
+                      >
+                        <RefreshCw className="w-5 h-5 text-white" />
+                        <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 text-sm text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                          Regenerar análise
+                        </span>
+                      </motion.button>
 
-        {/* Conteúdo */}
-        <div className="relative z-10">
-          <h2 className="text-2xl font-bold text-white mb-4">
-            {reportTemplates[reportType]?.title || 'Relatório'}
-          </h2>
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={handleCopy}
+                        className="p-2 hover:bg-white/10 rounded-full transition-colors relative group"
+                      >
+                        <Copy className="w-5 h-5 text-white" />
+                        <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 text-sm text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                          {copied ? 'Copiado!' : 'Copiar'}
+                        </span>
+                      </motion.button>
 
-          {isGenerating ? (
-            <div className="flex flex-col items-center justify-center py-12">
-              <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
-              <p className="mt-4 text-white text-lg">Gerando relatório com IA...</p>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              <div className="bg-gray-800/50 rounded-lg p-4">
-                <pre className="text-gray-200 whitespace-pre-wrap">{report}</pre>
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={handlePrint}
+                        className="p-2 hover:bg-white/10 rounded-full transition-colors relative group"
+                      >
+                        <Printer className="w-5 h-5 text-white" />
+                        <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 text-sm text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                          Imprimir
+                        </span>
+                      </motion.button>
+
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="p-2 hover:bg-white/10 rounded-full transition-colors relative group"
+                      >
+                        <Share2 className="w-5 h-5 text-white" />
+                        <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 text-sm text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                          Compartilhar
+                        </span>
+                      </motion.button>
+
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={onClose}
+                        className="p-2 hover:bg-white/10 rounded-full transition-colors relative group"
+                      >
+                        <X className="w-5 h-5 text-white" />
+                        <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 text-sm text-white bg-black rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                          Fechar
+                        </span>
+                      </motion.button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Conteúdo */}
+                <div className="p-6">
+                  <motion.div
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.1 }}
+                    className="bg-white/5 rounded-xl p-6 backdrop-blur-sm overflow-auto max-h-[60vh] border border-white/5"
+                  >
+                    <pre className="text-gray-200 whitespace-pre-wrap font-mono text-sm leading-relaxed">
+                      {data?.content || 'Nenhum dado disponível'}
+                    </pre>
+                  </motion.div>
+                </div>
               </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-              <div className="flex justify-end space-x-4">
-                <button
-                  onClick={handleDownload}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
-                >
-                  Baixar Relatório
-                </button>
-                <button
-                  onClick={onClose}
-                  className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
-                >
-                  Fechar
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
+      <style jsx global>{`
+        @keyframes gradient-slow {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+
+        .animate-gradient-slow {
+          background-size: 200% 200%;
+          animation: gradient-slow 8s linear infinite;
+        }
+
+        /* Estilo para scrollbar personalizada */
+        .overflow-auto::-webkit-scrollbar {
+          width: 8px;
+        }
+
+        .overflow-auto::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 4px;
+        }
+
+        .overflow-auto::-webkit-scrollbar-thumb {
+          background: rgba(255, 255, 255, 0.2);
+          border-radius: 4px;
+        }
+
+        .overflow-auto::-webkit-scrollbar-thumb:hover {
+          background: rgba(255, 255, 255, 0.3);
+        }
+      `}</style>
+    </>
   );
 };
-
-export default ReportModal;

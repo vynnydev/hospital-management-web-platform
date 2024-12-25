@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type ReportType = 'evolucao' | 'medicacao' | 'exames' | 'cirurgia' | 'completo';
 
 // Tipos para os prompts de gestão de pacientes
@@ -14,6 +16,20 @@ export interface Card {
   title: CardTitle;
   description: string;
   aiHandler?: (data: any) => Promise<any>;
+}
+
+export interface CardReport {
+  title: string;
+  sections: {
+    title: string;
+    content: string;
+  }[];
+  downloadable: boolean;
+  charts?: {
+    type: string;
+    title: string;
+    data: any;
+  }[];
 }
 
 // Então, defina o objeto usando Record
@@ -78,77 +94,104 @@ export const initialMessage = 'Olá! Sou AIDA, sua assistente virtual especializ
 'Como posso auxiliar você hoje?';
 
 export interface TrendEmojis {
-  melhorando: string;
-  estável: string;
-  deteriorando: string;
-  variável: string;
+  increasing: string;
+  stable: string;
+  decreasing: string;
+  variable: string;
 }
 
 export interface RiskEmojis {
-  Baixo: string;
-  Médio: string;
-  Alto: string;
+  low: string;
+  medium: string;
+  high: string;
 }
 
 export function formatAIResponse(result: any): string {
+  // Verificar se result e result.data existem
+  if (!result || !result.data) {
+    return '❌ Não foi possível processar os dados do paciente.';
+  }
+
+  // Extrair dados com valores padrão caso não existam
   const {
-    analysis,
-    riskAnalysis,
-    predictedOutcomes
-  } = result;
+    vitalsAnalysis = {
+      alerts: [],
+      risk: 'low',
+      summary: ''
+    },
+    medicationAnalysis = {
+      interactions: [],
+      adjustments: [],
+      summary: ''
+    },
+    recommendations = [],
+    riskScores = {
+      clinical: 0,
+      medication: 0,
+      readmission: 0
+    }
+  } = result.data;
 
-  // Definir os emojis com tipos corretos
-  const riskEmoji: RiskEmojis = {
-    'Baixo': '🟢',
-    'Médio': '🟡',
-    'Alto': '🔴'
+  // Definir os emojis
+  const riskEmoji: Record<string, string> = {
+    'low': '🟢',
+    'medium': '🟡',
+    'high': '🔴'
   };
 
-  const trendEmoji: TrendEmojis = {
-    'melhorando': '📈',
-    'estável': '➡️',
-    'deteriorando': '📉',
-    'variável': '↕️'
+  // Converter score numérico para nível de risco
+  const getRiskLevel = (score: number) => {
+    if (score >= 75) return 'high';
+    if (score >= 50) return 'medium';
+    return 'low';
   };
 
-  // Usar as interfaces para acessar os emojis de forma segura
-  const selectedRiskEmoji = riskEmoji[analysis.riskLevel as keyof RiskEmojis] || '⚪';
-  const selectedTrendEmoji = trendEmoji[analysis.trend as keyof TrendEmojis] || '➡️';
+  const overallRiskLevel = getRiskLevel(riskScores.clinical);
+  const selectedRiskEmoji = riskEmoji[overallRiskLevel] || '⚪';
 
   const message = `
     🏥 *Análise do Paciente*
 
     *Status Atual:*
-    ${selectedRiskEmoji} Nível de Risco: ${analysis.riskLevel}
-    ${selectedTrendEmoji} Tendência: ${analysis.trend}
-
-    *Alertas Importantes:*
-    ${analysis.alerts.length > 0 
-    ? analysis.alerts.map((alert: any) => `⚠️ ${alert}`).join('\n')
-    : '✅ Nenhum alerta crítico'}
-
-    *Recomendações Principais:*
-    ${analysis.recommendations.map((rec: any) => `• ${rec}`).join('\n')}
-
-    *Previsões:*
-    📊 Tempo estimado de internação: ${predictedOutcomes.estimatedLOS} dias
-    🎯 Probabilidade de complicações: ${predictedOutcomes.complicationRisk.probability.toFixed(2)}%
-    📋 Trajetória prevista: ${predictedOutcomes.recoveryTrajectory}
+    ${selectedRiskEmoji} Nível de Risco: ${overallRiskLevel.toUpperCase()}
+    
+    *Análise de Sinais Vitais:*
+    ${vitalsAnalysis.alerts && vitalsAnalysis.alerts.length > 0
+      ? vitalsAnalysis.alerts.map((alert: string) => `⚠️ ${alert}`).join('\n')
+      : '✅ Sinais vitais estáveis'}
 
     *Análise de Medicamentos:*
-    ${riskAnalysis.medicationImpact.interactions.length > 0
-    ? riskAnalysis.medicationImpact.interactions.map((interaction: any) => `⚕️ ${interaction}`).join('\n')
-    : '✅ Sem interações medicamentosas identificadas'}
+    ${medicationAnalysis.interactions && medicationAnalysis.interactions.length > 0
+      ? medicationAnalysis.interactions.map((interaction: any) => 
+          `⚕️ ${interaction.medications?.join(' + ') || 'Medicamentos'}: ${interaction.severity || 'N/A'} - ${interaction.recommendation || 'N/A'}`
+        ).join('\n')
+      : '✅ Sem interações medicamentosas identificadas'}
 
-    *Observações dos Sinais Vitais:*
-    ${riskAnalysis.currentStatus.abnormalities.length > 0
-    ? riskAnalysis.currentStatus.abnormalities.map((abnormality: any) => `📊 ${abnormality}`).join('\n')
-    : '✅ Sinais vitais dentro dos parâmetros normais'}
+    *Ajustes Sugeridos:*
+    ${medicationAnalysis.adjustments && medicationAnalysis.adjustments.length > 0
+      ? medicationAnalysis.adjustments.map((adjustment: string) => `💊 ${adjustment}`).join('\n')
+      : '✅ Sem ajustes necessários'}
 
-    ${riskAnalysis.overallRisk.mitigationStrategies.length > 0
-    ? `\n*Estratégias de Mitigação de Risco:*\n${riskAnalysis.overallRisk.mitigationStrategies.map((strategy: any) => `💡 ${strategy}`).join('\n')}`
-    : ''}
-    `;
+    *Recomendações:*
+    ${recommendations && recommendations.length > 0
+      ? recommendations.map((rec: string) => `• ${rec}`).join('\n')
+      : '✅ Sem recomendações específicas'}
+
+    *Scores de Risco:*
+    📊 Risco Clínico: ${riskScores.clinical || 0}%
+    💊 Risco Medicamentoso: ${riskScores.medication || 0}%
+    🔄 Risco de Readmissão: ${riskScores.readmission || 0}%
+
+    *Monitoramento Sugerido:*
+    🕐 Verificação de sinais vitais: ${
+      overallRiskLevel === 'high' ? 'a cada 2h' :
+      overallRiskLevel === 'medium' ? 'a cada 4h' : 'a cada 6h'
+    }
+    🔬 Exames laboratoriais: ${
+      overallRiskLevel === 'high' ? 'Diário' :
+      overallRiskLevel === 'medium' ? 'A cada 48h' : 'A cada 72h'
+    }
+  `;
 
   return message.trim();
 }

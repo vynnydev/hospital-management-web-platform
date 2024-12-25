@@ -1,4 +1,4 @@
-// components/ui/organisms/IAgrixiAssistantSection.tsx
+// components/ui/organisms/AIDAHealthAssistantSection.tsx
 'use client'
 import React from 'react';
 import Image from 'next/image';
@@ -9,7 +9,7 @@ import { GoArrowRight } from 'react-icons/go';
 
 import iagrixiBackgroundGif from '@/assets/application-images/iagrixi-assistant/gifs/iagrixi-assistant.gif'; // Adicione seu GIF ao diretório assets
 
-export const IAgrixiAssistantSection: React.FC = () => {
+export const AIDAHealthAssistantSection: React.FC = () => {
     const { theme, setTheme } = useTheme();
 
     return (
@@ -54,4 +54,4 @@ export const IAgrixiAssistantSection: React.FC = () => {
     );
 };
 
-export default IAgrixiAssistantSection;
+export default AIDAHealthAssistantSection;

@@ -1,11 +1,11 @@
-import IAgrixiAssistant from "@/components/ui/aida-assistant/AIDAHealthAssistant"
+import AIDAHealthAssistant from "@/components/ui/aida-assistant/AIDAHealthAssistant"
 
 const PredictiveAnalisys = () => {
     return (
         <div className="-mt-12">
             <div>Predictive Analisys</div>
 
-            <IAgrixiAssistant />
+            <AIDAHealthAssistant />
         </div>
     )
 }

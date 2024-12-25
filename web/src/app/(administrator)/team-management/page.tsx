@@ -1,4 +1,4 @@
-import IAgrixiAssistant from "@/components/ui/aida-assistant/AIDAHealthAssistant";
+import AIDAHealthAssistant from "@/components/ui/aida-assistant/AIDAHealthAssistant";
 
 const TeamManagement: React.FC = () => {
   return (
@@ -7,7 +7,7 @@ const TeamManagement: React.FC = () => {
         Team Management
       </div>
 
-      <IAgrixiAssistant />
+      <AIDAHealthAssistant />
     </div>
   );
 };

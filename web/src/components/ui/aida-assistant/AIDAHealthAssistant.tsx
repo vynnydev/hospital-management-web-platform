@@ -10,10 +10,9 @@ import { Sparkles, Loader } from 'lucide-react';
 import AnimatedAIText from './AnimatedAIText';
 import aiAssistant from '@/assets/ai-assistant.png'
 
-import { PatientRiskAnalysis } from '@/services/AI/aida-assistant/patientAnalysis';
-
-import ReportModal from './ReportModal';
-import { Card, cardInitialMessages, CardTitle, formatAIResponse, initialMessage, ReportType } from './utils/aidaAssistantFunctions';
+import { ReportModal } from './ReportModal';
+import { cardInitialMessages, CardTitle, formatAIResponse, initialMessage, ReportType } from './utils/aidaAssistantFunctions';
+import { funcionalitiesCards } from './utils/AssistantFuncionalities';
 
 const AIDAHealthAssistant: React.FC = () => {
   const { theme, setTheme } = useTheme()
@@ -61,15 +60,27 @@ const AIDAHealthAssistant: React.FC = () => {
       
       setAiMessage(cardInitialMessages[cardTitle as CardTitle]);
   
-      const selectedCardData = cards.find(card => card.title === cardTitle);
+      const selectedCardData = funcionalitiesCards.find(card => card.title === cardTitle);
   
       if (selectedCardData?.aiHandler && message) {
         const result = await selectedCardData.aiHandler(message);
+        const formattedResponse = formatAIResponse(result);
+        setAiMessage(formattedResponse);
+        console.log(result)
   
+        console.log(result.report)
         if (result.report) {
-          setReportData(result.report);
+          setReportData({
+            type: cardTitle.toLowerCase(),
+            content: formattedResponse,
+            raw: result.report,
+            patientId: message,
+            timestamp: new Date().toISOString()
+          });
           setReportType(cardTitle.toLowerCase() as ReportType);
           setIsReportModalOpen(true);
+        } else {
+          setAiMessage('Não foi possível processar sua solicitação. Tente novamente.');
         }
   
         // Substitui a mensagem anterior em vez de adicionar ao histórico
@@ -97,352 +108,6 @@ const AIDAHealthAssistant: React.FC = () => {
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
   }, []);
-
-  const cards: Card[] = [
-    { 
-      icon: '🏥', 
-      title: 'Gestão de Pacientes', 
-      description: 'Monitore em tempo real sinais vitais, histórico médico e evolução dos pacientes. Alertas automáticos para alterações críticas.',
-      aiHandler: async (patientId: string) => {
-        const response = await fetch(`http://localhost:3001/patients/${patientId}`);
-        if (!response.ok) throw new Error('Paciente não encontrado');
-        
-        const patientData = await response.json();
-        const riskAnalyzer = new PatientRiskAnalysis();
-        const analysis = await riskAnalyzer.analyzePatient(patientData);
-
-        // Formata os dados para o relatório
-        const reportData = {
-          title: 'Relatório de Análise do Paciente',
-          sections: [
-            {
-              title: 'Informações do Paciente',
-              content: `
-                Nome: ${patientData.name}
-                ID: ${patientData.id}
-                Idade: ${patientData.age}
-                Último Atendimento: ${new Date(patientData.lastVisit).toLocaleDateString()}
-              `
-            },
-            {
-              title: 'Análise de Risco',
-              content: `
-                Nível de Risco: ${analysis.riskAnalysis.overallRisk.level}
-                Tendência: ${analysis.riskAnalysis.vitalTrends}
-                Alertas: ${analysis.analysis.alerts.join(', ')}
-              `
-            },
-            {
-              title: 'Recomendações',
-              content: analysis.analysis.recommendations.join('\n')
-            }
-          ],
-          downloadable: true,
-          charts: [
-            {
-              type: 'line',
-              title: 'Evolução dos Sinais Vitais',
-              data: analysis.analysis.vitalSignsTrend
-            }
-          ]
-        };
-
-        <ReportModal
-          isOpen={isReportModalOpen}
-          onClose={() => setIsReportModalOpen(false)}
-          reportType={reportType}
-          patientData={reportData}
-        />
-
-        return {
-          analysis,
-          report: reportData
-        };
-      }
-    },
-    { 
-      icon: '📋', 
-      title: 'Prontuário Digital', 
-      description: 'Acesse e atualize prontuários eletrônicos com histórico completo, exames, prescrições e evolução do tratamento de forma integrada.',
-      aiHandler: async (recordId: string) => {
-        const response = await fetch(`http://localhost:3001/patients/${recordId}/records`);
-        if (!response.ok) throw new Error('Prontuário não encontrado');
-        
-        const recordData = await response.json();
-        const riskAnalyzer = new PatientRiskAnalysis();
-        const analysis = await riskAnalyzer.analyzePatient(recordData);
-
-        const reportData = {
-          title: 'Relatório do Prontuário Digital',
-          sections: [
-            {
-              title: 'Histórico de Tratamentos',
-              content: recordData.treatments.map((t: any) => 
-                `${t.date}: ${t.procedure} - ${t.outcome}`
-              ).join('\n')
-            },
-            {
-              title: 'Exames Recentes',
-              content: recordData.exams.map((e: any) => 
-                `${e.date}: ${e.type} - ${e.result}`
-              ).join('\n')
-            },
-            {
-              title: 'Medicações Atuais',
-              content: recordData.medications.map((m: any) => 
-                `${m.name}: ${m.dosage} - ${m.frequency}`
-              ).join('\n')
-            }
-          ],
-          downloadable: true
-        };
-
-        <ReportModal
-          isOpen={isReportModalOpen}
-          onClose={() => setIsReportModalOpen(false)}
-          reportType={reportType}
-          patientData={reportData}
-        />
-
-        return {
-          recordAnalysis: analysis,
-          report: reportData
-        };
-      }
-    },
-    { 
-      icon: '🗓️', 
-      title: 'Agenda Médica', 
-      description: 'Gerencie consultas, procedimentos e cirurgias. Sistema inteligente de priorização e distribuição de horários com base na urgência.',
-      aiHandler: async (scheduleQuery: string) => {
-        const response = await fetch(`http://localhost:3001/staff/schedule`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ query: scheduleQuery })
-        });
-        
-        if (!response.ok) throw new Error('Erro ao acessar agenda');
-        
-        const scheduleData = await response.json();
-
-        const reportData = {
-          title: 'Relatório de Agenda Médica',
-          sections: [
-            {
-              title: 'Horários Disponíveis',
-              content: scheduleData.slots.map((s: any) => 
-                `${s.date} ${s.time}: ${s.type}`
-              ).join('\n')
-            },
-            {
-              title: 'Casos Urgentes',
-              content: scheduleData.urgent.map((u: any) => 
-                `Paciente: ${u.patient} - Prioridade: ${u.priority}`
-              ).join('\n')
-            },
-            {
-              title: 'Recomendações de Agendamento',
-              content: scheduleData.recommendations.join('\n')
-            }
-          ],
-          downloadable: true,
-          charts: [
-            {
-              type: 'calendar',
-              title: 'Visão Mensal',
-              data: scheduleData.monthlyView
-            }
-          ]
-        };
-
-        <ReportModal
-          isOpen={isReportModalOpen}
-          onClose={() => setIsReportModalOpen(false)}
-          reportType={reportType}
-          patientData={reportData}
-        />
-
-        return {
-          scheduleData,
-          report: reportData
-        };
-      }
-    },
-    { 
-      icon: '💊', 
-      title: 'Gestão de Medicamentos', 
-      description: 'Controle estoque, validade e dispensação de medicamentos. Alertas de interações medicamentosas e necessidade de reposição.',
-      aiHandler: async (medicationQuery: string) => {
-        const response = await fetch(`http://localhost:3001/medications/inventory`);
-        if (!response.ok) throw new Error('Erro ao acessar inventário de medicamentos');
-        
-        const medicationData = await response.json();
-        const riskAnalyzer = new PatientRiskAnalysis();
-        const interactions = await riskAnalyzer.checkMedicationInteractions(medicationData.medications);
-
-        const reportData = {
-          title: 'Relatório de Gestão de Medicamentos',
-          sections: [
-            {
-              title: 'Status do Inventário',
-              content: medicationData.stock.map((s: any) => 
-                `${s.name}: ${s.quantity} unidades - Validade: ${s.expiration}`
-              ).join('\n')
-            },
-            {
-              title: 'Alertas de Validade',
-              content: medicationData.expiring.map((e: any) => 
-                `${e.name}: Vence em ${e.daysUntilExpiration} dias`
-              ).join('\n')
-            },
-            {
-              title: 'Interações Medicamentosas',
-              content: interactions.map((i: any) => 
-                `${i.drugs.join(' + ')}: ${i.severity} - ${i.effect}`
-              ).join('\n')
-            }
-          ],
-          downloadable: true,
-          charts: [
-            {
-              type: 'bar',
-              title: 'Níveis de Estoque',
-              data: medicationData.stockLevels
-            }
-          ]
-        };
-
-        <ReportModal
-          isOpen={isReportModalOpen}
-          onClose={() => setIsReportModalOpen(false)}
-          reportType={reportType}
-          patientData={reportData}
-        />
-
-        return {
-          inventoryData: medicationData,
-          report: reportData
-        };
-      }
-    },
-    { 
-      icon: '🔬', 
-      title: 'Resultados de Exames', 
-      description: 'Acesse resultados de exames laboratoriais e de imagem, com análise comparativa e histórico completo do paciente.',
-      aiHandler: async (examId: string) => {
-        const response = await fetch(`http://localhost:3001/patients/exams/${examId}`);
-        if (!response.ok) throw new Error('Resultados não encontrados');
-        
-        const examData = await response.json();
-        const riskAnalyzer = new PatientRiskAnalysis();
-        const comparison = await riskAnalyzer.compareExamHistory(examData.history);
-
-        const reportData = {
-          title: 'Relatório de Resultados de Exames',
-          sections: [
-            {
-              title: 'Resultados Atuais',
-              content: examData.results.map((r: any) => 
-                `${r.test}: ${r.value} ${r.unit} (Ref: ${r.reference})`
-              ).join('\n')
-            },
-            {
-              title: 'Análise Comparativa',
-              content: comparison.map((c: any) => 
-                `${c.test}: ${c.trend} (Variação: ${c.variation})`
-              ).join('\n')
-            },
-            {
-              title: 'Recomendações',
-              content: examData.recommendations.join('\n')
-            }
-          ],
-          downloadable: true,
-          charts: [
-            {
-              type: 'line',
-              title: 'Evolução Temporal',
-              data: examData.history
-            }
-          ]
-        };
-
-        <ReportModal
-          isOpen={isReportModalOpen}
-          onClose={() => setIsReportModalOpen(false)}
-          reportType={reportType}
-          patientData={reportData}
-        />
-
-        return {
-          examData,
-          report: reportData
-        };
-      }
-    },
-    { 
-      icon: '⚕️', 
-      title: 'Suporte à Decisão Clínica', 
-      description: 'Recomendações baseadas em evidências para diagnósticos e tratamentos, utilizando IA para análise de casos similares.',
-      aiHandler: async (caseData: string) => {
-        const response = await fetch(`http://localhost:3001/clinical-support`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ case: caseData })
-        });
-        
-        if (!response.ok) throw new Error('Erro na análise clínica');
-        
-        const clinicalData = await response.json();
-        const riskAnalyzer = new PatientRiskAnalysis();
-        const similarCases = await riskAnalyzer.analyzeSimilarCases(clinicalData.cases);
-
-        const reportData = {
-          title: 'Relatório de Suporte à Decisão Clínica',
-          sections: [
-            {
-              title: 'Sugestões de Diagnóstico',
-              content: clinicalData.diagnoses.map((d: any) => 
-                `${d.condition} (${d.probability}%) - ${d.evidence}`
-              ).join('\n')
-            },
-            {
-              title: 'Opções de Tratamento',
-              content: clinicalData.treatments.map((t: any) => 
-                `${t.treatment}: ${t.efficacy} - ${t.considerations}`
-              ).join('\n')
-            },
-            {
-              title: 'Casos Similares',
-              content: similarCases.map((c: any) => 
-                `Caso ${c.id}: ${c.outcome} (${c.similarity}% similar)`
-              ).join('\n')
-            }
-          ],
-          downloadable: true,
-          charts: [
-            {
-              type: 'radar',
-              title: 'Análise Multifatorial',
-              data: clinicalData.factors
-            }
-          ]
-        };
-
-        <ReportModal
-          isOpen={isReportModalOpen}
-          onClose={() => setIsReportModalOpen(false)}
-          reportType={reportType}
-          patientData={reportData}
-        />
-
-        return {
-          clinicalData,
-          report: reportData
-        };
-      }
-    }
-  ];
 
   return (
     <>
@@ -481,7 +146,7 @@ const AIDAHealthAssistant: React.FC = () => {
               </h2>
 
               <div className="grid grid-cols-3 gap-4 mb-6">
-                {cards.map((card, index) => (
+                {funcionalitiesCards.map((card, index) => (
                   <div
                     key={index}
                     onClick={() => handleCardClick(card.title)}
@@ -562,6 +227,13 @@ const AIDAHealthAssistant: React.FC = () => {
           </div>
         </div>
       )}
+
+      <ReportModal 
+        isOpen={isReportModalOpen}
+        onClose={() => setIsReportModalOpen(false)}
+        data={reportData}
+        type={reportType}
+      />
 
       <style jsx global>{`
         .dark-assistant-button {

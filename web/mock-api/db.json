@@ -137,6 +137,90 @@
                 "Ajuste de antibióticos em 48h"
             ]
             }
+        },
+        {
+            "id": "P002",
+            "qrCode": "hash_unique_qr",
+            "personalInfo": {
+                "name": "Dog Silva",
+                "age": 45,
+                "gender": "M",
+                "bloodType": "O+",
+                "photo": "url_photo",
+                    "contactInfo": {
+                        "phone": "11999999999",
+                        "emergency": "11988888888",
+                        "address": "Rua Example, 123"
+                    }
+            },
+            "admission": {
+            "date": "2024-12-15",
+            "reason": "Pneumonia",
+            "type": "Clínica",
+            "status": "Internado",
+            "predictedDischarge": "2024-12-22",
+            "bed": {
+                "id": "B001",
+                "number": "201",
+                "wing": "Leste",
+                "type": "Enfermaria"
+            }
+            },
+            "medicalTeam": {
+            "doctor": {
+                "id": "D001",
+                "name": "Dra. Ana Santos",
+                "specialty": "Pneumologia"
+            },
+            "nurses": [
+                {
+                "id": "N001",
+                "name": "Carlos Enfermeiro",
+                "shift": "Manhã"
+                }
+            ]
+            },
+            "treatment": {
+            "diagnosis": ["Pneumonia bacteriana", "Hipertensão"],
+            "medications": [
+                {
+                "name": "Azitromicina",
+                "dosage": "500mg",
+                "frequency": "1x/dia",
+                "duration": "7 dias",
+                "startDate": "2024-12-15"
+                }
+            ],
+            "vitals": [
+                {
+                "timestamp": "2024-12-17T14:00:00",
+                "temperature": 37.2,
+                "bloodPressure": "120/80",
+                "heartRate": 75,
+                "oxygenSaturation": 96
+                }
+            ],
+            "procedures": [
+                {
+                "type": "Raio-X",
+                "date": "2024-12-15",
+                "result": "url_resultado",
+                "notes": "Infiltrado pulmonar bilateral"
+                }
+            ]
+            },
+            "aiAnalysis": {
+            "riskScore": 0.7,
+            "predictedLOS": 7.2,
+            "complications": {
+                "risk": "moderate",
+                "factors": ["histórico de hipertensão", "idade"]
+            },
+            "recommendations": [
+                "Monitoramento intensivo de saturação",
+                "Ajuste de antibióticos em 48h"
+            ]
+            }
         }
         ],
     "staff": {
