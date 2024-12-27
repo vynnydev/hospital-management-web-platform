@@ -53,11 +53,12 @@ const AIDAHealthAssistant: React.FC = () => {
     setIsClearing(true);
     
     try {
-      // Limpa completamente antes de definir nova mensagem
+      // Limpa e mostra a mensagem inicial no primeiro modal
       setAiMessage('');
       await new Promise(resolve => setTimeout(resolve, 10));
       setIsClearing(false);
       
+      // Mostra a mensagem inicial do card selecionado
       setAiMessage(cardInitialMessages[cardTitle as CardTitle]);
   
       const selectedCardData = funcionalitiesCards.find(card => card.title === cardTitle);
@@ -65,26 +66,24 @@ const AIDAHealthAssistant: React.FC = () => {
       if (selectedCardData?.aiHandler && message) {
         const result = await selectedCardData.aiHandler(message);
         const formattedResponse = formatAIResponse(result);
-        setAiMessage(formattedResponse);
+        console.log("RESULTADO:")
         console.log(result)
-  
-        console.log(result.report)
+        
         if (result.report) {
+          // Abre o segundo modal apenas com o relatório de análise
           setReportData({
             type: cardTitle.toLowerCase(),
             content: formattedResponse,
-            raw: result.report,
+            raw: result,
             patientId: message,
             timestamp: new Date().toISOString()
           });
           setReportType(cardTitle.toLowerCase() as ReportType);
           setIsReportModalOpen(true);
         } else {
+          // Se não houver relatório, mostra mensagem de erro no primeiro modal
           setAiMessage('Não foi possível processar sua solicitação. Tente novamente.');
         }
-  
-        // Substitui a mensagem anterior em vez de adicionar ao histórico
-        setAiMessage(formatAIResponse(result));
       }
     } catch (error: any) {
       console.error('Erro ao processar card:', error);
@@ -232,7 +231,6 @@ const AIDAHealthAssistant: React.FC = () => {
         isOpen={isReportModalOpen}
         onClose={() => setIsReportModalOpen(false)}
         data={reportData}
-        type={reportType}
       />
 
       <style jsx global>{`

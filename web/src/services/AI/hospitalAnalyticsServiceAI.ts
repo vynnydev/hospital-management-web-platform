@@ -110,7 +110,6 @@ export class HospitalAnalyticsServiceAI {
 
       Forneça sua análise de forma clara e objetiva, priorizando informações acionáveis e destacando pontos críticos que requerem atenção imediata.
     `;
-    console.log(prompt)
 
     try {
       const result = await this.model.generateContent(prompt);

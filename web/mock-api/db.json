@@ -83,18 +83,18 @@
             }
             },
             "medicalTeam": {
-            "doctor": {
-                "id": "D001",
-                "name": "Dra. Ana Santos",
-                "specialty": "Pneumologia"
-            },
-            "nurses": [
-                {
-                "id": "N001",
-                "name": "Carlos Enfermeiro",
-                "shift": "Manhã"
-                }
-            ]
+                "doctor": {
+                    "id": "D001",
+                    "name": "Dra. Ana Santos",
+                    "specialty": "Pneumologia"
+                },
+                "nurses": [
+                    {
+                    "id": "N001",
+                    "name": "Carlos Enfermeiro",
+                    "shift": "Manhã"
+                    }
+                ]
             },
             "treatment": {
             "diagnosis": ["Pneumonia bacteriana", "Hipertensão"],
@@ -126,16 +126,13 @@
             ]
             },
             "aiAnalysis": {
-            "riskScore": 0.7,
-            "predictedLOS": 7.2,
-            "complications": {
-                "risk": "moderate",
-                "factors": ["histórico de hipertensão", "idade"]
-            },
-            "recommendations": [
-                "Monitoramento intensivo de saturação",
-                "Ajuste de antibióticos em 48h"
-            ]
+                "riskScore": 0.7,
+                "predictedLOS": 7.2,
+                "complications": {
+                    "risk": "moderate",
+                    "factors": ["histórico de hipertensão", "idade"]
+                },
+                "recommendations": []
             }
         },
         {
@@ -216,10 +213,7 @@
                 "risk": "moderate",
                 "factors": ["histórico de hipertensão", "idade"]
             },
-            "recommendations": [
-                "Monitoramento intensivo de saturação",
-                "Ajuste de antibióticos em 48h"
-            ]
+            "recommendations": []
             }
         }
         ],

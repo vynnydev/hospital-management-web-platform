@@ -6,6 +6,7 @@ import { VitalSignsAnalyzer } from "@/services/AI/aida-assistant/VitalSignsAnaly
 import { MedicationAnalyzer } from "@/services/AI/aida-assistant/MedicationAnalyzer";
 import { RecommendationCache } from "@/services/AI/aida-assistant/RecommendationCache";
 import { RecommendationValidator } from "@/services/AI/aida-assistant/RecommendationValidator";
+import { Patient, PatientContext, PatientData, Procedure } from "@/services/AI/aida-assistant/types/aida-assistant";
 
 class AssistantFuncionalities {
   private static instance: AssistantFuncionalities;
@@ -19,7 +20,7 @@ class AssistantFuncionalities {
     return AssistantFuncionalities.instance;
   }
 
-  async getPatientById(patientId: string): Promise<Patient | null> {
+  async getPatientById(patientId: string): Promise<PatientData | null> {
     try {
       const response = await fetch(`${this.baseUrl}/patients/${patientId}`);
       
@@ -28,7 +29,7 @@ class AssistantFuncionalities {
       }
       
       const data = await response.json();
-      console.log(data)
+
       return data || null;
 
     } catch (error) {
@@ -48,40 +49,96 @@ class AssistantFuncionalities {
       const data = await response.json();
       return data.patients || [];
 
-    } catch (error) {
-      console.error('Erro ao buscar pacientes:', error);
-      throw error;
+      } catch (error) {
+        console.error('Erro ao buscar pacientes:', error);
+        throw error;
+      }
     }
   }
-}
 
-export const funcionalitiesCards: Card[] = [
+  function preparePatientContext(patientData: PatientData): PatientContext {
+    return {
+        age: patientData.personalInfo.age,
+        diagnoses: patientData.treatment.diagnosis,
+        riskLevel: patientData.aiAnalysis.complications.risk,
+        vitals: patientData.treatment.vitals.length > 0 
+            ? patientData.treatment.vitals[patientData.treatment.vitals.length - 1]
+            : null,
+        medications: patientData.treatment.medications,
+        procedures: patientData.treatment.procedures
+    };
+  }
+
+  export const funcionalitiesCards: Card[] = [
     {
       icon: '🏥',
       title: 'Gestão de Pacientes',
       description: 'Monitore em tempo real sinais vitais, histórico médico e evolução dos pacientes. Alertas automáticos para alterações críticas.',
       aiHandler: async (patientId: string) => {
         try {
-          const patientService = AssistantFuncionalities.getInstance();
-          const patient = await patientService.getPatientById(patientId);
-          
-          if (!patient) {
-            throw new Error('Paciente não encontrado');
+          const response = await fetch(`http://localhost:3001/patients/${patientId}`);
+      
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
           }
+          
+          const patient = await response.json();
+          // OS DADOS NÃO PROSSEGUEM DAQUI PRA FRENTE. CORRIGIR!!!!!
   
           const riskAnalyzer = new PatientRiskAnalysis();
           
-          const context: PatientContext = {
-            age: patient.personalInfo.age,
-            diagnoses: patient.treatment.diagnosis,
-            riskLevel: patient.aiAnalysis.complications.risk,
-            vitals: patient.treatment.vitals[patient.treatment.vitals.length - 1],
-            medications: patient.treatment.medications,
-            procedures: patient.treatment.procedures
-          };
-  
-          const recommendations = await riskAnalyzer.generateNewRecommendations(context);
+          // const context: PatientData = {
+          //   personalInfo: {
+          //     id: patient.personalInfo.id,
+          //     name: patient.personalInfo.name,
+          //     age: patient.personalInfo.age,
+          //     gender: patient.personalInfo.gender,
+          //     weight: patient.personalInfo.weight,
+          //     height: patient.personalInfo.height,
+          //     birthDate: patient.personalInfo.birthDate,
+          //     bloodType: patient.personalInfo.bloodType,
+          //     contactInfo: {
+          //       phone: patient.personalInfo.contactInfo.phone
+          //     }
+          //   },
+          //   treatment: {
+          //     diagnosis: patient.treatment.diagnosis,
+          //     vitals: patient.treatment.vitals,
+          //     medications: patient.treatment.medications,
+          //     procedures: patient.treatment.procedures,
+          //     allergies: patient.treatment.allergies,
+          //     notes: patient.treatment.notes,
+          //   },
+          //   aiAnalysis: {
+          //     complications: {
+          //       risk: patient.aiAnalysis.complications.risk,
+          //       factors: patient.aiAnalysis.complications.factors,
+          //     },
+          //     predictions: patient.aiAnalysis.predictions,
+          //     alerts: patient.aiAnalysis.alerts,
+          //     riskScore: patient.aiAnalysis.riskScore,
+          //     predictedLOS: patient.aiAnalysis.predictedLOS,
+          //   },
+          //   admission: {
+          //     date: patient.admission.date,
+          //     status: patient.admission.status,
+          //     predictedDischarge: patient.admission.predictedDischarge,
+          //     reason: patient.admission.reason,
+          //     bed: {
+          //       number: patient.admission.bed.number,
+          //       wing: patient.admission.bed.wing,
+          //     }
+          //   },
+          //   medicalTeam: patient.medicalTeam,
+          // };
+
+          const recommendations = await riskAnalyzer.generateRecommendations(patient);
+          console.log("RECOMENDAÇÃO:")
+          console.log(patient)
+
           const vitalsAnalysis = VitalSignsAnalyzer.analyzeVitals(patient.treatment.vitals);
+
+          const lastVitals = patient.treatment.vitals[patient.treatment.vitals.length - 1];
   
           const reportData: CardReport = {
             title: 'Relatório de Análise do Paciente',
@@ -90,7 +147,7 @@ export const funcionalitiesCards: Card[] = [
                 title: 'Informações do Paciente',
                 content: `
                   Nome: ${patient.personalInfo.name}
-                  ID: ${patient.id}
+                  ID: ${patient.personalInfo.id}
                   Idade: ${patient.personalInfo.age}
                   Status: ${patient.admission.status}
                   Previsão de Alta: ${patient.admission.predictedDischarge}
@@ -98,11 +155,11 @@ export const funcionalitiesCards: Card[] = [
               },
               {
                 title: 'Sinais Vitais Atuais',
-                content: `
-                  Temperatura: ${context.vitals.temperature}°C
-                  Pressão Arterial: ${context.vitals.bloodPressure}
-                  Frequência Cardíaca: ${context.vitals.heartRate} bpm
-                  Saturação O2: ${context.vitals.oxygenSaturation}%
+                content:`
+                  Temperatura: ${lastVitals.temperature}°C
+                  Pressão Arterial: ${lastVitals.bloodPressure}
+                  Frequência Cardíaca: ${lastVitals.heartRate} bpm
+                  Saturação O2: ${lastVitals.oxygenSaturation}%
                 `
               },
               {
@@ -131,7 +188,7 @@ export const funcionalitiesCards: Card[] = [
               }
             ]
           };
-  
+          
           return {
             success: true,
             data: {
@@ -140,10 +197,11 @@ export const funcionalitiesCards: Card[] = [
                 recommendations,
                 vitalsAnalysis
               },
-              lastVitals: context.vitals
+              lastVitals: patient.treatment.vitals
             },
             report: reportData
           };
+
   
         } catch (error: any) {
           return {
@@ -167,16 +225,52 @@ export const funcionalitiesCards: Card[] = [
           }
   
           const riskAnalyzer = new PatientRiskAnalysis();
-          const context: PatientContext = {
-            age: patient.personalInfo.age,
-            diagnoses: patient.treatment.diagnosis,
-            riskLevel: patient.aiAnalysis.complications.risk,
-            vitals: patient.treatment.vitals[patient.treatment.vitals.length - 1],
-            medications: patient.treatment.medications,
-            procedures: patient.treatment.procedures
+          const context: PatientData = {
+            personalInfo: {
+              id: patient.personalInfo.id,
+              name: patient.personalInfo.name,
+              age: patient.personalInfo.age,
+              gender: patient.personalInfo.gender,
+              weight: patient.personalInfo.weight,
+              height: patient.personalInfo.height,
+              birthDate: patient.personalInfo.birthDate,
+              bloodType: patient.personalInfo.bloodType,
+              contactInfo: {
+                phone: patient.personalInfo.contactInfo.phone
+              }
+            },
+            treatment: {
+              diagnosis: patient.treatment.diagnosis,
+              vitals: patient.treatment.vitals,
+              medications: patient.treatment.medications,
+              procedures: patient.treatment.procedures,
+              allergies: patient.treatment.allergies,
+              notes: patient.treatment.notes,
+            },
+            aiAnalysis: {
+              complications: {
+                risk: patient.aiAnalysis.complications.risk,
+                factors: patient.aiAnalysis.complications.factors,
+              },
+              predictions: patient.aiAnalysis.predictions,
+              alerts: patient.aiAnalysis.alerts,
+              riskScore: patient.aiAnalysis.riskScore,
+              predictedLOS: patient.aiAnalysis.predictedLOS,
+            },
+            admission: {
+              date: patient.admission.date,
+              status: patient.admission.status,
+              predictedDischarge: patient.admission.predictedDischarge,
+              reason: patient.admission.reason,
+              bed: {
+                number: patient.admission.bed.number,
+                wing: patient.admission.bed.wing,
+              }
+            },
+            medicalTeam: patient.medicalTeam,
           };
   
-          const recommendations = await riskAnalyzer.generateNewRecommendations(context);
+          const recommendations = await riskAnalyzer.generateRecommendations(context);
   
           const reportData: CardReport = {
             title: 'Prontuário Digital Completo',
@@ -185,7 +279,7 @@ export const funcionalitiesCards: Card[] = [
                 title: 'Dados do Paciente',
                 content: `
                   Nome: ${patient.personalInfo.name}
-                  ID: ${patient.id}
+                  ID: ${patient.personalInfo.id}
                   Tipo Sanguíneo: ${patient.personalInfo.bloodType}
                   Contato: ${patient.personalInfo.contactInfo.phone}
                 `
@@ -251,20 +345,56 @@ export const funcionalitiesCards: Card[] = [
   
           const riskAnalyzer = new PatientRiskAnalysis();
   
-          const context: PatientContext = {
-            age: patient.personalInfo.age,
-            diagnoses: patient.treatment.diagnosis,
-            riskLevel: patient.aiAnalysis.complications.risk,
-            vitals: patient.treatment.vitals[patient.treatment.vitals.length - 1],
-            medications: patient.treatment.medications,
-            procedures: patient.treatment.procedures
+          const context: PatientData = {
+            personalInfo: {
+              id: patient.personalInfo.id,
+              name: patient.personalInfo.name,
+              age: patient.personalInfo.age,
+              gender: patient.personalInfo.gender,
+              weight: patient.personalInfo.weight,
+              height: patient.personalInfo.height,
+              birthDate: patient.personalInfo.birthDate,
+              bloodType: patient.personalInfo.bloodType,
+              contactInfo: {
+                phone: patient.personalInfo.contactInfo.phone
+              }
+            },
+            treatment: {
+              diagnosis: patient.treatment.diagnosis,
+              vitals: patient.treatment.vitals,
+              medications: patient.treatment.medications,
+              procedures: patient.treatment.procedures,
+              allergies: patient.treatment.allergies,
+              notes: patient.treatment.notes,
+            },
+            aiAnalysis: {
+              complications: {
+                risk: patient.aiAnalysis.complications.risk,
+                factors: patient.aiAnalysis.complications.factors,
+              },
+              predictions: patient.aiAnalysis.predictions,
+              alerts: patient.aiAnalysis.alerts,
+              riskScore: patient.aiAnalysis.riskScore,
+              predictedLOS: patient.aiAnalysis.predictedLOS,
+            },
+            admission: {
+              date: patient.admission.date,
+              status: patient.admission.status,
+              predictedDischarge: patient.admission.predictedDischarge,
+              reason: patient.admission.reason,
+              bed: {
+                number: patient.admission.bed.number,
+                wing: patient.admission.bed.wing,
+              }
+            },
+            medicalTeam: patient.medicalTeam,
           };
   
           const medicationAnalysis = MedicationAnalyzer.analyzeMedications(
             patient.treatment.medications
           );
   
-          const recommendations = await riskAnalyzer.generateNewRecommendations(context);
+          const recommendations = await riskAnalyzer.generateRecommendations(context)
   
           const reportData: CardReport = {
             title: 'Gestão de Medicamentos',
@@ -335,17 +465,53 @@ export const funcionalitiesCards: Card[] = [
   
           const riskAnalyzer = new PatientRiskAnalysis();
   
-          const context: PatientContext = {
-            age: patient.personalInfo.age,
-            diagnoses: patient.treatment.diagnosis,
-            riskLevel: patient.aiAnalysis.complications.risk,
-            vitals: patient.treatment.vitals[patient.treatment.vitals.length - 1],
-            medications: patient.treatment.medications,
-            procedures: patient.treatment.procedures
+          const context: PatientData = {
+            personalInfo: {
+              id: patient.personalInfo.id,
+              name: patient.personalInfo.name,
+              age: patient.personalInfo.age,
+              gender: patient.personalInfo.gender,
+              weight: patient.personalInfo.weight,
+              height: patient.personalInfo.height,
+              birthDate: patient.personalInfo.birthDate,
+              bloodType: patient.personalInfo.bloodType,
+              contactInfo: {
+                phone: patient.personalInfo.contactInfo.phone
+              }
+            },
+            treatment: {
+              diagnosis: patient.treatment.diagnosis,
+              vitals: patient.treatment.vitals,
+              medications: patient.treatment.medications,
+              procedures: patient.treatment.procedures,
+              allergies: patient.treatment.allergies,
+              notes: patient.treatment.notes,
+            },
+            aiAnalysis: {
+              complications: {
+                risk: patient.aiAnalysis.complications.risk,
+                factors: patient.aiAnalysis.complications.factors,
+              },
+              predictions: patient.aiAnalysis.predictions,
+              alerts: patient.aiAnalysis.alerts,
+              riskScore: patient.aiAnalysis.riskScore,
+              predictedLOS: patient.aiAnalysis.predictedLOS,
+            },
+            admission: {
+              date: patient.admission.date,
+              status: patient.admission.status,
+              predictedDischarge: patient.admission.predictedDischarge,
+              reason: patient.admission.reason,
+              bed: {
+                number: patient.admission.bed.number,
+                wing: patient.admission.bed.wing,
+              }
+            },
+            medicalTeam: patient.medicalTeam,
           };
   
           const vitalsAnalysis = VitalSignsAnalyzer.analyzeVitals(patient.treatment.vitals);
-          const recommendations = await riskAnalyzer.generateNewRecommendations(context);
+          const recommendations = await riskAnalyzer.generateRecommendations(context);
 
           const medicationAnalysis = MedicationAnalyzer.analyzeMedications(
             patient.treatment.medications
@@ -443,18 +609,54 @@ export const funcionalitiesCards: Card[] = [
   
           const riskAnalyzer = new PatientRiskAnalysis();
   
-          const context: PatientContext = {
-            age: patient.personalInfo.age,
-            diagnoses: patient.treatment.diagnosis,
-            riskLevel: patient.aiAnalysis.complications.risk,
-            vitals: patient.treatment.vitals[patient.treatment.vitals.length - 1],
-            medications: patient.treatment.medications,
-            procedures: patient.treatment.procedures
+          const context: PatientData = {
+            personalInfo: {
+              id: patient.personalInfo.id,
+              name: patient.personalInfo.name,
+              age: patient.personalInfo.age,
+              gender: patient.personalInfo.gender,
+              weight: patient.personalInfo.weight,
+              height: patient.personalInfo.height,
+              birthDate: patient.personalInfo.birthDate,
+              bloodType: patient.personalInfo.bloodType,
+              contactInfo: {
+                phone: patient.personalInfo.contactInfo.phone
+              }
+            },
+            treatment: {
+              diagnosis: patient.treatment.diagnosis,
+              vitals: patient.treatment.vitals,
+              medications: patient.treatment.medications,
+              procedures: patient.treatment.procedures,
+              allergies: patient.treatment.allergies,
+              notes: patient.treatment.notes,
+            },
+            aiAnalysis: {
+              complications: {
+                risk: patient.aiAnalysis.complications.risk,
+                factors: patient.aiAnalysis.complications.factors,
+              },
+              predictions: patient.aiAnalysis.predictions,
+              alerts: patient.aiAnalysis.alerts,
+              riskScore: patient.aiAnalysis.riskScore,
+              predictedLOS: patient.aiAnalysis.predictedLOS,
+            },
+            admission: {
+              date: patient.admission.date,
+              status: patient.admission.status,
+              predictedDischarge: patient.admission.predictedDischarge,
+              reason: patient.admission.reason,
+              bed: {
+                number: patient.admission.bed.number,
+                wing: patient.admission.bed.wing,
+              }
+            },
+            medicalTeam: patient.medicalTeam,
           };
   
           // Análises paralelas
           const [recommendations, medicationAnalysis, vitalsAnalysis] = await Promise.all([
-            riskAnalyzer.generateNewRecommendations(context),
+            riskAnalyzer.generateRecommendations(context),
             MedicationAnalyzer.analyzeMedications(patient.treatment.medications),
             VitalSignsAnalyzer.analyzeVitals(patient.treatment.vitals)
           ]);
@@ -464,12 +666,13 @@ export const funcionalitiesCards: Card[] = [
   
           // Cache de recomendações
           if (validationResult.isValid) {
+            const patientContext = preparePatientContext(context);
             const cache = new RecommendationCache();
-            cache.set(cache.generateKey(context), {
-              recommendations,
-              context,
-              timestamp: new Date(),
-              score: 1.0
+            cache.set(cache.generateKey(patientContext), {
+                recommendations,
+                context: patientContext,
+                timestamp: new Date(),
+                score: 1.0
             });
           }
   
@@ -576,18 +779,54 @@ export const funcionalitiesCards: Card[] = [
           );
 
           // Criar contexto para recomendações
-          const context: PatientContext = {
-            age: patient.personalInfo.age,
-            diagnoses: patient.treatment.diagnosis,
-            riskLevel: patient.aiAnalysis.complications.risk,
-            vitals: patient.treatment.vitals[patient.treatment.vitals.length - 1],
-            medications: patient.treatment.medications,
-            procedures: patient.treatment.procedures
+          const context: PatientData = {
+            personalInfo: {
+              id: patient.personalInfo.id,
+              name: patient.personalInfo.name,
+              age: patient.personalInfo.age,
+              gender: patient.personalInfo.gender,
+              weight: patient.personalInfo.weight,
+              height: patient.personalInfo.height,
+              birthDate: patient.personalInfo.birthDate,
+              bloodType: patient.personalInfo.bloodType,
+              contactInfo: {
+                phone: patient.personalInfo.contactInfo.phone
+              }
+            },
+            treatment: {
+              diagnosis: patient.treatment.diagnosis,
+              vitals: patient.treatment.vitals,
+              medications: patient.treatment.medications,
+              procedures: patient.treatment.procedures,
+              allergies: patient.treatment.allergies,
+              notes: patient.treatment.notes,
+            },
+            aiAnalysis: {
+              complications: {
+                risk: patient.aiAnalysis.complications.risk,
+                factors: patient.aiAnalysis.complications.factors,
+              },
+              predictions: patient.aiAnalysis.predictions,
+              alerts: patient.aiAnalysis.alerts,
+              riskScore: patient.aiAnalysis.riskScore,
+              predictedLOS: patient.aiAnalysis.predictedLOS,
+            },
+            admission: {
+              date: patient.admission.date,
+              status: patient.admission.status,
+              predictedDischarge: patient.admission.predictedDischarge,
+              reason: patient.admission.reason,
+              bed: {
+                number: patient.admission.bed.number,
+                wing: patient.admission.bed.wing,
+              }
+            },
+            medicalTeam: patient.medicalTeam,
           };
     
           // Gerar recomendações
           const riskAnalyzer = new PatientRiskAnalysis();
-          const recommendations = await riskAnalyzer.generateNewRecommendations(context);
+          const recommendations = await riskAnalyzer.generateRecommendations(context);
     
           // Calcular scores de risco
           const riskScores = {

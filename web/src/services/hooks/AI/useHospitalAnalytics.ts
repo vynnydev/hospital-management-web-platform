@@ -30,8 +30,6 @@ export function useHospitalAnalytics() {
         }
     }, []);
 
-    console.log(analysis)
-
     return {
         loading,
         setLoading,
