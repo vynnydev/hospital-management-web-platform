@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+
+import { VitalSigns } from "./types/aida-assistant";
+
 // Classes de análise específica
 class VitalSignsAnalyzer {
     private static readonly CRITICAL_THRESHOLDS = {

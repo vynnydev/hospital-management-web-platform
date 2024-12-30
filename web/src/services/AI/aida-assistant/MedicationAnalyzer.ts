@@ -1,3 +1,5 @@
+import { Medication, PatientContext } from "./types/aida-assistant";
+
 interface MedicationInteraction {
     medications: string[];
     severity: 'low' | 'medium' | 'high';

@@ -1,3 +1,5 @@
+import { Medication, PatientData, VitalSigns } from "./types/aida-assistant";
+
 class RiskScoreCalculator {
     private static readonly RISK_FACTORS = {
         age: {

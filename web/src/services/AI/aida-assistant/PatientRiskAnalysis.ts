@@ -8,12 +8,14 @@ import {
   PreparedContext,
   VitalSigns
 } from './types/aida-assistant';
+import { ImageGenerationService } from './ImageGenerationService';
 
 class PatientRiskAnalysis {
     private readonly similarityThreshold = 0.85;
     private cache: Map<string, CachedRecommendation>;
     private genAI: GoogleGenerativeAI;
     private model: any;
+    private imageService: ImageGenerationService;
 
     constructor() {
         if (!process.env.HUGGING_FACE_API_KEY) {
@@ -22,6 +24,7 @@ class PatientRiskAnalysis {
         this.genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY!);
         this.model = this.genAI.getGenerativeModel({ model: "gemini-pro" });
         this.cache = new Map();
+        this.imageService = new ImageGenerationService();
     }
 
     private preparePatientContext(patientData: PatientData): PatientContext {
@@ -60,8 +63,41 @@ class PatientRiskAnalysis {
               complications: proc.complications,
               performer: proc.performer
           }))
-      };
-  }
+        };
+    } 
+
+    async generateMedicationInstructions(medication: any) {
+        const imageRequests = [
+            {
+                medicationName: medication.name,
+                dosage: medication.dosage,
+                instructions: medication.instructions || '',
+                type: 'usage' as const
+            },
+            {
+                medicationName: medication.name,
+                dosage: medication.dosage,
+                instructions: medication.instructions || '',
+                type: 'application' as const
+            },
+            {
+                medicationName: medication.name,
+                dosage: medication.dosage,
+                instructions: medication.precautions || '',
+                type: 'precaution' as const
+            }
+        ];
+
+        const images = await Promise.all(
+            imageRequests.map(request => this.imageService.generateMedicationImages(request))
+        );
+
+        return {
+            usage: images[0],
+            application: images[1],
+            precaution: images[2]
+        };
+   }
 
   async generateRecommendations(patientData: PatientData): Promise<string[]> {
     console.log("INICIO DA FUNÇÃO DE INTELIGENCIA ARTIFICIAL:")
@@ -124,58 +160,126 @@ class PatientRiskAnalysis {
     }
   
     private createAIPrompt(context: PatientContext): string {
-      return `Você é um médico especialista experiente. Analise cuidadosamente os dados do paciente e forneça exatamente 5 recomendações médicas específicas e relevantes em português.
-  
-      DADOS DO PACIENTE:
-      - Idade: ${context.age} anos
-      - Diagnósticos: ${context.diagnoses.join(', ')}
-      - Nível de Risco: ${context.riskLevel}
-      ${context.vitals ? `- Sinais Vitais:
-        * Temperatura: ${context.vitals.temperature}°C
-        * Pressão: ${context.vitals.bloodPressure}
-        * Pulso: ${context.vitals.heartRate} bpm
-        * Saturação: ${context.vitals.oxygenSaturation}%` : '- Sinais Vitais: Não disponíveis'}
-      - Medicações: ${context.medications.map(m => `${m.name} ${m.dosage}`).join(', ')}
-      
-      INSTRUÇÕES IMPORTANTES:
-      - Forneça EXATAMENTE 5 recomendações médicas.
-      - Cada recomendação deve começar com um número seguido de ponto (1., 2., etc.).
-      - Escreva em português claro e profissional.
-      - Cada recomendação deve ser específica para o caso.
-      - Considere todos os diagnósticos e sinais vitais apresentados.
-      - Inclua orientações de monitoramento quando necessário.
-      
-      Suas 5 recomendações:`;
+        return `Você é um médico especialista. Analise os dados do paciente e forneça recomendações médicas em português, obrigatoriamente limitadas a 500 caracteres cada.
+    
+        DADOS DO PACIENTE:
+        - Idade: ${context.age} anos
+        - Diagnósticos: ${context.diagnoses.join(', ')}
+        - Nível de Risco: ${context.riskLevel}
+        ${context.vitals ? `- Sinais Vitais:
+          * Temperatura: ${context.vitals.temperature}°C
+          * Pressão: ${context.vitals.bloodPressure}
+          * Pulso: ${context.vitals.heartRate} bpm
+          * Saturação: ${context.vitals.oxygenSaturation}%` : '- Sinais Vitais: Não disponíveis'}
+        - Medicações: ${context.medications.map(m => `${m.name} ${m.dosage}`).join(', ')}
+    
+        INSTRUÇÕES IMPORTANTES:
+        1. FORMATO OBRIGATÓRIO:
+           - Forneça EXATAMENTE 5 recomendações principais
+           - LIMITE MÁXIMO: 500 caracteres por recomendação
+           - Comece cada recomendação com número e ponto (1., 2., etc.)
+           - Use português claro e profissional
+           - Termine cada recomendação com ponto final
+    
+        2. CONTEÚDO DAS RECOMENDAÇÕES:
+           Recomendação 1: MEDICAMENTOS
+           - Instruções detalhadas de uso
+           - Técnicas de aplicação
+           - Precauções principais
+           - Efeitos colaterais importantes
+    
+           Recomendação 2: MONITORAMENTO
+           - Sinais vitais a observar
+           - Frequência de verificação
+           - Valores de referência
+           - Quando buscar ajuda
+    
+           Recomendação 3: CUIDADOS PALIATIVOS
+           - Técnicas não medicamentosas
+           - Medidas de conforto
+           - Adaptações necessárias
+           - Suporte emocional
+    
+           Recomendação 4: ORIENTAÇÕES PARA CUIDADORES
+           - Instruções práticas
+           - Precauções específicas
+           - Rotinas recomendadas
+           - Sinais de alerta
+    
+           Recomendação 5: ACOMPANHAMENTO
+           - Retornos necessários
+           - Exames de controle
+           - Ajustes de tratamento
+           - Critérios de melhora/piora
+    
+        3. ESTRUTURA DE CADA RECOMENDAÇÃO:
+           - Comece com a ação principal
+           - Inclua o motivo brevemente
+           - Adicione instruções práticas
+           - Termine com alertas importantes
+    
+        EXEMPLO DE FORMATO (respeitando 500 caracteres):
+        1. [Medicamento/Dose] Instruções de uso: [como tomar]. Técnica: [aplicação]. Precauções: [principais cuidados]. Monitorar: [efeitos].
+        2. [Próxima recomendação seguindo mesmo formato...]
+    
+        IMPORTANTE:
+        - Mantenha CADA recomendação dentro do limite de 500 caracteres
+        - Inclua APENAS informações essenciais
+        - Priorize a segurança do paciente
+        - Use linguagem direta e clara
+        - Evite repetições
+    
+        Forneça APENAS as 5 recomendações numeradas, seguindo a estrutura e limitações definidas.`;
     }
   
     private validateRecommendations(recommendations: string[]): boolean {
-      if (!Array.isArray(recommendations) || recommendations.length !== 5) {
-          console.log('Validação falhou: número incorreto de recomendações');
-          return false;
-      }
-  
-      return recommendations.every((rec, index) => {
-          const expectedPrefix = `${index + 1}.`;
-          const hasCorrectPrefix = rec.startsWith(expectedPrefix);
-          
-          const isValid = 
-              hasCorrectPrefix &&
-              rec.length >= 15 && // Mínimo de 15 caracteres após o número
-              rec.length <= 200 && // Máximo de 200 caracteres
-              /^[0-9]\.\s[A-ZÀ-Ú]/.test(rec) && // Começa com número, ponto, espaço e letra maiúscula
-              /[.!?]$/.test(rec) && // Termina com pontuação adequada
-              /[a-záàâãéèêíïóôõöúçñ]/i.test(rec) && // Contém caracteres em português
-              !rec.includes('undefined') &&
-              !rec.includes('null') &&
-              !rec.includes('error');
-  
-          if (!isValid) {
-              console.log('Recomendação inválida:', rec);
-              console.log('Motivo:', this.getValidationFailureReason(rec));
-          }
-  
-          return isValid;
-      });
+        if (!Array.isArray(recommendations) || recommendations.length !== 5) {
+            console.log('Validação falhou: número incorreto de recomendações');
+            return false;
+        }
+    
+        return recommendations.every((rec, index) => {
+            const expectedPrefix = `${index + 1}.`;
+            const hasCorrectPrefix = rec.startsWith(expectedPrefix);
+            
+            // Logs individuais para cada validação
+            console.log('Validações para recomendação', index + 1);
+            console.log('Tem prefixo correto:', hasCorrectPrefix);
+            console.log('Tamanho:', rec.length);
+            console.log('Formato início:', /^[0-9]\.\s[A-ZÀ-Ú]/.test(rec));
+            console.log('Formato fim:', /[.!?]$/.test(rec));
+            console.log('Contém português:', /[a-záàâãéèêíïóôõöúçñ]/i.test(rec));
+            
+            const isValid = 
+                hasCorrectPrefix &&
+                rec.length >= 15 && // Mínimo de 15 caracteres
+                rec.length <= 500 && // Máximo de 500 caracteres
+                /^[0-9]\.\s[A-ZÀ-Ú\w]/.test(rec) && // Formato início mais flexível
+                /[.!?]$/.test(rec.trim()) && // Termina com pontuação, removendo espaços
+                /[a-záàâãéèêíïóôõöúçñ]/i.test(rec) && // Contém caracteres em português
+                !rec.includes('undefined') &&
+                !rec.includes('null') &&
+                !rec.includes('error');
+    
+            if (!isValid) {
+                console.log('Recomendação inválida:', rec);
+                this.logValidationDetails(rec);
+            }
+    
+            return isValid;
+        });
+    }
+    
+    private logValidationDetails(rec: string) {
+        console.log('Detalhes da validação:');
+        console.log('- Comprimento:', rec.length);
+        console.log('- Primeiro caractere:', rec.charAt(0));
+        console.log('- Último caractere:', rec.charAt(rec.length - 1));
+        console.log('- Tem número inicial:', /^[0-9]/.test(rec));
+        console.log('- Tem ponto após número:', /^[0-9]\./.test(rec));
+        console.log('- Tem espaço após ponto:', /^[0-9]\.\s/.test(rec));
+        console.log('- Tem letra maiúscula após espaço:', /^[0-9]\.\s[A-ZÀ-Ú]/.test(rec));
+        console.log('- Termina com pontuação:', /[.!?]$/.test(rec.trim()));
     }
   
     private parseAIResponse(response: string): string[] {

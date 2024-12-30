@@ -7,6 +7,7 @@ import { MedicationAnalyzer } from "@/services/AI/aida-assistant/MedicationAnaly
 import { RecommendationCache } from "@/services/AI/aida-assistant/RecommendationCache";
 import { RecommendationValidator } from "@/services/AI/aida-assistant/RecommendationValidator";
 import { Patient, PatientContext, PatientData, Procedure } from "@/services/AI/aida-assistant/types/aida-assistant";
+import { ImageGenerationService } from "@/services/AI/aida-assistant/ImageGenerationService";
 
 class AssistantFuncionalities {
   private static instance: AssistantFuncionalities;
@@ -83,62 +84,25 @@ class AssistantFuncionalities {
           }
           
           const patient = await response.json();
-          // OS DADOS NÃO PROSSEGUEM DAQUI PRA FRENTE. CORRIGIR!!!!!
-  
           const riskAnalyzer = new PatientRiskAnalysis();
-          
-          // const context: PatientData = {
-          //   personalInfo: {
-          //     id: patient.personalInfo.id,
-          //     name: patient.personalInfo.name,
-          //     age: patient.personalInfo.age,
-          //     gender: patient.personalInfo.gender,
-          //     weight: patient.personalInfo.weight,
-          //     height: patient.personalInfo.height,
-          //     birthDate: patient.personalInfo.birthDate,
-          //     bloodType: patient.personalInfo.bloodType,
-          //     contactInfo: {
-          //       phone: patient.personalInfo.contactInfo.phone
-          //     }
-          //   },
-          //   treatment: {
-          //     diagnosis: patient.treatment.diagnosis,
-          //     vitals: patient.treatment.vitals,
-          //     medications: patient.treatment.medications,
-          //     procedures: patient.treatment.procedures,
-          //     allergies: patient.treatment.allergies,
-          //     notes: patient.treatment.notes,
-          //   },
-          //   aiAnalysis: {
-          //     complications: {
-          //       risk: patient.aiAnalysis.complications.risk,
-          //       factors: patient.aiAnalysis.complications.factors,
-          //     },
-          //     predictions: patient.aiAnalysis.predictions,
-          //     alerts: patient.aiAnalysis.alerts,
-          //     riskScore: patient.aiAnalysis.riskScore,
-          //     predictedLOS: patient.aiAnalysis.predictedLOS,
-          //   },
-          //   admission: {
-          //     date: patient.admission.date,
-          //     status: patient.admission.status,
-          //     predictedDischarge: patient.admission.predictedDischarge,
-          //     reason: patient.admission.reason,
-          //     bed: {
-          //       number: patient.admission.bed.number,
-          //       wing: patient.admission.bed.wing,
-          //     }
-          //   },
-          //   medicalTeam: patient.medicalTeam,
-          // };
-
+          const imageService = new ImageGenerationService();
+    
+          // Gerar recomendações
           const recommendations = await riskAnalyzer.generateRecommendations(patient);
-          console.log("RECOMENDAÇÃO:")
-          console.log(patient)
-
+          
+          // Gerar imagens para cada medicamento
+          const medicationImages = await Promise.all(
+            patient.treatment.medications.map(async (medication: any) => {
+              const images = await imageService.generateMedicationImages(medication);
+              return {
+                medicationId: medication.id,
+                ...images
+              };
+            })
+          );
+    
           const vitalsAnalysis = VitalSignsAnalyzer.analyzeVitals(patient.treatment.vitals);
-
-          const lastVitals = patient.treatment.vitals[patient.treatment.vitals.length - 1];
+          const lastVitals = patient.treatment.vitals[patient.treatment.vitals.length - 1];    
   
           const reportData: CardReport = {
             title: 'Relatório de Análise do Paciente',
@@ -177,6 +141,18 @@ class AssistantFuncionalities {
               {
                 title: 'Recomendações',
                 content: recommendations.join('\n')
+              },
+              {
+                title: 'Medicamentos e Instruções Visuais',
+                content: patient.treatment.medications.map((med: any) => {
+                  const medImages = medicationImages.find(img => img.medicationId === med.id);
+                  return `
+                    Medicamento: ${med.name} ${med.dosage}
+                    Instruções de Uso: [Imagem]
+                    Técnica de Aplicação: [Imagem]
+                    Precauções: [Imagem]
+                  `;
+                }).join('\n\n')
               }
             ],
             downloadable: true,
@@ -195,7 +171,8 @@ class AssistantFuncionalities {
               patient,
               analysis: {
                 recommendations,
-                vitalsAnalysis
+                vitalsAnalysis,
+                medicationImages
               },
               lastVitals: patient.treatment.vitals
             },

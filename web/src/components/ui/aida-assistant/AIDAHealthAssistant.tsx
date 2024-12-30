@@ -10,7 +10,7 @@ import { Sparkles, Loader } from 'lucide-react';
 import AnimatedAIText from './AnimatedAIText';
 import aiAssistant from '@/assets/ai-assistant.png'
 
-import { ReportModal } from './ReportModal';
+import { ReportModal } from './report-modal-ai/ReportModal';
 import { cardInitialMessages, CardTitle, formatAIResponse, initialMessage, ReportType } from './utils/aidaAssistantFunctions';
 import { funcionalitiesCards } from './utils/AssistantFuncionalities';
 
