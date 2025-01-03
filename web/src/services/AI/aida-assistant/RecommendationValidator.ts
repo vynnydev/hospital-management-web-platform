@@ -1,3 +1,5 @@
+import { PatientContext, ValidationResult } from "./types/aida-assistant";
+
 /* eslint-disable @typescript-eslint/no-unused-vars */
 class RecommendationValidator {
   private static contraindications: Map<string, string[]> = new Map([

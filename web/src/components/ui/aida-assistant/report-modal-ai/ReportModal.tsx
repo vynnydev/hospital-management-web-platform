@@ -1,10 +1,10 @@
-import { Copy, Printer, X, Share2, Activity, Thermometer, Heart, BarChart3, AlertTriangle } from 'lucide-react';
+import { Copy, Printer, X, Share2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { ActionButton, ReportModalProps } from './types';
 import { renderAIRecommendations } from './components/RenderAIRecommendations';
 import { renderVitalSigns } from './components/VitalSignCard';
-import { renderMedications } from './components/MedicationCard';
+import { renderCareInstructions } from './components/CareInstructionsCard';
 import { calculateBloodPressureStatus, calculateHeartRateStatus, calculateSaturationStatus, calculateTemperatureStatus, getStatusClass } from './services/functions/calculateVitalSigns';
 import { usePrint } from './services/hooks/usePrint';
 import { generatePrintTemplate } from './components/PrintTemplate';
@@ -123,7 +123,7 @@ export const ReportModal: React.FC<ReportModalProps> = ({ isOpen, onClose, data 
               >
                 {renderAIRecommendations({ data })}
                 {renderVitalSigns({ data })}
-                {renderMedications({ data })}
+                {renderCareInstructions({ data })}
               </motion.div>
             </div>
           </motion.div>

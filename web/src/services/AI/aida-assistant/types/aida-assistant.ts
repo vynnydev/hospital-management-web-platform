@@ -209,6 +209,10 @@ export interface VitalSigns {
     heartRate: number;         // Batimentos por minuto
     oxygenSaturation: number;  // Porcentagem (0-100)
     timestamp: string;         // Data/hora da medição
+    consciousness: 'Consciente e Orientado' | 'Consciente e Confuso' | 'Sonolento' | 'Inconsciente';
+    painScale: number; // Escala de 0-10
+    respiratoryRate: number;
+    mobility: 'Independente' | 'Auxílio Parcial' | 'Dependente' | 'Acamado';
 }
   
 // Interface para medicações

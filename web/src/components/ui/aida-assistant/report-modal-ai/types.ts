@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface ReportModalData {
     success: boolean;
     raw: {
@@ -12,17 +13,17 @@ export interface ReportModalData {
               status: string;
             };
           };
-          lastVitals: Array<{
-            timestamp: string;
-            temperature: number;
-            bloodPressure: string;
-            heartRate: number;
-            oxygenSaturation: number;
-          }>;
           medicationImages: {
             [medicationId: string]: MedicationImages;
           };
         };
+        lastVitals: Array<{
+          timestamp: string;
+          temperature: number;
+          bloodPressure: string;
+          heartRate: number;
+          oxygenSaturation: number;
+        }>;
         patient: {
           admission: {
             date: string;

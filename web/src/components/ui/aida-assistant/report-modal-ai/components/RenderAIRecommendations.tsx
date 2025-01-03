@@ -1,23 +1,35 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { motion } from "framer-motion";
 import { VitalsAnalysisCard } from "./VitalsAnalysisCard";
-import { ReportModalComponentsProps, ReportModalProps } from "../types";
+import { ReportModalComponentsProps } from "../types";
+
+interface VitalsAnalysisSummary {
+  temperature: string
+  pressure: string
+  heartRate: string
+  saturation: string
+  criticalAlerts: string
+  riskLevel: string
+}
 
 export const renderAIRecommendations: React.FC<ReportModalComponentsProps> = ({ data }) => {
     const recommendations = data.raw.data.analysis.recommendations;
-   
-    const vitalsData = {
-        temperature: String(
-          data?.raw?.data?.analysis?.lastVitals?.[0]?.temperature || "00.0"
-        ),
-        pressure: 
-          data?.raw?.data?.analysis?.lastVitals?.[0]?.bloodPressure || "000/00",
-        heartRate: String(
-          data?.raw?.data?.analysis?.lastVitals?.[0]?.heartRate || "00"
-        ),
-        saturation: String(
-          data?.raw?.data?.analysis?.lastVitals?.[0]?.oxygenSaturation || "00"
-        )
+    const summary = data?.raw?.data?.analysis.vitalsAnalysis?.summary || "";
+
+    const parseSummary = (summary: string): VitalsAnalysisSummary => {
+        const metrics = {
+            temperature: summary.match(/Temperatura:\s([\d.]+)°C/)?.[1] || "00.0",
+            pressure: summary.match(/Pressão Arterial:\s([\d/]+)/)?.[1] || "000/00",
+            heartRate: summary.match(/Frequência Cardíaca:\s(\d+)\sbpm/)?.[1] || "00",
+            saturation: summary.match(/Saturação:\s(\d+)%/)?.[1] || "00",
+            criticalAlerts: summary.includes("Sem alertas críticos") ? "None" : "Present",
+            riskLevel: summary.match(/Nível de Risco:\s(\w+)/)?.[1] || "Unknown"
+        };
+        return metrics;
     };
+    
+    const vitalsAnalysis = parseSummary(summary);
+    console.log(vitalsAnalysis);
 
     return (
       <motion.div
@@ -69,14 +81,14 @@ export const renderAIRecommendations: React.FC<ReportModalComponentsProps> = ({ 
             <VitalsAnalysisCard 
               vitalsAnalysis={{
                 lastReadings: {
-                  temperature: vitalsData.temperature,
-                  pressure: vitalsData.pressure,
-                  heartRate: vitalsData.heartRate,
-                  saturation: vitalsData.saturation
+                  temperature: vitalsAnalysis.temperature,
+                  pressure: vitalsAnalysis.pressure,
+                  heartRate: vitalsAnalysis.heartRate,
+                  saturation: vitalsAnalysis.saturation
                 },
                 alerts: [],
                 risk: "low",
-                summary: "Todos os sinais vitais estão dentro dos parâmetros normais."
+                summary: summary || "Todos os sinais vitais estão dentro dos parâmetros normais."
               }}
             />
           </motion.div>

@@ -97,25 +97,40 @@
                 ]
             },
             "treatment": {
-            "diagnosis": ["Pneumonia bacteriana", "Hipertensão"],
-            "medications": [
-                {
-                "name": "Azitromicina",
-                "dosage": "500mg",
-                "frequency": "1x/dia",
-                "duration": "7 dias",
-                "startDate": "2024-12-15"
-                }
-            ],
-            "vitals": [
-                {
-                "timestamp": "2024-12-17T14:00:00",
-                "temperature": 37.2,
-                "bloodPressure": "120/80",
-                "heartRate": 75,
-                "oxygenSaturation": 96
-                }
-            ],
+                "diagnosis": ["Pneumonia bacteriana", "Hipertensão"],
+                "medications": [
+                    {
+                        "name": "Azitromicina",
+                        "dosage": "500mg",
+                        "frequency": "1x/dia",
+                        "duration": "7 dias",
+                        "startDate": "2024-12-15"
+                    }
+                ],
+                "vitals": [
+                    {
+                        "timestamp": "2024-12-17T14:00:00",
+                        "temperature": 37.2,
+                        "bloodPressure": "120/80",
+                        "heartRate": 75,
+                        "oxygenSaturation": 96,
+                        "consciousness": "Consciente e Orientado",
+                        "painScale": 3,
+                        "respiratoryRate": 16,
+                        "mobility": "Independente"
+                    },
+                    {
+                        "timestamp": "2024-12-17T20:00:00",
+                        "temperature": 37.5,
+                        "bloodPressure": "125/85",
+                        "heartRate": 78,
+                        "oxygenSaturation": 95,
+                        "consciousness": "Consciente e Orientado",
+                        "painScale": 4,
+                        "respiratoryRate": 18,
+                        "mobility": "Independente"
+                    }
+                ],
             "procedures": [
                 {
                 "type": "Raio-X",
@@ -178,25 +193,40 @@
             ]
             },
             "treatment": {
-            "diagnosis": ["Pneumonia bacteriana", "Hipertensão"],
-            "medications": [
-                {
-                "name": "Azitromicina",
-                "dosage": "500mg",
-                "frequency": "1x/dia",
-                "duration": "7 dias",
-                "startDate": "2024-12-15"
-                }
-            ],
-            "vitals": [
-                {
-                "timestamp": "2024-12-17T14:00:00",
-                "temperature": 37.2,
-                "bloodPressure": "120/80",
-                "heartRate": 75,
-                "oxygenSaturation": 96
-                }
-            ],
+                "diagnosis": ["Pneumonia bacteriana", "Hipertensão"],
+                "medications": [
+                    {
+                        "name": "Azitromicina",
+                        "dosage": "500mg",
+                        "frequency": "1x/dia",
+                        "duration": "7 dias",
+                        "startDate": "2024-12-15"
+                    }
+                ],
+                "vitals": [
+                    {
+                        "timestamp": "2024-12-17T14:00:00",
+                        "temperature": 37.2,
+                        "bloodPressure": "120/80",
+                        "heartRate": 75,
+                        "oxygenSaturation": 96,
+                        "consciousness": "Consciente e Orientado",
+                        "painScale": 3,
+                        "respiratoryRate": 16,
+                        "mobility": "Independente"
+                    },
+                    {
+                        "timestamp": "2024-12-17T20:00:00",
+                        "temperature": 37.5,
+                        "bloodPressure": "125/85",
+                        "heartRate": 78,
+                        "oxygenSaturation": 95,
+                        "consciousness": "Consciente e Orientado",
+                        "painScale": 4,
+                        "respiratoryRate": 18,
+                        "mobility": "Independente"
+                    }
+                ],
             "procedures": [
                 {
                 "type": "Raio-X",

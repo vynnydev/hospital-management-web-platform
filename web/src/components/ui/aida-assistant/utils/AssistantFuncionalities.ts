@@ -74,7 +74,7 @@ class AssistantFuncionalities {
     {
       icon: '🏥',
       title: 'Gestão de Pacientes',
-      description: 'Monitore em tempo real sinais vitais, histórico médico e evolução dos pacientes. Alertas automáticos para alterações críticas.',
+      description: 'Monitore em tempo real sinais vitais, histórico médico e evolução dos pacientes com IA. Alertas automáticos para alterações críticas.',
       aiHandler: async (patientId: string) => {
         try {
           const response = await fetch(`http://localhost:3001/patients/${patientId}`);
@@ -148,9 +148,9 @@ class AssistantFuncionalities {
                   const medImages = medicationImages.find(img => img.medicationId === med.id);
                   return `
                     Medicamento: ${med.name} ${med.dosage}
-                    Instruções de Uso: [Imagem]
-                    Técnica de Aplicação: [Imagem]
-                    Precauções: [Imagem]
+                    Instruções de Uso: ${medImages}
+                    Técnica de Aplicação: ${medImages}
+                    Precauções: ${medImages}
                   `;
                 }).join('\n\n')
               }
@@ -639,7 +639,7 @@ class AssistantFuncionalities {
           ]);
   
           // Validação das recomendações
-          const validationResult = RecommendationValidator.validate(recommendations, context);
+          const validationResult = RecommendationValidator.validate(recommendations, context as any);
   
           // Cache de recomendações
           if (validationResult.isValid) {

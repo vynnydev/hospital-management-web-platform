@@ -1,6 +1,21 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { motion } from "framer-motion";
-import { ReportModalComponentsProps, ReportModalProps, VitalSignCardProps } from "../types";
+import { ReportModalComponentsProps, VitalSignCardProps } from "../types";
 import { Activity, Heart, Thermometer } from "lucide-react";
+// import { PatientContext, PatientData } from "@/services/AI/aida-assistant/types/aida-assistant";
+
+// function prepareVitalsContext(patientData: PatientData): any {
+//   console.log(patientData)
+//     return {
+//         diagnoses: patientData.treatment.diagnosis || 0,
+//         riskLevel: patientData.complications.risk,
+//         vitals: patientData.treatment.vitals.length > 0 
+//             ? patientData.treatment.vitals[patientData.treatment.vitals.length - 1]
+//             : null,
+//         medications: patientData.treatment.medications,
+//         procedures: patientData.treatment.procedures
+//     };
+// }
 
 // Componente de Sinais Vitais
 const VitalSignCard: React.FC<VitalSignCardProps> = ({ icon, label, value, normal, status }) => (
@@ -30,23 +45,24 @@ const VitalSignCard: React.FC<VitalSignCardProps> = ({ icon, label, value, norma
 );
 
 export const renderVitalSigns: React.FC<ReportModalComponentsProps> = ({ data }) => {
-    const vitalsData = {
-      temperature: String(
-        data?.raw?.data?.analysis?.lastVitals?.[0]?.temperature || "00.0"
-      ),
-      pressure: 
-        data?.raw?.data?.analysis?.lastVitals?.[0]?.bloodPressure || "000/00",
-      heartRate: String(
-        data?.raw?.data?.analysis?.lastVitals?.[0]?.heartRate || "00"
-      ),
-      saturation: String(
-        data?.raw?.data?.analysis?.lastVitals?.[0]?.oxygenSaturation || "00"
-      )
-    };
+  console.log(`Sinais Vitais: ${data?.raw?.data?.lastVitals}`)
+  const vitalsData = {
+    temperature: String(
+      data?.raw?.data?.lastVitals?.[0]?.temperature || "00.0"
+    ),
+    pressure: 
+      data?.raw?.data?.lastVitals?.[0]?.bloodPressure || "000/00",
+    heartRate: String(
+      data?.raw?.data?.lastVitals?.[0]?.heartRate || "00"
+    ),
+    saturation: String(
+      data?.raw?.data?.lastVitals?.[0]?.oxygenSaturation || "00"
+    )
+  };
 
-    console.log(vitalsData)
+  console.log(vitalsData)
   
-    const vitals = [
+  const vitals = [
       {
         icon: <Thermometer className="w-6 h-6 text-blue-400" />,
         label: "Temperatura",

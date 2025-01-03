@@ -1,4 +1,4 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { PrintData } from '../types';
 
 interface PrintTemplateProps {
@@ -313,7 +313,7 @@ export const generatePrintTemplate = ({
                 <span style="color: #60a5fa;">✨</span>
                 Recomendações da IA
             </h2>
-            ${data.raw.data.analysis.recommendations.map((rec, index) => `
+            ${data.raw.data.analysis.recommendations.map((rec) => `
                 <div class="recommendation-item">
                     <span class="recommendation-icon">✨</span>
                     <div>${rec}</div>

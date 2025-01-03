@@ -5,10 +5,9 @@ import {
   PatientContext, 
   PatientData,
   CachedRecommendation,
-  PreparedContext,
-  VitalSigns
 } from './types/aida-assistant';
 import { ImageGenerationService } from './ImageGenerationService';
+import { MedicationImageRequest } from './types/image-types';
 
 class PatientRiskAnalysis {
     private readonly similarityThreshold = 0.85;
@@ -42,7 +41,11 @@ class PatientRiskAnalysis {
               bloodPressure: latestVitals.bloodPressure,
               heartRate: latestVitals.heartRate,
               oxygenSaturation: latestVitals.oxygenSaturation,
-              timestamp: latestVitals.timestamp
+              timestamp: latestVitals.timestamp,
+              consciousness: latestVitals.consciousness,
+              painScale: latestVitals.painScale, // Escala de 0-10
+              respiratoryRate: latestVitals.respiratoryRate,
+              mobility: latestVitals.mobility,
           } : null,
           medications: patientData.treatment.medications.map(med => ({
               name: med.name,
@@ -66,38 +69,32 @@ class PatientRiskAnalysis {
         };
     } 
 
-    async generateMedicationInstructions(medication: any) {
-        const imageRequests = [
-            {
-                medicationName: medication.name,
-                dosage: medication.dosage,
-                instructions: medication.instructions || '',
-                type: 'usage' as const
+    async generateMedicationInstructions(medication: any, patientData: PatientData) {
+        const request: MedicationImageRequest = {
+            name: medication.name,
+            dosage: medication.dosage,
+            instructions: medication.instructions || '',
+            patientContext: {
+                age: patientData.personalInfo.age,
+                weight: patientData.personalInfo.weight,
+                allergies: patientData.treatment.allergies,
+                mobility: this.assessMobilityStatus(patientData),
+                consciousness: this.assessConsciousnessLevel(patientData),
+                specialNeeds: this.identifySpecialNeeds(patientData)
             },
-            {
-                medicationName: medication.name,
-                dosage: medication.dosage,
-                instructions: medication.instructions || '',
-                type: 'application' as const
-            },
-            {
-                medicationName: medication.name,
-                dosage: medication.dosage,
-                instructions: medication.precautions || '',
-                type: 'precaution' as const
+            palliativeCare: {
+                patientCondition: patientData.treatment.diagnosis.join(', '),
+                mobilityStatus: this.assessMobilityStatus(patientData),
+                painLevel: this.assessPainLevel(patientData),
+                nutritionalStatus: this.assessNutritionalStatus(patientData),
+                respiratoryStatus: this.assessRespiratoryStatus(patientData),
+                consciousnessLevel: this.assessConsciousnessLevel(patientData),
+                specialNeeds: this.identifySpecialNeeds(patientData)
             }
-        ];
-
-        const images = await Promise.all(
-            imageRequests.map(request => this.imageService.generateMedicationImages(request))
-        );
-
-        return {
-            usage: images[0],
-            application: images[1],
-            precaution: images[2]
         };
-   }
+    
+        return await this.imageService.generateMedicationImages(request);
+    }
 
   async generateRecommendations(patientData: PatientData): Promise<string[]> {
     console.log("INICIO DA FUNÇÃO DE INTELIGENCIA ARTIFICIAL:")
@@ -317,35 +314,6 @@ class PatientRiskAnalysis {
           throw error;
       }
     }
-      
-    private getValidationFailureReason(rec: string): string {
-      if (rec.length < 10) return 'Muito curto';
-      if (rec.length > 200) return 'Muito longo';
-      
-      // Versão modificada das regex para compatibilidade
-      const invalidCharsRegex = new RegExp('^[a-zA-Z\\s.,():!-]+$');
-      if (!invalidCharsRegex.test(rec)) return 'Caracteres inválidos';
-      
-      if (rec.includes('http')) return 'Contém URL';
-      if (rec.includes('Error')) return 'Contém palavra reservada Error';
-      if (rec.includes('undefined')) return 'Contém palavra reservada undefined';
-      
-      const longCodesRegex = new RegExp('(?:0x[\\da-f]+|[\\d]{5,})', 'i');
-      if (longCodesRegex.test(rec)) return 'Contém códigos ou números longos';
-      
-      const acronymsRegex = new RegExp('\\b[A-Z]{2,}\\b');
-      if (acronymsRegex.test(rec)) return 'Contém siglas inadequadas';
-      
-      if (rec.split(' ').length < 3) return 'Menos de 3 palavras';
-      
-      const capsRegex = new RegExp('^[A-Z]');
-      if (!capsRegex.test(rec)) return 'Não começa com maiúscula';
-      
-      const punctRegex = new RegExp('[.!?]$');
-      if (!punctRegex.test(rec)) return 'Não termina com pontuação adequada';
-      
-      return 'Razão desconhecida';
-    }
 
     private generateCacheKey(context: PatientContext): string {
         return JSON.stringify({
@@ -382,6 +350,104 @@ class PatientRiskAnalysis {
           const intersection = new Set(Array.from(set1).filter(x => set2.has(x)));
           const union = new Set([...Array.from(set1), ...Array.from(set2)]);
           return union.size === 0 ? 0 : intersection.size / union.size;
+    }
+
+    private assessMobilityStatus(patientData: PatientData): string {
+        const lastVitals = patientData.treatment.vitals[patientData.treatment.vitals.length - 1];
+        
+        if (!lastVitals) return 'Não Avaliado';
+        return lastVitals.mobility || 'Não Avaliado';
+    }
+    
+    private assessConsciousnessLevel(patientData: PatientData): string {
+        const lastVitals = patientData.treatment.vitals[patientData.treatment.vitals.length - 1];
+        
+        if (!lastVitals) return 'Não Avaliado';
+        return lastVitals.consciousness || 'Não Avaliado';
+    }
+    
+    private assessPainLevel(patientData: PatientData): number {
+        const lastVitals = patientData.treatment.vitals[patientData.treatment.vitals.length - 1];
+        
+        if (!lastVitals) return 0;
+        return lastVitals.painScale || 0;
+    }
+    
+    private assessNutritionalStatus(patientData: PatientData): string {
+        const { weight, height } = patientData.personalInfo;
+        
+        if (weight && height) {
+            // Cálculo do IMC
+            const heightInMeters = height / 100;
+            const bmi = weight / (heightInMeters * heightInMeters);
+    
+            if (bmi < 18.5) return 'Desnutrição';
+            if (bmi >= 18.5 && bmi < 25) return 'Eutrófico';
+            if (bmi >= 25 && bmi < 30) return 'Sobrepeso';
+            return 'Obesidade';
+        }
+    
+        // Verifica diagnósticos relacionados à nutrição
+        const nutritionalIssues = patientData.treatment.diagnosis.some(d =>
+            d.toLowerCase().includes('desnutri') ||
+            d.toLowerCase().includes('anorexia') ||
+            d.toLowerCase().includes('obesidade')
+        );
+    
+        return nutritionalIssues ? 'Comprometido' : 'Não Avaliado';
+    }
+    
+    private assessRespiratoryStatus(patientData: PatientData): string {
+        const lastVitals = patientData.treatment.vitals[patientData.treatment.vitals.length - 1];
+        
+        if (!lastVitals) return 'Não Avaliado';
+    
+        // Avalia baseado na frequência respiratória e saturação
+        if (lastVitals.respiratoryRate > 24 || lastVitals.oxygenSaturation < 90) {
+            return 'Insuficiência Respiratória Grave';
+        } else if (lastVitals.respiratoryRate > 20 || lastVitals.oxygenSaturation < 95) {
+            return 'Insuficiência Respiratória Moderada';
+        }
+        return 'Normal';
+    }
+    
+    private identifySpecialNeeds(patientData: PatientData): string[] {
+        const specialNeeds: string[] = [];
+    
+        // Verifica condições que requerem cuidados especiais
+        if (this.assessMobilityStatus(patientData) === 'Mobilidade Reduzida') {
+            specialNeeds.push('Necessita Auxílio para Locomoção');
+        }
+    
+        if (this.assessConsciousnessLevel(patientData) !== 'Consciente e Orientado') {
+            specialNeeds.push('Necessita Supervisão Constante');
+        }
+    
+        // Verifica necessidades baseadas em diagnósticos
+        if (patientData.treatment.diagnosis.some(d => d.toLowerCase().includes('diabetes'))) {
+            specialNeeds.push('Controle Glicêmico');
+        }
+    
+        if (patientData.treatment.diagnosis.some(d => d.toLowerCase().includes('pressão'))) {
+            specialNeeds.push('Monitoramento Pressórico');
+        }
+    
+        // Verifica alergias
+        if (patientData.treatment.allergies && patientData.treatment.allergies.length > 0) {
+            specialNeeds.push('Alergias Medicamentosas');
+        }
+    
+        // Verifica necessidades nutricionais
+        if (this.assessNutritionalStatus(patientData) === 'Desnutrição') {
+            specialNeeds.push('Suporte Nutricional');
+        }
+    
+        // Verifica necessidades respiratórias
+        if (this.assessRespiratoryStatus(patientData) !== 'Normal') {
+            specialNeeds.push('Suporte Respiratório');
+        }
+    
+        return specialNeeds;
     }
 }
 

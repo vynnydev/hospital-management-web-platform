@@ -1,3 +1,5 @@
+import { KnowledgeBaseEntry } from "./types/aida-assistant";
+
 class MedicalKnowledgeBase {
     private static instance: MedicalKnowledgeBase;
     private entries: Map<string, KnowledgeBaseEntry[]>;
