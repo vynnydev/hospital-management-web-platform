@@ -70,17 +70,17 @@
                         }
                 },
             "admission": {
-            "date": "2024-12-15",
-            "reason": "Pneumonia",
-            "type": "Clínica",
-            "status": "Internado",
-            "predictedDischarge": "2024-12-22",
-            "bed": {
-                "id": "B001",
-                "number": "201",
-                "wing": "Leste",
-                "type": "Enfermaria"
-            }
+                "date": "2024-12-15",
+                "reason": "Pneumonia",
+                "type": "Clínica",
+                "status": "Internado",
+                "predictedDischarge": "2024-12-22",
+                "bed": {
+                    "id": "B001",
+                    "number": "201",
+                    "wing": "Leste",
+                    "type": "Enfermaria"
+                }
             },
             "medicalTeam": {
                 "doctor": {
@@ -175,7 +175,7 @@
                 "id": "B001",
                 "number": "201",
                 "wing": "Leste",
-                "type": "Enfermaria"
+                "type": "UTI"
             }
             },
             "medicalTeam": {
