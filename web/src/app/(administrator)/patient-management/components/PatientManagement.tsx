@@ -1,8 +1,9 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Metrics, Patient } from '../types/types';
-import { PatientAreaCard } from './PatientAreaCard';
-import { PatientTable } from './PatientTable';
+import { DepartmentAreaCards } from './DepartmentAreaCards';
+import { PatientTaskManagement } from './PatientTaskManagement';
 import { PatientReportCard } from './PatientReportCard';
 
 export const PatientManagementComponent: React.FC = () => {
@@ -34,9 +35,40 @@ export const PatientManagementComponent: React.FC = () => {
         fetchData();
     }, []);
 
+    if (!metrics) {
+        return <p>Carregando dados de métricas...</p>;
+    }
+
+    // Filtrar pacientes com base no departamento selecionado
     const filteredPatients = selectedArea === 'todos'
-        ? patients
-        : patients.filter(patient => patient.admission.bed.type.toLowerCase() === selectedArea.toLowerCase());
+    ? patients
+    : patients.filter(patient => {
+        console.log("Area Selecionada:", selectedArea)
+        const currentDepartment = patient.admission.bed.type.trim().toLowerCase();
+        console.log("Departamento atual:", currentDepartment)
+        const hasHistoryInDepartment = Array.isArray(patient.admission.statusHistory) &&
+        patient.admission.statusHistory.some(
+            history => history.department?.trim().toLowerCase() === selectedArea.trim().toLowerCase()
+        );
+        console.log("History departament:", hasHistoryInDepartment)
+        return currentDepartment === selectedArea.trim().toLowerCase() || hasHistoryInDepartment;
+    });
+
+    console.log("Pacientes filtrados:", filteredPatients);
+
+    // Construir o objeto de departamentos
+    const departments = Object.keys(metrics.departmental).reduce(
+        (acc, department) => {
+            const departmentKey = department as keyof typeof metrics.departmental;
+            acc[department.toLowerCase()] = metrics.departmental[departmentKey]?.validStatuses?.map(status => status.toLowerCase()) ?? [];
+            return acc;
+        },
+        {} as Record<string, string[]>
+    );
+    console.log("Construção do objeto de departamento:", departments)
+
+    departments.todos = Object.keys(departments).flatMap(dept => departments[dept]);
+    console.log(departments)
 
     return (
         <div className='min-h-screen p-4 transition-all duration-500'>
@@ -44,29 +76,29 @@ export const PatientManagementComponent: React.FC = () => {
             {error && <p className='text-red-500'>{error}</p>}
 
             {!loading && !error && (
-                <div className="grid grid-cols-3 gap-4">
-                    <div className="col-span-3 flex gap-4">
-                        <PatientAreaCard
-                            area="todos"
-                            count={patients.length}
-                            capacity={metrics?.capacity.total.maxBeds || 0}
-                            onClick={() => setSelectedArea('todos')}
-                            selected={selectedArea === 'todos'}
+                <div className="grid grid-cols-3 gap-8">
+                    <div className="col-span-3">
+                        <DepartmentAreaCards
+                            departments={[
+                                { area: 'todos', count: patients.length, capacity: metrics.capacity.total.maxBeds || 0 },
+                                ...Object.entries(metrics.departmental).map(([area, data]) => ({
+                                    area,
+                                    count: data.patients,
+                                    capacity: data.maxBeds,
+                                })),
+                            ]}
+                            onClick={(area) => setSelectedArea(area)} // Atualiza o estado
+                            selectedArea={selectedArea}
                         />
-                        {metrics && Object.entries(metrics.departmental).map(([area, data]) => (
-                            <PatientAreaCard
-                                key={area}
-                                area={area}
-                                count={data.patients}
-                                capacity={data.maxBeds}
-                                onClick={() => setSelectedArea(area)}
-                                selected={selectedArea === area}
-                            />
-                        ))}
                     </div>
 
                     <div className="col-span-2">
-                        <PatientTable patients={filteredPatients} onSelect={setSelectedPatient} />
+                        <PatientTaskManagement
+                            patients={filteredPatients} // Pacientes filtrados
+                            selectedArea={selectedArea} // Departamento selecionado
+                            onSelect={setSelectedPatient} // Função para selecionar paciente
+                            departments={departments} // Passa os departamentos corrigidos
+                        />
                     </div>
 
                     <div>
@@ -77,3 +109,4 @@ export const PatientManagementComponent: React.FC = () => {
         </div>
     );
 };
+
