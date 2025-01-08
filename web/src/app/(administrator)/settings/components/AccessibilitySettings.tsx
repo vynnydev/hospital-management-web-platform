@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { Volume2, EyeOff, Eye, VolumeX } from 'lucide-react';
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/organisms/button";
 
 const AccessibilitySettings: React.FC = () => {
     return (

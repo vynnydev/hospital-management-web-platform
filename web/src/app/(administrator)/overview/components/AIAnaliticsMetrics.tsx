@@ -20,7 +20,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { useTheme } from 'next-themes'
 import { motion, AnimatePresence } from 'framer-motion';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/organisms/tooltip';
 import { metricsCalcService } from '@/services/calcs/metricsCalcService';
 
 interface ColumnContent {

@@ -4,14 +4,14 @@ import { useState } from 'react'
 import { useMedia } from 'react-use'
 import { usePathname, useRouter } from 'next/navigation'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/organisms/button'
 import { NavButton } from '@/components/ui/atoms/NavButton'
 
 import { 
     Sheet,
     SheetContent,
     SheetTrigger
-} from '@/components/ui/sheet'
+} from '@/components/ui/organisms/sheet'
 import { Menu } from 'lucide-react'
 
 const routes = [

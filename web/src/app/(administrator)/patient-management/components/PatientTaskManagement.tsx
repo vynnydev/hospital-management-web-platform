@@ -1,29 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
 
-import { Department, GeneratedData, GeneratedImages, Metrics, Patient } from "../types/types";
+import { GeneratedData, GeneratedImages, Metrics, Patient } from "../types/types";
 import { VitalSign } from "../types/types";
 import { 
-  Heart, 
-  UserRound,
-  X, 
-  Accessibility,
-  Volume2,
-  Activity,
   TrendingUp,
   TrendingDown,
-  HelpCircle,
-  Bell,
-  Eye,
-  EyeOff,
-  MessageSquare,
-  Maximize2
 } from 'lucide-react';
-import { LineChart, XAxis, YAxis, Tooltip, Line, ResponsiveContainer } from 'recharts';
 
-import { motion } from "framer-motion";
 import { HfInference } from "@huggingface/inference";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { DepartmentBoard } from "./DepartmentBoard";
@@ -67,8 +52,6 @@ export const PatientTaskManagement: React.FC<Props> = ({
   const [currentUtterance, setCurrentUtterance] = useState<SpeechSynthesisUtterance | null>(null);
   const [synthesis, setSynthesis] = useState<SpeechSynthesis | null>(null);
 
-  const isAllDepartments = selectedArea === "todos";
-
   const categorizedPatients: Record<string, Record<string, Patient[]>> = {};
 
   Object.keys(departments).forEach((department) => {
@@ -95,23 +78,6 @@ export const PatientTaskManagement: React.FC<Props> = ({
     }
     categorizedPatients[department][status].push(patient);
   });
-
-  const handleTextToSpeech = (text: string | undefined) => {
-    if (!text) return;
-    
-    if (synthesis) {
-      synthesis.cancel();
-    }
-    
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'pt-BR';
-    utterance.rate = 0.9;
-    
-    setCurrentUtterance(utterance);
-    setSynthesis(window.speechSynthesis);
-    
-    window.speechSynthesis.speak(utterance);
-  };
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -197,27 +163,6 @@ export const PatientTaskManagement: React.FC<Props> = ({
       });
     }
   };
-
-  const generateProgressData = (vitals: VitalSign[]) => {
-    return vitals.map(vital => ({
-      date: new Date(vital.timestamp).toLocaleDateString(),
-      progress: vital.oxygenSaturation,
-      temperature: vital.temperature,
-      heartRate: vital.heartRate
-    }));
-  };
-
-  const getContrastClass = (baseClass: string) => {
-    if (!isHighContrast) return baseClass;
-    return `${baseClass} contrast-high brightness-110`;
-  };
-
-  if (!selectedArea || !departments[selectedArea]) return null;
-  
-  const validStatuses = departments[selectedArea];
-  // console.log("Status do departamento selecionado:", validStatuses)
-
-  // console.log("Possivel erro de duplicação:", data.departmental[selectedArea])
 
   return (
     <div className="w-full">

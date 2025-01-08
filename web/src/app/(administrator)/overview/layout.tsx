@@ -2,7 +2,7 @@
 import { Header } from "@/components/ui/organisms/Header"
 import { FooterApplication } from "@/components/ui/templates/FooterApplication"
 
-import { TooltipProvider } from '@/components/ui/tooltip';
+import { TooltipProvider } from '@/components/ui/organisms/tooltip';
 
 type Props = {
     children: React.ReactNode

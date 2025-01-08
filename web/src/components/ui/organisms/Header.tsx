@@ -8,7 +8,7 @@ import { useTheme } from 'next-themes'
 import { Brand } from "@/components/ui/atoms/Brand"
 import { HeaderNavigation } from "@/components/ui/organisms/HeaderNavigation"
 import { WelcomeMsg } from "@/components/ui/templates/WelcomeMsg"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/organisms/button"
 
 export const Header = () => {
     const { theme, setTheme } = useTheme();
