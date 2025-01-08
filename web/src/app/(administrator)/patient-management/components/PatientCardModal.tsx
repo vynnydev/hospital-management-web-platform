@@ -57,12 +57,12 @@ export const PatientCardModal: React.FC<PatientCardModal> = ({
     };
     
     return (
-        <div>
+        <div className='p-8'>
             {selectedPatient && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-                    <div className={getContrastClass("bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto")}>
+                    <div className={getContrastClass("p-4 bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto")}>
                         {/* Barra de Acessibilidade */}
-                        <div className="bg-gray-100 dark:bg-gray-700 p-2 flex justify-end gap-2">
+                        <div className="bg-gray-100 dark:bg-gray-700 p-2 flex justify-end gap-2 rounded-t-lg">
                             <button
                                 onClick={() => setIsHighContrast(!isHighContrast)}
                                 className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600"
@@ -92,7 +92,7 @@ export const PatientCardModal: React.FC<PatientCardModal> = ({
                         </div>
 
                         {/* Conteúdo do Modal */}
-                        <div className="bg-gradient-to-r from-blue-500 to-teal-500 p-6 relative">
+                        <div className="bg-gradient-to-r from-blue-500 to-teal-500 p-6 relative rounded-md">
                             <button
                                 onClick={() => setSelectedPatient(null)}
                                 className="absolute right-4 top-4 text-white hover:text-red-200 transition-colors"
@@ -126,7 +126,7 @@ export const PatientCardModal: React.FC<PatientCardModal> = ({
                             synthesis={synthesis}
                         />
 
-                        <div className='bg-gray-50 dark:bg-gray-700 rounded-lg p-4'>
+                        <div className='bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mt-4'>
                             <h3 className="text-lg font-semibold mb-2 text-gray-800 dark:text-white">
                                 Sinais Vitais
                             </h3>
@@ -162,7 +162,7 @@ export const PatientCardModal: React.FC<PatientCardModal> = ({
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-2 gap-4 mt-4">
                             <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
                             <h4 className="font-semibold text-gray-800 dark:text-white mb-2">
                                 Análise de Risco
@@ -199,31 +199,31 @@ export const PatientCardModal: React.FC<PatientCardModal> = ({
                             </div>
                         </div>
 
-                        <div className="space-y-4">
+                        <div className="space-y-4 mt-4">
                             <textarea
                             value={aiQuery}
                             onChange={(e) => setAiQuery(e.target.value)}
                             placeholder="Pergunte à IA sobre os cuidados do paciente..."
-                            className="w-full p-3 rounded-lg bg-gray-50 dark:bg-gray-700 
+                            className="w-full p-2 rounded-lg bg-gray-50 dark:bg-gray-700 
                                     border border-gray-200 dark:border-gray-600
                                     text-gray-800 dark:text-white
                                     focus:ring-2 focus:ring-blue-500 transition-all"
                             rows={3}
                             />
                             
-                            <button className="w-full py-3 px-4 rounded-lg
+                            <button className="w-full py-2 px-4 rounded-lg
                                             bg-gradient-to-r from-bg-gradient-to-r from-blue-500 to-teal-500
                                             text-white font-semibold
                                             hover:opacity-90 transition-opacity
                                             focus:ring-2 focus:ring-blue-500">
-                            Gerar Diagrama de Protocolo de Cuidados
+                                Gerar Diagrama de Protocolo de Cuidados
                             </button>
 
                             <div className="grid grid-cols-2 gap-4 mt-6">
-                            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                                <h4 className="font-semibold text-gray-800 dark:text-white mb-2">
-                                Medicações Atuais
-                                </h4>
+                                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mt-4">
+                                    <h4 className="font-semibold text-gray-800 dark:text-white mb-2">
+                                    Medicações Atuais
+                                    </h4>
                                 <div className="space-y-2">
                                 {selectedPatient.treatment.medications.map((med, index) => (
                                     <div 
@@ -245,9 +245,9 @@ export const PatientCardModal: React.FC<PatientCardModal> = ({
                                 </div>
                             </div>
 
-                            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mt-4">
                                 <h4 className="font-semibold text-gray-800 dark:text-white mb-2">
-                                Procedimentos Realizados
+                                    Procedimentos Realizados
                                 </h4>
                                 <div className="space-y-2">
                                 {selectedPatient.treatment.procedures.map((proc, index) => (
@@ -270,15 +270,15 @@ export const PatientCardModal: React.FC<PatientCardModal> = ({
                             </div>
                             </div>
 
-                            <div className="mt-6">
-                            <div className="flex items-center justify-between mb-4">
-                                <h4 className="font-semibold text-gray-800 dark:text-white">
-                                Histórico de Status
-                                </h4>
-                                <div className="text-sm text-gray-500 dark:text-gray-400">
-                                Previsão de Alta: {selectedPatient.admission.predictedDischarge}
+                            <div className="mt-8">
+                                <div className="flex items-center justify-between mb-4 mt-4">
+                                    <h4 className="font-semibold text-gray-800 dark:text-white">
+                                    Histórico de Status
+                                    </h4>
+                                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                                    Previsão de Alta: {selectedPatient.admission.predictedDischarge}
+                                    </div>
                                 </div>
-                            </div>
                             <div className="space-y-2">
                                 {selectedPatient.admission.statusHistory
                                     .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())

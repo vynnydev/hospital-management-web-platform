@@ -60,7 +60,7 @@ export const AIPatientAssistant: React.FC<AIPatientAssistantProps> = ({
     };
 
     return (                         
-        <div className="p-6 space-y-6">
+        <div className="space-y-6 rounded-md mt-4">
             <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
                 <div className="flex justify-between items-center mb-4">
                     <h4 className={getFontSizeClass("font-semibold text-gray-800 dark:text-white")}>
