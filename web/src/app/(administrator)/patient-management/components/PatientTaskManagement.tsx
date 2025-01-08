@@ -1,20 +1,49 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from "react";
-import { Patient } from "../types/types";
-import { FaUserInjured, FaHeartbeat, FaTimes } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
+
+import { Department, GeneratedData, GeneratedImages, Metrics, Patient } from "../types/types";
+import { VitalSign } from "../types/types";
+import { 
+  Heart, 
+  UserRound,
+  X, 
+  Accessibility,
+  Volume2,
+  Activity,
+  TrendingUp,
+  TrendingDown,
+  HelpCircle,
+  Bell,
+  Eye,
+  EyeOff,
+  MessageSquare,
+  Maximize2
+} from 'lucide-react';
+import { LineChart, XAxis, YAxis, Tooltip, Line, ResponsiveContainer } from 'recharts';
+
 import { motion } from "framer-motion";
 import { HfInference } from "@huggingface/inference";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import Image from "next/image";
+import { DepartmentBoard } from "./DepartmentBoard";
+import { generateEnhancedPrompt } from "./functions/AI/aiAssistantPatientBoard";
+import { PatientCardModal } from "./PatientCardModal";
 
 const hfInference = new HfInference(process.env.HUGGING_FACE_API_KEY!);
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY!);
 
+type FontSize = 'small' | 'normal' | 'large' | 'extra-large';
+
 interface Props {
+  data: Metrics,
   patients: Patient[];
   selectedArea: string;
   onSelect: (patient: Patient) => void;
   departments: Record<string, string[]>;
+  onClose: () => void;
+  fontSize: FontSize;
+  setFontSize: (size: FontSize) => void;
 }
 
 export const PatientTaskManagement: React.FC<Props> = ({
@@ -22,13 +51,21 @@ export const PatientTaskManagement: React.FC<Props> = ({
   selectedArea,
   onSelect,
   departments,
+  data,
+  onClose,
+  fontSize,
+  setFontSize
 }) => {
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
-  const [generatedData, setGeneratedData] = useState<{
-    recommendation?: string;
-    imageBlobUrl?: string;
-  }>({});
-  const [generatedImages, setGeneratedImages] = useState<Record<string, string>>({});
+  const [generatedData, setGeneratedData] = useState<GeneratedData>({});
+  const [generatedImages, setGeneratedImages] = useState<GeneratedImages>({});
+  const [aiQuery, setAiQuery] = useState('');
+  const [isHighContrast, setIsHighContrast] = useState(false);
+  const [showAudioDescription, setShowAudioDescription] = useState(false);
+  const [showAudioControls, setShowAudioControls] = useState(false);
+  const [currentAudio, setCurrentAudio] = useState<SpeechSynthesisUtterance | null>(null);
+  const [currentUtterance, setCurrentUtterance] = useState<SpeechSynthesisUtterance | null>(null);
+  const [synthesis, setSynthesis] = useState<SpeechSynthesis | null>(null);
 
   const isAllDepartments = selectedArea === "todos";
 
@@ -40,6 +77,7 @@ export const PatientTaskManagement: React.FC<Props> = ({
       categorizedPatients[department][status] = [];
     });
   });
+  // console.log("Departamentos com seus status:", departments)
 
   patients.forEach((patient: Patient) => {
     const latestStatus = patient?.admission?.statusHistory?.sort(
@@ -58,182 +96,184 @@ export const PatientTaskManagement: React.FC<Props> = ({
     categorizedPatients[department][status].push(patient);
   });
 
+  const handleTextToSpeech = (text: string | undefined) => {
+    if (!text) return;
+    
+    if (synthesis) {
+      synthesis.cancel();
+    }
+    
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'pt-BR';
+    utterance.rate = 0.9;
+    
+    setCurrentUtterance(utterance);
+    setSynthesis(window.speechSynthesis);
+    
+    window.speechSynthesis.speak(utterance);
+  };
+
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+      if (e.altKey && e.key === 'c') setIsHighContrast(prev => !prev);
+      if (e.altKey && e.key === 'a') setShowAudioControls(prev => !prev);
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [onClose]);
+
+  // Clean up do áudio quando o componente for desmontado
+  useEffect(() => {
+    return () => {
+      if (synthesis) {
+        synthesis.cancel();
+      }
+    };
+  }, [synthesis]);
+
   const generateData = async (patient: Patient) => {
-    const prompt = `Paciente ${patient.personalInfo.name}, ${patient.personalInfo.age} anos, com status: ${patient.admission.statusHistory[0].status}. Recomende os próximos passos e crie uma imagem correspondente.`;
-  
+    const enhancedPrompt = generateEnhancedPrompt(patient);
+    
     try {
       const [recommendationResult, imageResult] = await Promise.all([
         genAI
           .getGenerativeModel({ model: "gemini-pro" })
-          .generateContent(prompt)
+          .generateContent({
+            contents: [{ role: 'user', parts: [{ text: enhancedPrompt }]}],
+            generationConfig: {
+              temperature: 0.7,
+              topK: 40,
+              topP: 0.95,
+              maxOutputTokens: 1024,
+            },
+          })
           .then((res) => res.response.text()),
         hfInference
           .textToImage({
-            inputs: prompt,
+            inputs: enhancedPrompt,
+            parameters: {
+              negative_prompt: "texto, palavras, letras, números, baixa qualidade, borrado",
+              num_inference_steps: 50,
+              guidance_scale: 7.5,
+            },
             model: "stabilityai/stable-diffusion-3.5-large",
           })
           .then((blob) => URL.createObjectURL(blob)),
       ]);
   
+      const latestVitals = patient.treatment.vitals[patient.treatment.vitals.length - 1];
+  
+      const carePlanPrompt = `Crie uma imagem clara e profissional representando o plano de cuidados para ${patient.personalInfo.name}, focando em: monitoramento de sinais vitais (FC: ${latestVitals.heartRate}bpm, Temp: ${latestVitals.temperature}°C, SatO2: ${latestVitals.oxygenSaturation}%), medicações principais e cuidados específicos.`;
+  
+      const carePlanImage = await hfInference
+        .textToImage({
+          inputs: carePlanPrompt,
+          parameters: {
+            negative_prompt: "texto, palavras, letras, números, baixa qualidade, borrado",
+            num_inference_steps: 50,
+            guidance_scale: 7.5,
+          },
+          model: "stabilityai/stable-diffusion-3.5-large",
+        })
+        .then((blob) => URL.createObjectURL(blob));
+  
       setGeneratedData({
         recommendation: recommendationResult,
-        imageBlobUrl: imageResult,
-      });
+        treatmentImage: imageResult,
+        carePlanImage: carePlanImage,
+      } as GeneratedData);
   
-      setGeneratedImages((prev) => ({ ...prev, [patient.id]: imageResult })); // Vincula imagem ao ID do paciente
+      setGeneratedImages((prev: GeneratedImages) => ({
+        ...prev,
+        [patient.id]: { treatment: imageResult, carePlan: carePlanImage }
+      }));
+  
     } catch (error) {
-      console.error("Erro ao gerar dados:", error);
+      // console.error("Erro ao gerar dados:", error);
       setGeneratedData({
-        recommendation: "Erro ao gerar recomendação.",
+        recommendation: "Erro ao gerar recomendação. Por favor, tente novamente.",
       });
     }
   };
 
-  const handleCardClick = (patient: Patient) => {
-    setSelectedPatient(patient);
-    generateData(patient);
+  const generateProgressData = (vitals: VitalSign[]) => {
+    return vitals.map(vital => ({
+      date: new Date(vital.timestamp).toLocaleDateString(),
+      progress: vital.oxygenSaturation,
+      temperature: vital.temperature,
+      heartRate: vital.heartRate
+    }));
   };
 
-  const estimateDischargeDate = (admissionDate: string, avgStayDuration: number) => {
-    const admission = new Date(admissionDate);
-    admission.setDate(admission.getDate() + avgStayDuration);
-    return admission.toLocaleDateString();
+  const getContrastClass = (baseClass: string) => {
+    if (!isHighContrast) return baseClass;
+    return `${baseClass} contrast-high brightness-110`;
   };
+
+  if (!selectedArea || !departments[selectedArea]) return null;
+  
+  const validStatuses = departments[selectedArea];
+  // console.log("Status do departamento selecionado:", validStatuses)
+
+  // console.log("Possivel erro de duplicação:", data.departmental[selectedArea])
 
   return (
-    <div className="grid grid-cols-3 gap-6 p-4 bg-gray-200 dark:bg-gray-900">
-      {isAllDepartments
-        ? Object.entries(categorizedPatients).map(([department, statuses]) => (
-            <motion.div
-              key={department}
-              className="bg-gray-100 dark:bg-gray-800 text-white p-6 rounded-lg shadow-lg"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <h3 className="text-2xl font-bold flex items-center gap-2">
-                <FaHeartbeat /> {department.toUpperCase()}
-              </h3>
-              {Object.entries(statuses).map(([status, patients]) => (
-                <div key={status} className="mt-4">
-                  <h4 className="font-semibold text-lg text-gray-300">{status}</h4>
-                  {patients.map((patient) => (
-                    <motion.div
-                      key={patient.id}
-                      className="p-4 bg-gray-800 text-white rounded-lg shadow-md flex items-center gap-4 border-l-4 relative"
-                      style={{ borderColor: department }}
-                      onClick={() => handleCardClick(patient)}
-                      whileHover={{ scale: 1.05 }}
-                    >
-                      <Image
-                        src={`${patient.personalInfo.image}` || "/images/default-avatar.png"}
-                        alt={patient.personalInfo.name}
-                        width={50}
-                        height={50}
-                        className="rounded-full"
-                      />
-                      {generatedImages[patient.id] && (
-                        <Image
-                            src={generatedImages[patient.id]}
-                            alt="Recomendação gerada"
-                            width={80}
-                            height={80}
-                            className="absolute right-4 top-4 rounded-lg"
-                        />
-                       )}
-                      <div className="flex-1">
-                        <p className="font-semibold text-lg">{patient.personalInfo.name}</p>
-                        <p className="text-sm text-gray-400">{department}</p>
-                      </div>
-                      <FaUserInjured className="text-3xl text-red-500" />
-                    </motion.div>
-                  ))}
-                </div>
-              ))}
-            </motion.div>
-          ))
-        : Object.entries(categorizedPatients[selectedArea] || {}).map(([status, patients]) => (
-            <motion.div
-              key={status}
-              className="bg-gray-100 dark:bg-gray-800 text-white p-6 rounded-lg shadow-lg"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <h3 className="text-2xl font-bold flex items-center gap-2">
-                <FaHeartbeat /> {status.toUpperCase()}
-              </h3>
-              {patients.map((patient) => (
-                <motion.div
-                  key={patient.id}
-                  className="p-4 bg-gray-800 text-white rounded-lg shadow-md flex items-center gap-4 border-l-4 relative"
-                  style={{ borderColor: selectedArea }}
-                  onClick={() => handleCardClick(patient)}
-                  whileHover={{ scale: 1.05 }}
-                >
-                   <Image
-                        src={generatedImages[patient.id]}
-                        alt="Recomendação gerada"
-                        width={80}
-                        height={80}
-                        className="absolute right-4 top-4 rounded-lg"
-                    />
-                  {patient.generatedImage && (
-                    <Image
-                        src={generatedImages[patient.id]}
-                        alt="Recomendação gerada"
-                        width={80}
-                        height={80}
-                        className="absolute right-4 top-4 rounded-lg"
-                    />
-                  )}
-                  <div className="flex-1">
-                    <p className="font-semibold text-lg">{patient.personalInfo.name}</p>
-                    <p className="text-sm text-gray-400">{selectedArea}</p>
-                  </div>
-                  <FaUserInjured className="text-3xl text-red-500" />
-                </motion.div>
-              ))}
-            </motion.div>
-          ))}
-
-      {selectedPatient && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center">
-          <motion.div
-            className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-3xl w-full relative"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-          >
-            <button
-              onClick={() => setSelectedPatient(null)}
-              className="absolute top-4 right-4 text-gray-500 dark:text-gray-300 hover:text-red-500"
-            >
-              <FaTimes size={24} />
-            </button>
-            <h3 className="text-2xl font-bold mb-4">
-              {selectedPatient.personalInfo.name}
-            </h3>
-            <div className="mb-4">
-              <h4 className="text-lg font-semibold">Recomendações:</h4>
-              <p>{generatedData.recommendation}</p>
-            </div>
-            {generatedData.imageBlobUrl && (
-                <Image
-                    src={generatedData.imageBlobUrl}
-                    alt="Recomendação gerada"
-                    width={400}
-                    height={200}
-                    className="rounded-lg mx-auto"
-                />
-            )}
-            <p className="text-sm mt-6">Previsão de Alta: {estimateDischargeDate(selectedPatient.admission.date, 7)}</p>
-            <button className="bg-gradient-to-r from-blue-500 to-teal-500 text-white px-4 py-2 rounded-md mt-4 w-full">
-              Gerar Diagrama Funcional
-            </button>
-          </motion.div>
+    <div className="w-full">
+      <div className="col-span-full bg-white dark:bg-gray-800 rounded-xl p-4 shadow-lg">
+        <div className="grid grid-cols-3 gap-4">
+          <div className="text-center">
+            <p className="text-gray-500 dark:text-gray-400">Taxa de Ocupação</p>
+            <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+              {data.overall.occupancyRate}%
+              {data.overall.periodComparison.occupancy.trend === 'up' ? 
+                <TrendingUp className="inline ml-2 w-5 h-5 text-green-500" /> : 
+                <TrendingDown className="inline ml-2 w-5 h-5 text-red-500" />}
+            </p>
+          </div>
+          <div className="text-center">
+            <p className="text-gray-500 dark:text-gray-400">Leitos Disponíveis</p>
+            <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+              {data.overall.availableBeds}
+            </p>
+          </div>
+          <div className="text-center">
+            <p className="text-gray-500 dark:text-gray-400">Tempo Médio de Internação</p>
+            <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+              {data.overall.avgStayDuration} dias
+            </p>
+          </div>
         </div>
-      )}
+      </div>
+
+      {selectedArea && data.departmental[selectedArea] ? (
+          <DepartmentBoard
+            data={data}
+            selectedArea={selectedArea}
+            patients={patients}
+            setSelectedPatient={setSelectedPatient}
+            generateData={generateData}
+          />
+        ) : null}
+
+      <PatientCardModal 
+          selectedPatient={selectedPatient}
+          setSelectedPatient={setSelectedPatient}
+          generateData={generateData}
+          isHighContrast={isHighContrast}
+          setIsHighContrast={setIsHighContrast}
+          setShowAudioControls={setShowAudioControls}
+          showAudioControls={showAudioControls}
+          setFontSize={setFontSize}
+          fontSize={fontSize}
+          aiQuery={aiQuery}
+          setAiQuery={setAiQuery}
+          generatedData={generatedData}
+          setCurrentUtterance={setCurrentUtterance}
+          setSynthesis={setSynthesis}
+          synthesis={synthesis}
+      />
     </div>
   );
 };

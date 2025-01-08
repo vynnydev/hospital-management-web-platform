@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -6,6 +7,8 @@ import { DepartmentAreaCards } from './DepartmentAreaCards';
 import { PatientTaskManagement } from './PatientTaskManagement';
 import { PatientReportCard } from './PatientReportCard';
 
+type FontSize = 'small' | 'normal' | 'large' | 'extra-large';
+
 export const PatientManagementComponent: React.FC = () => {
     const [metrics, setMetrics] = useState<Metrics | null>(null);
     const [patients, setPatients] = useState<Patient[]>([]);
@@ -13,6 +16,8 @@ export const PatientManagementComponent: React.FC = () => {
     const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const [fontSize, setFontSize] = useState<FontSize>('normal');
+    const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -43,18 +48,17 @@ export const PatientManagementComponent: React.FC = () => {
     const filteredPatients = selectedArea === 'todos'
     ? patients
     : patients.filter(patient => {
-        console.log("Area Selecionada:", selectedArea)
+        // console.log("Area Selecionada:", selectedArea)
         const currentDepartment = patient.admission.bed.type.trim().toLowerCase();
-        console.log("Departamento atual:", currentDepartment)
-        const hasHistoryInDepartment = Array.isArray(patient.admission.statusHistory) &&
-        patient.admission.statusHistory.some(
-            history => history.department?.trim().toLowerCase() === selectedArea.trim().toLowerCase()
+        // console.log("Departamento atual:", currentDepartment)
+        const hasHistoryInDepartment = patient.admission.statusHistory.some(
+            history => history.department.trim().toLowerCase() === selectedArea.trim().toLowerCase()
         );
-        console.log("History departament:", hasHistoryInDepartment)
+        // console.log("History departament:", hasHistoryInDepartment)
         return currentDepartment === selectedArea.trim().toLowerCase() || hasHistoryInDepartment;
     });
 
-    console.log("Pacientes filtrados:", filteredPatients);
+    // console.log("Pacientes filtrados:", filteredPatients);
 
     // Construir o objeto de departamentos
     const departments = Object.keys(metrics.departmental).reduce(
@@ -65,10 +69,14 @@ export const PatientManagementComponent: React.FC = () => {
         },
         {} as Record<string, string[]>
     );
-    console.log("Construção do objeto de departamento:", departments)
+    // console.log("Construção do objeto de departamento:", departments)
 
     departments.todos = Object.keys(departments).flatMap(dept => departments[dept]);
     console.log(departments)
+
+    const handleClose = () => {
+        setIsOpen(false);
+    };
 
     return (
         <div className='min-h-screen p-4 transition-all duration-500'>
@@ -84,7 +92,7 @@ export const PatientManagementComponent: React.FC = () => {
                                 ...Object.entries(metrics.departmental).map(([area, data]) => ({
                                     area,
                                     count: data.patients,
-                                    capacity: data.maxBeds,
+                                    capacity: data.beds,
                                 })),
                             ]}
                             onClick={(area) => setSelectedArea(area)} // Atualiza o estado
@@ -98,6 +106,10 @@ export const PatientManagementComponent: React.FC = () => {
                             selectedArea={selectedArea} // Departamento selecionado
                             onSelect={setSelectedPatient} // Função para selecionar paciente
                             departments={departments} // Passa os departamentos corrigidos
+                            data={metrics}
+                            onClose={handleClose}
+                            fontSize={fontSize}
+                            setFontSize={setFontSize}
                         />
                     </div>
 

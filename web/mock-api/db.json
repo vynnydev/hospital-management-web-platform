@@ -44,12 +44,14 @@
                 "uti": {
                     "occupancy": 92,
                     "beds": 8,
-                    "patients": 7
+                    "patients": 7,
+                    "validStatuses": ["Aguardando Atendimento", "Em Procedimento", "Recuperação"]
                 },
                 "enfermaria": {
                     "occupancy": 78,
                     "beds": 37,
-                    "patients": 29
+                    "patients": 29,
+                    "validStatuses": ["Aguardando Atendimento", "Em Observação", "Alta"]
                 }
             }
         },
@@ -74,6 +76,18 @@
                 "reason": "Pneumonia",
                 "type": "Clínica",
                 "status": "Internado",
+                "statusHistory": [
+                    {
+                        "department": "Enfermaria",
+                        "status": "Aguardando Atendimento",
+                        "timestamp": "2024-12-15T12:00:00"
+                    },
+                    {
+                        "department": "Enfermaria",
+                        "status": "Em Observação",
+                        "timestamp": "2024-12-16T09:00:00"
+                    }
+                ],
                 "predictedDischarge": "2024-12-22",
                 "bed": {
                     "id": "B001",
@@ -154,7 +168,7 @@
             "id": "P002",
             "qrCode": "hash_unique_qr",
             "personalInfo": {
-                "name": "Dog Silva",
+                "name": "Will Silva",
                 "age": 45,
                 "gender": "M",
                 "bloodType": "O+",
@@ -166,10 +180,22 @@
                     }
             },
             "admission": {
-            "date": "2024-12-15",
-            "reason": "Pneumonia",
-            "type": "Clínica",
-            "status": "Internado",
+                "date": "2024-12-15",
+                "reason": "Pneumonia",
+                "type": "Clínica",
+                "status": "Internado",
+                "statusHistory": [
+                    {
+                        "department": "UTI",
+                        "status": "Aguardando Atendimento",
+                        "timestamp": "2024-12-15T12:00:00"
+                    },
+                    {
+                        "department": "UTI",
+                        "status": "Em Procedimento",
+                        "timestamp": "2024-12-16T09:00:00"
+                    }
+            ],
             "predictedDischarge": "2024-12-22",
             "bed": {
                 "id": "B001",
