@@ -47,7 +47,7 @@ export const DepartmentBoard: React.FC<DepartmentBoardProps> = ({
     return (
       <div>
         <div 
-          className="grid grid-cols-3 gap-6 w-full h-full"
+          className="grid grid-cols-4 gap-6 w-full h-full"
           style={{ minHeight: '600px' }}
         >
           {departmentStatuses.map((status) => (
@@ -56,7 +56,7 @@ export const DepartmentBoard: React.FC<DepartmentBoardProps> = ({
               className="flex flex-col bg-white dark:bg-gray-800 rounded-xl shadow-lg w-full h-full"
             >
               {/* Status Header */}
-              <div className="p-4 bg-blue-500 text-white">
+              <div className="p-4 bg-gradient-to-r from-blue-500 to-teal-500 dark:bg-gradient-to-r dark:from-blue-700 dark:to-teal-700">
                 <h4 className="text-xl font-semibold">{status}</h4>
                 <p className="text-sm">
                   {patients.filter((p) => {
@@ -104,10 +104,10 @@ export const DepartmentBoard: React.FC<DepartmentBoardProps> = ({
   };
 
   return (
-    <div>
+    <div className="w-full max-w-full h-screen bg-gray-100 dark:bg-gray-900 flex flex-col px-4 py-4 box-border overflow-hidden">
       {selectedArea === 'Todos' ? (
         <>
-          <div className="mb-4">
+          <div className="mb-4 w-full">
             <Select
               defaultValue={selectedDepartment}
               onValueChange={setSelectedDepartment}
@@ -127,13 +127,13 @@ export const DepartmentBoard: React.FC<DepartmentBoardProps> = ({
             </Select>
           </div>
           {selectedDepartment && (
-            <div className="w-full bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+            <div className="w-full bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden flex-1">
               {renderDepartmentColumns(selectedDepartment)}
             </div>
           )}
         </>
       ) : (
-        <div className="w-full bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+        <div className="w-full bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden flex-1">
           {renderDepartmentColumns(selectedArea)}
         </div>
       )}

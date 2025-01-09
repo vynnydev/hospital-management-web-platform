@@ -165,7 +165,7 @@ export const PatientCardModal: React.FC<PatientCardModal> = ({
                             </div>
 
                                 {/* Cabeçalho do Paciente */}
-                                <div className="bg-gradient-to-r from-blue-500 to-teal-500 p-8 rounded-xl relative">
+                                <div className="bg-gradient-to-r from-blue-500 to-teal-500 dark:from-blue-700 dark:to-teal-700 p-8 rounded-xl relative">
                                     <button
                                         onClick={() => setSelectedPatient(null)}
                                         className="absolute right-4 top-4 text-white hover:bg-white/20 p-2 rounded-lg transition-all"
@@ -186,11 +186,11 @@ export const PatientCardModal: React.FC<PatientCardModal> = ({
                                         </div>
                                         <Button 
                                             variant="outline" 
-                                            className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                                            className="bg-white/10 border-white/20 text-white hover:bg-white/20 mt-8"
                                             onClick={() => {/* Implementar calendário */}}
                                             >
                                             <Calendar className="w-4 h-4 mr-2" />
-                                            Calendário
+                                                Calendário
                                         </Button>
                                     </div>
                                 </div>
@@ -265,19 +265,6 @@ export const PatientCardModal: React.FC<PatientCardModal> = ({
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                                        <h4 className="font-semibold text-gray-800 dark:text-white mb-2">
-                                            Recomendações
-                                        </h4>
-                                        <ul className="space-y-2">
-                                            {selectedPatient.aiAnalysis.recommendations.map((rec, index) => (
-                                                <li key={index} className="text-gray-600 dark:text-gray-300">
-                                                    • {rec}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
                                 </div>
 
                                 <div className="space-y-4">
@@ -332,57 +319,59 @@ export const PatientCardModal: React.FC<PatientCardModal> = ({
                                     </div>
                                 </div>
 
-                                <div className='mt-12'></div>
+                                <div className='mb-8 dark:from-gray-700 h-2'></div>
 
                                 {/* AIDA - Assistente de IA */}
-                                <div className="bg-gradient-to-r from-blue-50 to-teal-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl">
-                                    <div className="flex items-center gap-3 mb-6">
-                                        <Bot className="w-6 h-6 text-blue-500" />
-                                        <h3 className="text-xl font-semibold">AIDA - Assistente Inteligente</h3>
-                                    </div>
+                                <div className='bg-gradient-to-br from-teal-400 to-blue-500 dark:from-teal-700 dark:to-blue-700 rounded-xl p-1'>
+                                    <div className="bg-gradient-to-r from-blue-50 to-teal-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl">
+                                        <div className="flex items-center gap-3 mb-6">
+                                            <Bot className="w-6 h-6 text-blue-500" />
+                                            <h3 className="text-xl font-semibold">AIDA - Assistente Inteligente</h3>
+                                        </div>
 
-                                    <div className="grid grid-cols-3 gap-4 mb-6">
-                                        {commonQuestions.map((category, idx) => (
-                                            <div key={idx} className="space-y-3">
-                                                <h4 className="font-medium text-gray-700 dark:text-gray-300">
-                                                    {category.category}
-                                                </h4>
-                                                {category.questions.map((question, qIdx) => (
-                                                    <Button
-                                                        key={qIdx}
-                                                        variant="outline"
-                                                        className="w-full justify-start text-left h-auto py-3 bg-white dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 transition-all"
-                                                        onClick={() => handleAIQuestion(question)}
-                                                    >
-                                                        <MessageSquare className="w-4 h-4 mr-2 flex-shrink-0" />
-                                                        {question}
-                                                    </Button>
-                                                ))}
-                                            </div>
-                                        ))}
-                                    </div>
-
-                                    {/* Campo de Resposta da IA */}
-                                    <div className="relative bg-white dark:bg-gray-700 rounded-xl p-4 min-h-[120px] border border-gray-200 dark:border-gray-600">
-                                        {isGeneratingAI ? (
-                                            <div className="flex items-center gap-3 text-gray-600 dark:text-gray-300">
-                                                <div className="flex gap-1">
-                                                    <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
-                                                    <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
-                                                    <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></span>
+                                        <div className="grid grid-cols-3 gap-4 mb-6">
+                                            {commonQuestions.map((category, idx) => (
+                                                <div key={idx} className="space-y-3">
+                                                    <h4 className="font-medium text-gray-700 dark:text-gray-300">
+                                                        {category.category}
+                                                    </h4>
+                                                    {category.questions.map((question, qIdx) => (
+                                                        <Button
+                                                            key={qIdx}
+                                                            variant="outline"
+                                                            className="w-full justify-start text-left min-h-[4rem] py-3 px-4 bg-white dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 transition-all whitespace-normal"
+                                                            onClick={() => handleAIQuestion(question)}
+                                                        >
+                                                            <MessageSquare className="w-4 h-4 mr-2 flex-shrink-0" />
+                                                            <span className="line-clamp-2">{question}</span>
+                                                        </Button>
+                                                    ))}
                                                 </div>
-                                                <span>AIDA está analisando...</span>
-                                            </div>
-                                        ) : (
-                                            <div className="prose dark:prose-invert max-w-none">
-                                                {aiResponse || "Selecione uma pergunta acima ou faça sua própria consulta"}
-                                            </div>
-                                        )}
+                                            ))}
+                                        </div>
+
+                                        {/* Campo de Resposta da IA */}
+                                        <div className="relative bg-white dark:bg-gray-700 rounded-xl p-4 min-h-[120px] border border-gray-200 dark:border-gray-600">
+                                            {isGeneratingAI ? (
+                                                <div className="flex items-center gap-3 text-gray-600 dark:text-gray-300">
+                                                    <div className="flex gap-1">
+                                                        <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+                                                        <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+                                                        <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></span>
+                                                    </div>
+                                                    <span>AIDA está analisando...</span>
+                                                </div>
+                                            ) : (
+                                                <div className="prose dark:prose-invert max-w-none">
+                                                    {aiResponse || "Selecione uma pergunta acima ou faça sua própria consulta"}
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
 
                                 {/* Relatórios em Slider */}
-                                <div className="space-y-4">
+                                <div className="space-y-4 pt-4">
                                     <div className="flex items-center justify-between">
                                         <h3 className="text-lg font-semibold flex items-center gap-2">
                                             <FileText className="w-5 h-5" />

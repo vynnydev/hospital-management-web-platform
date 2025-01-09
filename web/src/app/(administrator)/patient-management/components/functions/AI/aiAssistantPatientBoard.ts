@@ -9,7 +9,7 @@ export const generateEnhancedPrompt = (patient: Patient) => {
     .map(med => `${med.name} (${med.dosage}, ${med.frequency})`)
     .join(', ');
 
-  return `Atuando como um assistente médico especialista, analise o seguinte caso e forneça recomendações detalhadas:
+  return `Atuando como um especialista médico em análise clínica e cuidados hospitalares, forneça recomendações detalhadas para o seguinte caso:
 
 DADOS DO PACIENTE:
 - Nome: ${patient.personalInfo.name}
@@ -36,18 +36,30 @@ Tempo de Internação Previsto: ${patient.aiAnalysis.predictedLOS} dias
 PROCEDIMENTOS REALIZADOS:
 ${patient.treatment.procedures.map(p => p.type).join(', ')}
 
-Por favor, forneça:
-1. Análise detalhada do quadro atual com base nos sinais vitais e tendências
-2. Recomendações específicas para tratamento considerando medicações atuais e fatores de risco
-3. Sugestões de monitoramento e ajustes no plano de cuidados
-4. Alertas e precauções específicas para a equipe de enfermagem
-5. Próximos passos recomendados para o tratamento
+Forneça 3 recomendações específicas, cada uma em sua própria seção:
 
-Para a geração da imagem, crie uma representação visual profissional do protocolo de cuidados recomendado, incluindo:
-- Sequência de ações recomendadas
-- Pontos de atenção principais
-- Indicadores de monitoramento
-- Metas de tratamento`;
+1. PROTOCOLO DE TRATAMENTO:
+Descreva o protocolo detalhado de tratamento, incluindo ajustes nas medicações, procedimentos recomendados e metas terapêuticas. Foque em aspectos técnicos e procedimentais.
+
+2. PLANO DE MONITORAMENTO:
+Especifique os parâmetros a serem monitorados, frequência de verificação dos sinais vitais, exames necessários e indicadores de progresso. Inclua critérios objetivos de avaliação.
+
+3. CUIDADOS DE ENFERMAGEM:
+Liste as ações específicas para a equipe de enfermagem, precauções necessárias e protocolos de segurança. Enfatize aspectos práticos do cuidado direto ao paciente.
+
+Para cada recomendação, gere uma imagem profissional e técnica que demonstre:
+- Procedimentos médicos específicos recomendados
+- Esquemas de administração de medicamentos
+- Fluxogramas de protocolos de cuidado
+- Instrumentos e equipamentos necessários
+- Representações de técnicas de monitoramento
+
+IMPORTANTE: As imagens devem focar em aspectos técnicos e procedimentais, evitando o foco em pessoas. Priorize a visualização de:
+- Procedimentos médicos
+- Equipamentos hospitalares
+- Protocolos técnicos
+- Instrumentos médicos
+- Fluxogramas de tratamento`;
 };
 
 const analyzeVitalsTrend = (vitals: any) => {

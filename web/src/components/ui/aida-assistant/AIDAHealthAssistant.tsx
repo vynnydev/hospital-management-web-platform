@@ -112,7 +112,8 @@ const AIDAHealthAssistant: React.FC = () => {
     <>
       <button
         onClick={toggleAssistant}
-        className={`fixed bottom-8 left-[1550px] rounded-full p-6 shadow-lg transition-all duration-300 z-50 w-24 h-24 flex items-center justify-center hover:scale-110
+        className={`fixed bottom-8 left-[1550px] rounded-full p-6 shadow-lg transition-all 
+          duration-300 z-50 w-20 h-20 flex items-center justify-center hover:scale-110
           ${theme === 'dark' 
             ? 'dark-assistant-button' 
             : 'light-assistant-button'

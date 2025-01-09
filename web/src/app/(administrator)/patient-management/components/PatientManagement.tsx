@@ -84,7 +84,7 @@ export const PatientManagementComponent: React.FC = () => {
             {error && <p className='text-red-500'>{error}</p>}
 
             {!loading && !error && (
-                <div className="grid grid-cols-3 gap-8">
+                <div className="grid grid-cols-2 gap-8">
                     <div className="col-span-3">
                         <DepartmentAreaCards
                             departments={[
@@ -113,9 +113,9 @@ export const PatientManagementComponent: React.FC = () => {
                         />
                     </div>
 
-                    <div>
+                    {/* <div>
                         <PatientReportCard patient={selectedPatient} />
-                    </div>
+                    </div> */}
                 </div>
             )}
         </div>
