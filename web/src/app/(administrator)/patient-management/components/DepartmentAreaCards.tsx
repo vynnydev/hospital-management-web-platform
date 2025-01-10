@@ -8,7 +8,6 @@ import 'slick-carousel/slick/slick-theme.css';
 
 // Cores de fundo
 const departmentColors: Record<string, string> = {
-    todos: 'from-gray-700 via-gray-900 to-black',
     uti: 'from-red-400 via-red-600 to-red-800',
     enfermaria: 'from-blue-400 via-blue-600 to-blue-800',
     pediatria: 'from-green-400 via-green-600 to-green-800',

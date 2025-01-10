@@ -12,7 +12,7 @@ type FontSize = 'small' | 'normal' | 'large' | 'extra-large';
 export const PatientManagementComponent: React.FC = () => {
     const [metrics, setMetrics] = useState<Metrics | null>(null);
     const [patients, setPatients] = useState<Patient[]>([]);
-    const [selectedArea, setSelectedArea] = useState<string>('todos');
+    const [selectedArea, setSelectedArea] = useState<string>(''); // Removendo o 'todos'
     const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -45,20 +45,15 @@ export const PatientManagementComponent: React.FC = () => {
     }
 
     // Filtrar pacientes com base no departamento selecionado
-    const filteredPatients = selectedArea === 'todos'
+    const filteredPatients = selectedArea === ''
     ? patients
     : patients.filter(patient => {
-        // console.log("Area Selecionada:", selectedArea)
         const currentDepartment = patient.admission.bed.type.trim().toLowerCase();
-        // console.log("Departamento atual:", currentDepartment)
         const hasHistoryInDepartment = patient.admission.statusHistory.some(
             history => history.department.trim().toLowerCase() === selectedArea.trim().toLowerCase()
         );
-        // console.log("History departament:", hasHistoryInDepartment)
         return currentDepartment === selectedArea.trim().toLowerCase() || hasHistoryInDepartment;
     });
-
-    // console.log("Pacientes filtrados:", filteredPatients);
 
     // Construir o objeto de departamentos
     const departments = Object.keys(metrics.departmental).reduce(
@@ -69,10 +64,6 @@ export const PatientManagementComponent: React.FC = () => {
         },
         {} as Record<string, string[]>
     );
-    // console.log("Construção do objeto de departamento:", departments)
-
-    departments.todos = Object.keys(departments).flatMap(dept => departments[dept]);
-    console.log(departments)
 
     const handleClose = () => {
         setIsOpen(false);
@@ -87,14 +78,11 @@ export const PatientManagementComponent: React.FC = () => {
                 <div className="grid grid-cols-2 gap-8">
                     <div className="col-span-3">
                         <DepartmentAreaCards
-                            departments={[
-                                { area: 'todos', count: patients.length, capacity: metrics.capacity.total.maxBeds || 0 },
-                                ...Object.entries(metrics.departmental).map(([area, data]) => ({
-                                    area,
-                                    count: data.patients,
-                                    capacity: data.beds,
-                                })),
-                            ]}
+                            departments={Object.entries(metrics.departmental).map(([area, data]) => ({
+                                area,
+                                count: data.patients,
+                                capacity: data.beds,
+                            }))}
                             onClick={(area) => setSelectedArea(area)} // Atualiza o estado
                             selectedArea={selectedArea}
                         />
@@ -112,13 +100,8 @@ export const PatientManagementComponent: React.FC = () => {
                             setFontSize={setFontSize}
                         />
                     </div>
-
-                    {/* <div>
-                        <PatientReportCard patient={selectedPatient} />
-                    </div> */}
                 </div>
             )}
         </div>
     );
 };
-

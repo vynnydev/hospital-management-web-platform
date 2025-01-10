@@ -402,7 +402,7 @@ export const PatientCardModal: React.FC<PatientCardModal> = ({
                                     >
                                         {mockReports.map((report, index) => (
                                             <Card key={index} className="flex-shrink-0 w-[300px] cursor-pointer hover:shadow-lg transition-all">
-                                                <CardContent className="p-6">
+                                                <CardContent className="p-6 border rounded-md">
                                                     <div className="flex flex-col gap-2">
                                                         <span className="text-sm text-blue-500 font-medium">
                                                             {report.type}

@@ -44,3 +44,20 @@ export const convertToImageUrl = (url: string | undefined) => {
         return '';
     }
 };
+
+// Converte Blob para base64
+export const convertBlobToBase64 = (blob: Blob): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        
+        reader.onloadend = () => {
+            resolve(reader.result as string); // A string base64 será retornada
+        };
+        
+        reader.onerror = (error) => {
+            reject(error); // Em caso de erro, o erro é retornado
+        };
+        
+        reader.readAsDataURL(blob); // Lê o Blob e converte para base64
+    });
+};

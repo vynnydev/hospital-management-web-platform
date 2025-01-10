@@ -43,6 +43,8 @@ interface CareInstructionsCardProps {
 const CareInstructionsCard: React.FC<CareInstructionsCardProps> = ({ instruction, images }) => {
     const [activeTab, setActiveTab] = useState('main');
 
+    console.log(images?.usage)
+
     const processedImages = useMemo(() => ({
         usage: convertToImageUrl(images?.usage),
         application: convertToImageUrl(images?.application),
@@ -166,7 +168,7 @@ const CareInstructionsCard: React.FC<CareInstructionsCardProps> = ({ instruction
                 {processedImages.usage ? (
                     <div className="relative aspect-square rounded-lg overflow-hidden">
                         <Image 
-                            src={processedImages.usage}
+                            src={processedImages.usage }
                             alt="Instruções principais"
                             width={500} 
                             height={400}

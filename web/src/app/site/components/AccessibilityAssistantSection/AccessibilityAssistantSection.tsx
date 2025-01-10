@@ -10,7 +10,7 @@ import { GoArrowRight } from 'react-icons/go';
 import accessibilityPeopleSettings from '@/assets/application-images/accessibility-settings.png'; // Adicione sua imagem ao diretório assets
 
 export const AccessibilityAssistantSection: React.FC = () => {
-    const { theme, setTheme } = useTheme();
+    const { theme } = useTheme();
 
     return (
         <div className="flex flex-col absolute top-[6850px] bottom-0 left-0 right-0 px-32 max-md:mt-32 max-lg:mt-32 max-md:px-8 max-lg:px-8 w-full h-[80vh] overflow-hidden">

@@ -4,7 +4,8 @@ export interface GeneratedData {
   recommendation?: string;
   treatmentImage?: string;
   carePlanImage?: string;
-  imageBlobUrl?: string;
+  monitoringImage?: string;
+  // imageBlobUrl?: string;
 }
 
 export interface GeneratedImages {

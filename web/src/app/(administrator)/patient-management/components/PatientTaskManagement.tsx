@@ -14,6 +14,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { DepartmentBoard } from "./DepartmentBoard";
 import { generateEnhancedPrompt } from "./functions/AI/aiAssistantPatientBoard";
 import { PatientCardModal } from "./PatientCardModal";
+import { isValidBase64Image } from "@/components/ui/aida-assistant/report-modal-ai/services/functions/imagePresenter";
 
 const hfInference = new HfInference(process.env.HUGGING_FACE_API_KEY!);
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY!);
@@ -99,6 +100,26 @@ export const PatientTaskManagement: React.FC<Props> = ({
     };
   }, [synthesis]);
 
+  const processImageResponse = async (response: Blob): Promise<string> => {
+          if (response.size === 0) {
+              throw new Error('Blob vazio recebido');
+          }
+  
+          return new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onloadend = () => {
+                  const result = reader.result as string;
+                  if (!result || !isValidBase64Image(result)) {
+                      reject(new Error('Imagem base64 inválida gerada'));
+                  } else {
+                      resolve(result);
+                  }
+              };
+              reader.onerror = () => reject(new Error('Erro ao ler blob'));
+              reader.readAsDataURL(response);
+          });
+    }
+
   const generateData = async (patient: Patient) => {
     const enhancedPrompt = generateEnhancedPrompt(patient);
     
@@ -116,6 +137,8 @@ export const PatientTaskManagement: React.FC<Props> = ({
             },
           })
           .then((res) => res.response.text()),
+  
+        // Alteração: Usando processImageResponse para converter o Blob em Base64
         hfInference
           .textToImage({
             inputs: enhancedPrompt,
@@ -126,13 +149,13 @@ export const PatientTaskManagement: React.FC<Props> = ({
             },
             model: "stabilityai/stable-diffusion-3.5-large",
           })
-          .then((blob) => URL.createObjectURL(blob)),
+          .then((blob) => processImageResponse(blob)), // Aqui você converte o Blob em Base64
       ]);
-  
+    
       const latestVitals = patient.treatment.vitals[patient.treatment.vitals.length - 1];
-  
+    
       const carePlanPrompt = `Crie uma imagem clara e profissional representando o plano de cuidados para ${patient.personalInfo.name}, focando em: monitoramento de sinais vitais (FC: ${latestVitals.heartRate}bpm, Temp: ${latestVitals.temperature}°C, SatO2: ${latestVitals.oxygenSaturation}%), medicações principais e cuidados específicos.`;
-  
+    
       const carePlanImage = await hfInference
         .textToImage({
           inputs: carePlanPrompt,
@@ -143,19 +166,19 @@ export const PatientTaskManagement: React.FC<Props> = ({
           },
           model: "stabilityai/stable-diffusion-3.5-large",
         })
-        .then((blob) => URL.createObjectURL(blob));
-  
+        .then((blob) => processImageResponse(blob)); // Aqui também converte o Blob em Base64
+    
       setGeneratedData({
         recommendation: recommendationResult,
         treatmentImage: imageResult,
         carePlanImage: carePlanImage,
       } as GeneratedData);
-  
+    
       setGeneratedImages((prev: GeneratedImages) => ({
         ...prev,
         [patient.id]: { treatment: imageResult, carePlan: carePlanImage }
       }));
-  
+    
     } catch (error) {
       // console.error("Erro ao gerar dados:", error);
       setGeneratedData({
@@ -199,6 +222,7 @@ export const PatientTaskManagement: React.FC<Props> = ({
             patients={patients}
             setSelectedPatient={setSelectedPatient}
             generateData={generateData}
+            generatedData={generatedData}
           />
         ) : null}
 

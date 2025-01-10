@@ -6,7 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/organisms/select';
-import { Metrics, Patient } from '../types/types';
+import { GeneratedData, Metrics, Patient } from '../types/types';
 import { PatientCard } from './PatientCard';
 
 interface DepartmentBoardProps {
@@ -15,6 +15,7 @@ interface DepartmentBoardProps {
   patients: Patient[];
   setSelectedPatient: (patient: Patient | null) => void;  // Alterado para aceitar null
   generateData: (patient: Patient) => Promise<void>;      // Alterado para Promise<void>
+  generatedData: GeneratedData // Recomendações geradas por inteligencia artificial
 }
 
 export const DepartmentBoard: React.FC<DepartmentBoardProps> = ({ 
@@ -22,11 +23,14 @@ export const DepartmentBoard: React.FC<DepartmentBoardProps> = ({
   selectedArea, 
   patients, 
   setSelectedPatient, 
-  generateData 
+  generateData,
+  generatedData // Recomendações geradas por inteligencia artificial
 }) => {
   // Inicializa com a primeira chave do objeto departmental
   const departmentKeys = Object.keys(data.departmental);
   const [selectedDepartment, setSelectedDepartment] = useState<string>(departmentKeys[0] || '');
+
+  console.log("Recomendações de AI no card do Board:", generateData)
 
   // Debug logs
   // console.log('Selected Department:', selectedDepartment);
@@ -91,7 +95,8 @@ export const DepartmentBoard: React.FC<DepartmentBoardProps> = ({
                     >
                       <PatientCard 
                         patient={patient} 
-                        status={status}                      
+                        status={status}   
+                        generatedData={generatedData}                 
                       />
                     </button>
                   ))}

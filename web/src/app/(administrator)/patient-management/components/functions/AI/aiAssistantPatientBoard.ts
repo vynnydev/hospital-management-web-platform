@@ -9,61 +9,77 @@ export const generateEnhancedPrompt = (patient: Patient) => {
     .map(med => `${med.name} (${med.dosage}, ${med.frequency})`)
     .join(', ');
 
-  return `Atuando como um especialista médico em análise clínica e cuidados hospitalares, forneça recomendações detalhadas para o seguinte caso:
+  return `Atuando como especialista em medicina hospitalar, forneça recomendações e instruções visuais técnicas para:
 
 DADOS DO PACIENTE:
 - Nome: ${patient.personalInfo.name}
 - Idade: ${patient.personalInfo.age} anos
-- Tipo Sanguíneo: ${patient.personalInfo.bloodType}
-- Status Atual: ${patient.admission.statusHistory[0].status}
+- Status: ${patient.admission.statusHistory[0].status}
 - Departamento: ${patient.admission.statusHistory[0].department}
-- Motivo da Internação: ${patient.admission.reason}
+- Condição: ${patient.admission.reason}
 
-SINAIS VITAIS ATUAIS:
-- Frequência Cardíaca: ${latestVitals.heartRate} bpm (Tendência: ${vitalsTrend.heartRate})
-- Temperatura: ${latestVitals.temperature}°C (Tendência: ${vitalsTrend.temperature})
-- Saturação de Oxigênio: ${latestVitals.oxygenSaturation}% (Tendência: ${vitalsTrend.oxygenSaturation})
+SINAIS VITAIS:
+- FC: ${latestVitals.heartRate} bpm (${vitalsTrend.heartRate})
+- Temperatura: ${latestVitals.temperature}°C (${vitalsTrend.temperature})
+- SpO2: ${latestVitals.oxygenSaturation}% (${vitalsTrend.oxygenSaturation})
 
-MEDICAÇÕES ATUAIS:
-${medications}
+MEDICAÇÕES: ${medications}
 
-FATORES DE RISCO:
-${patient.aiAnalysis.complications.factors.join(', ')}
+FORNEÇA 3 RECOMENDAÇÕES COM IMAGENS TÉCNICAS:
 
-Score de Risco: ${(patient.aiAnalysis.riskScore * 100).toFixed(1)}%
-Tempo de Internação Previsto: ${patient.aiAnalysis.predictedLOS} dias
+[RECOMENDAÇÃO 1: PROTOCOLO DE TRATAMENTO]
+- Descrição detalhada do protocolo
+- Ajustes necessários nas medicações
+- Procedimentos recomendados
+- Metas terapêuticas específicas
 
-PROCEDIMENTOS REALIZADOS:
-${patient.treatment.procedures.map(p => p.type).join(', ')}
+[IMAGEM TÉCNICA 1]
+- Fluxograma do protocolo
+- Esquema de administração
+- Equipamentos necessários
+- Pontos de verificação
+- Resolução: 2048x2048 pixels
 
-Forneça 3 recomendações específicas, cada uma em sua própria seção:
+[RECOMENDAÇÃO 2: PLANO DE MONITORAMENTO]
+- Parâmetros específicos
+- Frequência de verificação
+- Exames necessários
+- Indicadores de progresso
 
-1. PROTOCOLO DE TRATAMENTO:
-Descreva o protocolo detalhado de tratamento, incluindo ajustes nas medicações, procedimentos recomendados e metas terapêuticas. Foque em aspectos técnicos e procedimentais.
+[IMAGEM TÉCNICA 2]
+- Diagrama de monitoramento
+- Posicionamento de sensores
+- Gráficos de parâmetros
+- Pontos críticos
+- Resolução: 2048x2048 pixels
 
-2. PLANO DE MONITORAMENTO:
-Especifique os parâmetros a serem monitorados, frequência de verificação dos sinais vitais, exames necessários e indicadores de progresso. Inclua critérios objetivos de avaliação.
+[RECOMENDAÇÃO 3: PROCEDIMENTOS DE ENFERMAGEM]
+- Ações específicas necessárias
+- Precauções de segurança
+- Protocolos de cuidado
+- Critérios de avaliação
 
-3. CUIDADOS DE ENFERMAGEM:
-Liste as ações específicas para a equipe de enfermagem, precauções necessárias e protocolos de segurança. Enfatize aspectos práticos do cuidado direto ao paciente.
+[IMAGEM TÉCNICA 3]
+- Diagrama de procedimentos
+- Sequência de ações
+- Materiais necessários
+- Pontos de atenção
+- Resolução: 2048x2048 pixels
 
-Para cada recomendação, gere uma imagem profissional e técnica que demonstre:
-- Procedimentos médicos específicos recomendados
-- Esquemas de administração de medicamentos
-- Fluxogramas de protocolos de cuidado
-- Instrumentos e equipamentos necessários
-- Representações de técnicas de monitoramento
-
-IMPORTANTE: As imagens devem focar em aspectos técnicos e procedimentais, evitando o foco em pessoas. Priorize a visualização de:
-- Procedimentos médicos
-- Equipamentos hospitalares
-- Protocolos técnicos
-- Instrumentos médicos
-- Fluxogramas de tratamento`;
+[PADRÕES TÉCNICOS]
+- Foco em procedimentos e equipamentos
+- Legendas em português
+- Setas indicativas
+- Medidas precisas
+- Sem representações humanas`;
 };
 
 const analyzeVitalsTrend = (vitals: any) => {
-  if (vitals.length < 2) return { heartRate: 'estável', temperature: 'estável', oxygenSaturation: 'estável' };
+  if (vitals.length < 2) return { 
+    heartRate: 'estável', 
+    temperature: 'estável', 
+    oxygenSaturation: 'estável' 
+  };
 
   const latest = vitals[vitals.length - 1];
   const previous = vitals[vitals.length - 2];
