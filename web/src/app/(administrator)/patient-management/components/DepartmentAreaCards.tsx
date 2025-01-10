@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Slider from 'react-slick'; // Biblioteca para o carrossel
-import { FaHospital, FaHeart, FaChild, FaUserNurse, FaProcedures } from 'react-icons/fa';
+import { FaHeart, FaChild, FaUserNurse, FaProcedures } from 'react-icons/fa';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
@@ -16,7 +16,6 @@ const departmentColors: Record<string, string> = {
 
 // Ícones dos departamentos
 const departmentIcons: Record<string, JSX.Element> = {
-    todos: <FaHospital size={24} />,
     uti: <FaHeart size={24} />,
     enfermaria: <FaUserNurse size={24} />,
     pediatria: <FaChild size={24} />,

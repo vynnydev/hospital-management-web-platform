@@ -16,6 +16,10 @@ interface DepartmentBoardProps {
   setSelectedPatient: (patient: Patient | null) => void;  // Alterado para aceitar null
   generateData: (patient: Patient) => Promise<void>;      // Alterado para Promise<void>
   generatedData: GeneratedData // Recomendações geradas por inteligencia artificial
+  // Carregamento de recomendações e imagens geradas por IA
+  isLoading: boolean,
+  loadingMessage?: string;
+  loadingProgress?: number;
 }
 
 export const DepartmentBoard: React.FC<DepartmentBoardProps> = ({ 
@@ -24,7 +28,10 @@ export const DepartmentBoard: React.FC<DepartmentBoardProps> = ({
   patients, 
   setSelectedPatient, 
   generateData,
-  generatedData // Recomendações geradas por inteligencia artificial
+  generatedData, // Recomendações geradas por inteligencia artificial
+  isLoading,
+  loadingMessage,
+  loadingProgress,
 }) => {
   // Inicializa com a primeira chave do objeto departmental
   const departmentKeys = Object.keys(data.departmental);
@@ -96,7 +103,10 @@ export const DepartmentBoard: React.FC<DepartmentBoardProps> = ({
                       <PatientCard 
                         patient={patient} 
                         status={status}   
-                        generatedData={generatedData}                 
+                        generatedData={generatedData}    
+                        isLoading={isLoading}
+                        loadingMessage={loadingMessage}
+                        loadingProgress={loadingProgress}
                       />
                     </button>
                   ))}

@@ -52,6 +52,9 @@ export const PatientTaskManagement: React.FC<Props> = ({
   const [currentAudio, setCurrentAudio] = useState<SpeechSynthesisUtterance | null>(null);
   const [currentUtterance, setCurrentUtterance] = useState<SpeechSynthesisUtterance | null>(null);
   const [synthesis, setSynthesis] = useState<SpeechSynthesis | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [loadingMessage, setLoadingMessage] = useState('');
 
   const categorizedPatients: Record<string, Record<string, Patient[]>> = {};
 
@@ -120,10 +123,29 @@ export const PatientTaskManagement: React.FC<Props> = ({
           });
     }
 
-  const generateData = async (patient: Patient) => {
+  // Constantes para configuração
+  const IMAGE_MODELS = {
+    STABLE_DIFFUSION: "stabilityai/stable-diffusion-3.5-large",
+    FLUX_DEV: "black-forest-labs/FLUX.1-dev", // Alternativa mais rápida
+    FLUX_SCHNELL: "black-forest-labs/FLUX.1-schnell" // Alternativa mais rápida ainda
+  } as const;
+
+  const IMAGE_PARAMETERS = {
+    negative_prompt: "texto, palavras, letras, números, baixa qualidade, borrado, pessoas, rostos humanos",
+    num_inference_steps: 50, // Aumentei para melhor qualidade
+    guidance_scale: 8.5, // Aumentei um pouco para mais precisão
+  };
+
+  const generateData = async (patient: Patient): Promise<void> => {
+    setIsLoading(true);
+    setLoadingProgress(0);
+    setLoadingMessage('Iniciando geração...');
+    console.time('generateData');
     const enhancedPrompt = generateEnhancedPrompt(patient);
     
     try {
+      setLoadingProgress(20);
+      setLoadingMessage('Gerando recomendações...');
       const [recommendationResult, imageResult] = await Promise.all([
         genAI
           .getGenerativeModel({ model: "gemini-pro" })
@@ -136,55 +158,113 @@ export const PatientTaskManagement: React.FC<Props> = ({
               maxOutputTokens: 1024,
             },
           })
-          .then((res) => res.response.text()),
-  
-        // Alteração: Usando processImageResponse para converter o Blob em Base64
-        hfInference
-          .textToImage({
-            inputs: enhancedPrompt,
-            parameters: {
-              negative_prompt: "texto, palavras, letras, números, baixa qualidade, borrado",
-              num_inference_steps: 50,
-              guidance_scale: 7.5,
-            },
-            model: "stabilityai/stable-diffusion-3.5-large",
+          .then((res) => {
+            console.log('Recomendação gerada com sucesso');
+            return res.response.text();
           })
-          .then((blob) => processImageResponse(blob)), // Aqui você converte o Blob em Base64
+          .catch((error) => {
+            console.error('Erro ao gerar recomendação:', error);
+            throw new Error('Falha ao gerar recomendação');
+          }),
+  
+        generateImage(enhancedPrompt)
+          .then((result) => {
+            console.log('Primeira imagem gerada com sucesso');
+            return result;
+          })
+          .catch((error) => {
+            console.error('Erro ao gerar primeira imagem:', error);
+            throw new Error('Falha ao gerar primeira imagem');
+          })
       ]);
-    
+  
+      console.log('Gerando imagem do plano de cuidados...');
       const latestVitals = patient.treatment.vitals[patient.treatment.vitals.length - 1];
-    
-      const carePlanPrompt = `Crie uma imagem clara e profissional representando o plano de cuidados para ${patient.personalInfo.name}, focando em: monitoramento de sinais vitais (FC: ${latestVitals.heartRate}bpm, Temp: ${latestVitals.temperature}°C, SatO2: ${latestVitals.oxygenSaturation}%), medicações principais e cuidados específicos.`;
-    
-      const carePlanImage = await hfInference
-        .textToImage({
-          inputs: carePlanPrompt,
-          parameters: {
-            negative_prompt: "texto, palavras, letras, números, baixa qualidade, borrado",
-            num_inference_steps: 50,
-            guidance_scale: 7.5,
-          },
-          model: "stabilityai/stable-diffusion-3.5-large",
-        })
-        .then((blob) => processImageResponse(blob)); // Aqui também converte o Blob em Base64
-    
+      
+      const carePlanPrompt = generateCarePlanPrompt(patient, latestVitals);
+      
+      const carePlanImage = await generateImage(carePlanPrompt)
+        .catch((error) => {
+          console.error('Erro ao gerar imagem do plano de cuidados:', error);
+          throw new Error('Falha ao gerar imagem do plano de cuidados');
+        });
+  
+      setLoadingProgress(60);
+      setLoadingMessage('Gerando imagem do plano de cuidados...');
+      console.log('Todas as gerações concluídas com sucesso');
+  
       setGeneratedData({
         recommendation: recommendationResult,
         treatmentImage: imageResult,
         carePlanImage: carePlanImage,
       } as GeneratedData);
-    
+      
       setGeneratedImages((prev: GeneratedImages) => ({
         ...prev,
         [patient.id]: { treatment: imageResult, carePlan: carePlanImage }
       }));
-    
-    } catch (error) {
-      // console.error("Erro ao gerar dados:", error);
-      setGeneratedData({
-        recommendation: "Erro ao gerar recomendação. Por favor, tente novamente.",
+  
+      console.timeEnd('generateData');
+      // Removido o return do GeneratedData
+
+      setLoadingProgress(100);
+      setLoadingMessage('Concluído!');
+    } catch (error: any) {
+      console.error('Erro durante a geração de dados:', {
+        error: error.message,
+        stack: error.stack,
+        patientId: patient.id
       });
+  
+      setGeneratedData({
+        recommendation: `Erro ao gerar recomendação: ${error.message}. Por favor, tente novamente.`,
+        treatmentImage: undefined,
+        carePlanImage: undefined,
+      });
+      setLoadingMessage('Erro ao gerar recomendação!');
+  
+      throw error;
+    } finally {
+      setTimeout(() => {
+        setIsLoading(false);
+        setLoadingProgress(0);
+        setLoadingMessage('');
+      }, 1000);
     }
+  };
+
+  // Função auxiliar para geração de imagens
+  const generateImage = async (prompt: string) => {
+    console.time('generateImage');
+    
+    try {
+      const result = await hfInference
+        .textToImage({
+          inputs: prompt,
+          parameters: IMAGE_PARAMETERS,
+          model: IMAGE_MODELS.FLUX_SCHNELL, // Você pode trocar para FLUX_DEV ou FLUX_SCHNELL
+        });
+      
+      console.timeEnd('generateImage');
+      return processImageResponse(result);
+    } catch (error) {
+      console.timeEnd('generateImage');
+      throw error;
+    }
+  };
+
+  // Função auxiliar para gerar prompt do plano de cuidados
+  const generateCarePlanPrompt = (patient: Patient, latestVitals: any) => {
+    return `Representação visual técnica e detalhada em português brasileiro:
+      - TIPO: Diagrama médico técnico hospitalar
+      - CONTEÚDO: Fluxograma de monitoramento de sinais vitais
+      - DADOS: FC ${latestVitals.heartRate}bpm | Temp ${latestVitals.temperature}°C | SatO2 ${latestVitals.oxygenSaturation}%
+      - ESTILO: Diagrama profissional médico, alto contraste
+      - ELEMENTOS: Equipamentos médicos, gráficos de monitoramento, símbolos hospitalares
+      - LAYOUT: Organizado em grade com setas de fluxo
+      - CORES: Esquema profissional hospitalar
+      - TEXTO: Todas as legendas em português do Brasil
+      - ATENÇÃO: Sem pessoas, sem rostos, apenas equipamentos e diagramas`;
   };
 
   return (
@@ -223,6 +303,10 @@ export const PatientTaskManagement: React.FC<Props> = ({
             setSelectedPatient={setSelectedPatient}
             generateData={generateData}
             generatedData={generatedData}
+            // Atributos de carregamento de imagens e recomendações geradas por IA (passando para o PatientCard)
+            isLoading={isLoading}
+            loadingMessage={loadingMessage}
+            loadingProgress={loadingProgress}
           />
         ) : null}
 

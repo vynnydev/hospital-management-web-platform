@@ -1,17 +1,25 @@
 import Image from 'next/image';
 import { GeneratedData, Patient } from '../types/types';
 import { HiSparkles } from 'react-icons/hi'; // ícone de brilho (sparkles)
+import { LoadingState } from './LoadingState';
 
 interface PatientCardProps {
   patient: Patient;
   status: string;
   generatedData: GeneratedData;
+  // Atributos de carregamento de imagens e recomendações geradas por IA (passando para o LoadingState)
+  isLoading: boolean;
+  loadingMessage?: string;
+  loadingProgress?: number;
 }
 
 export const PatientCard: React.FC<PatientCardProps> = ({ 
     patient, 
     status, 
-    generatedData 
+    generatedData,
+    isLoading,
+    loadingMessage = "Gerando imagem...",
+    loadingProgress 
 }) => { 
     return (
         <div className='bg-gradient-to-br from-teal-400 to-blue-500 dark:from-teal-700 dark:to-blue-700 rounded-xl transform transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-lg p-1'>
@@ -72,9 +80,18 @@ export const PatientCard: React.FC<PatientCardProps> = ({
                     </div>
                 ) : (
                     // Renderiza o componente de loading enquanto a imagem não está disponível
-                    <div className="relative w-full h-40 mt-4 bg-gray-200 rounded-xl overflow-hidden animate-pulse">
-                        <div className="w-full h-full bg-gray-300 rounded-xl"></div>
-                    </div>
+                    <div className="relative w-full h-40 mt-4 bg-gray-200 rounded-xl overflow-hidden">
+                    {isLoading ? (
+                      <div className="w-full h-full flex flex-col items-center justify-center p-4">
+                        <LoadingState 
+                          message={loadingMessage}
+                          progress={loadingProgress}
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-full h-full bg-gray-300 dark:bg-gray-700 rounded-xl animate-pulse" />
+                    )}
+                  </div>
                 )}
             </div>
         </div>

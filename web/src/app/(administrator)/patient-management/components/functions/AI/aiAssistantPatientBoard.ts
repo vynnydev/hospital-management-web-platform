@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Patient } from "../../../types/types";
 
-// Funções de Inteligencia Artificial:
 export const generateEnhancedPrompt = (patient: Patient) => {
   const latestVitals = patient.treatment.vitals[patient.treatment.vitals.length - 1];
   const vitalsTrend = analyzeVitalsTrend(patient.treatment.vitals);
@@ -9,7 +8,7 @@ export const generateEnhancedPrompt = (patient: Patient) => {
     .map(med => `${med.name} (${med.dosage}, ${med.frequency})`)
     .join(', ');
 
-  return `Atuando como especialista em medicina hospitalar, forneça recomendações e instruções visuais técnicas para:
+  return `Instruções técnicas e visuais para procedimentos médicos hospitalares:
 
 DADOS DO PACIENTE:
 - Nome: ${patient.personalInfo.name}
@@ -23,55 +22,61 @@ SINAIS VITAIS:
 - Temperatura: ${latestVitals.temperature}°C (${vitalsTrend.temperature})
 - SpO2: ${latestVitals.oxygenSaturation}% (${vitalsTrend.oxygenSaturation})
 
-MEDICAÇÕES: ${medications}
+MEDICAÇÕES ATUAIS: ${medications}
 
-FORNEÇA 3 RECOMENDAÇÕES COM IMAGENS TÉCNICAS:
+[INSTRUÇÕES VISUAIS PASSO A PASSO]
 
-[RECOMENDAÇÃO 1: PROTOCOLO DE TRATAMENTO]
-- Descrição detalhada do protocolo
-- Ajustes necessários nas medicações
-- Procedimentos recomendados
-- Metas terapêuticas específicas
+[PROCEDIMENTO 1: ADMINISTRAÇÃO DE MEDICAMENTOS]
+1. Higienização das mãos e preparação dos materiais
+2. Verificação dos "5 certos" da medicação
+3. Preparação da dose conforme prescrição
+4. Administração seguindo protocolo específico
+5. Registro e monitoramento pós-administração
 
-[IMAGEM TÉCNICA 1]
-- Fluxograma do protocolo
-- Esquema de administração
-- Equipamentos necessários
-- Pontos de verificação
+[ELEMENTOS VISUAIS 1]
+- Vista detalhada dos equipamentos necessários
+- Sequência numerada de cada etapa
+- Destaque para pontos críticos de verificação
+- Indicadores de dosagem e medidas
 - Resolução: 2048x2048 pixels
 
-[RECOMENDAÇÃO 2: PLANO DE MONITORAMENTO]
-- Parâmetros específicos
-- Frequência de verificação
-- Exames necessários
-- Indicadores de progresso
+[PROCEDIMENTO 2: MONITORAMENTO DE SINAIS VITAIS]
+1. Preparação dos equipamentos de monitoramento
+2. Posicionamento correto dos sensores
+3. Configuração dos parâmetros de alarme
+4. Registro dos valores em intervalos definidos
+5. Identificação de alterações significativas
 
-[IMAGEM TÉCNICA 2]
-- Diagrama de monitoramento
-- Posicionamento de sensores
-- Gráficos de parâmetros
-- Pontos críticos
+[ELEMENTOS VISUAIS 2]
+- Diagrama técnico dos equipamentos
+- Marcadores de posicionamento dos sensores
+- Gráficos de referência para valores normais
+- Indicadores de alertas e alarmes
 - Resolução: 2048x2048 pixels
 
-[RECOMENDAÇÃO 3: PROCEDIMENTOS DE ENFERMAGEM]
-- Ações específicas necessárias
-- Precauções de segurança
-- Protocolos de cuidado
-- Critérios de avaliação
+[PROCEDIMENTO 3: PROTOCOLOS DE SEGURANÇA]
+1. Verificação da identificação do paciente
+2. Conferência da prescrição médica
+3. Avaliação de contraindicações
+4. Implementação de medidas preventivas
+5. Documentação das ações realizadas
 
-[IMAGEM TÉCNICA 3]
-- Diagrama de procedimentos
-- Sequência de ações
-- Materiais necessários
-- Pontos de atenção
+[ELEMENTOS VISUAIS 3]
+- Fluxograma do protocolo de segurança
+- Checklist visual de verificação
+- Símbolos de alerta e precaução
+- Indicadores de conformidade
 - Resolução: 2048x2048 pixels
 
-[PADRÕES TÉCNICOS]
-- Foco em procedimentos e equipamentos
-- Legendas em português
-- Setas indicativas
-- Medidas precisas
-- Sem representações humanas`;
+[PADRÕES TÉCNICOS PARA TODAS AS IMAGENS]
+- Foco exclusivo em equipamentos e procedimentos
+- Sem representações de pessoas
+- Texto totalmente em português
+- Setas e números indicando sequência
+- Cores padronizadas para níveis de risco
+- Legendas claras e objetivas
+- Vista detalhada de instrumentos médicos
+- Escala precisa de medidas e dosagens`;
 };
 
 const analyzeVitalsTrend = (vitals: any) => {

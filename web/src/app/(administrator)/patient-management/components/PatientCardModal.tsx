@@ -17,6 +17,7 @@ import { AIPatientAssistant } from './AIPatientAssistant';
 import { useState, useRef } from 'react';
 import { Card, CardContent } from '@/components/ui/organisms/card';
 import { Button } from '@/components/ui/organisms/button';
+import { QRCodeCanvas } from 'qrcode.react';
 
 interface PatientCardModal {
     selectedPatient: Patient | null;
@@ -244,28 +245,37 @@ export const PatientCardModal: React.FC<PatientCardModal> = ({
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4 mt-8">
-                                    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                                        <h4 className="font-semibold text-gray-800 dark:text-white mb-2">
-                                            Análise de Risco
+                                    <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 shadow-lg">
+                                        <h4 className="font-semibold text-gray-800 dark:text-white mb-2 flex items-center">
+                                            <span className="mr-2">📊</span> Análise de Risco
                                         </h4>
                                         <div className="space-y-2">
-                                            <p className="text-gray-600 dark:text-gray-300">
-                                                Score de Risco: {selectedPatient.aiAnalysis.riskScore * 100}%
+                                            <p className="text-gray-600 dark:text-gray-300 flex items-center">
+                                                <span className="mr-2">📈</span> Score de Risco: {selectedPatient.aiAnalysis.riskScore * 100}%
                                             </p>
-                                            <p className="text-gray-600 dark:text-gray-300">
-                                                Permanência Prevista: {selectedPatient.aiAnalysis.predictedLOS} dias
+                                            <p className="text-gray-600 dark:text-gray-300 flex items-center">
+                                                <span className="mr-2">🕰️</span> Permanência Prevista: {selectedPatient.aiAnalysis.predictedLOS} dias
                                             </p>
                                             <div className="text-gray-600 dark:text-gray-300">
-                                                <p className="font-semibold">Fatores de Risco:</p>
+                                                <p className="font-semibold flex items-center"><span className="mr-2">⚠️</span> Fatores de Risco:</p>
                                                 <ul className="list-disc list-inside">
                                                     {selectedPatient.aiAnalysis.complications.factors.map((factor, index) => (
-                                                    <li key={index}>{factor}</li>
+                                                        <li key={index}>{factor}</li>
                                                     ))}
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
+
+                                    {/* Seção de anexo para Análise de Relatórios */}
+                                    <div className="mt-8">
+                                        <h4 className="font-semibold text-gray-800 dark:text-white mb-2">Anexar Relatórios</h4>
+                                        <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 flex justify-center items-center cursor-pointer">
+                                            📎 <span className="ml-2">Clique para Anexar Documentos</span>
+                                        </div>
+                                    </div>
                                 </div>
+
 
                                 <div className="space-y-4">
                                     <div className="grid grid-cols-2 gap-4">
@@ -466,12 +476,11 @@ export const PatientCardModal: React.FC<PatientCardModal> = ({
                                     </div>
                                 </div>
 
+                                {/* Informações do Leito com QR Code */}
                                 <div className="pt-4">
-                                    <h4 className="font-semibold text-gray-800 dark:text-white mb-2">
-                                        Informações do Leito
-                                    </h4>
-                                    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                                        <div className="grid grid-cols-2 gap-4">
+                                    <h4 className="font-semibold text-gray-800 dark:text-white mb-2">Informações do Leito</h4>
+                                    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 flex justify-between items-center">
+                                        <div className="grid grid-cols-4 gap-4 space-x-8">
                                             <div>
                                                 <p className="text-sm text-gray-500 dark:text-gray-400">Número do Leito</p>
                                                 <p className="font-medium text-gray-800 dark:text-white">
@@ -497,6 +506,7 @@ export const PatientCardModal: React.FC<PatientCardModal> = ({
                                                 </p>
                                             </div>
                                         </div>
+                                        <QRCodeCanvas value={JSON.stringify(selectedPatient.admission.bed)} size={80} />
                                     </div>
                                 </div>
                             </div>
