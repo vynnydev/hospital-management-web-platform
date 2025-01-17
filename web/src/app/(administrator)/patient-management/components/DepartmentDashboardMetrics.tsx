@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 import React, { useEffect, useState } from 'react';
-import MetricCard from './MetricCard';
+import { DepartmentMetricCard } from './DepartmentMetricCard';
 import { metricsCalcService } from '@/services/calcs/metricsCalcService';
 import { HospitalMetrics } from '@/types/metrics';
 import { useMetricsCalculations } from '@/services/hooks/calcs/useMetricsCalculations';
@@ -17,7 +17,7 @@ import {
 import { useTheme } from 'next-themes'
 import { formatDate } from '@/utils/dateFormatter';
 
-interface DashboardMetricsProps {
+interface DepartmentDashboardMetricsProps {
   onRefresh?: () => void;
 }
 
@@ -120,7 +120,7 @@ const getDefaultMetricValues = (): HospitalMetrics => ({
     }
   });
 
-const DashboardMetrics: React.FC<DashboardMetricsProps> = ({ onRefresh }) => {
+export const DepartmentDashboardMetrics: React.FC<DepartmentDashboardMetricsProps> = ({ onRefresh }) => {
   const { theme } = useTheme();
   const [metrics, setMetrics] = useState<HospitalMetrics>(getDefaultMetricValues());
   const [loading, setLoading] = useState(true);
@@ -205,7 +205,7 @@ const DashboardMetrics: React.FC<DashboardMetricsProps> = ({ onRefresh }) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        <MetricCard
+        <DepartmentMetricCard
           title="Taxa de Ocupação Total"
           value={metrics.overall.occupancyRate}
           unit="%"
@@ -225,7 +225,7 @@ const DashboardMetrics: React.FC<DashboardMetricsProps> = ({ onRefresh }) => {
           icon={<HomeModernIcon className="w-5 h-5 text-gray-500" />}
         />
 
-        <MetricCard
+        <DepartmentMetricCard
           title="Total de Pacientes"
           value={metrics.overall.totalPatients}
           unit="pacientes"
@@ -245,7 +245,7 @@ const DashboardMetrics: React.FC<DashboardMetricsProps> = ({ onRefresh }) => {
           icon={<UserGroupIcon className="w-5 h-5 text-gray-500" />}
         />
 
-        <MetricCard
+        <DepartmentMetricCard
           title="Leitos Disponíveis"
           value={metrics.overall.availableBeds}
           unit="leitos"
@@ -272,7 +272,7 @@ const DashboardMetrics: React.FC<DashboardMetricsProps> = ({ onRefresh }) => {
           icon={<BuildingOffice2Icon className="w-5 h-5 text-gray-500" />}
         />
 
-        <MetricCard
+        <DepartmentMetricCard
           title="Tempo Médio Internação"
           value={metrics.overall.avgStayDuration}
           unit="dias"
@@ -298,7 +298,7 @@ const DashboardMetrics: React.FC<DashboardMetricsProps> = ({ onRefresh }) => {
           icon={<ClockIcon className="w-5 h-5 text-gray-500" />}
         />
 
-        <MetricCard
+        <DepartmentMetricCard
           title="Taxa de Rotatividade"
           value={calculateTurnoverRate()}
           unit="pacientes/dia"
@@ -318,5 +318,3 @@ const DashboardMetrics: React.FC<DashboardMetricsProps> = ({ onRefresh }) => {
     </div>
   );
 };
-
-export default DashboardMetrics;

@@ -41,7 +41,7 @@ export function SignInForm() {
           variant: "default",
           duration: 5000,
         });
-        router.push(`/overview/${response.user.hospitalId}`);
+        router.push('/overview');
       } else {
         console.log("Entrou aqui - Erro de permissão:", email, password)
         toast({

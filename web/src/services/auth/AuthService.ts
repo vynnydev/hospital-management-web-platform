@@ -6,21 +6,30 @@ class AuthService {
     private tokenKey = 'auth_token';
     private userKey = 'auth_user';
 
+    // Helper to check if we're on the client side
+    private isClient(): boolean {
+      return typeof window !== 'undefined';
+    }
+
     // ✅ Armazenamento Híbrido: Cookies e LocalStorage
     public setToken(token: string) {
-        Cookies.set(this.tokenKey, token, { expires: 1, secure: true, sameSite: 'Strict' });
-        localStorage.setItem(this.tokenKey, token);
+      Cookies.set(this.tokenKey, token, { expires: 1, secure: true, sameSite: 'Strict' });
+      if (this.isClient()) {
+          localStorage.setItem(this.tokenKey, token);
+      }
     }
 
     public getToken(): string | null {
         const cookieToken = Cookies.get(this.tokenKey);
-        const localToken = localStorage.getItem(this.tokenKey);
+        const localToken = this.isClient() ? localStorage.getItem(this.tokenKey) : null;
         return cookieToken || localToken || null;
     }
 
     public removeToken() {
         Cookies.remove(this.tokenKey);
-        localStorage.removeItem(this.tokenKey);
+        if (this.isClient()) {
+            localStorage.removeItem(this.tokenKey);
+        }
     }
 
     // ✅ Validação de Token (Data e formato)
@@ -37,17 +46,23 @@ class AuthService {
     }
 
     private setUser(user: AppUser | null) {
-        if (user) {
-            Cookies.set(this.userKey, JSON.stringify(user), { expires: 1 });
-            localStorage.setItem(this.userKey, JSON.stringify(user));
-        } else {
-            Cookies.remove(this.userKey);
-            localStorage.removeItem(this.userKey);
-        }
+      if (user) {
+          Cookies.set(this.userKey, JSON.stringify(user), { expires: 1 });
+          if (this.isClient()) {
+              localStorage.setItem(this.userKey, JSON.stringify(user));
+          }
+      } else {
+          Cookies.remove(this.userKey);
+          if (this.isClient()) {
+              localStorage.removeItem(this.userKey);
+          }
+      }
     }
 
     public getCurrentUser(): AppUser | null {
-        const userStr = Cookies.get(this.userKey) || localStorage.getItem(this.userKey);
+        const cookieStr = Cookies.get(this.userKey);
+        const localStr = this.isClient() ? localStorage.getItem(this.userKey) : null;
+        const userStr = cookieStr || localStr;
         return userStr ? JSON.parse(userStr) : null;
     }
 

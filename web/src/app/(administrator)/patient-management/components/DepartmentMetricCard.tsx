@@ -64,7 +64,7 @@ const formatDateTime = (date: Date): string => {
 };
 
 // components/MetricCard.tsx
-const MetricCard: React.FC<MetricCardProps> = ({
+export const DepartmentMetricCard: React.FC<MetricCardProps> = ({
   title,
   value,
   unit,
@@ -159,5 +159,3 @@ const MetricCard: React.FC<MetricCardProps> = ({
     </div>
   );
 };
-
-export default MetricCard;
