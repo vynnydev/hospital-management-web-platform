@@ -1,312 +1,371 @@
 {
-    "metrics": {
+  "users": [
+    {
+      "id": "USR001",
+      "name": "Administrador",
+      "email": "admin@rededor.com",
+      "role": "Admin",
+      "password": "123",
+      "profileImage": "",
+      "permissions": [
+        "VIEW_ALL_HOSPITALS"
+      ]
+    },
+    {
+      "id": "USR002",
+      "name": "Gestor Itaim",
+      "email": "gestor.itaim@rededor.com",
+      "role": "Hospital Manager",
+      "password": "123",
+      "profileImage": "",
+      "permissions": [
+        "VIEW_SINGLE_HOSPITAL"
+      ],
+      "hospitalId": "RDSL-SP-ITAIM"
+    },
+    {
+      "id": "USR003",
+      "name": "Gestor Morumbi",
+      "email": "gestor.morumbi@rededor.com",
+      "role": "Hospital Manager",
+      "password": "123",
+      "profileImage": "",
+      "permissions": [
+        "VIEW_SINGLE_HOSPITAL"
+      ],
+      "hospitalId": "RDSL-SP-MORUMBI"
+    }
+  ],
+  "networkInfo": {
+    "id": "RDSL",
+    "name": "Rede D'Or São Luiz",
+    "logo": "url_logo_rede_dor",
+    "totalHospitals": 3,
+    "networkMetrics": {
+      "totalBeds": 1200,
+      "totalPatients": 850,
+      "averageOccupancy": 78.5,
+      "networkEfficiency": {
+        "avgWaitTime": 45,
+        "bedTurnover": 4.2,
+        "resourceUtilization": 82
+      },
+      "regionalMetrics": {
+        "SP": {
+          "hospitals": 2,
+          "totalBeds": 800,
+          "avgOccupancy": 80.5
+        },
+        "RJ": {
+          "hospitals": 1,
+          "totalBeds": 400,
+          "avgOccupancy": 75.2
+        }
+      }
+    }
+  },
+  "hospitals": [
+    {
+      "id": "RDSL-SP-ITAIM",
+      "name": "Hospital São Luiz - Itaim",
+      "unit": {
+        "address": "Rua Dr. Alceu de Campos Rodrigues, 95",
+        "city": "São Paulo",
+        "state": "SP",
+        "coordinates": {
+          "lat": -23.5868,
+          "lng": -46.6783
+        }
+      },
+      "type": "full-service",
+      "specialties": [
+        "Cardiologia",
+        "Neurologia",
+        "Ortopedia"
+      ],
+      "metrics": {
         "capacity": {
-            "total": {
-                "maxBeds": 400,
-                "maxOccupancy": 95
+          "total": {
+            "maxBeds": 400,
+            "maxOccupancy": 95
+          },
+          "departmental": {
+            "uti": {
+              "maxBeds": 10,
+              "maxOccupancy": 95,
+              "recommendedMaxOccupancy": 90
             },
-            "departmental": {
-                "uti": {
-                    "maxBeds": 10,
-                    "maxOccupancy": 95,
-                    "recommendedMaxOccupancy": 90
-                },
-                "enfermaria": {
-                    "maxBeds": 50,
-                    "maxOccupancy": 95,
-                    "recommendedMaxOccupancy": 85
-                }
+            "enfermaria": {
+              "maxBeds": 50,
+              "maxOccupancy": 95,
+              "recommendedMaxOccupancy": 85
             }
+          }
         },
         "overall": {
-            "occupancyRate": 85.5,
-            "totalPatients": 324,
-            "availableBeds": 45,
-            "avgStayDuration": 5.2,
-            "turnoverRate": 12.3,
-            "lastUpdate": "2024-12-17T14:06:00",
-            "periodComparison": {
-                "occupancy": {
-                    "value": 2.3,
-                    "trend": "up"
-                },
-                "patients": {
-                    "value": 12,
-                    "trend": "up"
-                },
-                "beds": {
-                    "value": 5,
-                    "trend": "down"
-                }
+          "occupancyRate": 85.5,
+          "totalPatients": 324,
+          "availableBeds": 45,
+          "avgStayDuration": 5.2,
+          "turnoverRate": 12.3,
+          "totalBeds": 400,
+          "lastUpdate": "2024-12-17T14:06:00",
+          "periodComparison": {
+            "occupancy": {
+              "value": 2.3,
+              "trend": "up"
+            },
+            "patients": {
+              "value": 12,
+              "trend": "up"
+            },
+            "beds": {
+              "value": 5,
+              "trend": "down"
             }
+          }
         },
         "departmental": {
-                "uti": {
-                    "occupancy": 92,
-                    "beds": 8,
-                    "patients": 7,
-                    "validStatuses": ["Aguardando Atendimento", "Em Procedimento", "Em Recuperação", "Alta"]
-                },
-                "enfermaria": {
-                    "occupancy": 78,
-                    "beds": 37,
-                    "patients": 29,
-                    "validStatuses": ["Aguardando Atendimento", "Em Observação", "Em Recuperação", "Alta"]
-                }
-            }
-        },
-        "patients": [
-            {
-                "id": "P001",
-                "qrCode": "hash_unique_qr",
-                "personalInfo": {
-                    "name": "João Silva",
-                    "age": 45,
-                    "gender": "M",
-                    "bloodType": "O+",
-                    "photo": "url_photo",
-                        "contactInfo": {
-                            "phone": "11999999999",
-                            "emergency": "11988888888",
-                            "address": "Rua Example, 123"
-                        }
-                },
-            "admission": {
-                "date": "2024-12-15",
-                "reason": "Pneumonia",
-                "type": "Clínica",
-                "status": "Internado",
-                "statusHistory": [
-                    {
-                        "department": "Enfermaria",
-                        "status": "Aguardando Atendimento",
-                        "timestamp": "2024-12-15T12:00:00"
-                    },
-                    {
-                        "department": "Enfermaria",
-                        "status": "Em Observação",
-                        "timestamp": "2024-12-16T09:00:00"
-                    }
-                ],
-                "predictedDischarge": "2024-12-22",
-                "bed": {
-                    "id": "B001",
-                    "number": "201",
-                    "wing": "Leste",
-                    "type": "Enfermaria"
-                }
-            },
-            "medicalTeam": {
-                "doctor": {
-                    "id": "D001",
-                    "name": "Dra. Ana Santos",
-                    "specialty": "Pneumologia"
-                },
-                "nurses": [
-                    {
-                    "id": "N001",
-                    "name": "Carlos Enfermeiro",
-                    "shift": "Manhã"
-                    }
-                ]
-            },
-            "treatment": {
-                "diagnosis": ["Pneumonia bacteriana", "Hipertensão"],
-                "medications": [
-                    {
-                        "name": "Azitromicina",
-                        "dosage": "500mg",
-                        "frequency": "1x/dia",
-                        "duration": "7 dias",
-                        "startDate": "2024-12-15"
-                    }
-                ],
-                "vitals": [
-                    {
-                        "timestamp": "2024-12-17T14:00:00",
-                        "temperature": 37.2,
-                        "bloodPressure": "120/80",
-                        "heartRate": 75,
-                        "oxygenSaturation": 96,
-                        "consciousness": "Consciente e Orientado",
-                        "painScale": 3,
-                        "respiratoryRate": 16,
-                        "mobility": "Independente"
-                    },
-                    {
-                        "timestamp": "2024-12-17T20:00:00",
-                        "temperature": 37.5,
-                        "bloodPressure": "125/85",
-                        "heartRate": 78,
-                        "oxygenSaturation": 95,
-                        "consciousness": "Consciente e Orientado",
-                        "painScale": 4,
-                        "respiratoryRate": 18,
-                        "mobility": "Independente"
-                    }
-                ],
-            "procedures": [
-                {
-                "type": "Raio-X",
-                "date": "2024-12-15",
-                "result": "url_resultado",
-                "notes": "Infiltrado pulmonar bilateral"
-                }
+          "uti": {
+            "occupancy": 92,
+            "beds": 8,
+            "patients": 7,
+            "validStatuses": [
+              "Aguardando Atendimento",
+              "Em Procedimento",
+              "Em Recuperação",
+              "Alta"
             ]
-            },
-            "aiAnalysis": {
-                "riskScore": 0.7,
-                "predictedLOS": 7.2,
-                "complications": {
-                    "risk": "moderate",
-                    "factors": ["histórico de hipertensão", "idade"]
-                },
-                "recommendations": []
-            }
-        },
-        {
-            "id": "P002",
-            "qrCode": "hash_unique_qr",
-            "personalInfo": {
-                "name": "Will Silva",
-                "age": 45,
-                "gender": "M",
-                "bloodType": "O+",
-                "photo": "url_photo",
-                    "contactInfo": {
-                        "phone": "11999999999",
-                        "emergency": "11988888888",
-                        "address": "Rua Example, 123"
-                    }
-            },
-            "admission": {
-                "date": "2024-12-15",
-                "reason": "Pneumonia",
-                "type": "Clínica",
-                "status": "Internado",
-                "statusHistory": [
-                    {
-                        "department": "UTI",
-                        "status": "Aguardando Atendimento",
-                        "timestamp": "2024-12-15T12:00:00"
-                    },
-                    {
-                        "department": "UTI",
-                        "status": "Em Procedimento",
-                        "timestamp": "2024-12-16T09:00:00"
-                    }
-            ],
-            "predictedDischarge": "2024-12-22",
-            "bed": {
-                "id": "B001",
-                "number": "201",
-                "wing": "Leste",
-                "type": "UTI"
-            }
-            },
-            "medicalTeam": {
-            "doctor": {
-                "id": "D001",
-                "name": "Dra. Ana Santos",
-                "specialty": "Pneumologia"
-            },
-            "nurses": [
-                {
-                "id": "N001",
-                "name": "Carlos Enfermeiro",
-                "shift": "Manhã"
-                }
-            ]
-            },
-            "treatment": {
-                "diagnosis": ["Pneumonia bacteriana", "Hipertensão"],
-                "medications": [
-                    {
-                        "name": "Azitromicina",
-                        "dosage": "500mg",
-                        "frequency": "1x/dia",
-                        "duration": "7 dias",
-                        "startDate": "2024-12-15"
-                    }
-                ],
-                "vitals": [
-                    {
-                        "timestamp": "2024-12-17T14:00:00",
-                        "temperature": 37.2,
-                        "bloodPressure": "120/80",
-                        "heartRate": 75,
-                        "oxygenSaturation": 96,
-                        "consciousness": "Consciente e Orientado",
-                        "painScale": 3,
-                        "respiratoryRate": 16,
-                        "mobility": "Independente"
-                    },
-                    {
-                        "timestamp": "2024-12-17T20:00:00",
-                        "temperature": 37.5,
-                        "bloodPressure": "125/85",
-                        "heartRate": 78,
-                        "oxygenSaturation": 95,
-                        "consciousness": "Consciente e Orientado",
-                        "painScale": 4,
-                        "respiratoryRate": 18,
-                        "mobility": "Independente"
-                    }
-                ],
-            "procedures": [
-                {
-                "type": "Raio-X",
-                "date": "2024-12-15",
-                "result": "url_resultado",
-                "notes": "Infiltrado pulmonar bilateral"
-                }
-            ]
-            },
-            "aiAnalysis": {
-            "riskScore": 0.7,
-            "predictedLOS": 7.2,
-            "complications": {
-                "risk": "moderate",
-                "factors": ["histórico de hipertensão", "idade"]
-            },
-            "recommendations": []
-            }
-        }
-        ],
-    "staff": {
-      "doctors": [
-        {
-          "id": "D001",
-          "name": "Dra. Ana Santos",
-          "specialty": "Pneumologia",
-          "patients": ["P001", "P002"],
-          "schedule": {
-            "shifts": ["manhã", "tarde"],
-            "appointments": [
-              {
-                "patientId": "P001",
-                "date": "2024-12-18T10:00:00",
-                "type": "Visita"
-              }
+          },
+          "enfermaria": {
+            "occupancy": 78,
+            "beds": 37,
+            "patients": 29,
+            "validStatuses": [
+              "Aguardando Atendimento",
+              "Em Observação",
+              "Em Recuperação",
+              "Alta"
             ]
           }
         }
-      ],
-      "nurses": [
+      },
+      "patients": [
         {
-          "id": "N001",
-          "name": "Carlos Enfermeiro",
-          "shift": "Manhã",
-          "assignedBeds": ["B001", "B002"],
-          "tasks": [
-            {
-              "patientId": "P001",
-              "type": "Medicação",
-              "time": "2024-12-17T15:00:00",
-              "status": "pending"
+          "id": "P001",
+          "qrCode": "hash_unique_qr",
+          "personalInfo": {
+            "name": "João Silva",
+            "age": 45,
+            "gender": "M",
+            "bloodType": "O+",
+            "photo": "url_photo",
+            "contactInfo": {
+              "phone": "11999999999",
+              "emergency": "11988888888",
+              "address": "Rua Example, 123"
             }
-          ]
+          },
+          "admission": {
+            "date": "2024-12-15",
+            "reason": "Pneumonia",
+            "type": "Clínica",
+            "status": "Internado",
+            "statusHistory": [
+              {
+                "department": "Enfermaria",
+                "status": "Aguardando Atendimento",
+                "timestamp": "2024-12-15T12:00:00"
+              },
+              {
+                "department": "Enfermaria",
+                "status": "Em Observação",
+                "timestamp": "2024-12-16T09:00:00"
+              }
+            ],
+            "predictedDischarge": "2024-12-22",
+            "bed": {
+              "id": "B001",
+              "number": "201",
+              "wing": "Leste",
+              "type": "Enfermaria"
+            }
+          }
         }
-      ]
+      ],
+      "staff": {
+        "doctors": [
+          {
+            "id": "D001",
+            "name": "Dra. Ana Santos",
+            "specialty": "Pneumologia",
+            "patients": [
+              "P001"
+            ],
+            "schedule": {
+              "shifts": [
+                "manhã",
+                "tarde"
+              ],
+              "appointments": [
+                {
+                  "patientId": "P001",
+                  "date": "2024-12-18T10:00:00",
+                  "type": "Visita"
+                }
+              ]
+            }
+          }
+        ],
+        "nurses": [
+          {
+            "id": "N001",
+            "name": "Carlos Enfermeiro",
+            "shift": "Manhã",
+            "assignedBeds": [
+              "B001",
+              "B002"
+            ],
+            "tasks": [
+              {
+                "patientId": "P001",
+                "type": "Medicação",
+                "time": "2024-12-17T15:00:00",
+                "status": "pending"
+              }
+            ]
+          }
+        ]
+      },
+      "networkRank": {
+        "occupancy": 1,
+        "efficiency": 2,
+        "quality": 1
+      }
+    },
+    {
+      "id": "RDSL-SP-MORUMBI",
+      "name": "Hospital São Luiz - Morumbi",
+      "unit": {
+        "address": "Rua Oscar Americano, 840",
+        "city": "São Paulo",
+        "state": "SP",
+        "coordinates": {
+          "lat": -23.6245,
+          "lng": -46.7018
+        }
+      },
+      "type": "full-service",
+      "specialties": [
+        "Cardiologia",
+        "Oncologia",
+        "Pediatria"
+      ],
+      "metrics": {
+        "capacity": {
+          "total": {
+            "maxBeds": 400,
+            "maxOccupancy": 95
+          },
+          "departmental": {
+            "uti": {
+              "maxBeds": 15,
+              "maxOccupancy": 95,
+              "recommendedMaxOccupancy": 90
+            },
+            "enfermaria": {
+              "maxBeds": 60,
+              "maxOccupancy": 95,
+              "recommendedMaxOccupancy": 85
+            }
+          }
+        },
+        "overall": {
+          "occupancyRate": 82.3,
+          "totalPatients": 290,
+          "availableBeds": 52,
+          "avgStayDuration": 4.8,
+          "turnoverRate": 11.5,
+          "totalBeds": 400,
+          "lastUpdate": "2024-12-17T14:06:00",
+          "periodComparison": {
+            "occupancy": {
+              "value": 1.8,
+              "trend": "up"
+            },
+            "patients": {
+              "value": 8,
+              "trend": "up"
+            },
+            "beds": {
+              "value": 3,
+              "trend": "down"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "RDSL-RJ-COPA",
+      "name": "Hospital Copa D'Or",
+      "unit": {
+        "address": "Rua Figueiredo de Magalhães, 875",
+        "city": "Rio de Janeiro",
+        "state": "RJ",
+        "coordinates": {
+          "lat": -22.9697,
+          "lng": -43.1889
+        }
+      },
+      "type": "full-service",
+      "specialties": [
+        "Cardiologia",
+        "Neurologia",
+        "Oncologia"
+      ],
+      "metrics": {
+        "capacity": {
+          "total": {
+            "maxBeds": 400,
+            "maxOccupancy": 95
+          },
+          "departmental": {
+            "uti": {
+              "maxBeds": 12,
+              "maxOccupancy": 95,
+              "recommendedMaxOccupancy": 90
+            },
+            "enfermaria": {
+              "maxBeds": 55,
+              "maxOccupancy": 95,
+              "recommendedMaxOccupancy": 85
+            }
+          }
+        },
+        "overall": {
+          "occupancyRate": 75.2,
+          "totalPatients": 236,
+          "availableBeds": 64,
+          "avgStayDuration": 4.5,
+          "turnoverRate": 10.8,
+          "totalBeds": 400,
+          "lastUpdate": "2024-12-17T14:06:00",
+          "periodComparison": {
+            "occupancy": {
+              "value": -0.8,
+              "trend": "down"
+            },
+            "patients": {
+              "value": -5,
+              "trend": "down"
+            },
+            "beds": {
+              "value": 8,
+              "trend": "up"
+            }
+          }
+        }
+      }
     }
-  }
+  ]
+}

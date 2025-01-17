@@ -1,29 +1,18 @@
 import { NextResponse } from 'next/server';
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
-import { auth } from '@clerk/nextjs/server'
+import type { NextRequest } from 'next/server';
+import { authService } from '@/services/auth/AuthService';
 
-const isProtectedRoute = createRouteMatcher([
-  "/overview(.*)",
-]);
+// Solução híbrida com leitura nos cookies e localStorage
+export async function middleware(request: NextRequest) {
+    const token = request.cookies.get('auth_token')?.value || request.nextUrl.searchParams.get('auth_token');
+    
+    if (!token || !authService.validateToken()) {
+        return NextResponse.redirect(new URL('/sign-in', request.url));
+    }
 
-export default clerkMiddleware((auth, request) => {
-  if (isProtectedRoute(request)) {
-    auth().protect()
-
-    // const { userId } = auth();
-    // if (userId) {
-    //   // Chamar o Lambda para verificar/criar o usuário
-    //   await fetch('URL_DO_SEU_API_GATEWAY', {
-    //     method: 'POST',
-    //     body: JSON.stringify({ userId }),
-    //     headers: { 'Content-Type': 'application/json' }
-    //   });
-    // }
-  }
-
-  return NextResponse.next()
-})
+    return NextResponse.next();
+}
 
 export const config = {
-  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
-}
+    matcher: ['/dashboard/:path*']
+};

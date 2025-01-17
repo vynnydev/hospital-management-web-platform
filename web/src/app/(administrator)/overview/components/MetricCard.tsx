@@ -1,4 +1,4 @@
-import { MetricCardProps } from "@/services/types/metrics";
+import { MetricCardProps } from "@/types/metrics";
 
 // components/StatusBadge.tsx
 const StatusBadge: React.FC<{ status: string }> = ({ status }) => {

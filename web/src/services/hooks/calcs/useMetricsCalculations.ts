@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { HospitalMetrics, Capacity } from '@/services/types/metrics';
-import { TrendDirection } from '@/services/types/trends';
+import { HospitalMetrics, Capacity } from '@/types/metrics';
+import { TrendDirection } from '@/types/trends';
 
 export const useMetricsCalculations = (metrics: HospitalMetrics) => {
   

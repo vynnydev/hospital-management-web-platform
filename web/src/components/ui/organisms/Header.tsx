@@ -1,7 +1,7 @@
 // components/ui/organisms/Header.tsx
 'use client'
 import { UserButton } from "@clerk/nextjs"
-import { Loader2, Moon, Sun } from 'lucide-react'
+import { Loader2, LogOut, Moon, Sun } from 'lucide-react'
 import { ClerkLoaded, ClerkLoading } from '@clerk/nextjs'
 import { useTheme } from 'next-themes'
 
@@ -9,9 +9,18 @@ import { Brand } from "@/components/ui/atoms/Brand"
 import { HeaderNavigation } from "@/components/ui/organisms/HeaderNavigation"
 import { WelcomeMsg } from "@/components/ui/templates/WelcomeMsg"
 import { Button } from "@/components/ui/organisms/button"
+import { authService } from "@/services/auth/AuthService"
+import { useState } from "react"
 
 export const Header = () => {
     const { theme, setTheme } = useTheme();
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const user = authService.getCurrentUser();
+
+    const handleLogout = async () => {
+        await authService.logout();
+        window.location.href = '/sign-in';
+    };
 
     return (
         <header className={`px-4 py-8 lg:px-14 pb-36
@@ -27,56 +36,68 @@ export const Header = () => {
                         <HeaderNavigation />
                     </div>
                     <div className="flex items-center gap-x-4">
-                    <Button 
-                        onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                        variant="outline" 
-                        size="icon" 
-                        className={`
-                            relative
-                            before:content-['']
-                            before:absolute
-                            before:inset-[-2px]
-                            before:rounded-lg
-                            before:bg-gradient-to-r
-                            before:from-[#38BDF8]
-                            before:via-[#22D3EE]
-                            before:to-[#2DD4BF]
-                            before:-z-10
-                            before:transition-opacity
-                            before:duration-300
-                            hover:before:opacity-80
-                            transition-all
-                            bg-white/10 
-                            hover:bg-white/20 
-                            text-white 
-                            dark:hover:bg-green-700 
-                            dark:text-green-100
-                            ${theme === 'dark'
-                                ? 'bg-[linear-gradient(135deg,#0F172A,#155E75)] shadow-[0_0_20px_rgba(15,23,42,0.5),0_0_40px_rgba(21,94,117,0.3)]'
-                                : 'bg-[linear-gradient(135deg,#aecddc,#459bc6)] shadow-lg'
+                        <Button 
+                            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                            variant="outline" 
+                            size="icon" 
+                            className={`
+                                relative
+                                before:content-['']
+                                before:absolute
+                                before:inset-[-2px]
+                                before:rounded-lg
+                                before:bg-gradient-to-r
+                                before:from-[#38BDF8]
+                                before:via-[#22D3EE]
+                                before:to-[#2DD4BF]
+                                before:-z-10
+                                before:transition-opacity
+                                before:duration-300
+                                hover:before:opacity-80
+                                transition-all
+                                bg-white/10 
+                                hover:bg-white/20 
+                                text-white 
+                                dark:hover:bg-green-700 
+                                dark:text-green-100
+                                ${theme === 'dark'
+                                    ? 'bg-[linear-gradient(135deg,#0F172A,#155E75)] shadow-[0_0_20px_rgba(15,23,42,0.5),0_0_40px_rgba(21,94,117,0.3)]'
+                                    : 'bg-[linear-gradient(135deg,#aecddc,#459bc6)] shadow-lg'
+                                }
+                            `}
+                        >
+                            {theme === 'dark' 
+                                ? <Sun className="h-[1.2rem] w-[1.2rem] relative z-10" />
+                                : <Moon className="h-[1.2rem] w-[1.2rem] relative z-10" />
                             }
-                        `}
-                    >
-                        {theme === 'dark' 
-                            ? <Sun className="h-[1.2rem] w-[1.2rem] relative z-10" />
-                            : <Moon className="h-[1.2rem] w-[1.2rem] relative z-10" />
-                        }
-                    </Button>
-                        <ClerkLoaded>
-                            <UserButton 
-                                signInUrl="/sign-in"
-                                appearance={{
-                                    elements: {
-                                        avatarBox: "border-2 border-white dark:border-green-200"
-                                    }
-                                }}
-                            />
-                        </ClerkLoaded>
-                        <ClerkLoading>
-                            <Loader2 className="size-8 animate-spin text-white dark:text-green-200"/>
-                        </ClerkLoading>
+                        </Button>
+                        {/* Botão redondo com imagem do usuário */}
+                        <div className="relative">
+                                <button 
+                                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                                    className="w-10 h-10 rounded-full overflow-hidden border border-gray-300 hover:border-blue-500"
+                                >
+                                    <img 
+                                        src={user?.profileImage || '/images/default-avatar.png'}
+                                        alt="User Avatar"
+                                        className="w-full h-full object-cover"
+                                    />
+                                </button>
+
+                                {/* Menu drop-down */}
+                                {isMenuOpen && (
+                                    <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border rounded-lg shadow-lg z-50">
+                                        <button 
+                                            onClick={handleLogout} 
+                                            className="flex items-center gap-2 p-4 w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700"
+                                        >
+                                            <LogOut size={18} /> Sair
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
                     </div>
-                </div>
                 <WelcomeMsg />
             </div>
         </header>
