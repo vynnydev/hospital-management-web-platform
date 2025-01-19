@@ -9,9 +9,10 @@ import { HospitalNetworkMetrics } from './components/HospitalNetworkMetrics';
 import { DepartmentStatus } from './components/DepartmentStatus';
 import { NetworkListHospital } from './components/NetworkListHospital';
 import { OccupancyRateCharts } from './components/OccupancyRateCharts';
-import { ResourcesRecommendations } from './components/ResourcesRecommendations';
+import { MaintenanceHospitalRecommendations } from './components/MaintenanceHospitalRecommendations';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { HospitalsLocations } from './components/HospitalsLocations';
+import { AIAnaliticsMetrics } from './components/AIAnaliticsMetrics';
 
 // Add department status interface
 interface DepartmentStatus {
@@ -160,8 +161,9 @@ const Overview: React.FC = () => {
           <TabsTrigger value="overview">Visão Geral</TabsTrigger>
           <TabsTrigger value="performance">Performance</TabsTrigger>
           <TabsTrigger value="comparison">Comparativo</TabsTrigger>
-          <TabsTrigger value="resources-recommendations">Previsão de Alta</TabsTrigger>
+          <TabsTrigger value="resources-recommendations">Manutenção dos Hospitais por IA</TabsTrigger>
           <TabsTrigger value="hospitals-locations">Localização dos Hospitais</TabsTrigger>
+          <TabsTrigger value="analytics">Analise dos Hospitais por IA</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4">
@@ -193,7 +195,7 @@ const Overview: React.FC = () => {
         <TabsContent value="resources-recommendations" className="space-y-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {/* Additional discharge-related information card */}
-            <ResourcesRecommendations 
+            <MaintenanceHospitalRecommendations 
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
             />
@@ -206,6 +208,16 @@ const Overview: React.FC = () => {
             currentUser={currentUser} 
             selectedHospital={selectedHospital} 
             setSelectedHospital={setSelectedHospital}          
+          />
+        </TabsContent>
+
+        <TabsContent value="analytics" className="space-y-4">
+          <AIAnaliticsMetrics 
+              filteredHospitals={getFilteredHospitals() || []}
+              currentUser={currentUser}
+              onRefresh={() => {
+                  // Sua lógica de refresh
+              }}
           />
         </TabsContent>
       </Tabs>

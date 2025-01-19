@@ -2,12 +2,12 @@ import { Card } from "@/components/ui/organisms/card"
 import { Badge, CalendarDays } from "lucide-react" // Removemos o Calendar daqui
 import { Calendar } from "@/components/ui/organisms/calendar" // Adicionamos esta importação
 
-interface ResourcesRecommendationsProps {
+interface MaintenanceHospitalRecommendationsProps {
     selectedDate: Date | undefined,
     setSelectedDate: React.Dispatch<React.SetStateAction<Date | undefined>>
 }
 
-export const ResourcesRecommendations: React.FC<ResourcesRecommendationsProps> = ({
+export const MaintenanceHospitalRecommendations: React.FC<MaintenanceHospitalRecommendationsProps> = ({
     selectedDate,
     setSelectedDate
 }) => {

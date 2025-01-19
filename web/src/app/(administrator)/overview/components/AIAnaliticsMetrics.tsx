@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
@@ -22,6 +23,8 @@ import { useTheme } from 'next-themes'
 import { motion, AnimatePresence } from 'framer-motion';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/organisms/tooltip';
 import { metricsCalcService } from '@/services/calcs/metricsCalcService';
+import { Hospital, Occupancy } from '@/types/hospital-network-types';
+import { AppUser } from '@/types/auth-types';
 
 interface ColumnContent {
     title: string;
@@ -37,13 +40,18 @@ interface SubCard {
 
 interface AIAnaliticsMetricsProps {
     onRefresh?: () => void;
+    filteredHospitals?: Hospital[]; // Nova prop para hospitais filtrados
+    currentUser: AppUser | null;    // Adicionando usuário atual
 }
 
 const cleanText = (text: string) => {
     return text?.replace(/\*/g, '').trim() || "Dados não disponíveis";
 };
 
-const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) => {
+export const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ 
+    filteredHospitals,
+    onRefresh 
+}) => {
     const { theme } = useTheme();
     const [expandedSections, setExpandedSections] = useState<boolean[]>(Array(4).fill(false));
     const { loading: isLoading, setLoading, error, setError, analyzeMetrics } = useHospitalAnalytics();
@@ -68,38 +76,107 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
             });
         }
     }, [analysis]);
+
     
+    // Agora vamos atualizar a função fetchAnalysis com verificações de segurança
     const fetchAnalysis = useCallback(async (force: boolean = false) => {
         if (!force && !shouldUpdate()) {
             console.log('Atualização ignorada - muito próxima da última');
             return;
         }
+        // Função auxiliar para converter o tipo Occupancy em número para cálculos
+        const occupancyToNumber = (occupancy: Occupancy): number => {
+            switch (occupancy) {
+                case 'critical':
+                    return 100;
+                case 'attention':
+                    return 75;
+                case 'normal':
+                    return 50;
+                default:
+                    return 0;
+            }
+        };
 
+        // Função para converter número de volta para Occupancy
+        const numberToOccupancy = (value: number): Occupancy => {
+            if (value >= 90) return 'critical';
+            if (value >= 70) return 'attention';
+            return 'normal';
+        };
+        
         try {
             setLoading(true);
-            const apiData = await metricsCalcService.getMetrics();
-    
+            
+            // Verificação de segurança
+            if (!filteredHospitals?.length) {
+                throw new Error('Nenhum hospital disponível para análise');
+            }
+
+            // Calcula métricas agregadas dos hospitais filtrados
+            const aggregatedMetrics = {
+                overall: {
+                    occupancyRate: filteredHospitals.reduce((acc, h) => acc + h.metrics.overall.occupancyRate, 0) / filteredHospitals.length,
+                    totalPatients: filteredHospitals.reduce((acc, h) => acc + h.metrics.overall.totalPatients, 0),
+                    availableBeds: filteredHospitals.reduce((acc, h) => acc + h.metrics.overall.availableBeds, 0),
+                    avgStayDuration: filteredHospitals.reduce((acc, h) => acc + h.metrics.overall.avgStayDuration, 0) / filteredHospitals.length,
+                    turnoverRate: filteredHospitals.reduce((acc, h) => acc + h.metrics.overall.turnoverRate, 0) / filteredHospitals.length,
+                    periodComparison: {
+                        occupancy: {
+                            value: filteredHospitals[0].metrics.overall.periodComparison.occupancy.value,
+                            trend: filteredHospitals[0].metrics.overall.periodComparison.occupancy.trend
+                        },
+                        patients: {
+                            value: filteredHospitals[0].metrics.overall.periodComparison.patients.value,
+                            trend: filteredHospitals[0].metrics.overall.periodComparison.patients.trend
+                        }
+                    }
+                },
+                departmental: filteredHospitals.reduce((acc, hospital) => {
+                    if (hospital.metrics.departmental) {
+                        Object.entries(hospital.metrics.departmental).forEach(([dept, data]) => {
+                            if (!acc[dept]) {
+                                acc[dept] = { 
+                                    occupancy: 'normal' as Occupancy, 
+                                    beds: 0, 
+                                    patients: 0,
+                                    occupancyValue: 0 // campo auxiliar para cálculos
+                                };
+                            }
+                            // Convertemos o tipo para número para fazer os cálculos
+                            acc[dept].occupancyValue += occupancyToNumber(data.occupancy);
+                            acc[dept].beds += data.beds;
+                            acc[dept].patients += data.patients;
+                        });
+                    }
+                    return acc;
+                }, {} as Record<string, {
+                    occupancy: Occupancy;
+                    occupancyValue: number;
+                    beds: number;
+                    patients: number;
+                }>)
+            };
+
             // Preparar os dados para análise
             const metricsData = {
-                occupancyRate: apiData.overall.occupancyRate,
-                totalPatients: apiData.overall.totalPatients,
-                availableBeds: apiData.overall.availableBeds,
-                avgStayDuration: apiData.overall.avgStayDuration,
-                turnoverRate: apiData.overall.turnoverRate,
-                departmentOccupancy: Object.entries(apiData.departmental).map(([department, data]) => ({
+                occupancyRate: aggregatedMetrics.overall.occupancyRate,
+                totalPatients: aggregatedMetrics.overall.totalPatients,
+                availableBeds: aggregatedMetrics.overall.availableBeds,
+                avgStayDuration: aggregatedMetrics.overall.avgStayDuration,
+                turnoverRate: aggregatedMetrics.overall.turnoverRate,
+                departmentOccupancy: Object.entries(aggregatedMetrics.departmental).map(([department, data]) => ({
                     department: department.toUpperCase(),
-                    rate: data.occupancy
+                    rate: numberToOccupancy(data.occupancyValue / filteredHospitals.length)
                 })),
-                trends: Object.entries(apiData.overall.periodComparison).map(([metric, data]) => ({
+                trends: Object.entries(aggregatedMetrics.overall.periodComparison).map(([metric, data]) => ({
                     metric: metric.charAt(0).toUpperCase() + metric.slice(1),
                     value: data.value,
                     direction: data.trend
                 })),
             };
-    
-            // Enviar para análise
+
             const analysisResult = await analyzeMetrics(metricsData);
-            // Atualiza o estado de forma otimizada
             setAnalysis(prev => {
                 if (prev === analysisResult) return prev;
                 return analysisResult;
@@ -107,14 +184,14 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
 
             lastUpdateRef.current = Date.now();
             setUpdateCount(count => count + 1);
-    
+
         } catch (error) {
             console.error('Erro ao buscar análise:', error);
             setError(error instanceof Error ? error.message : 'Erro ao processar dados');
         } finally {
             setLoading(false);
         }
-    }, [shouldUpdate, analyzeMetrics])
+    }, [shouldUpdate, analyzeMetrics, filteredHospitals]);
 
     const extractSection = (text: string, startMarker: string, endMarker: string) => {
         if (!text) {
@@ -507,5 +584,3 @@ const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({ onRefresh }) =>
         </TooltipProvider>
     );
 };
-
-export default AIAnaliticsMetrics;
