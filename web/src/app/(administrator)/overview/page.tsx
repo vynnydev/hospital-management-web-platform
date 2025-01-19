@@ -10,8 +10,8 @@ import { DepartmentStatus } from './components/DepartmentStatus';
 import { NetworkListHospital } from './components/NetworkListHospital';
 import { OccupancyRateCharts } from './components/OccupancyRateCharts';
 import { ResourcesRecommendations } from './components/ResourcesRecommendations';
-import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { HospitalsLocations } from './components/HospitalsLocations';
 
 // Add department status interface
 interface DepartmentStatus {
@@ -161,7 +161,7 @@ const Overview: React.FC = () => {
           <TabsTrigger value="performance">Performance</TabsTrigger>
           <TabsTrigger value="comparison">Comparativo</TabsTrigger>
           <TabsTrigger value="resources-recommendations">Previsão de Alta</TabsTrigger>
-          <TabsTrigger value="hospitals-location">Localização dos Hospitais</TabsTrigger>
+          <TabsTrigger value="hospitals-locations">Localização dos Hospitais</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4">
@@ -198,6 +198,15 @@ const Overview: React.FC = () => {
                 setSelectedDate={setSelectedDate}
             />
           </div>
+        </TabsContent>
+
+        <TabsContent value="hospitals-locations" className="space-y-4">
+          <HospitalsLocations
+            hospitals={networkData?.hospitals}
+            currentUser={currentUser} 
+            selectedHospital={selectedHospital} 
+            setSelectedHospital={setSelectedHospital}          
+          />
         </TabsContent>
       </Tabs>
     </div>

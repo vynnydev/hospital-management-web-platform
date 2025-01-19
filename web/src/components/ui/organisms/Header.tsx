@@ -1,8 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // components/ui/organisms/Header.tsx
 'use client'
-import { UserButton } from "@clerk/nextjs"
-import { Loader2, LogOut, Moon, Sun } from 'lucide-react'
-import { ClerkLoaded, ClerkLoading } from '@clerk/nextjs'
+import Image from 'next/image';
+import { LogOut, Moon, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
 
 import { Brand } from "@/components/ui/atoms/Brand"
@@ -77,10 +77,12 @@ export const Header = () => {
                                     onClick={() => setIsMenuOpen(!isMenuOpen)}
                                     className="w-10 h-10 rounded-full overflow-hidden border border-gray-300 hover:border-blue-500"
                                 >
-                                    <img 
+                                    <Image 
                                         src={user?.profileImage || '/images/default-avatar.png'}
                                         alt="User Avatar"
                                         className="w-full h-full object-cover"
+                                        width={40}
+                                        height={40}
                                     />
                                 </button>
 

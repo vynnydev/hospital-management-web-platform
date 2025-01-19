@@ -31,7 +31,7 @@ export const HospitalNetworkMap: React.FC<HospitalListProps> = ({ hospitals }) =
               />
               <div className="hidden group-hover:block absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 p-2 bg-white dark:bg-gray-800 rounded shadow-lg">
                 <p className="text-sm font-medium text-gray-900 dark:text-white">{hospital.name}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">{hospital.metrics.occupancyRate.total}% ocupação</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">{hospital.metrics.overall.occupancyRate}% ocupação</p>
               </div>
             </div>
           ))}

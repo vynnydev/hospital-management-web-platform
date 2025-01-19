@@ -8,6 +8,16 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { authService } from '@/services/auth/AuthService';
 import { useToast } from "@/components/ui/hooks/use-toast";
 
+type UserPermissions = 'VIEW_ALL_HOSPITALS' | 'VIEW_SINGLE_HOSPITAL';
+
+interface AuthResponse {
+  user?: {
+    permissions: UserPermissions[];
+    hospitalId?: string;
+  };
+  error?: string;
+}
+
 export function SignInForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,47 +27,64 @@ export function SignInForm() {
   const router = useRouter();
   const { toast } = useToast();
 
+  const showSuccessToast = (message: string) => {
+    toast({
+      title: "Login bem-sucedido!",
+      description: message,
+      variant: "default",
+      duration: 3000, // Reduzido para 3s para melhor UX
+    });
+  };
+
+  const showErrorToast = (title: string, description: string) => {
+    toast({
+      title,
+      description,
+      variant: "destructive",
+      duration: 5000,
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!email || !password) {
+      showErrorToast(
+        "Campos obrigatórios", 
+        "Por favor, preencha todos os campos."
+      );
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-      const response = await authService.login({ email, password });
+      const response = await authService.login({ email, password }) as AuthResponse;
 
-      if (response?.user?.permissions.includes('VIEW_ALL_HOSPITALS')) {
-        console.log("Entrou aqui - VIEW_ALL_HOSPITALS:", email, password)
-        toast({
-          title: "Login bem-sucedido!",
-          description: "Redirecionando para a página inicial...",
-          variant: "default",
-          duration: 5000,
-        });
+      if (!response?.user) {
+        throw new Error('Resposta inválida do servidor');
+      }
+
+      const { permissions, hospitalId } = response.user;
+
+      if (permissions.includes('VIEW_ALL_HOSPITALS')) {
+        showSuccessToast("Redirecionando para a página inicial...");
         router.push('/overview');
-      } else if (response?.user?.permissions.includes('VIEW_SINGLE_HOSPITAL') && response.user.hospitalId) {
-        console.log("Entrou aqui - VIEW_SINGLE_HOSPITAL:", email, password)
-        toast({
-          title: "Login bem-sucedido!",
-          description: "Redirecionando para a página do hospital...",
-          variant: "default",
-          duration: 5000,
-        });
+      } else if (permissions.includes('VIEW_SINGLE_HOSPITAL') && hospitalId) {
+        showSuccessToast("Redirecionando para a página do hospital...");
         router.push('/overview');
       } else {
-        console.log("Entrou aqui - Erro de permissão:", email, password)
-        toast({
-          title: "Erro de permissão",
-          description: "Usuário sem permissões necessárias.",
-          variant: "destructive",
-          duration: 5000,
-        });
+        showErrorToast(
+          "Erro de permissão",
+          "Usuário sem permissões necessárias para acessar o sistema."
+        );
       }
-    } catch (err) {
-      toast({
-        title: "Erro de login",
-        description: "Erro ao fazer login. Tente novamente.",
-        variant: "destructive",
-        duration: 5000,
-      });
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
+      showErrorToast(
+        "Erro de login",
+        `Não foi possível realizar o login. ${errorMessage}`
+      );
     } finally {
       setIsLoading(false);
     }
@@ -76,33 +103,38 @@ export function SignInForm() {
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-8">
           <div className="space-y-2">
-            <label className="text-sm font-medium">Email</label>
+            <label htmlFor="email" className="text-sm font-medium">Email</label>
             <Input
+              id="email"
               type="email"
               placeholder="exemplo@rededor.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={isLoading}
               required
+              className="focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium">Senha</label>
+            <label htmlFor="password" className="text-sm font-medium">Senha</label>
             <div className="relative">
               <Input
+                id="password"
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={isLoading}
                 required
+                className="focus:ring-2 focus:ring-blue-500"
               />
               <Button
                 type="button"
                 variant="ghost"
                 size="sm"
-                className="absolute right-2 top-1/2 -translate-y-1/2"
+                className="absolute right-2 top-1/2 -translate-y-1/2 hover:bg-transparent"
                 onClick={togglePasswordVisibility}
+                aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
               >
                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
               </Button>
@@ -111,7 +143,7 @@ export function SignInForm() {
 
           <Button
             type="submit"
-            className="w-full bg-gradient-to-r from-blue-700 to-cyan-700 transition-all duration-300 ease-in-out hover:transform hover:-translate-y-1"
+            className="w-full bg-gradient-to-r from-blue-700 to-cyan-700 transition-all duration-300 ease-in-out hover:transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={isLoading}
           >
             {isLoading ? (
@@ -128,7 +160,7 @@ export function SignInForm() {
       <CardFooter className="flex flex-col items-center justify-center space-y-2">
         <div className="text-sm text-muted-foreground">
           Não tem uma conta?{' '}
-          <a href="/sign-up" className="text-primary hover:underline">
+          <a href="/sign-up" className="text-primary hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500">
             Cadastre-se
           </a>
         </div>

@@ -31,6 +31,8 @@ interface Coordinates {
 }
   
 interface Unit {
+    longitude: number;
+    latitude: number;
     address: string;
     city: string;
     state: string;

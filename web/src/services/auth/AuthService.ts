@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AppUser, AuthResponse, CreateUserData, LoginCredentials, Permission } from "@/types/auth-types";
 import Cookies from 'js-cookie';
 
