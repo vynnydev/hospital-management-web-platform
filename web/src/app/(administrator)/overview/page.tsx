@@ -13,6 +13,7 @@ import { MaintenanceHospitalRecommendations } from './components/MaintenanceHosp
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { HospitalsLocations } from './components/HospitalsLocations';
 import { AIAnaliticsMetrics } from './components/AIAnaliticsMetrics';
+import { HospitalFlowDiagram } from './components/HospitalFlowDiagram';
 
 // Add department status interface
 interface DepartmentStatus {
@@ -159,9 +160,9 @@ const Overview: React.FC = () => {
       <Tabs defaultValue="overview" className="space-y-4">
         <TabsList>
           <TabsTrigger value="overview">Visão Geral</TabsTrigger>
-          <TabsTrigger value="performance">Performance</TabsTrigger>
-          <TabsTrigger value="comparison">Comparativo</TabsTrigger>
-          <TabsTrigger value="resources-recommendations">Manutenção dos Hospitais por IA</TabsTrigger>
+          {/* <TabsTrigger value="performance">Performance</TabsTrigger>
+          <TabsTrigger value="comparison">Comparativo</TabsTrigger> */}
+          {/* <TabsTrigger value="resources-recommendations">Manutenção dos Hospitais por IA</TabsTrigger> */}
           <TabsTrigger value="hospitals-locations">Localização dos Hospitais</TabsTrigger>
           <TabsTrigger value="analytics">Analise dos Hospitais por IA</TabsTrigger>
         </TabsList>
@@ -183,24 +184,22 @@ const Overview: React.FC = () => {
           </div>
         </TabsContent>
 
+        {/*
         <TabsContent value="performance">
-          {/* Performance content */}
         </TabsContent>
 
         <TabsContent value="comparison">
-          {/* Comparison content */}
-        </TabsContent>
+        </TabsContent>*/}
 
         {/* Existing TabsContent for overview, performance, and comparison */}
-        <TabsContent value="resources-recommendations" className="space-y-4">
+        {/* <TabsContent value="resources-recommendations" className="space-y-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {/* Additional discharge-related information card */}
             <MaintenanceHospitalRecommendations 
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
             />
           </div>
-        </TabsContent>
+        </TabsContent>*/}
 
         <TabsContent value="hospitals-locations" className="space-y-4">
           <HospitalsLocations
@@ -221,6 +220,10 @@ const Overview: React.FC = () => {
           />
         </TabsContent>
       </Tabs>
+      
+      <HospitalFlowDiagram 
+        networkData={networkData}
+      />
     </div>
   );
 };

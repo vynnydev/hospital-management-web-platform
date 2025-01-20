@@ -36,6 +36,7 @@
     "@types/mapbox-gl": "^3.4.0",
     "@types/react-datepicker": "^7.0.0",
     "@types/ws": "^8.5.12",
+    "@xyflow/react": "^12.4.1",
     "amazon-cognito-identity-js": "^6.3.12",
     "axios": "^1.7.7",
     "bcryptjs": "^2.4.3",
