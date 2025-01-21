@@ -16,7 +16,7 @@ export const DepartmentStatus: React.FC<DepartmentStatusProps> = ({
     return (
         <div>
             {/* Department Status Section */}
-            <Card className="p-4 dark:bg-gray-700">
+            <Card className="p-4 mt-8 dark:bg-gray-700">
                 <h3 className="text-lg font-semibold mb-4">Situação dos Departamentos</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {selectedHospital &&

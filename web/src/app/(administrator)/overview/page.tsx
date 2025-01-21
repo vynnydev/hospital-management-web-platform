@@ -166,10 +166,10 @@ const Overview: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 p-6 -mt-20">
+    <div className="space-y-20 p-6 -mt-20">
 
-      <div className='pt-2 pb-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md'>
-        <div className='p-4 bg-gray-800'>
+      <div className='pt-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md'>
+        <div className='p-4 bg-gray-800 rounded-md'>
             {/* Header Section */}
             <ManagementNetworkMetrics 
                 networkData={networkData}
@@ -182,12 +182,12 @@ const Overview: React.FC = () => {
                 canChangeRegion={canChangeRegion}
             />
 
-            <HospitalNetworkMetrics 
-                networkData={networkData}
-                selectedRegion={selectedRegion}
-                currentMetrics={currentMetrics}
-                />
 
+        </div>
+      </div>
+
+      <div className='pt-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md'>
+        <div className='p-4 bg-gray-800'>
             <DepartmentStatus 
                 networkData={networkData}
                 selectedHospital={selectedHospital}
@@ -270,9 +270,7 @@ const Overview: React.FC = () => {
         </div>
       </div>
 
-      <div className='pt-12'>
-        <FlowEditor networkData={networkData}/>
-      </div>
+      <FlowEditor networkData={networkData}/>
     </div>
   );
 };

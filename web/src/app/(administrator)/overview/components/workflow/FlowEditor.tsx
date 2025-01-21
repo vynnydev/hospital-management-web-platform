@@ -27,6 +27,7 @@ import {
   OnConnect,
   IsValidConnection
 } from "./types";
+import { color } from "framer-motion";
 
 export const nodeTypes = {
   network: BaseNodeComponent,
@@ -222,7 +223,7 @@ export const FlowEditor = ({ networkData }: FlowEditorProps) => {
   );
 
   return (
-    <div className="p-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md">
+    <div className="pt-2 pb-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md">
       <div className="p-4 w-full space-y-4 bg-gray-800 rounded-md">
         <div className="flex items-center justify-between">
           <div>
@@ -265,6 +266,7 @@ export const FlowEditor = ({ networkData }: FlowEditorProps) => {
             />
             <Controls 
               className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg"
+              fitViewOptions={fitViewOptions}
               showInteractive={false}
             />
             <Panel 

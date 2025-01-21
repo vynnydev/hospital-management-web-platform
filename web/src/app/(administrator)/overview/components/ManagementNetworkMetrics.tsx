@@ -19,8 +19,10 @@ import {
   Map,
   Settings 
 } from 'lucide-react';
+import { HospitalNetworkMetrics } from './HospitalNetworkMetrics';
+import { NetworkData } from '@/types/hospital-network-types';
 
-interface Hospital {
+interface HospitalMetrics {
   unit: {
     state: string;
     name?: string;
@@ -32,11 +34,6 @@ interface NetworkInfo {
   logo?: string;
 }
 
-interface NetworkData {
-  networkInfo: NetworkInfo;
-  hospitals: Hospital[];
-}
-
 interface CurrentMetrics {
   totalBeds: number;
   totalPatients: number;
@@ -45,7 +42,7 @@ interface CurrentMetrics {
 
 interface ManagementNetworkMetricsProps {
   networkData: NetworkData;
-  filteredHospitals: Hospital[];
+  filteredHospitals: HospitalMetrics[];
   selectedRegion: string;
   setSelectedRegion: React.Dispatch<React.SetStateAction<string>>;
   setDisplayMode: React.Dispatch<React.SetStateAction<"dashboard" | "tv">>;
@@ -132,66 +129,13 @@ export const ManagementNetworkMetrics: React.FC<ManagementNetworkMetricsProps> =
           </div>
 
           {/* Metrics Cards */}
-          <div className="grid grid-cols-4 gap-4">
-            <Card className="p-4 bg-gray-50 dark:bg-gray-700 border border-gray-100 dark:border-gray-600">
-              <div className="flex items-center space-x-3">
-                <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
-                  <Building2 size={24} className="text-blue-600 dark:text-blue-300" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Total de Hospitais</p>
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {filteredHospitals?.length || 0}
-                  </h3>
-                </div>
-              </div>
-            </Card>
-
-            <Card className="p-4 bg-gray-50 dark:bg-gray-700 border border-gray-100 dark:border-gray-600">
-              <div className="flex items-center space-x-3">
-                <div className="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
-                  <Bed size={24} className="text-green-600 dark:text-green-300" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Total de Leitos</p>
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {currentMetrics?.totalBeds || 0}
-                  </h3>
-                </div>
-              </div>
-            </Card>
-
-            <Card className="p-4 bg-gray-50 dark:bg-gray-700 border border-gray-100 dark:border-gray-600">
-              <div className="flex items-center space-x-3">
-                <div className="p-2 bg-purple-100 dark:bg-purple-900 rounded-lg">
-                  <Users size={24} className="text-purple-600 dark:text-purple-300" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Pacientes Internados</p>
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {currentMetrics?.totalPatients || 0}
-                  </h3>
-                </div>
-              </div>
-            </Card>
-
-            <Card className="p-4 bg-gray-50 dark:bg-gray-700 border border-gray-100 dark:border-gray-600">
-              <div className="flex items-center space-x-3">
-                <div className="p-2 bg-orange-100 dark:bg-orange-900 rounded-lg">
-                  <Activity size={24} className="text-orange-600 dark:text-orange-300" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Ocupação Média</p>
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {currentMetrics?.averageOccupancy || 0}%
-                  </h3>
-                </div>
-              </div>
-            </Card>
-          </div>
+          <HospitalNetworkMetrics 
+              networkData={networkData}
+              currentMetrics={currentMetrics}
+          />
 
           {/* Action Buttons */}
-          <div className="flex space-x-4">
+          {/* <div className="flex space-x-4">
             <Button className="flex-1 bg-blue-50 dark:bg-blue-900 text-blue-600 dark:text-blue-200 hover:bg-blue-100 dark:hover:bg-blue-800 border border-blue-200 dark:border-blue-700">
               <Map className="mr-2 h-4 w-4" />
               Ver Mapa de Leitos
@@ -200,7 +144,7 @@ export const ManagementNetworkMetrics: React.FC<ManagementNetworkMetricsProps> =
               <Settings className="mr-2 h-4 w-4" />
               Configurações da Rede
             </Button>
-          </div>
+          </div> */}
         </div>
       </CardContent>
     </Card>
