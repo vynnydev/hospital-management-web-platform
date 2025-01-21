@@ -58,7 +58,7 @@ export const DepartmentBoard: React.FC<DepartmentBoardProps> = ({
     return (
       <div>
         <div 
-          className="grid grid-cols-4 gap-6 w-full h-full"
+          className="grid grid-cols-4 gap-6 w-full h-full mt-12"
           style={{ minHeight: '600px' }}
         >
           {departmentStatuses.map((status) => (

@@ -1,6 +1,4 @@
 import Image from 'next/image'
-import { Loader2 } from 'lucide-react'
-import { SignUp, ClerkLoaded, ClerkLoading } from '@clerk/nextjs'
 
 import { Container } from "@/components/ui/atoms/Container"
 
@@ -27,12 +25,12 @@ export default function SignUpPage() {
               </p>
             </div>
             <div className='flex items-center justify-center mt-8'>
-              <ClerkLoaded>
+              {/* <ClerkLoaded>
                 <SignUp path="/sign-up"/>
               </ClerkLoaded>
               <ClerkLoading>
                 <Loader2 className='animate-spin text-muted-foreground'/>
-              </ClerkLoading>    
+              </ClerkLoading>     */}
             </div>
           </div>
           <div className='h-full bg-cyan-700 hidden lg:flex items-center justify-center'>

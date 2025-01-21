@@ -1,14 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // hooks/useNetworkData.ts
 import { useState, useEffect } from 'react';
-import { useUser } from '@clerk/nextjs';
 import type { NetworkData, NetworkInfo, Hospital } from '../../types/hospital-network-types';
 import type { AppUser } from '../../types/auth-types';
 import { authService } from '../auth/AuthService';
 import { usePermissions } from './auth/usePermissions';
 
 export const useNetworkData = () => {
-  const { user: clerkUser, isLoaded: clerkLoaded } = useUser();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [networkData, setNetworkData] = useState<NetworkData | null>(null);

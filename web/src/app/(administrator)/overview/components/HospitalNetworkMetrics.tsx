@@ -23,7 +23,7 @@ export const HospitalNetworkMetrics: React.FC<HospitalNetworkMetricsProps> = ({
         <div>
             {/* Network Overview Cards with updated background */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <Card className="p-4 flex items-center space-x-4 bg-gray-200 dark:bg-gray-700">
+                <Card className="p-4 flex items-center space-x-4 dark:bg-gray-500">
                 <div className="p-3 bg-blue-100 rounded-lg">
                     <Building2 className="h-6 w-6 text-blue-600" />
                 </div>

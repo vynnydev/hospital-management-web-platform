@@ -458,7 +458,7 @@ export const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({
                                 </TooltipContent>
                             </Tooltip>
                         </div>
-                        <button
+                        {/* <button
                             onClick={handleRefresh}
                             className={`w-48 items-center border-2 shadow-md rounded-md p-2 border-cyan-600 text-white
                                 transition-all duration-300 ease-in-out
@@ -473,7 +473,7 @@ export const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({
                                 <ArrowPathIcon className="h-5 w-5" />
                                 <p>Atualizar Dados</p>
                             </div>
-                        </button>
+                        </button> */}
                     </div>
 
                     {!analysis && (

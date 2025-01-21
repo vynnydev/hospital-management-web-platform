@@ -1,19 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from "react";
-
-import { GeneratedData, GeneratedImages, Metrics, Patient } from "../types/types";
-import { VitalSign } from "../types/types";
 import { 
-  TrendingUp,
-  TrendingDown,
+  TrendingUp, TrendingDown, 
+  AlertCircle, RefreshCw,
+  Bed, Clock, Users
 } from 'lucide-react';
-
+import { 
+  GeneratedData, GeneratedImages, 
+  HospitalMetrics, Patient, 
+  VitalSign 
+} from "../types/types";
 import { HfInference } from "@huggingface/inference";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { DepartmentBoard } from "./DepartmentBoard";
-import { generateEnhancedPrompt } from "./functions/AI/aiAssistantPatientBoard";
 import { PatientCardModal } from "./PatientCardModal";
+import { generateEnhancedPrompt } from "./functions/AI/aiAssistantPatientBoard";
 import { isValidBase64Image } from "@/components/ui/aida-assistant/report-modal-ai/services/functions/imagePresenter";
 
 const hfInference = new HfInference(process.env.HUGGING_FACE_API_KEY!);
@@ -22,7 +24,7 @@ const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY!);
 type FontSize = 'small' | 'normal' | 'large' | 'extra-large';
 
 interface Props {
-  data: Metrics,
+  data: HospitalMetrics;
   patients: Patient[];
   selectedArea: string;
   onSelect: (patient: Patient) => void;
@@ -30,7 +32,47 @@ interface Props {
   onClose: () => void;
   fontSize: FontSize;
   setFontSize: (size: FontSize) => void;
+  loading: boolean;
+  error: string | null;
+  onRetry: () => void;
 }
+
+const MetricCard: React.FC<{
+  title: string;
+  value: string | number;
+  icon: React.ReactNode;
+  trend?: {
+    value: number;
+    trend: 'up' | 'down';
+  };
+  loading: boolean;
+}> = ({ title, value, icon, trend, loading }) => (
+  <div className="relative overflow-hidden bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg transition-all duration-300 hover:shadow-xl mb-4">
+    {loading ? (
+      <div className="animate-pulse space-y-4">
+        <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+        <div className="h-8 bg-gray-200 rounded w-3/4"></div>
+      </div>
+    ) : (
+      <>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-gray-500 dark:text-gray-400 font-medium">{title}</h3>
+          <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+            {icon}
+          </div>
+        </div>
+        <div className="flex items-center space-x-2">
+          <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{value}</p>
+          {trend && (
+            <span className={trend.trend === 'up' ? 'text-green-500' : 'text-red-500'}>
+              {trend.trend === 'up' ? <TrendingUp className="w-5 h-5" /> : <TrendingDown className="w-5 h-5" />}
+            </span>
+          )}
+        </div>
+      </>
+    )}
+  </div>
+);
 
 export const PatientTaskManagement: React.FC<Props> = ({
   patients,
@@ -40,7 +82,10 @@ export const PatientTaskManagement: React.FC<Props> = ({
   data,
   onClose,
   fontSize,
-  setFontSize
+  setFontSize,
+  loading,
+  error,
+  onRetry
 }) => {
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   const [generatedData, setGeneratedData] = useState<GeneratedData>({});
@@ -267,66 +312,120 @@ export const PatientTaskManagement: React.FC<Props> = ({
       - ATENÇÃO: Sem pessoas, sem rostos, apenas equipamentos e diagramas`;
   };
 
-  return (
-    <div className="w-full">
-      <div className="col-span-full bg-white dark:bg-gray-800 rounded-xl p-4 shadow-lg">
-        <div className="grid grid-cols-3 gap-4">
-          <div className="text-center">
-            <p className="text-gray-500 dark:text-gray-400">Taxa de Ocupação</p>
-            <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-              {data.overall.occupancyRate}%
-              {data.overall.periodComparison.occupancy.trend === 'up' ? 
-                <TrendingUp className="inline ml-2 w-5 h-5 text-green-500" /> : 
-                <TrendingDown className="inline ml-2 w-5 h-5 text-red-500" />}
-            </p>
-          </div>
-          <div className="text-center">
-            <p className="text-gray-500 dark:text-gray-400">Leitos Disponíveis</p>
-            <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-              {data.overall.availableBeds}
-            </p>
-          </div>
-          <div className="text-center">
-            <p className="text-gray-500 dark:text-gray-400">Tempo Médio de Internação</p>
-            <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-              {data.overall.avgStayDuration} dias
-            </p>
-          </div>
-        </div>
-      </div>
+  // Valores default seguros para métricas com a nova estrutura
+  const defaultMetrics = {
+    overall: {
+      occupancyRate: 0,
+      totalPatients: 0,
+      availableBeds: 0,
+      avgStayDuration: 0,
+      turnoverRate: 0,
+      totalBeds: 0,
+      lastUpdate: new Date().toISOString(),
+      periodComparison: {
+        occupancy: { value: 0, trend: 'up' as const },
+        patients: { value: 0, trend: 'up' as const },
+        beds: { value: 0, trend: 'up' as const }
+      }
+    },
+    departmental: {}
+  };
 
-      {selectedArea && data.departmental[selectedArea] ? (
-          <DepartmentBoard
-            data={data}
-            selectedArea={selectedArea}
-            patients={patients}
+  // Combinar dados recebidos com valores default
+  const safeData = {
+    ...defaultMetrics,
+    ...data,
+    overall: {
+      ...defaultMetrics.overall,
+      ...data?.overall
+    }
+  };
+
+  return (
+    <div className="w-full space-y-6">
+      <div className={`relative ${error ? 'opacity-50' : ''}`}>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <MetricCard
+              title="Taxa de Ocupação"
+              value={`${safeData.overall.occupancyRate}%`}
+              icon={<Users className="w-6 h-6 text-blue-600 dark:text-blue-400" />}
+              trend={safeData.overall.periodComparison.occupancy}
+              loading={loading}
+            />
+            <MetricCard
+              title="Leitos Disponíveis"
+              value={safeData.overall.availableBeds}
+              icon={<Bed className="w-6 h-6 text-blue-600 dark:text-blue-400" />}
+              trend={safeData.overall.periodComparison.beds}
+              loading={loading}
+            />
+            <MetricCard
+              title="Tempo Médio de Internação"
+              value={`${safeData.overall.avgStayDuration} dias`}
+              icon={<Clock className="w-6 h-6 text-blue-600 dark:text-blue-400" />}
+              loading={loading}
+            />
+          </div>
+
+          {selectedArea && safeData.departmental[selectedArea] ? (
+            <DepartmentBoard
+              data={safeData}
+              selectedArea={selectedArea}
+              patients={patients}
+              setSelectedPatient={setSelectedPatient}
+              generateData={generateData}
+              generatedData={generatedData}
+              isLoading={isLoading}
+              loadingMessage={loadingMessage}
+              loadingProgress={loadingProgress}
+            />
+          ) : (
+            <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-8 text-center">
+              <h3 className="text-gray-500 dark:text-gray-400">
+                Selecione um departamento para ver os detalhes
+              </h3>
+            </div>
+          )}
+
+          <PatientCardModal 
+            selectedPatient={selectedPatient}
             setSelectedPatient={setSelectedPatient}
             generateData={generateData}
+            isHighContrast={isHighContrast}
+            setIsHighContrast={setIsHighContrast}
+            setShowAudioControls={setShowAudioControls}
+            showAudioControls={showAudioControls}
+            setFontSize={setFontSize}
+            fontSize={fontSize}
+            aiQuery={aiQuery}
+            setAiQuery={setAiQuery}
             generatedData={generatedData}
-            // Atributos de carregamento de imagens e recomendações geradas por IA (passando para o PatientCard)
-            isLoading={isLoading}
-            loadingMessage={loadingMessage}
-            loadingProgress={loadingProgress}
+            setCurrentUtterance={setCurrentUtterance}
+            setSynthesis={setSynthesis}
+            synthesis={synthesis}
           />
-        ) : null}
+        </div>
 
-      <PatientCardModal 
-          selectedPatient={selectedPatient}
-          setSelectedPatient={setSelectedPatient}
-          generateData={generateData}
-          isHighContrast={isHighContrast}
-          setIsHighContrast={setIsHighContrast}
-          setShowAudioControls={setShowAudioControls}
-          showAudioControls={showAudioControls}
-          setFontSize={setFontSize}
-          fontSize={fontSize}
-          aiQuery={aiQuery}
-          setAiQuery={setAiQuery}
-          generatedData={generatedData}
-          setCurrentUtterance={setCurrentUtterance}
-          setSynthesis={setSynthesis}
-          synthesis={synthesis}
-      />
+        {error && (
+          <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-red-200 dark:border-red-800 p-4 w-full max-w-2xl mx-auto">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <AlertCircle className="w-5 h-5 text-red-500" />
+                <div>
+                  <h3 className="font-medium text-red-500">Erro ao carregar dados</h3>
+                </div>
+              </div>
+              <button
+                onClick={onRetry}
+                className="inline-flex items-center space-x-2 px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white text-sm rounded-md transition-colors"
+              >
+                <RefreshCw className="w-4 h-4" />
+                <span>Tentar novamente</span>
+              </button>
+            </div>
+          </div>
+        )}
     </div>
   );
 };

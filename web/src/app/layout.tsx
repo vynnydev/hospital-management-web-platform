@@ -3,7 +3,6 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 
-import { ClerkProvider } from '@clerk/nextjs'
 import { ToastContainer } from "@/components/ui/molecules/Toast"
 import { ThemeProvider } from '@/components/ui/layout/ThemeProvider'
 import { StripeWrapper } from '@/components/ui/payments/StripeWrapper';
@@ -21,17 +20,15 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <ClerkProvider afterSignOutUrl="/">
-      <html lang="en" suppressHydrationWarning>
-        <body className={inter.className}>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <StripeWrapper>
-              {children}
-            </StripeWrapper>
-            <ToastContainer />
-          </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <StripeWrapper>
+            {children}
+          </StripeWrapper>
+          <ToastContainer />
+        </ThemeProvider>
+      </body>
+    </html>
   )
 }

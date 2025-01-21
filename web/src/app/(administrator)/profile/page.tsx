@@ -1,5 +1,3 @@
-import { UserButton } from "@clerk/nextjs"
-
 const Profile = () => {
     return (
         <div>

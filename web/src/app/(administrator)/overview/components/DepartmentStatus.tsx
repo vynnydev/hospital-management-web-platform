@@ -16,7 +16,7 @@ export const DepartmentStatus: React.FC<DepartmentStatusProps> = ({
     return (
         <div>
             {/* Department Status Section */}
-            <Card className="p-4 bg-gray-200 dark:bg-gray-700">
+            <Card className="p-4 dark:bg-gray-700">
                 <h3 className="text-lg font-semibold mb-4">Situação dos Departamentos</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {selectedHospital &&
@@ -25,7 +25,7 @@ export const DepartmentStatus: React.FC<DepartmentStatusProps> = ({
                     if (!hospital?.metrics?.departmental) return <p>Nenhum dado disponível.</p>;
 
                     return Object.entries(hospital.metrics.departmental).map(([deptName, dept]) => (
-                        <div key={deptName} className="p-4 rounded-lg bg-gray-100 dark:bg-gray-800">
+                        <div key={deptName} className="p-4 rounded-lg dark:bg-gray-800">
                         <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center gap-2">
                             {/* Removido o uso de `dept.icon` pois a API não o fornece */}
