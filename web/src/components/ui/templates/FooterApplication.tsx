@@ -2,7 +2,7 @@
 
 export const FooterApplication = () => {
     return (
-        <div className="flex flex-col mb-4 h-auto mt-[100px] max-md:mt-12 max-lg:mt-12 dark:bg-gray-800 px-12 text-gray-800 dark:text-gray-200">
+        <div className="flex flex-col mb-4 h-auto mt-[100px] max-md:mt-12 max-lg:mt-12 dark:bg-[#121212] px-12 text-gray-800 dark:text-gray-200">
 
             <div className='flex flex-row'>
                 <h1 className='text-gray-500 dark:text-gray-200 text-xl max-md:text-sm max-lg:text-sm max-md:mt-1 max-lg:mt-1 font-normal'>© {new Date().getFullYear()}</h1>
