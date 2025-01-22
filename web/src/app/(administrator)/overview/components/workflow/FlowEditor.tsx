@@ -11,7 +11,8 @@ import {
   useEdgesState,
   useNodesState,
   Node,
-  Edge
+  Edge,
+  IsValidConnection
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { Brain } from "lucide-react";
@@ -25,9 +26,8 @@ import {
   FlowEditorProps,
   DragEvent,
   OnConnect,
-  IsValidConnection
+  NodeType
 } from "./types";
-import { color } from "framer-motion";
 
 export const nodeTypes = {
   network: BaseNodeComponent,
@@ -166,9 +166,10 @@ export const FlowEditor = ({ networkData }: FlowEditorProps) => {
     event.dataTransfer.dropEffect = "move";
   }, []);
 
-  const onDrop = useCallback((event: DragEvent) => {
+  const onDrop = useCallback((event: React.DragEvent) => {
     event.preventDefault();
-    const type = event.dataTransfer.getData("application/reactflow");
+    const typeData = event.dataTransfer.getData("application/reactflow");
+    const type = typeData as NodeType;
     if (!type) return;
 
     const position = {
@@ -201,26 +202,24 @@ export const FlowEditor = ({ networkData }: FlowEditorProps) => {
     [setEdges, flowValidation]
   );
 
-  const isValidConnection: IsValidConnection = useCallback(
-    (connection: Connection) => {
-      const source = nodes.find((node) => node.id === connection.source);
-      const target = nodes.find((node) => node.id === connection.target);
-      
-      if (!source || !target || source.id === target.id) {
-        return false;
-      }
-
-      if (source.data.type === 'hospital' && target.data.type === 'network') {
-        return true;
-      }
-      if (source.data.type === 'hospital' && target.data.type === 'department') {
-        return true;
-      }
-
+  const isValidConnection: IsValidConnection = useCallback((params) => {
+    const source = nodes.find((node) => node.id === params.source);
+    const target = nodes.find((node) => node.id === params.target);
+    
+    if (!source || !target || source.id === target.id) {
       return false;
-    },
-    [nodes]
-  );
+    }
+
+    // Validações específicas para os tipos de nós
+    if (source.data.type === 'network' && target.data.type === 'hospital') {
+      return true;
+    }
+    if (source.data.type === 'hospital' && target.data.type === 'department') {
+      return true;
+    }
+
+    return false;
+  }, [nodes]);
 
   return (
     <div className="pt-2 pb-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md">
@@ -261,7 +260,7 @@ export const FlowEditor = ({ networkData }: FlowEditorProps) => {
               variant={BackgroundVariant.Dots}
               color="#94a3b8" 
               gap={16} 
-              size={1}
+              size={2}
               className="dark:opacity-30"
             />
             <Controls 

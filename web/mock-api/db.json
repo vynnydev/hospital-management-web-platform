@@ -3,7 +3,7 @@
     {
       "id": "USR001",
       "name": "Administrador",
-      "email": "admin@rededor.com",
+      "email": "admin@4health.com",
       "role": "Admin",
       "password": "123",
       "profileImage": "",
@@ -14,31 +14,31 @@
     {
       "id": "USR002",
       "name": "Gestor Itaim",
-      "email": "gestor.itaim@rededor.com",
+      "email": "gestor.itaim@4health.com",
       "role": "Hospital Manager",
       "password": "123",
       "profileImage": "",
       "permissions": [
         "VIEW_SINGLE_HOSPITAL"
       ],
-      "hospitalId": "RDSL-SP-ITAIM"
+      "hospitalId": "RD4H-SP-ITAIM"
     },
     {
       "id": "USR003",
       "name": "Gestor Morumbi",
-      "email": "gestor.morumbi@rededor.com",
+      "email": "gestor.morumbi@4health.com",
       "role": "Hospital Manager",
       "password": "123",
       "profileImage": "",
       "permissions": [
         "VIEW_SINGLE_HOSPITAL"
       ],
-      "hospitalId": "RDSL-SP-MORUMBI"
+      "hospitalId": "RD4H-SP-MORUMBI"
     }
   ],
   "networkInfo": {
-    "id": "RDSL",
-    "name": "Rede D'Or São Luiz",
+    "id": "RD4H",
+    "name": "Rede 4Health",
     "logo": "url_logo_rede_dor",
     "totalHospitals": 3,
     "networkMetrics": {
@@ -66,8 +66,8 @@
   },
   "hospitals": [
     {
-      "id": "RDSL-SP-ITAIM",
-      "name": "Hospital São Luiz - Itaim",
+      "id": "RD4H-SP-ITAIM",
+      "name": "Hospital 4Health - Itaim",
       "unit": {
         "address": "Rua Dr. Alceu de Campos Rodrigues, 95",
         "city": "São Paulo",
@@ -244,8 +244,8 @@
       }
     },
     {
-      "id": "RDSL-SP-MORUMBI",
-      "name": "Hospital São Luiz - Morumbi",
+      "id": "RD4H-SP-MORUMBI",
+      "name": "Hospital 4Health - Morumbi",
       "unit": {
         "address": "Rua Oscar Americano, 840",
         "city": "São Paulo",
@@ -306,8 +306,8 @@
       }
     },
     {
-      "id": "RDSL-RJ-COPA",
-      "name": "Hospital Copa D'Or",
+      "id": "RD4H-RJ-COPA",
+      "name": "Hospital 4Health - Copacabana",
       "unit": {
         "address": "Rua Figueiredo de Magalhães, 875",
         "city": "Rio de Janeiro",

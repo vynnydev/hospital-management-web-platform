@@ -443,7 +443,7 @@ export const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({
                 className="w-full"
             >
               
-                <div className="max-w-[1920px] mx-auto mt-20 bg-slate-100 dark:bg-slate-800 p-6 rounded-md">
+                <div className="max-w-[1920px] mx-auto mt-4 bg-slate-100 dark:bg-slate-800 p-6 rounded-md">
                     <div className="flex items-center justify-between mb-8">
                         <div className="flex items-center gap-4">
                             <h2 className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-400'}`}>

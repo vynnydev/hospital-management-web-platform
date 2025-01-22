@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -64,7 +65,7 @@ export const MapboxHospital: React.FC<MapboxHospitalProps> = ({
       el.className = 'hospital-marker';
       
       el.innerHTML = `
-        <div class="bg-white p-3 rounded-xl shadow-lg cursor-pointer transform transition-transform hover:scale-105 min-w-[250px]">
+        <div class="bg-white dark:bg-gray-700 p-3 rounded-xl shadow-lg cursor-pointer transform transition-transform hover:scale-105 min-w-[250px]">
           <div class="flex items-start space-x-3">
             <div class="flex-shrink-0">
               <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
@@ -72,11 +73,11 @@ export const MapboxHospital: React.FC<MapboxHospitalProps> = ({
               </div>
             </div>
             <div class="flex-1">
-              <h3 class="font-semibold text-gray-900">${hospital.name}</h3>
-              <p class="text-sm text-gray-600">${hospital.unit.address}</p>
-              <p class="text-sm text-gray-500">${hospital.unit.city}, ${hospital.unit.state}</p>
+              <h3 class="font-semibold text-gray-900 dark:text-white">${hospital.name}</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-300">${hospital.unit.address}</p>
+              <p class="text-sm text-gray-500 dark:text-gray-300">${hospital.unit.city}, ${hospital.unit.state}</p>
               <div class="mt-2 flex items-center">
-                <div class="px-2 py-1 bg-blue-100 rounded-full">
+                <div class="px-2 py-1 bg-blue-100 dark:bg-blue-400 rounded-full">
                   <span class="text-blue-700 font-medium">${hospital.metrics.overall.occupancyRate}% Ocupação</span>
                 </div>
               </div>

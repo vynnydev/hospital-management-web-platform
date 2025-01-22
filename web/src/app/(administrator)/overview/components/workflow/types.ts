@@ -1,4 +1,4 @@
-import { Node, Edge, Connection, NodeChange, EdgeChange } from '@xyflow/react';
+import { Edge, Connection, NodeChange, EdgeChange } from '@xyflow/react';
 
 // Tipo para o tipo de nó
 export type NodeType = "network" | "hospital" | "department";
@@ -87,7 +87,15 @@ export interface AppNodeData {
     [key: string]: unknown;
 }
 
-export type AppNode = Node<AppNodeData>;
+export interface AppNode {
+  id: string;
+  type: NodeType;
+  position: { x: number; y: number };
+  data: AppNodeData;
+  draggable: boolean;
+  selectable: boolean;
+}
+
 export type AppEdge = Edge;
 
 // Props e State interfaces

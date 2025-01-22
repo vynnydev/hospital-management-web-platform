@@ -13,42 +13,10 @@ import { MaintenanceHospitalRecommendations } from './components/MaintenanceHosp
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { HospitalsLocations } from './components/HospitalsLocations';
 import { AIAnaliticsMetrics } from './components/AIAnaliticsMetrics';
-import { HospitalFlowDiagram } from './components/HospitalFlowDiagram';
 import { FlowEditor } from './components/workflow/FlowEditor';
-import MessageCenter from './components/MessageCenter';
-
-const workflows = [
-  {
-    id: 'rede1',
-    type: 'network',
-    position: { x: 750, y: 50 },
-    data: {
-      label: 'Rede D\'Or São Luiz',
-      metrics: {
-        beds: 1200,
-        patients: 850
-      },
-      aiMetrics: {
-        prediction: 84.5
-      }
-    }
-  },
-  {
-    id: 'hospital1',
-    type: 'hospital',
-    position: { x: 200, y: 250 },
-    data: {
-      label: 'Hospital São Luiz - Itaim',
-      occupancy: 85.5,
-      metrics: {
-        beds: 400,
-        patients: 324,
-        avgStay: 5.2,
-        turnover: 12.3
-      }
-    }
-  }
-];
+import { MessageCenter } from './components/MessageCenter';
+import { ModernTabs } from './components/ModernTabs';
+import AIDAHealthAssistant from '@/components/ui/aida-assistant/AIDAHealthAssistant';
 
 // Add department status interface
 interface DepartmentStatus {
@@ -166,112 +134,84 @@ const Overview: React.FC = () => {
   };
 
   return (
-    <div className="space-y-20 p-6 -mt-20">
+    <>
+        <div className="space-y-20 p-6 -mt-20">
 
-      <div className='pt-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md'>
-        <div className='p-4 bg-gray-800 rounded-md'>
-            {/* Header Section */}
-            <ManagementNetworkMetrics 
-                networkData={networkData}
-                filteredHospitals={filteredHospitals}
-                selectedRegion={selectedRegion}
-                setSelectedRegion={setSelectedRegion}
-                setDisplayMode={setDisplayMode}
-                displayMode={displayMode}
-                currentMetrics={currentMetrics}
-                canChangeRegion={canChangeRegion}
-            />
-
-
-        </div>
-      </div>
-
-      <div className='pt-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md'>
-        <div className='p-4 bg-gray-800'>
-            <DepartmentStatus 
-                networkData={networkData}
-                selectedHospital={selectedHospital}
-                getStatusColor={getStatusColor}
-            />
-
-            {/* Main Content Area */}
-            <Tabs defaultValue="overview" className="space-y-4">
-              <TabsList>
-                <TabsTrigger value="overview">Visão Geral</TabsTrigger>
-                {/* <TabsTrigger value="performance">Performance</TabsTrigger>
-                <TabsTrigger value="comparison">Comparativo</TabsTrigger> */}
-                {/* <TabsTrigger value="resources-recommendations">Manutenção dos Hospitais por IA</TabsTrigger> */}
-                <TabsTrigger value="hospitals-locations">Localização dos Hospitais</TabsTrigger>
-                <TabsTrigger value="analytics">Analise dos Hospitais por IA</TabsTrigger>
-                <TabsTrigger value="message-center">Central de Comunicação</TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="overview" className="space-y-4">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                  {/* Hospital List */}
-                  <NetworkListHospital 
-                      filteredHospitals={filteredHospitals}
-                      setSelectedHospital={setSelectedHospital}
-                      currentUser={currentUser}
-                  />
-
-                  {/* Occupancy Chart */}
-                  {/* Occupancy Chart */}
-                  <OccupancyRateCharts 
+          <div className='pt-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md'>
+            <div className='p-4 bg-gray-800 rounded-md'>
+                {/* Header Section */}
+                <ManagementNetworkMetrics 
+                    networkData={networkData}
                     filteredHospitals={filteredHospitals}
-                  />
-                </div>
-              </TabsContent>
-
-              {/*
-              <TabsContent value="performance">
-              </TabsContent>
-
-              <TabsContent value="comparison">
-              </TabsContent>*/}
-
-              {/* Existing TabsContent for overview, performance, and comparison */}
-              {/* <TabsContent value="resources-recommendations" className="space-y-4">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                  <MaintenanceHospitalRecommendations 
-                      selectedDate={selectedDate}
-                      setSelectedDate={setSelectedDate}
-                  />
-                </div>
-              </TabsContent>*/}
-
-              <TabsContent value="hospitals-locations" className="space-y-4">
-                <HospitalsLocations
-                  hospitals={networkData?.hospitals}
-                  currentUser={currentUser} 
-                  selectedHospital={selectedHospital} 
-                  setSelectedHospital={setSelectedHospital}          
+                    selectedRegion={selectedRegion}
+                    setSelectedRegion={setSelectedRegion}
+                    setDisplayMode={setDisplayMode}
+                    displayMode={displayMode}
+                    currentMetrics={currentMetrics}
+                    canChangeRegion={canChangeRegion}
                 />
-              </TabsContent>
 
-              <TabsContent value="analytics" className="space-y-4">
-                <AIAnaliticsMetrics 
-                    filteredHospitals={getFilteredHospitals() || []}
-                    currentUser={currentUser}
-                    onRefresh={() => {
-                        // Sua lógica de refresh
-                    }}
-                />
-              </TabsContent>
 
-              <TabsContent value="message-center" className="space-y-4">
-                <MessageCenter 
-                  networkData={networkData}
-                  currentUser={currentUser}
-                  loading={loading}
+            </div>
+          </div>
+
+          <div className='pt-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md'>
+            <div className='p-4 bg-gray-800'>
+                <DepartmentStatus 
+                    networkData={networkData}
+                    selectedHospital={selectedHospital}
+                    getStatusColor={getStatusColor}
                 />
-              </TabsContent>
-            </Tabs>
+
+                {/* Main Content Area */}
+                <ModernTabs>
+                  {{
+                    overview: (
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        <NetworkListHospital 
+                          filteredHospitals={filteredHospitals}
+                          setSelectedHospital={setSelectedHospital}
+                          currentUser={currentUser}
+                        />
+                        <OccupancyRateCharts 
+                          filteredHospitals={filteredHospitals}
+                        />
+                      </div>
+                    ),
+                    hospitalsLocations: (
+                      <HospitalsLocations
+                        hospitals={networkData?.hospitals}
+                        currentUser={currentUser} 
+                        selectedHospital={selectedHospital} 
+                        setSelectedHospital={setSelectedHospital}          
+                      />
+                    ),
+                    analytics: (
+                      <AIAnaliticsMetrics 
+                        filteredHospitals={getFilteredHospitals() || []}
+                        currentUser={currentUser}
+                        onRefresh={() => {
+                          // Sua lógica de refresh
+                        }}
+                      />
+                    ),
+                    messageCenter: (
+                      <MessageCenter 
+                        networkData={networkData}
+                        currentUser={currentUser}
+                        loading={loading}
+                      />
+                    )
+                  }}
+                </ModernTabs>
+            </div>
+          </div>
+
+          <FlowEditor networkData={networkData}/>
         </div>
-      </div>
 
-      <FlowEditor networkData={networkData}/>
-    </div>
+        <AIDAHealthAssistant />
+    </>
   );
 };
 
