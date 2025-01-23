@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useCallback, useEffect, useContext } from "react";
+import { useCallback, useEffect, useContext, useState } from "react";
 import {
   addEdge,
   Background,
@@ -28,6 +28,7 @@ import {
   OnConnect,
   NodeType
 } from "./types";
+import { IntegrationsPreviewPressable } from "@/components/ui/organisms/IntegrationsPreviewPressable";
 
 export const nodeTypes = {
   network: BaseNodeComponent,
@@ -46,6 +47,9 @@ export const FlowEditor = ({ networkData }: FlowEditorProps) => {
   const [nodes, setNodes, onNodesChange] = useNodesState<AppNode>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<AppEdge>([]);
   const flowValidation = useContext(FlowValidationContext);
+
+  const [isIntegrationsOpen, setIsIntegrationsOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('');
 
   useEffect(() => {
     console.log('networkData recebido:', networkData);
@@ -233,6 +237,17 @@ export const FlowEditor = ({ networkData }: FlowEditorProps) => {
               Visualização em tempo real da ocupação e métricas da rede hospitalar
             </p>
           </div>
+
+          {/* Deixar mostrando no maximo 5 com o plus */}
+          <div className='ml-[600px] py-2'>
+            <IntegrationsPreviewPressable 
+              onSelectIntegration={() => {
+                setIsIntegrationsOpen(true);
+                setActiveSection('integrations');
+              }} 
+            />
+          </div>
+
           <Badge variant="outline" className="dark:border-blue-500 dark:text-blue-400">
             Dashboard em Tempo Real
           </Badge>

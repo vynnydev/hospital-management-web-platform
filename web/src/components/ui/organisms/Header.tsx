@@ -2,7 +2,7 @@
 // components/ui/organisms/Header.tsx
 'use client'
 import Image from 'next/image';
-import { LogOut, Moon, Sun } from 'lucide-react'
+import { LogOut, Moon, Puzzle, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
 
 import { Brand } from "@/components/ui/atoms/Brand"
@@ -11,10 +11,13 @@ import { WelcomeMsg } from "@/components/ui/templates/WelcomeMsg"
 import { Button } from "@/components/ui/organisms/button"
 import { authService } from "@/services/auth/AuthService"
 import { useState } from "react"
+import { ConfigurationAndUserModalMenus } from '../templates/ConfigurationAndUserModalMenus';
+import { IntegrationsContent } from '../templates/modal-contents/IntegrationsContent';
 
 export const Header = () => {
     const { theme, setTheme } = useTheme();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isIntegrationsOpen, setIsIntegrationsOpen] = useState(false);
     const user = authService.getCurrentUser();
 
     const handleLogout = async () => {
@@ -72,9 +75,9 @@ export const Header = () => {
                             }
                         </Button>
                         {/* Botão redondo com imagem do usuário */}
-                        <div className="relative">
+                        <div className="relative bg-gradient-to-r from-blue-700 to-cyan-700 w-12 h-12 p-1 rounded-full">
                                 <button 
-                                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                                    onClick={() => setIsIntegrationsOpen(!isIntegrationsOpen)}
                                     className="w-10 h-10 rounded-full overflow-hidden border border-gray-300 hover:border-blue-500"
                                 >
                                     <Image 
@@ -85,18 +88,13 @@ export const Header = () => {
                                         height={40}
                                     />
                                 </button>
-
-                                {/* Menu drop-down */}
-                                {isMenuOpen && (
-                                    <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border rounded-lg shadow-lg z-50">
-                                        <button 
-                                            onClick={handleLogout} 
-                                            className="flex items-center gap-2 p-4 w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700"
-                                        >
-                                            <LogOut size={18} /> Sair
-                                        </button>
-                                    </div>
-                                )}
+                                
+                                <ConfigurationAndUserModalMenus
+                                    isOpen={isIntegrationsOpen} 
+                                    onClose={() => setIsIntegrationsOpen(false)}
+                                    user={user}
+                                    onLogout={handleLogout}
+                                />
                             </div>
                         </div>
                     </div>

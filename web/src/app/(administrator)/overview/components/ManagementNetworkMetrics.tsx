@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from 'react';
+'use client'
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/organisms/button";
 import { Card, CardContent } from "@/components/ui/organisms/card";
 import { 
@@ -17,10 +18,12 @@ import {
   ChevronDown,
   Activity,
   Map,
-  Settings 
+  Settings,
+  Puzzle
 } from 'lucide-react';
 import { HospitalNetworkMetrics } from './HospitalNetworkMetrics';
 import { NetworkData } from '@/types/hospital-network-types';
+import { IntegrationsPreviewPressable } from '@/components/ui/organisms/IntegrationsPreviewPressable';
 
 interface HospitalMetrics {
   unit: {
@@ -61,7 +64,10 @@ export const ManagementNetworkMetrics: React.FC<ManagementNetworkMetricsProps> =
   filteredHospitals,
   canChangeRegion
 }) => {
-  const regions = React.useMemo(() => {
+  const [isIntegrationsOpen, setIsIntegrationsOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('');
+
+  const regions = React.useMemo(() => { 
     if (!networkData?.hospitals?.length) return [];
     
     return networkData.hospitals.reduce<string[]>((acc: string[], hospital: { unit: { state: string } }) => {
@@ -85,6 +91,16 @@ export const ManagementNetworkMetrics: React.FC<ManagementNetworkMetricsProps> =
               <p className="text-gray-500 dark:text-gray-400 text-sm">
                 {filteredHospitals?.length || 0} Hospitais • {currentMetrics?.totalBeds || 0} Leitos
               </p>
+            </div>
+
+            {/* Deixar mostrando no maximo 5 com o plus */}
+            <div className='mr-[790px]'>
+              <IntegrationsPreviewPressable 
+                onSelectIntegration={() => {
+                  setIsIntegrationsOpen(true);
+                  setActiveSection('integrations');
+                }} 
+              />
             </div>
             
             <div className="flex items-center space-x-4">
@@ -117,14 +133,24 @@ export const ManagementNetworkMetrics: React.FC<ManagementNetworkMetricsProps> =
                 </div>
               )}
 
-              <Button
-                variant="outline"
-                onClick={() => setDisplayMode(prev => prev === 'dashboard' ? 'tv' : 'dashboard')}
-                className="flex items-center space-x-2 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200"
-              >
-                <Monitor size={18} />
-                <span>Modo TV</span>
-              </Button>
+              {/* Botão de Integrações */}
+              {/* <div className="fixed bottom-8 right-8 flex items-center gap-2">
+                <button
+                  onClick={() => setIsIntegrationsOpen(true)}
+                  className="rounded-full p-3 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white shadow-lg transition-all duration-300 hover:scale-105 flex items-center gap-2"
+                  aria-label="Abrir integrações"
+                >
+                  <div className="p-2 bg-white/10 rounded-full">
+                    <Puzzle className="w-5 h-5" />
+                  </div>
+                  <span className="pr-2 font-medium">Integrações</span>
+                </button>
+              </div>
+
+              <IntegrationsNetworkMetricsModal
+                  isOpen={isIntegrationsOpen}
+                  onClose={() => setIsIntegrationsOpen(false)}
+                /> */}
             </div>
           </div>
 

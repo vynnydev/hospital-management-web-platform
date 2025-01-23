@@ -1,5 +1,7 @@
+import { IntegrationsPreviewPressable } from "@/components/ui/organisms/IntegrationsPreviewPressable";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/organisms/tabs";
 import { Home, Activity, MessageSquare, Map } from "lucide-react";
+import { useState } from "react";
 
 interface ModernTabsProps {
   children: {
@@ -11,16 +13,32 @@ interface ModernTabsProps {
 }
 
 export const ModernTabs: React.FC<ModernTabsProps> = ({ children }) => {
+    const [isIntegrationsOpen, setIsIntegrationsOpen] = useState(false);
+    const [activeSection, setActiveSection] = useState('');
+    
   return (
     <Tabs defaultValue="overview" className="w-full p-4">
-      <div className="mb-8">
-        <h2 className="text-2xl font-semibold text-slate-50 mb-2">
-          Explore todos os recursos
-        </h2>
-        <p className="text-slate-400">
-          Gerencie e monitore todas as informações do seu hospital
-        </p>
+      <div className="flex flex-row mb-8">
+        <div>
+          <h2 className="text-2xl font-semibold text-slate-50 mb-2">
+            Explore todos os recursos
+          </h2>
+          <p className="text-slate-400">
+            Gerencie e monitore todas as informações do seu hospital
+          </p>
+        </div>
+
+        {/* Deixar mostrando no maximo 5 com o plus */}
+        <div className='ml-[830px] py-2'>
+          <IntegrationsPreviewPressable 
+            onSelectIntegration={() => {
+              setIsIntegrationsOpen(true);
+              setActiveSection('integrations');
+            }} 
+          />
+        </div>
       </div>
+
 
       <TabsList className="grid grid-cols-4 gap-4 bg-transparent p-0 mb-8 pt-6">
         {[

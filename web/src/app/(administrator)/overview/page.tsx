@@ -135,7 +135,7 @@ const Overview: React.FC = () => {
 
   return (
     <>
-        <div className="space-y-20 p-6 -mt-20">
+        <div className="space-y-20 p-6 -mt-20 rounded-md">
 
           <div className='pt-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md'>
             <div className='p-4 bg-gray-800 rounded-md'>

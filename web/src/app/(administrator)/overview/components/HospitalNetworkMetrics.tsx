@@ -44,18 +44,6 @@ const MetricTooltip = ({ title, description, children }: { title: string; descri
   </TooltipProvider>
 );
 
-const TrendIndicator = ({ value, isGood }: { value: number; isGood: boolean }) => {
-  const isPositive = value > 0;
-  const color = isPositive === isGood ? 'text-green-500' : 'text-red-500';
-  
-  return (
-    <span className={`flex items-center text-sm ${color}`}>
-      {isPositive ? <ArrowUp size={16} /> : <ArrowDown size={16} />}
-      {Math.abs(value)}%
-    </span>
-  );
-};
-
 export const HospitalNetworkMetrics = ({ networkData, currentMetrics }: MetricsProps) => {
   const efficiency = networkData?.networkInfo?.networkMetrics?.networkEfficiency;
   const periodComparison = networkData?.hospitals[0]?.metrics?.overall?.periodComparison;

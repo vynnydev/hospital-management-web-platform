@@ -248,20 +248,19 @@ export const MessageCenter: React.FC<MessageCenterProps> = ({ networkData, curre
             <Card
               key={hospital.id}
               onClick={() => handleHospitalSelect(hospital.id)}
-              className={`cursor-pointer transition-all ${
+              className={`cursor-pointer transition-all relative overflow-hidden ${
                 selectedHospitals.includes(hospital.id)
                   ? 'bg-gradient-to-r from-blue-700 to-cyan-700 text-white'
                   : 'bg-white dark:bg-gray-700 hover:shadow-lg'
-              } ${
-                hospital.metrics.overall.occupancyRate > 85 
-                  ? 'ring-2 ring-red-500' 
-                  : ''
               }`}
             >
+              {hospital.metrics.overall.occupancyRate >= 85 && (
+                <div className="absolute inset-0 border-2 border-red-500 rounded-lg pointer-events-none" />
+              )}
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Building2 className="w-5 h-5" />
-                  <span className='text-xl'>{hospital.name}</span>
+                  <span className="text-xl">{hospital.name}</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -271,7 +270,7 @@ export const MessageCenter: React.FC<MessageCenterProps> = ({ networkData, curre
                     <span>Ocupação:</span>
                     <span className={`font-medium ${
                       !selectedHospitals.includes(hospital.id) && (
-                        hospital.metrics.overall.occupancyRate > 85
+                        hospital.metrics.overall.occupancyRate >= 85
                           ? 'text-red-500'
                           : hospital.metrics.overall.occupancyRate > 70
                           ? 'text-yellow-500'
@@ -321,7 +320,7 @@ export const MessageCenter: React.FC<MessageCenterProps> = ({ networkData, curre
           className="w-full p-4 rounded-xl bg-white dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 resize-none h-32"
         />
         
-        <div className="flex justify-between items-center">
+        <div className="flex justify-end items-center space-x-8">
           <div className="flex items-center gap-4">
             <input
               type="file"
