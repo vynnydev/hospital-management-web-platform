@@ -24,6 +24,7 @@ import {
 import { HospitalNetworkMetrics } from './HospitalNetworkMetrics';
 import { NetworkData } from '@/types/hospital-network-types';
 import { IntegrationsPreviewPressable } from '@/components/ui/organisms/IntegrationsPreviewPressable';
+import { ConfigurationAndUserModalMenus } from '@/components/ui/templates/ConfigurationAndUserModalMenus';
 
 interface HospitalMetrics {
   unit: {
@@ -66,6 +67,13 @@ export const ManagementNetworkMetrics: React.FC<ManagementNetworkMetricsProps> =
 }) => {
   const [isIntegrationsOpen, setIsIntegrationsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [defaultSection, setDefaultSection] = useState<string>('integrations');
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+    setDefaultSection('integrations');
+  };
 
   const regions = React.useMemo(() => { 
     if (!networkData?.hospitals?.length) return [];
@@ -95,11 +103,13 @@ export const ManagementNetworkMetrics: React.FC<ManagementNetworkMetricsProps> =
 
             {/* Deixar mostrando no maximo 5 com o plus */}
             <div className='mr-[790px]'>
-              <IntegrationsPreviewPressable 
-                onSelectIntegration={() => {
-                  setIsIntegrationsOpen(true);
-                  setActiveSection('integrations');
-                }} 
+              <IntegrationsPreviewPressable onSelectIntegration={handleOpenModal} />
+
+              <ConfigurationAndUserModalMenus 
+                  isOpen={isModalOpen}
+                  onClose={() => setIsModalOpen(false)}
+                  defaultSection={defaultSection}
+                  user={null}
               />
             </div>
             

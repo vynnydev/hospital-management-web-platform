@@ -39,9 +39,9 @@ export const CredentialsParam = ({
         defaultValue={value}
       >
         <SelectTrigger className="w-full">
-          <SelectValue placeholder="Select an option" />
+          <SelectValue placeholder="Selecione uma opção" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="bg-gray-100 dark:bg-gray-700">
           <SelectGroup>
             <SelectLabel>Credentials</SelectLabel>
             {/* {query.data?.map((credential: any) => (

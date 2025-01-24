@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { IntegrationsPreviewPressable } from "@/components/ui/organisms/IntegrationsPreviewPressable";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/organisms/tabs";
+import { ConfigurationAndUserModalMenus } from "@/components/ui/templates/ConfigurationAndUserModalMenus";
 import { Home, Activity, MessageSquare, Map } from "lucide-react";
 import { useState } from "react";
 
@@ -15,6 +17,13 @@ interface ModernTabsProps {
 export const ModernTabs: React.FC<ModernTabsProps> = ({ children }) => {
     const [isIntegrationsOpen, setIsIntegrationsOpen] = useState(false);
     const [activeSection, setActiveSection] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [defaultSection, setDefaultSection] = useState<string>('integrations');
+
+    const handleOpenModal = () => {
+      setIsModalOpen(true);
+      setDefaultSection('integrations');
+    };
     
   return (
     <Tabs defaultValue="overview" className="w-full p-4">
@@ -30,11 +39,13 @@ export const ModernTabs: React.FC<ModernTabsProps> = ({ children }) => {
 
         {/* Deixar mostrando no maximo 5 com o plus */}
         <div className='ml-[830px] py-2'>
-          <IntegrationsPreviewPressable 
-            onSelectIntegration={() => {
-              setIsIntegrationsOpen(true);
-              setActiveSection('integrations');
-            }} 
+          <IntegrationsPreviewPressable onSelectIntegration={handleOpenModal} />
+
+          <ConfigurationAndUserModalMenus 
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              defaultSection={defaultSection}
+              user={null}
           />
         </div>
       </div>

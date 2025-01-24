@@ -17,7 +17,7 @@ import {
 import "@xyflow/react/dist/style.css";
 import { Brain } from "lucide-react";
 import { Badge } from "@/components/ui/organisms/badge";
-import { FlowValidationContext } from "@/components/ui/context/FlowValidationContext";
+import { FlowValidationContext, FlowValidationContextProvider } from "@/components/ui/context/FlowValidationContext";
 import DeletableEdge from "./edges/DeletableEdge";
 import BaseNodeComponent from "./nodes/NodeComponent";
 import {
@@ -29,6 +29,7 @@ import {
   NodeType
 } from "./types";
 import { IntegrationsPreviewPressable } from "@/components/ui/organisms/IntegrationsPreviewPressable";
+import { ConfigurationAndUserModalMenus } from "@/components/ui/templates/ConfigurationAndUserModalMenus";
 
 export const nodeTypes = {
   network: BaseNodeComponent,
@@ -50,6 +51,13 @@ export const FlowEditor = ({ networkData }: FlowEditorProps) => {
 
   const [isIntegrationsOpen, setIsIntegrationsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [defaultSection, setDefaultSection] = useState<string>('integrations');
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+    setDefaultSection('integrations');
+  };
 
   useEffect(() => {
     console.log('networkData recebido:', networkData);
@@ -226,75 +234,79 @@ export const FlowEditor = ({ networkData }: FlowEditorProps) => {
   }, [nodes]);
 
   return (
-    <div className="pt-2 pb-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md">
-      <div className="p-4 w-full space-y-4 bg-gray-800 rounded-md">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-2xl font-bold dark:text-white">
-              Gerenciamento de Leitos
-            </h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              Visualização em tempo real da ocupação e métricas da rede hospitalar
-            </p>
+    <FlowValidationContextProvider>
+      <div className="pt-2 pb-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md">
+        <div className="p-4 w-full space-y-4 bg-gray-800 rounded-md">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-2xl font-bold dark:text-white">
+                Gerenciamento de Leitos
+              </h2>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                Visualização em tempo real da ocupação e métricas da rede hospitalar
+              </p>
+            </div>
+
+            {/* Deixar mostrando no maximo 5 com o plus */}
+            <div className='ml-[600px] py-2'>
+                <IntegrationsPreviewPressable onSelectIntegration={handleOpenModal} />
+
+                <ConfigurationAndUserModalMenus 
+                    isOpen={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                    defaultSection={defaultSection}
+                    user={null}
+                />
+            </div>
+
+            <Badge variant="outline" className="dark:border-blue-500 dark:text-blue-400">
+              Dashboard em Tempo Real
+            </Badge>
           </div>
 
-          {/* Deixar mostrando no maximo 5 com o plus */}
-          <div className='ml-[600px] py-2'>
-            <IntegrationsPreviewPressable 
-              onSelectIntegration={() => {
-                setIsIntegrationsOpen(true);
-                setActiveSection('integrations');
-              }} 
-            />
-          </div>
-
-          <Badge variant="outline" className="dark:border-blue-500 dark:text-blue-400">
-            Dashboard em Tempo Real
-          </Badge>
-        </div>
-
-        <div style={{ width: '100%', height: '700px' }}>
-          <ReactFlow
-            nodes={nodes}
-            edges={edges}
-            onEdgesChange={onEdgesChange}
-            onNodesChange={onNodesChange}
-            nodeTypes={nodeTypes}
-            edgeTypes={edgeTypes}
-            snapToGrid
-            snapGrid={snapGrid}
-            fitViewOptions={fitViewOptions}
-            fitView
-            onDragOver={onDragOver}
-            onDrop={onDrop}
-            onConnect={onConnect}
-            isValidConnection={isValidConnection}
-            defaultViewport={{ x: 0, y: 0, zoom: 0.65 }}
-          >
-            <Background 
-              variant={BackgroundVariant.Dots}
-              color="#94a3b8" 
-              gap={16} 
-              size={2}
-              className="dark:opacity-30"
-            />
-            <Controls 
-              className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg"
+          <div style={{ width: '100%', height: '700px' }}>
+            <ReactFlow
+              nodes={nodes}
+              edges={edges}
+              onEdgesChange={onEdgesChange}
+              onNodesChange={onNodesChange}
+              nodeTypes={nodeTypes}
+              edgeTypes={edgeTypes}
+              snapToGrid
+              snapGrid={snapGrid}
               fitViewOptions={fitViewOptions}
-              showInteractive={false}
-            />
-            <Panel 
-              position="top-right" 
-              className="bg-white dark:bg-gray-800 p-2 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700"
+              fitView
+              onDragOver={onDragOver}
+              onDrop={onDrop}
+              onConnect={onConnect}
+              isValidConnection={isValidConnection}
+              defaultViewport={{ x: 0, y: 0, zoom: 0.65 }}
             >
-              <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-                <Brain className="h-4 w-4 text-blue-500" />
-                <span>IA Ativa: Monitorando em tempo real</span>
-              </div>
-            </Panel>
-          </ReactFlow>
+              <Background 
+                variant={BackgroundVariant.Dots}
+                color="#94a3b8" 
+                gap={16} 
+                size={2}
+                className="dark:opacity-30"
+              />
+              <Controls 
+                className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg"
+                fitViewOptions={fitViewOptions}
+                showInteractive={false}
+              />
+              <Panel 
+                position="top-right" 
+                className="bg-white dark:bg-gray-800 p-2 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700"
+              >
+                <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
+                  <Brain className="h-4 w-4 text-blue-500" />
+                  <span>IA Ativa: Monitorando em tempo real</span>
+                </div>
+              </Panel>
+            </ReactFlow>
+          </div>
         </div>
       </div>
-    </div>
+    </FlowValidationContextProvider>
   );
 };

@@ -10,15 +10,29 @@ interface Props {
   onClose: () => void;
   user: AppUser | null;
   onLogout?: () => void;
+  defaultSection?: string; // Nova prop
+}
+
+interface AccessibilityOptions {
+  highContrast: boolean;
+  visualAlerts: boolean;
+  closedCaptions: boolean;
 }
 
 export const ConfigurationAndUserModalMenus: React.FC<Props> = ({ 
   isOpen, 
   onClose,
   user,
-  onLogout 
+  onLogout,
+  defaultSection = 'profile' // Define 'profile' como padrão
 }) => {
-  const [activeSection, setActiveSection] = useState('integrations');
+  const [activeSection, setActiveSection] = useState(defaultSection);
+
+  const [accessibilitySettings, setAccessibilitySettings] = useState<AccessibilityOptions>({
+    highContrast: false,
+    visualAlerts: true,
+    closedCaptions: true
+  });
 
   const menuSections = [
     {
@@ -46,6 +60,14 @@ export const ConfigurationAndUserModalMenus: React.FC<Props> = ({
         { id: 'departments', label: 'Departamentos', icon: '🏥' },
         { id: 'permissions', label: 'Permissões', icon: '🔑' },
         { id: 'audit', label: 'Auditoria', icon: '📋' },
+      ]
+    },
+    {
+      title: 'ACESSIBILIDADE',
+      items: [
+        { id: 'visual-settings', label: 'Configurações Visuais', icon: '👁️' },
+        { id: 'notifications-settings', label: 'Alertas', icon: '⚡' },
+        { id: 'captions-settings', label: 'Legendas', icon: '💬' },
       ]
     }
   ];

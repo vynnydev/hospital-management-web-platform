@@ -35,9 +35,9 @@ export const SelectParam = ({
         defaultValue={value}
       >
         <SelectTrigger className="w-full">
-          <SelectValue placeholder="Select an option" />
+          <SelectValue placeholder="Selecione uma opção" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="bg-gray-100 dark:bg-gray-700">
           <SelectGroup>
             <SelectLabel>Options</SelectLabel>
             {param.options.map((option: OptionType) => (

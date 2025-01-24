@@ -1,20 +1,42 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AppNode } from "@/types/workflow/appNode";
 import { TaskParam, TaskType } from "@/types/workflow/task";
 import { LucideProps } from "lucide-react";
+
+export interface BaseHospitalTask extends Omit<WorkflowTask, 'type'> {
+  type: TaskType.NETWORK | TaskType.HOSPITAL | TaskType.DEPARTMENT;
+  execute: () => Promise<Record<string, any>>;
+}
+
+export interface BaseTask {
+  execute: () => Promise<Record<string, any>>;
+}
+export interface NetworkTask extends WorkflowTask {
+  type: TaskType.NETWORK;
+}
+
+export interface HospitalTask extends BaseHospitalTask {
+  type: TaskType.HOSPITAL;
+}
+
+export interface DepartmentTask extends BaseHospitalTask {
+  type: TaskType.DEPARTMENT;
+}
 
 export enum WorkflowStatus {
   DRAFT = "DRAFT",
   PUBLISHED = "PUBLISHED",
 }
-export type WorkflowTask = {
-  label: string;
-  icon: React.FC<LucideProps>;
+export interface WorkflowTask extends BaseTask {
   type: TaskType;
-  isEntryPoint?: boolean;
-  inputs: TaskParam[];
-  outputs: TaskParam[];
+  execute: () => Promise<Record<string, any>>;
+  label: string;
+  icon: any;
+  inputs: any[];
+  outputs: any[];
   credits: number;
-};
+}
 
 export type WorkflowExecutionPlanPhase = {
   phase: number;

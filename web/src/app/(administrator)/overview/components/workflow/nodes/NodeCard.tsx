@@ -11,7 +11,6 @@ export const NodeCard = ({ children, nodeId, isSelected }: { nodeId: string, chi
     const { invalidInputs } = useFlowValidation();
     const hasInvalidInputs = invalidInputs.some((node) => node.nodeId === nodeId);
   
-    
     return (
         <div
           onDoubleClick={() => {

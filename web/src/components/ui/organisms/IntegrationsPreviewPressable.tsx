@@ -56,32 +56,6 @@ export const IntegrationsPreviewPressable: React.FC<IntegrationPreviewProps> = (
         color: 'bg-white',
         alt: 'Mais integrações'
     },
-    // {
-    //     imageUrl: '/images/integrations/jira.png',
-    //     color: 'bg-white',
-    //     alt: 'Jira Integration'
-    // },
-    // {
-    //     imageUrl: '/images/integrations/word.png',
-    //     color: 'bg-white',
-    //     alt: 'Word Integration'
-    // },
-
-    // {
-    //   imageUrl: '/images/integrations/excel.png',
-    //   color: 'bg-white',
-    //   alt: 'Excel Integration'
-    // },
-    // {
-    //   imageUrl: '/images/integrations/pdf.png',
-    //   color: 'bg-orange-500',
-    //   alt: 'PDF Integration'
-    // },
-    // {
-    //   imageUrl: '/images/integrations/powerbi.png',
-    //   color: 'bg-yellow-500',
-    //   alt: 'PowerBI Integration'
-    // },
   ];
 
   return (

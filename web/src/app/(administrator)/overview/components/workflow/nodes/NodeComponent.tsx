@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NodeProps, Handle, Position } from "@xyflow/react";
-import { memo } from "react";
+import { memo, useState } from "react";
 import { Card } from "@/components/ui/organisms/card";
 import { Badge } from "@/components/ui/organisms/badge";
 import { 
@@ -16,28 +16,42 @@ import {
 } from "lucide-react";
 import { AppNodeData } from "@/types/workflow/appNode";
 import { TaskRegistry } from "@/lib/workflow/task/registry";
+import { HospitalNodeModal } from "./node-modals/HospitalNodeModal";
 
 // Componente base para todos os nós
 const BaseNodeComponent = memo((props: NodeProps) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const nodeData = props.data as AppNodeData;
   const CardComponent = getCardComponent(nodeData.type);
   
   return (
-    <div className={`relative ${props.selected ? 'ring-2 ring-blue-500' : ''}`}>
-      <Handle
-        type="target"
-        position={Position.Top}
-        className="w-3 h-3 bg-blue-500 border-2 border-white dark:border-gray-800"
-      />
-      
-      <CardComponent data={nodeData} />
+    <>
+      <div 
+        className={`relative ${props.selected ? 'ring-2 ring-blue-500' : ''} cursor-pointer`}
+        onClick={() => setIsModalOpen(true)}
+      >
+        <Handle
+          type="target"
+          position={Position.Top}
+          className="w-3 h-3 bg-blue-500 border-2 border-white dark:border-gray-800"
+        />
+        
+        <CardComponent data={nodeData} />
 
-      <Handle
-        type="source"
-        position={Position.Bottom}
-        className="w-3 h-3 bg-blue-500 border-2 border-white dark:border-gray-800"
+        <Handle
+          type="source"
+          position={Position.Bottom}
+          className="w-3 h-3 bg-blue-500 border-2 border-white dark:border-gray-800"
+        />
+      </div>
+
+      <HospitalNodeModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        data={nodeData}
+        nodeId={props.id}
       />
-    </div>
+    </>
   );
 });
 

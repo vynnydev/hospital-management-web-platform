@@ -37,7 +37,7 @@ export const StringParam = ({
         className="text-xs"
         disabled={disabled}
         value={internalValue}
-        placeholder="Enter value here"
+        placeholder="Insira um valor aqui"
         onChange={(e: any) => setInternalValue(e.target.value)}
         onBlur={(e: any) => updateNodeParamValue(e.target.value)}
       />
