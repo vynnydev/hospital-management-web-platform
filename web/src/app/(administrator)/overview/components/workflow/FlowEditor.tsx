@@ -30,6 +30,7 @@ import {
 } from "./types";
 import { IntegrationsPreviewPressable } from "@/components/ui/organisms/IntegrationsPreviewPressable";
 import { ConfigurationAndUserModalMenus } from "@/components/ui/templates/ConfigurationAndUserModalMenus";
+import { FlowMenu } from "./FlowMenu";
 
 export const nodeTypes = {
   network: BaseNodeComponent,
@@ -233,6 +234,29 @@ export const FlowEditor = ({ networkData }: FlowEditorProps) => {
     return false;
   }, [nodes]);
 
+  const handleMenuAction = (action: string) => {
+    switch (action) {
+      case 'predictive':
+        // Implementar análise preditiva
+        break;
+      case 'simulation':
+        // Implementar simulação de cenários
+        break;
+      case 'scheduling':
+        // Implementar gestão de escalas
+        break;
+      case 'monitoring':
+        // Implementar monitoramento
+        break;
+      case 'alerts':
+        // Implementar alertas
+        break;
+      case 'efficiency':
+        // Implementar análise de eficiência
+        break;
+    }
+  };
+
   return (
     <FlowValidationContextProvider>
       <div className="pt-2 pb-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md">
@@ -247,8 +271,10 @@ export const FlowEditor = ({ networkData }: FlowEditorProps) => {
               </p>
             </div>
 
+            <FlowMenu onSelect={handleMenuAction} />
+
             {/* Deixar mostrando no maximo 5 com o plus */}
-            <div className='ml-[600px] py-2'>
+            <div className='ml-[500px] py-2'>
                 <IntegrationsPreviewPressable onSelectIntegration={handleOpenModal} />
 
                 <ConfigurationAndUserModalMenus 
@@ -290,7 +316,7 @@ export const FlowEditor = ({ networkData }: FlowEditorProps) => {
                 className="dark:opacity-30"
               />
               <Controls 
-                className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg"
+                className="bg-gray-500 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg text-black"
                 fitViewOptions={fitViewOptions}
                 showInteractive={false}
               />

@@ -103,8 +103,9 @@ const AIDAHealthAssistant: React.FC = () => {
       <button
         onClick={toggleAssistant}
         className="fixed bottom-8 right-8 rounded-full p-4 shadow-lg transition-all 
-          duration-300 hover:scale-110 bg-gradient-to-r from-blue-700 to-cyan-700
-          hover:from-blue-800 hover:to-cyan-800 group"
+          duration-300 hover:scale-110 bg-gradient-to-r from-blue-700 via-cyan-700 to-blue-700
+          hover:from-blue-800 hover:via-cyan-800 hover:to-blue-800 group
+          [background-size:200%_200%] animate-[pulse-gradient_3s_ease-in-out_infinite]"
         aria-label="Open AIDA Assistant"
       >
         <div className="relative w-12 h-12">

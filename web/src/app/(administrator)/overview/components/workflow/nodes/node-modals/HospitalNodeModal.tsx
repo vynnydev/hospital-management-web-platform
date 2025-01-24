@@ -5,12 +5,12 @@ import { Badge } from '@/components/ui/organisms/badge';
 import { Button } from '@/components/ui/organisms/button';
 import { ScrollArea } from '@/components/ui/organisms/scroll-area';
 import { NodeHeader } from '../NodeHeader';
-import { NodeInputs, NodeInput } from '../NodeInputs';
-import { NodeOutputs, NodeOutput } from '../NodeOutputs';
-import { Building2, Stethoscope, BedDouble, Users, Clock, Activity, Brain, AlertTriangle,
-  TrendingUp, HeartPulse, LineChart, BarChart, Workflow, Settings2 } from 'lucide-react';
-import { TaskParamType, TaskType } from '@/types/workflow/task';
+import { Building2, BedDouble, Users, Clock, Activity, Brain, AlertTriangle,
+  TrendingUp, HeartPulse, LineChart, BarChart, Settings2 } from 'lucide-react';
+import { TaskType } from '@/types/workflow/task';
 import { AppNodeData } from '@/types/workflow/appNode';
+import { HospitalFlowAutomationMenu } from '../../HospitalFlowAutomationMenu';
+// import { HospitalAutomationFields } from '../../HospitalAutomationFields';
 
 interface HospitalNodeModalProps {
   isOpen: boolean;
@@ -102,61 +102,13 @@ export const HospitalNodeModal: React.FC<HospitalNodeModalProps> = ({
             )}
           </div>
 
-          <Card className="mt-6 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Workflow className="h-5 w-5 text-violet-500" />
-                Automação Hospitalar
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <NodeInputs>
-                  <NodeInput
-                    input={{
-                      name: "ocupação_maxima",
-                      type: TaskParamType.STRING,
-                      label: "Ocupação Máxima",
-                    }}
-                    nodeId={nodeId}
-                  />
-                  <NodeInput
-                    input={{
-                      name: "tempo_resposta",
-                      type: TaskParamType.SELECT,
-                      label: "Tempo de Resposta",
-                      style: { backgroundColor: '#1f2937' },
-                      options: [
-                        { label: "Normal", value: "normal" },
-                        { label: "Urgente", value: "urgent" },
-                        { label: "Crítico", value: "critical" }
-                      ]
-                    }}
-                    nodeId={nodeId}
-                  />
-                </NodeInputs>
-                
-                <NodeOutputs>
-                  <NodeOutput 
-                    output={{
-                      name: "status_leitos",
-                      type: TaskParamType.STRING,
-                      label: "Status dos Leitos"
-                    }}
-                  />
-                  <NodeOutput 
-                    output={{
-                      name: "alerta_ocupacao",
-                      type: TaskParamType.STRING,
-                      label: "Alerta de Ocupação"
-                    }}
-                  />
-                </NodeOutputs>
-              </div>
-            </CardContent>
-          </Card>
+          {/* <HospitalAutomationFields nodeId={nodeId} /> */}
 
-          <Card className="mt-4 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+          <div className="h-[calc(100vh-200px)] mt-8">
+            <HospitalFlowAutomationMenu />
+          </div>
+
+          <Card className="mt-8 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Brain className="h-5 w-5 text-indigo-500" />

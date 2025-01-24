@@ -67,3 +67,30 @@
     --ring: 212.7 26.8% 83.9%;
   }
 }
+
+/* animação do botão do diagrama de fluxo hospitalar */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+/* animação do botão da assistente de inteligencia artificial AIDA */
+@keyframes pulse-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

@@ -5,7 +5,6 @@
 import React from "react";
 import { ReactFlowProvider } from "@xyflow/react";
 import { FlowEditor } from "./FlowEditor";
-import { TaskMenu } from "./TaskMenu";
 import { FlowValidationContextProvider } from "@/components/ui/context/FlowValidationContext";
 import { NetworkData } from "@/types/hospital-network-types";
 
@@ -19,7 +18,6 @@ export const Editor = ({ networkData }: EditorProps) => {
       <FlowValidationContextProvider>
         <div className="flex flex-col h-full w-full overflow-hidden">
           <section className="flex h-full overflow-auto">
-            <TaskMenu />
             <FlowEditor networkData={networkData} />
           </section>
         </div>
