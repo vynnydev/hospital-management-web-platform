@@ -77,6 +77,72 @@
           "lng": -46.6783
         }
       },
+      "departments": [
+        {
+          "name": "UTI",
+          "beds": [
+            {
+              "id": "UTI-101",
+              "number": "101",
+              "floor": "1",
+              "status": "occupied",
+              "department": "UTI",
+              "specialty": "Cardiologia",
+              "patient": {
+                "id": "P001",
+                "name": "João Silva",
+                "admissionDate": "2024-01-20",
+                "diagnosis": "Post-cardiac surgery",
+                "expectedDischarge": "2024-01-27"
+              }
+            },
+            {
+              "id": "UTI-102",
+              "number": "102",
+              "floor": "1",
+              "status": "available",
+              "department": "UTI",
+              "specialty": "Cardiologia"
+            },
+            {
+              "id": "UTI-103",
+              "number": "103",
+              "floor": "1",
+              "status": "maintenance",
+              "department": "UTI",
+              "specialty": "Neurologia"
+            }
+          ]
+        },
+        {
+          "name": "Enfermaria",
+          "beds": [
+            {
+              "id": "ENF-201",
+              "number": "201",
+              "floor": "2",
+              "status": "occupied",
+              "department": "Enfermaria",
+              "specialty": "Ortopedia",
+              "patient": {
+                "id": "P002",
+                "name": "Maria Santos",
+                "admissionDate": "2024-01-19",
+                "diagnosis": "Hip replacement recovery",
+                "expectedDischarge": "2024-01-25"
+              }
+            },
+            {
+              "id": "ENF-202",
+              "number": "202",
+              "floor": "2",
+              "status": "available",
+              "department": "Enfermaria",
+              "specialty": "Ortopedia"
+            }
+          ]
+        }
+      ],
       "type": "full-service",
       "specialties": [
         "Cardiologia",
@@ -255,6 +321,28 @@
           "lng": -46.7018
         }
       },
+      "departments": [
+        {
+          "name": "UTI",
+          "beds": [
+            {
+              "id": "UTI-101",
+              "number": "101",
+              "floor": "1",
+              "status": "occupied",
+              "department": "UTI",
+              "specialty": "Oncologia",
+              "patient": {
+                "id": "P003",
+                "name": "Pedro Oliveira",
+                "admissionDate": "2024-01-18",
+                "diagnosis": "Post-chemotherapy monitoring",
+                "expectedDischarge": "2024-01-24"
+              }
+            }
+          ]
+        }
+      ],
       "type": "full-service",
       "specialties": [
         "Cardiologia",
@@ -317,6 +405,44 @@
           "lng": -43.1889
         }
       },
+      "departments": [
+        {
+          "name": "UTI",
+          "beds": [
+            {
+              "id": "UTI-202-COPA",
+              "number": "202",
+              "floor": "2",
+              "status": "occupied",
+              "department": "UTI",
+              "specialty": "Oncologia",
+              "patient": {
+                "id": "P004",
+                "name": "Maria do Céu",
+                "admissionDate": "2024-01-18",
+                "diagnosis": "Post-chemotherapy monitoring",
+                "expectedDischarge": "2024-01-24"
+              }
+            },
+            {
+              "id": "UTI-102",
+              "number": "102",
+              "floor": "1",
+              "status": "available",
+              "department": "UTI",
+              "specialty": "Cardiologia"
+            },
+            {
+              "id": "UTI-103",
+              "number": "103",
+              "floor": "1",
+              "status": "maintenance",
+              "department": "UTI",
+              "specialty": "Neurologia"
+            }
+          ]
+        }
+      ],
       "type": "full-service",
       "specialties": [
         "Cardiologia",

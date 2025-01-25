@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-// hooks/useNetworkData.ts
 import { useState, useEffect } from 'react';
-import type { NetworkData, NetworkInfo, Hospital } from '../../types/hospital-network-types';
+import type { NetworkData, NetworkInfo, Hospital, IBed } from '../../types/hospital-network-types';
 import type { AppUser } from '../../types/auth-types';
 import { authService } from '../auth/AuthService';
 import { usePermissions } from './auth/usePermissions';
@@ -11,73 +10,71 @@ export const useNetworkData = () => {
   const [error, setError] = useState<string | null>(null);
   const [networkData, setNetworkData] = useState<NetworkData | null>(null);
   const [currentUser, setCurrentUser] = useState<AppUser | null>(null);
-  const [authorizedHospitals, setAuthorizedHospitals] = useState<Hospital[]>([]);
+  const [floors] = useState(['1', '2', '3', '4', '5']);
+  const [beds, setBeds] = useState<IBed[]>([]);
+
+  interface BedsPerFloor {
+    [floorNumber: string]: IBed[];
+  }
 
   const { permissions, loading: permissionsLoading } = usePermissions();
 
-  // Função auxiliar para calcular métricas da rede
   const calculateNetworkMetrics = (hospitals: Hospital[]) => {
+    if (!hospitals.length) return null;
+
     const totalPatients = hospitals.reduce((acc, hospital) => 
-      acc + hospital.metrics.overall.totalPatients, 0);
+      acc + (hospital.metrics?.overall?.totalPatients || 0), 0);
     
     const totalBeds = hospitals.reduce((acc, hospital) => 
-      acc + hospital.metrics.overall.totalBeds, 0);
+      acc + (hospital.metrics?.overall?.totalBeds || 0), 0);
     
-    const averageOccupancy = hospitals.length > 0
-      ? hospitals.reduce((acc, hospital) => 
-          acc + hospital.metrics.overall.occupancyRate, 0) / hospitals.length
-      : 0;
+    const averageOccupancy = hospitals.reduce((acc, hospital) => 
+      acc + (hospital.metrics?.overall?.occupancyRate || 0), 0) / hospitals.length;
 
-
-    // Calcular network efficiency
     const networkEfficiency = {
-        avgWaitTime: hospitals.length > 0
-            ? hospitals.reduce((acc, hospital) => 
-                acc + (hospital.metrics.overall.avgStayDuration || 0), 0) / hospitals.length
-            : 0,
-        bedTurnover: hospitals.length > 0
-            ? hospitals.reduce((acc, hospital) => 
-                acc + (hospital.metrics.overall.turnoverRate || 0), 0) / hospitals.length
-            : 0,
-        resourceUtilization: averageOccupancy  // Usando ocupação média como métrica de utilização
-        };
+      avgWaitTime: hospitals.reduce((acc, hospital) => 
+        acc + (hospital.metrics?.overall?.avgStayDuration || 0), 0) / hospitals.length,
+      bedTurnover: hospitals.reduce((acc, hospital) => 
+        acc + (hospital.metrics?.overall?.turnoverRate || 0), 0) / hospitals.length,
+      resourceUtilization: averageOccupancy
+    };
 
-    // Calcular métricas regionais
     const regionalMetrics = hospitals.reduce((acc, hospital) => {
-        const state = hospital.unit.state;
-        if (!acc[state]) {
-          acc[state] = {
-            hospitals: 0,
-            totalBeds: 0,
-            totalPatients: 0,
-            avgOccupancy: 0
-          };
-        }
-        
-        acc[state].hospitals += 1;
-        acc[state].totalBeds += hospital.metrics.overall.totalBeds;
-        acc[state].totalPatients += hospital.metrics.overall.totalPatients;
-        acc[state].avgOccupancy = (acc[state].avgOccupancy * (acc[state].hospitals - 1) + 
-          hospital.metrics.overall.occupancyRate) / acc[state].hospitals;
-        
-        return acc;
-      }, {} as Record<string, {
-        hospitals: number;
-        totalBeds: number;
-        totalPatients: number;
-        avgOccupancy: number;
-      }>);
+      const state = hospital.unit?.state;
+      if (!state) return acc;
 
-      return {
-        totalBeds,
-        totalPatients,
-        averageOccupancy,
-        networkEfficiency,  // Adicionando networkEfficiency ao retorno
-        regionalMetrics
-      };
+      if (!acc[state]) {
+        acc[state] = {
+          hospitals: 0,
+          totalBeds: 0,
+          avgOccupancy: 0
+        };
+      }
+      
+      acc[state].hospitals += 1;
+      acc[state].totalBeds += hospital.metrics?.overall?.totalBeds || 0;
+      acc[state].avgOccupancy = (acc[state].avgOccupancy * (acc[state].hospitals - 1) + 
+        (hospital.metrics?.overall?.occupancyRate || 0)) / acc[state].hospitals;
+      
+      return acc;
+    }, {} as Record<string, {
+      hospitals: number;
+      totalBeds: number;
+      avgOccupancy: number;
+    }>);
+
+    return {
+      totalBeds,
+      totalPatients,
+      averageOccupancy,
+      networkEfficiency,
+      regionalMetrics
+    };
   };
 
   const filterHospitalsByPermissions = (hospitals: Hospital[], user: AppUser): Hospital[] => {
+    if (!user?.permissions) return [];
+    
     if (user.permissions.includes('VIEW_ALL_HOSPITALS')) {
       return hospitals;
     }
@@ -88,15 +85,43 @@ export const useNetworkData = () => {
 
     return [];
   };
+  
+  const organizeBedsByFloor = (hospitals: Hospital[]): IBed[] => {
+    const allBeds: IBed[] = [];
+    
+    hospitals.forEach(hospital => {
+      if (!hospital?.departments) return;
+
+      hospital.departments.forEach(dept => {
+        if (!dept?.beds) return;
+
+        dept.beds.forEach(bed => {
+          if (!bed?.floor) return;
+          
+          allBeds.push({
+            ...bed,
+            hospital: hospital.name,
+            department: dept.name
+          });
+        });
+      });
+    });
+
+    return allBeds;
+  };
 
   useEffect(() => {
+    let mounted = true;
+
     const fetchNetworkData = async () => {
+      if (permissionsLoading) return;
+
       try {
         setLoading(true);
-        const currentUser = authService.getCurrentUser();
-        setCurrentUser(currentUser);
-
-        if (!currentUser || permissionsLoading) return;
+        const user = authService.getCurrentUser();
+        if (!user) throw new Error('Usuário não autenticado');
+        
+        if (mounted) setCurrentUser(user);
 
         const [networkInfoResponse, hospitalsResponse] = await Promise.all([
           fetch('http://localhost:3001/networkInfo'),
@@ -104,37 +129,54 @@ export const useNetworkData = () => {
         ]);
 
         if (!networkInfoResponse.ok || !hospitalsResponse.ok) {
-          throw new Error('Falha ao encontrar o usuário');
+          throw new Error('Falha ao buscar dados');
         }
 
         const networkInfo: NetworkInfo = await networkInfoResponse.json();
         const hospitals: Hospital[] = await hospitalsResponse.json();
+        
+        if (!mounted) return;
 
-        const filteredHospitals = filterHospitalsByPermissions(hospitals, currentUser);
-        setAuthorizedHospitals(filteredHospitals);
-
+        const filteredHospitals = filterHospitalsByPermissions(hospitals, user);
+        const bedsList = organizeBedsByFloor(filteredHospitals);
         const networkMetrics = calculateNetworkMetrics(filteredHospitals);
 
+        setBeds(bedsList);
         setNetworkData({
           networkInfo: {
             ...networkInfo,
             totalHospitals: filteredHospitals.length,
-            networkMetrics
+            networkMetrics: networkMetrics || networkInfo.networkMetrics
           },
           hospitals: filteredHospitals
         });
+        
         setError(null);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
+        if (mounted) {
+          setError(err instanceof Error ? err.message : 'Ocorreu um erro');
+        }
       } finally {
-        setLoading(false);
+        if (mounted) {
+          setLoading(false);
+        }
       }
     };
 
-    if (!permissionsLoading) {
-      fetchNetworkData();
-    }
-  }, [permissions, permissionsLoading]);
+    fetchNetworkData();
 
-  return { networkData, currentUser, loading, error };
+    return () => {
+      mounted = false;
+    };
+  }, [permissionsLoading]);
+
+  return { 
+    networkData, 
+    currentUser, 
+    floors, 
+    beds,
+    loading, 
+    error,
+    getBedsForFloor: (floorNumber: string) => beds.filter(b => b.floor === floorNumber)
+  };
 };

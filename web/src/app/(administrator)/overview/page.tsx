@@ -17,6 +17,7 @@ import { FlowEditor } from './components/workflow/FlowEditor';
 import { MessageCenter } from './components/MessageCenter';
 import { ModernTabs } from './components/ModernTabs';
 import AIDAHealthAssistant from '@/components/ui/aida-assistant/AIDAHealthAssistant';
+import { BedsManagement } from './components/BedsManagement';
 
 // Add department status interface
 interface DepartmentStatus {
@@ -208,6 +209,8 @@ const Overview: React.FC = () => {
           </div>
 
           <FlowEditor networkData={networkData}/>
+
+          <BedsManagement />
         </div>
 
         <AIDAHealthAssistant />

@@ -58,7 +58,7 @@ export const HospitalNodeModal: React.FC<HospitalNodeModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-5xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-8">
+      <DialogContent className="max-w-5xl p-8">
         <NodeHeader taskType={TaskType.NETWORK} nodeId={nodeId} />
         
         <DialogHeader className="pb-2 -mt-8">
