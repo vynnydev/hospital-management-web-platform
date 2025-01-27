@@ -17,7 +17,6 @@ import { FlowEditor } from './components/workflow/FlowEditor';
 import { MessageCenter } from './components/MessageCenter';
 import { ModernTabs } from './components/ModernTabs';
 import AIDAHealthAssistant from '@/components/ui/aida-assistant/AIDAHealthAssistant';
-import { BedsManagement } from './components/BedsManagement';
 
 // Add department status interface
 interface DepartmentStatus {
@@ -88,16 +87,6 @@ const Overview: React.FC = () => {
 
     return { totalBeds, totalPatients, averageOccupancy };
   };
-
-  
-  // Update the regions list to only include regions from authorized hospitals
-  const regions = getAuthorizedHospitals()
-  .reduce<string[]>((acc, hospital) => {
-    if (!acc.includes(hospital.unit.state)) {
-      acc.push(hospital.unit.state);
-    }
-    return acc;
-  }, []);
   
   const filteredHospitals = getFilteredHospitals();
   const currentMetrics = getCurrentRegionMetrics();
@@ -209,8 +198,6 @@ const Overview: React.FC = () => {
           </div>
 
           <FlowEditor networkData={networkData}/>
-
-          <BedsManagement />
         </div>
 
         <AIDAHealthAssistant />

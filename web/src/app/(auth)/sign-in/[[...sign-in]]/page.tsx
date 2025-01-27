@@ -8,7 +8,7 @@ import { Toaster } from "@/components/ui/organisms/toaster"
 export default function SignInPage() {
   return (
     <>
-      <HomeHeader menuItems={[{ label: 'Entenda a Rede D\'Or', href: '/site' }]} />
+      <HomeHeader menuItems={[{ label: `Entenda o H24`, href: '/site' }]} />
       <Container>        
         <div className='absolute min-h-screen left-0 right-0 top-0 bottom-0 grid grid-cols-1 lg:grid-cols-2'>
           <div className='h-full lg:flex flex-col items-center justify-center px-4'>
