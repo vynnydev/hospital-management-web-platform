@@ -42,12 +42,6 @@ const Overview: React.FC = () => {
     return networkData.hospitals.filter(hospital => hospital.id === currentUser.hospitalId);
   };
 
-  // Function to check if user has access to specific features
-  const hasAccess = (feature: 'performance' | 'comparison' | 'discharge') => {
-    if (!currentUser) return false;
-    return currentUser.permissions.includes('VIEW_ALL_HOSPITALS');
-  };
-
   // Get filtered hospitals based on both permissions and selected region
   const getFilteredHospitals = () => {
     const authorizedHospitals = getAuthorizedHospitals();

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { AppUser, AuthResponse, CreateUserData, LoginCredentials, Permission } from "@/types/auth-types";
+
+import { IAppUser, IAuthResponse, ICreateUserData, ILoginCredentials, TPermission } from '@/types/auth-types';
 import Cookies from 'js-cookie';
 
 class AuthService {
@@ -46,7 +47,7 @@ class AuthService {
         return (Date.now() - timestamp) < tokenExpirationTime;
     }
 
-    private setUser(user: AppUser | null) {
+    private setUser(user: IAppUser | null) {
       if (user) {
           Cookies.set(this.userKey, JSON.stringify(user), { expires: 1 });
           if (this.isClient()) {
@@ -60,7 +61,7 @@ class AuthService {
       }
     }
 
-    public getCurrentUser(): AppUser | null {
+    public getCurrentUser(): IAppUser | null {
         const cookieStr = Cookies.get(this.userKey);
         const localStr = this.isClient() ? localStorage.getItem(this.userKey) : null;
         const userStr = cookieStr || localStr;
@@ -77,8 +78,8 @@ class AuthService {
     }
 
     // ✅ Login usando Cookies e LocalStorage
-    async login(credentials: LoginCredentials): Promise<AuthResponse> {
-        const initialResponse: AuthResponse = {
+    async login(credentials: ILoginCredentials): Promise<IAuthResponse> {
+        const initialResponse: IAuthResponse = {
             user: null,
             token: '',
             isLoading: true,
@@ -92,7 +93,7 @@ class AuthService {
             }
 
             const users = await response.json();
-            const user = users.find((u: AppUser) => 
+            const user = users.find((u: IAppUser) => 
                 u.email === credentials.email && u.password === credentials.password
             );
 
@@ -123,7 +124,7 @@ class AuthService {
     }
 
     // ✅ Criação de usuário
-    async createUser(userData: CreateUserData): Promise<AppUser> {
+    async createUser(userData: ICreateUserData): Promise<IAppUser> {
         const response = await fetch(`${this.baseUrl}/users`, {
             method: 'POST',
             headers: this.getHeaders(),
@@ -138,7 +139,7 @@ class AuthService {
     }
 
     // ✅ Busca usuário por email
-    async getUserByEmail(email: string): Promise<AppUser | null> {
+    async getUserByEmail(email: string): Promise<IAppUser | null> {
         const response = await fetch(`${this.baseUrl}/users?email=${email}`, {
             headers: this.getHeaders(),
         });
@@ -150,7 +151,7 @@ class AuthService {
     }
 
     // ✅ Atualizar usuário
-    async updateUser(userId: string, userData: Partial<AppUser>): Promise<AppUser> {
+    async updateUser(userId: string, userData: Partial<IAppUser>): Promise<IAppUser> {
         const response = await fetch(`${this.baseUrl}/users/${userId}`, {
             method: 'PATCH',
             headers: this.getHeaders(),
@@ -170,7 +171,7 @@ class AuthService {
     // ✅ Verificação de permissões
     public hasPermission(permission: string): boolean {
         const user = this.getCurrentUser();
-        return user?.permissions.includes(permission as Permission) ?? false;
+        return user?.permissions.includes(permission as TPermission) ?? false;
     }
 
     // ✅ Renova o token se necessário
@@ -196,7 +197,7 @@ class AuthService {
     }
 
     // Verificar permissões
-    public checkPermission(permission: Permission, hospitalId?: string): boolean {
+    public checkPermission(permission: TPermission, hospitalId?: string): boolean {
       const user = this.getCurrentUser();
       if (!user) return false;
 
@@ -213,7 +214,7 @@ class AuthService {
     }
 
     // ✅ Retorna permissões do usuário
-    public getUserPermissions(): Permission[] {
+    public getUserPermissions(): TPermission[] {
         const user = this.getCurrentUser();
         return user?.permissions || [];
     }

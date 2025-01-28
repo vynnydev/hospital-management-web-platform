@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // components/PatientFlowDiagram.tsx
 import React, { useEffect } from 'react';
 import {

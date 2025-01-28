@@ -1,18 +1,18 @@
-import { Permission, PermissionCheck, Role } from "@/types/auth-types";
+import { TPermission, IPermissionCheck, TRole } from "@/types/auth-types";
 
 export class PermissionService {
-    private static rolePermissions: Record<Role, Permission[]> = {
+    private static rolePermissions: Record<TRole, TPermission[]> = {
       'Admin': ['VIEW_ALL_HOSPITALS'],
       'Hospital Manager': ['VIEW_SINGLE_HOSPITAL'],
       'User': []
     };
   
     static validatePermission(
-      userPermissions: Permission[],
-      requiredPermission: Permission,
+      userPermissions: TPermission[],
+      requiredPermission: TPermission,
       userHospitalId?: string,
       targetHospitalId?: string
-    ): PermissionCheck {
+    ): IPermissionCheck {
       // Verificar se o usuário tem a permissão explicitamente
       const hasPermission = userPermissions.includes(requiredPermission);
   
@@ -32,7 +32,7 @@ export class PermissionService {
       return { hasPermission: false };
     }
   
-    static getRolePermissions(role: Role): Permission[] {
+    static getRolePermissions(role: TRole): TPermission[] {
       return this.rolePermissions[role] || [];
     }
 }

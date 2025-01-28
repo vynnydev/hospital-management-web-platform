@@ -94,3 +94,15 @@
     background-position: 0% 50%;
   }
 }
+
+/* Slider dos departamentos da página Gestão de Pacientes */
+.slick-list {
+  margin: 0 !important;
+}
+.slick-track {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+.slick-slide > div {
+  margin-right: 1rem;
+}

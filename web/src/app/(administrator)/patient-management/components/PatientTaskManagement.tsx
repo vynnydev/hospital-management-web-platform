@@ -1,22 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState, useEffect } from "react";
-import { 
-  TrendingUp, TrendingDown, 
-  AlertCircle, RefreshCw,
-  Bed, Clock, Users
-} from 'lucide-react';
-import { 
-  GeneratedData, GeneratedImages, 
-  HospitalMetrics, Patient, 
-  VitalSign 
-} from "../types/types";
+import React, { useState, useEffect } from 'react';
+import { TrendingUp, TrendingDown, AlertCircle, Clock, Users, Bed, RefreshCw } from 'lucide-react';
+import { DepartmentBoard } from './DepartmentBoard';
+import { PatientCardModal } from './PatientCardModal';
 import { HfInference } from "@huggingface/inference";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { DepartmentBoard } from "./DepartmentBoard";
-import { PatientCardModal } from "./PatientCardModal";
-import { generateEnhancedPrompt } from "./functions/AI/aiAssistantPatientBoard";
-import { isValidBase64Image } from "@/components/ui/aida-assistant/report-modal-ai/services/functions/imagePresenter";
+import type { 
+  IGeneratedData,
+  IGeneratedImages,
+  IHospitalMetrics, 
+  IPatient 
+} from '../types/types';
+import { generateEnhancedPrompt } from './functions/AI/aiAssistantPatientBoard';
+import { isValidBase64Image } from '@/components/ui/aida-assistant/report-modal-ai/services/functions/imagePresenter';
 
 const hfInference = new HfInference(process.env.HUGGING_FACE_API_KEY!);
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY!);
@@ -24,10 +21,10 @@ const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY!);
 type FontSize = 'small' | 'normal' | 'large' | 'extra-large';
 
 interface Props {
-  data: HospitalMetrics;
-  patients: Patient[];
+  data: IHospitalMetrics;
+  patients: IPatient[];
   selectedArea: string;
-  onSelect: (patient: Patient) => void;
+  onSelect: (patient: IPatient) => void;
   departments: Record<string, string[]>;
   onClose: () => void;
   fontSize: FontSize;
@@ -41,28 +38,26 @@ const MetricCard: React.FC<{
   title: string;
   value: string | number;
   icon: React.ReactNode;
-  trend?: {
-    value: number;
-    trend: 'up' | 'down';
-  };
+  trend?: { value: number; trend: 'up' | 'down' };
   loading: boolean;
 }> = ({ title, value, icon, trend, loading }) => (
-  <div className="relative overflow-hidden bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg transition-all duration-300 hover:shadow-xl mb-4">
+  <div className="relative overflow-hidden bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg 
+                 transition-all duration-300 hover:shadow-xl">
     {loading ? (
       <div className="animate-pulse space-y-4">
-        <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-        <div className="h-8 bg-gray-200 rounded w-3/4"></div>
+        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+        <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
       </div>
     ) : (
       <>
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-gray-500 dark:text-gray-400 font-medium">{title}</h3>
-          <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+          <div className="p-2.5 bg-primary/10 dark:bg-primary/20 rounded-lg">
             {icon}
           </div>
         </div>
         <div className="flex items-center space-x-2">
-          <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{value}</p>
+          <p className="text-2xl font-bold text-gray-900 dark:text-white">{value}</p>
           {trend && (
             <span className={trend.trend === 'up' ? 'text-green-500' : 'text-red-500'}>
               {trend.trend === 'up' ? <TrendingUp className="w-5 h-5" /> : <TrendingDown className="w-5 h-5" />}
@@ -75,21 +70,21 @@ const MetricCard: React.FC<{
 );
 
 export const PatientTaskManagement: React.FC<Props> = ({
+  data,
   patients,
   selectedArea,
   onSelect,
   departments,
-  data,
   onClose,
   fontSize,
   setFontSize,
   loading,
   error,
-  onRetry
+  onRetry,
 }) => {
-  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
-  const [generatedData, setGeneratedData] = useState<GeneratedData>({});
-  const [generatedImages, setGeneratedImages] = useState<GeneratedImages>({});
+  const [selectedPatient, setSelectedPatient] = useState<IPatient | null>(null);
+  const [generatedData, setGeneratedData] = useState<IGeneratedData>({});
+  const [generatedImages, setGeneratedImages] = useState<IGeneratedImages>({});
   const [aiQuery, setAiQuery] = useState('');
   const [isHighContrast, setIsHighContrast] = useState(false);
   const [showAudioDescription, setShowAudioDescription] = useState(false);
@@ -101,7 +96,7 @@ export const PatientTaskManagement: React.FC<Props> = ({
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [loadingMessage, setLoadingMessage] = useState('');
 
-  const categorizedPatients: Record<string, Record<string, Patient[]>> = {};
+  const categorizedPatients: Record<string, Record<string, IPatient[]>> = {};
 
   Object.keys(departments).forEach((department) => {
     categorizedPatients[department] = {};
@@ -111,7 +106,7 @@ export const PatientTaskManagement: React.FC<Props> = ({
   });
   // console.log("Departamentos com seus status:", departments)
 
-  patients.forEach((patient: Patient) => {
+  patients.forEach((patient: IPatient) => {
     const latestStatus = patient?.admission?.statusHistory?.sort(
       (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
     )[0];
@@ -181,7 +176,7 @@ export const PatientTaskManagement: React.FC<Props> = ({
     guidance_scale: 8.5, // Aumentei um pouco para mais precisão
   };
 
-  const generateData = async (patient: Patient): Promise<void> => {
+  const generateData = async (patient: IPatient): Promise<void> => {
     setIsLoading(true);
     setLoadingProgress(0);
     setLoadingMessage('Iniciando geração...');
@@ -242,9 +237,9 @@ export const PatientTaskManagement: React.FC<Props> = ({
         recommendation: recommendationResult,
         treatmentImage: imageResult,
         carePlanImage: carePlanImage,
-      } as GeneratedData);
+      } as IGeneratedData);
       
-      setGeneratedImages((prev: GeneratedImages) => ({
+      setGeneratedImages((prev: IGeneratedImages) => ({
         ...prev,
         [patient.id]: { treatment: imageResult, carePlan: carePlanImage }
       }));
@@ -299,7 +294,7 @@ export const PatientTaskManagement: React.FC<Props> = ({
   };
 
   // Função auxiliar para gerar prompt do plano de cuidados
-  const generateCarePlanPrompt = (patient: Patient, latestVitals: any) => {
+  const generateCarePlanPrompt = (patient: IPatient, latestVitals: any) => {
     return `Representação visual técnica e detalhada em português brasileiro:
       - TIPO: Diagrama médico técnico hospitalar
       - CONTEÚDO: Fluxograma de monitoramento de sinais vitais
@@ -341,91 +336,110 @@ export const PatientTaskManagement: React.FC<Props> = ({
     }
   };
 
+  const renderNoAreaSelected = () => (
+    <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-700/50 
+                   rounded-xl p-8 text-center shadow-lg">
+      <div className="flex flex-col items-center justify-center space-y-4">
+        <div className="p-4 bg-gray-100 dark:bg-gray-700/50 rounded-full">
+          <AlertCircle className="w-8 h-8 text-gray-500 dark:text-gray-400" />
+        </div>
+        <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300">
+          Selecione um departamento
+        </h3>
+        <p className="text-gray-600 dark:text-gray-400 max-w-md">
+          Escolha um departamento para visualizar informações detalhadas e gerenciar pacientes
+        </p>
+      </div>
+    </div>
+  );
+
   return (
     <div className="w-full space-y-6">
       <div className={`relative ${error ? 'opacity-50' : ''}`}>
+        {/* Métricas em Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <MetricCard
+            title="Taxa de Ocupação"
+            value={`${safeData.overall.occupancyRate}%`}
+            icon={<Users className="w-6 h-6 text-primary" />}
+            trend={safeData.overall.periodComparison.occupancy}
+            loading={loading}
+          />
+          <MetricCard
+            title="Leitos Disponíveis"
+            value={safeData.overall.availableBeds}
+            icon={<Bed className="w-6 h-6 text-primary" />}
+            trend={safeData.overall.periodComparison.beds}
+            loading={loading}
+          />
+          <MetricCard
+            title="Tempo Médio de Internação"
+            value={`${safeData.overall.avgStayDuration} dias`}
+            icon={<Clock className="w-6 h-6 text-primary" />}
+            loading={loading}
+          />
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <MetricCard
-              title="Taxa de Ocupação"
-              value={`${safeData.overall.occupancyRate}%`}
-              icon={<Users className="w-6 h-6 text-blue-600 dark:text-blue-400" />}
-              trend={safeData.overall.periodComparison.occupancy}
-              loading={loading}
-            />
-            <MetricCard
-              title="Leitos Disponíveis"
-              value={safeData.overall.availableBeds}
-              icon={<Bed className="w-6 h-6 text-blue-600 dark:text-blue-400" />}
-              trend={safeData.overall.periodComparison.beds}
-              loading={loading}
-            />
-            <MetricCard
-              title="Tempo Médio de Internação"
-              value={`${safeData.overall.avgStayDuration} dias`}
-              icon={<Clock className="w-6 h-6 text-blue-600 dark:text-blue-400" />}
-              loading={loading}
-            />
-          </div>
-
-          {selectedArea && safeData.departmental[selectedArea] ? (
+        {/* Área Principal */}
+        {selectedArea && safeData.departmental?.[selectedArea] ? (
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
             <DepartmentBoard
               data={safeData}
               selectedArea={selectedArea}
               patients={patients}
               setSelectedPatient={setSelectedPatient}
-              generateData={generateData}
-              generatedData={generatedData}
-              isLoading={isLoading}
-              loadingMessage={loadingMessage}
-              loadingProgress={loadingProgress}
+              isLoading={loading}
+              loadingMessage="Carregando dados do departamento..."
+              loadingProgress={0}
             />
-          ) : (
-            <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-8 text-center">
-              <h3 className="text-gray-500 dark:text-gray-400">
-                Selecione um departamento para ver os detalhes
-              </h3>
-            </div>
-          )}
-
-          <PatientCardModal 
-            selectedPatient={selectedPatient}
-            setSelectedPatient={setSelectedPatient}
-            generateData={generateData}
-            isHighContrast={isHighContrast}
-            setIsHighContrast={setIsHighContrast}
-            setShowAudioControls={setShowAudioControls}
-            showAudioControls={showAudioControls}
-            setFontSize={setFontSize}
-            fontSize={fontSize}
-            aiQuery={aiQuery}
-            setAiQuery={setAiQuery}
-            generatedData={generatedData}
-            setCurrentUtterance={setCurrentUtterance}
-            setSynthesis={setSynthesis}
-            synthesis={synthesis}
-          />
-        </div>
-
-        {error && (
-          <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-red-200 dark:border-red-800 p-4 w-full max-w-2xl mx-auto">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <AlertCircle className="w-5 h-5 text-red-500" />
-                <div>
-                  <h3 className="font-medium text-red-500">Erro ao carregar dados</h3>
-                </div>
-              </div>
-              <button
-                onClick={onRetry}
-                className="inline-flex items-center space-x-2 px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white text-sm rounded-md transition-colors"
-              >
-                <RefreshCw className="w-4 h-4" />
-                <span>Tentar novamente</span>
-              </button>
-            </div>
           </div>
+        ) : (
+          renderNoAreaSelected()
         )}
+
+        {/* Modal do Paciente */}
+        <PatientCardModal 
+          selectedPatient={selectedPatient}
+          setSelectedPatient={setSelectedPatient}
+          isHighContrast={false}
+          setIsHighContrast={() => {}}
+          setShowAudioControls={() => {}}
+          showAudioControls={false}
+          setFontSize={setFontSize}
+          fontSize={fontSize}
+          aiQuery=""
+          setAiQuery={() => {}}
+          generatedData={{}}
+          setCurrentUtterance={() => {}}
+          setSynthesis={() => {}}
+          synthesis={null}
+        />
+      </div>
+
+      {/* Mensagem de Erro */}
+      {error && (
+        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-white dark:bg-gray-800 
+                      rounded-xl shadow-lg border border-red-200 dark:border-red-800 p-4 
+                      w-full max-w-2xl mx-auto">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <AlertCircle className="w-5 h-5 text-red-500" />
+              <div>
+                <h3 className="font-medium text-red-500">Erro ao carregar dados</h3>
+                <p className="text-sm text-red-400">{error}</p>
+              </div>
+            </div>
+            <button
+              onClick={onRetry}
+              className="inline-flex items-center space-x-2 px-3 py-1.5 bg-red-500 hover:bg-red-600 
+                       text-white text-sm rounded-md transition-colors"
+            >
+              <RefreshCw className="w-4 h-4" />
+              <span>Tentar novamente</span>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
