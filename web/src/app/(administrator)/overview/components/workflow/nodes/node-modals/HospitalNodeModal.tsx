@@ -7,19 +7,19 @@ import { ScrollArea } from '@/components/ui/organisms/scroll-area';
 import { NodeHeader } from '../NodeHeader';
 import { Building2, BedDouble, Users, Clock, Activity, Brain, AlertTriangle,
   TrendingUp, HeartPulse, LineChart, BarChart, Settings2 } from 'lucide-react';
-import { TaskType } from '@/types/workflow/task';
-import { AppNodeData } from '@/types/workflow/appNode';
+import { ETaskType } from '@/types/workflow/task';
+import { IAppNodeData } from '@/types/workflow/appNode';
 import { HospitalFlowAutomationMenu } from '../../HospitalFlowAutomationMenu';
 // import { HospitalAutomationFields } from '../../HospitalAutomationFields';
 
-interface HospitalNodeModalProps {
+interface IHospitalNodeModalProps {
   isOpen: boolean;
   onClose: () => void;
-  data: AppNodeData;
+  data: IAppNodeData;
   nodeId: string;
 }
 
-export const HospitalNodeModal: React.FC<HospitalNodeModalProps> = ({ 
+export const HospitalNodeModal: React.FC<IHospitalNodeModalProps> = ({ 
   isOpen, 
   onClose, 
   data, 
@@ -59,7 +59,7 @@ export const HospitalNodeModal: React.FC<HospitalNodeModalProps> = ({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-5xl p-8">
-        <NodeHeader taskType={TaskType.NETWORK} nodeId={nodeId} />
+        <NodeHeader taskType={ETaskType.NETWORK} nodeId={nodeId} />
         
         <DialogHeader className="pb-2 -mt-8">
           <DialogTitle className="flex items-center gap-2 -mt-2">

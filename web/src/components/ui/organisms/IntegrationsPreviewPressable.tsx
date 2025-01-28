@@ -13,7 +13,7 @@ interface Integration {
 
 const IntegrationButton = ({ imageUrl, color, alt, onClick }: Integration & { onClick: () => void }) => (
   <button onClick={onClick} className="relative group">
-    <div className={`w-12 h-12 rounded-full flex items-center justify-center ${color} overflow-hidden`}>
+    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${color} overflow-hidden`}>
       <Image 
         src={imageUrl}
         alt={alt}

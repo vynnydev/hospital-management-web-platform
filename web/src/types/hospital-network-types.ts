@@ -1,9 +1,11 @@
-import { AppUser } from "./auth-types";
+import { IAppUser } from "./auth-types";
 
 // Network Interfaces
-export type Occupancy = 'normal' | 'attention' | 'critical';
+export type TOccupancy = 'normal' | 'attention' | 'critical';
+export type TCareEventType = 'admission' | 'transfer' | 'procedure' | 'medication' | 'exam' | 'discharge';
+export type TCareHistoryStatus = 'active' | 'discharged' | 'transferred';
 
-interface NetworkInfo {
+interface INetworkInfo {
   id: string;
   name: string;
   logo: string;
@@ -27,15 +29,15 @@ interface NetworkInfo {
   };
 }
 
-interface Metrics {
+export interface IMetrics {
   capacity: {
     total: {
       maxBeds: number;
       maxOccupancy: number;
     };
     departmental: {
-      uti: DepartmentalCapacity;
-      enfermaria: DepartmentalCapacity;
+      uti: IDepartmentalCapacity;
+      enfermaria: IDepartmentalCapacity;
     };
   };
   overall: {
@@ -63,13 +65,13 @@ interface Metrics {
   };
   departmental?: {
     uti: {
-      occupancy: Occupancy;
+      occupancy: TOccupancy;
       beds: number;
       patients: number;
       validStatuses: string[];
     };
     enfermaria: {
-      occupancy: Occupancy;
+      occupancy: TOccupancy;
       beds: number;
       patients: number;
       validStatuses: string[];
@@ -77,12 +79,13 @@ interface Metrics {
   };
 }
 
-export interface Patient {
+export interface IPatient {
   id: string;
   name: string;
   admissionDate: string;
   diagnosis: string;
   expectedDischarge: string;
+  careHistory?: IPatientCareHistory;
 }
 
 export interface IBed {
@@ -90,61 +93,61 @@ export interface IBed {
   number: string;
   floor: string;
   status: 'occupied' | 'available' | 'maintenance';
-  patient?: Patient;
+  patient?: IPatient;
   department: string;
   specialty: string;
   hospital: string;
 }
 
-interface Department {
+interface IDepartment {
   name: string;
   beds: IBed[];
-  capacity: DepartmentalCapacity;
+  capacity: IDepartmentalCapacity;
 }
 
-interface Coordinates {
+interface ICoordinates {
   lat: number;
   lng: number;
 }
 
-interface Unit {
+interface IUnit {
   longitude: number;
   latitude: number;
   address: string;
   city: string;
   state: string;
-  coordinates: Coordinates;
+  coordinates: ICoordinates;
 }
 
-interface DepartmentalCapacity {
+interface IDepartmentalCapacity {
   maxBeds: number;
   maxOccupancy: number;
   recommendedMaxOccupancy: number;
 }
 
-interface Hospital {
+interface IHospital {
   id: string;
   name: string;
-  unit: Unit;
+  unit: IUnit;
   type: string;
   specialties: string[];
-  metrics: Metrics;
+  metrics: IMetrics;
   networkRank?: {
     occupancy: number;
     efficiency: number;
     quality: number;
   };
-  departments: Department[];
+  departments: IDepartment[];
 }
 
-interface NetworkData {
-  networkInfo: NetworkInfo;
-  hospitals: Hospital[];
+interface INetworkData {
+  networkInfo: INetworkInfo;
+  hospitals: IHospital[];
 }
 
-export interface UseNetworkDataReturn {
-  networkData: NetworkData | null;
-  currentUser: AppUser | null;
+export interface IUseNetworkDataReturn {
+  networkData: INetworkData | null;
+  currentUser: IAppUser | null;
   floors: string[];
   beds: IBed[];
   loading: boolean;
@@ -152,4 +155,51 @@ export interface UseNetworkDataReturn {
   getBedsForFloor: (floorNumber: string) => IBed[];
 }
 
-export type { NetworkInfo, Hospital, NetworkData, Department };
+export type { INetworkInfo, IHospital, INetworkData, IDepartment };
+
+export interface ICareEventDetails {
+  fromDepartment?: string;
+  toDepartment?: string;
+  procedureType?: string;
+  medicationName?: string;
+  examType?: string;
+  result?: string;
+  [key: string]: string | undefined;
+}
+
+export interface IResponsibleStaff {
+  id: string;
+  name: string;
+  role: string;
+}
+
+export interface ICareEvent {
+  id: string;
+  timestamp: string;
+  type: TCareEventType;
+  description: string;
+  department: string;
+  responsibleStaff: IResponsibleStaff;
+  details?: ICareEventDetails;
+}
+
+export interface IPatientCareHistory {
+  admissionId: string;
+  startDate: string;
+  endDate?: string;
+  primaryDiagnosis: string;
+  events: ICareEvent[];
+  status: TCareHistoryStatus;
+  totalLOS: number;
+}
+
+export interface IUseNetworkDataReturn {
+  networkData: INetworkData | null;
+  currentUser: IAppUser | null;
+  floors: string[];
+  beds: IBed[];
+  loading: boolean;
+  error: string | null;
+  getBedsForFloor: (floorNumber: string) => IBed[];
+  getPatientCareHistory: (patientId: string) => IPatientCareHistory | null;
+}

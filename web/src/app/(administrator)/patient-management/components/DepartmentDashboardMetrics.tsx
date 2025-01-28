@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { DepartmentMetricCard } from './DepartmentMetricCard';
 import { metricsCalcService } from '@/services/calcs/metricsCalcService';
-import { HospitalMetrics } from '@/types/metrics';
+import { IHospitalMetrics } from '@/types/metrics';
 import { useMetricsCalculations } from '@/services/hooks/calcs/useMetricsCalculations';
 
 import {
@@ -21,7 +21,7 @@ interface DepartmentDashboardMetricsProps {
   onRefresh?: () => void;
 }
 
-const getDefaultMetricValues = (): HospitalMetrics => ({
+const getDefaultMetricValues = (): IHospitalMetrics => ({
     capacity: {
         total: {
             maxBeds: 0,
@@ -122,7 +122,7 @@ const getDefaultMetricValues = (): HospitalMetrics => ({
 
 export const DepartmentDashboardMetrics: React.FC<DepartmentDashboardMetricsProps> = ({ onRefresh }) => {
   const { theme } = useTheme();
-  const [metrics, setMetrics] = useState<HospitalMetrics>(getDefaultMetricValues());
+  const [metrics, setMetrics] = useState<IHospitalMetrics>(getDefaultMetricValues());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdate, setLastUpdate] = useState<Date>(new Date());

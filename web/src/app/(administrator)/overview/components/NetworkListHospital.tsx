@@ -1,13 +1,13 @@
 import React from 'react';
 import { Card } from "@/components/ui/organisms/card";
-import { AppUser } from "@/types/auth-types";
-import { Hospital } from "@/types/hospital-network-types";
+import { IAppUser } from "@/types/auth-types";
+import { IHospital } from "@/types/hospital-network-types";
 import { Building2, MapPin } from "lucide-react";
 
-interface NetworkListHospitalProps {
-    filteredHospitals: Hospital[],
+interface INetworkListHospitalProps {
+    filteredHospitals: IHospital[],
     setSelectedHospital: React.Dispatch<React.SetStateAction<string | null>>,
-    currentUser: AppUser | null
+    currentUser: IAppUser | null
 }
 
 const ProgressIndicator = ({ value }: { value: number }) => {
@@ -29,7 +29,7 @@ const ProgressIndicator = ({ value }: { value: number }) => {
     );
 };
 
-export const NetworkListHospital: React.FC<NetworkListHospitalProps> = ({
+export const NetworkListHospital: React.FC<INetworkListHospitalProps> = ({
     filteredHospitals,
     setSelectedHospital,
     currentUser

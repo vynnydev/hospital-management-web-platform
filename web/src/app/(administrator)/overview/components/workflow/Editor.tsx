@@ -6,13 +6,13 @@ import React from "react";
 import { ReactFlowProvider } from "@xyflow/react";
 import { FlowEditor } from "./FlowEditor";
 import { FlowValidationContextProvider } from "@/components/ui/context/FlowValidationContext";
-import { NetworkData } from "@/types/hospital-network-types";
+import { INetworkData } from "@/types/hospital-network-types";
 
-interface EditorProps {
-  networkData: NetworkData; // Adicionando networkData como prop
+interface IEditorProps {
+  networkData: INetworkData; // Adicionando networkData como prop
 }
 
-export const Editor = ({ networkData }: EditorProps) => {
+export const Editor = ({ networkData }: IEditorProps) => {
   return (
     <ReactFlowProvider>
       <FlowValidationContextProvider>

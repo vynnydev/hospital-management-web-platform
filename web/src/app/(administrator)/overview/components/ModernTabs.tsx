@@ -5,7 +5,7 @@ import { ConfigurationAndUserModalMenus } from "@/components/ui/templates/Config
 import { Home, Activity, MessageSquare, Map } from "lucide-react";
 import { useState } from "react";
 
-interface ModernTabsProps {
+interface IModernTabsProps {
   children: {
     overview: React.ReactNode;
     hospitalsLocations: React.ReactNode;
@@ -14,7 +14,7 @@ interface ModernTabsProps {
   };
 }
 
-export const ModernTabs: React.FC<ModernTabsProps> = ({ children }) => {
+export const ModernTabs: React.FC<IModernTabsProps> = ({ children }) => {
     const [isIntegrationsOpen, setIsIntegrationsOpen] = useState(false);
     const [activeSection, setActiveSection] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -38,7 +38,7 @@ export const ModernTabs: React.FC<ModernTabsProps> = ({ children }) => {
         </div>
 
         {/* Deixar mostrando no maximo 5 com o plus */}
-        <div className='ml-[830px] py-2'>
+        <div className='ml-[870px] py-2'>
           <IntegrationsPreviewPressable onSelectIntegration={handleOpenModal} />
 
           <ConfigurationAndUserModalMenus 

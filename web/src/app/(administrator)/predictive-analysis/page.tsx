@@ -1,3 +1,4 @@
+'use client'
 import AIDAHealthAssistant from "@/components/ui/aida-assistant/AIDAHealthAssistant"
 
 const PredictiveAnalisys = () => {

@@ -3,31 +3,23 @@ import React from 'react';
 import { Canvas } from '@react-three/fiber';
 import { PerspectiveCamera } from '@react-three/drei';
 import { BedDouble, ChevronRight, ChevronLeft, Users, AlertCircle, ArrowRight } from 'lucide-react';
-import { IBed } from '@/types/hospital-network-types';
+import { IBed, IPatient } from '@/types/hospital-network-types';
 
 // Types
-interface Patient {
-  id: string;
-  name: string;
-  admissionDate: string;
-  diagnosis: string;
-  expectedDischarge: string;
-}
-
-interface BedModelProps {
-  patient?: Patient;
+interface IBedModelProps {
+  patient?: IPatient;
   isSelected: boolean;
   status?: 'occupied' | 'available' | 'maintenance';
 }
 
-interface BedSpaceProps {
+interface IBedSpaceProps {
   bed: IBed;
   isSelected: boolean;
   onClick: () => void;
 }
 
 // Componente para renderizar o modelo 3D da cama
-export const BedModelCanva: React.FC<BedModelProps> = ({ 
+export const BedModelCanva: React.FC<IBedModelProps> = ({ 
   patient, 
   isSelected, 
   status = 'available' 
@@ -102,7 +94,7 @@ export const BedModelCanva: React.FC<BedModelProps> = ({
 };
 
 // Componente para renderizar um espaço de leito
-export const BedSpace: React.FC<BedSpaceProps> = ({ bed, isSelected, onClick }) => (
+export const BedSpace: React.FC<IBedSpaceProps> = ({ bed, isSelected, onClick }) => (
   <div
     onClick={onClick}
     className={`

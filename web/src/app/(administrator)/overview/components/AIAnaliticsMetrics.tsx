@@ -23,15 +23,15 @@ import { useTheme } from 'next-themes'
 import { motion, AnimatePresence } from 'framer-motion';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/organisms/tooltip';
 import { metricsCalcService } from '@/services/calcs/metricsCalcService';
-import { Hospital, Occupancy } from '@/types/hospital-network-types';
-import { AppUser } from '@/types/auth-types';
+import { IHospital, TOccupancy } from '@/types/hospital-network-types';
+import { IAppUser } from '@/types/auth-types';
 
-interface ColumnContent {
+interface IColumnContent {
     title: string;
     content: string;
 }
 
-interface SubCard {
+interface ISubCard {
     title: string;
     icon: React.ReactNode;
     gradient: string;
@@ -40,8 +40,8 @@ interface SubCard {
 
 interface AIAnaliticsMetricsProps {
     onRefresh?: () => void;
-    filteredHospitals?: Hospital[]; // Nova prop para hospitais filtrados
-    currentUser: AppUser | null;    // Adicionando usuário atual
+    filteredHospitals?: IHospital[]; // Nova prop para hospitais filtrados
+    currentUser: IAppUser | null;    // Adicionando usuário atual
 }
 
 const cleanText = (text: string) => {
@@ -85,7 +85,7 @@ export const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({
             return;
         }
         // Função auxiliar para converter o tipo Occupancy em número para cálculos
-        const occupancyToNumber = (occupancy: Occupancy): number => {
+        const occupancyToNumber = (occupancy: TOccupancy): number => {
             switch (occupancy) {
                 case 'critical':
                     return 100;
@@ -99,7 +99,7 @@ export const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({
         };
 
         // Função para converter número de volta para Occupancy
-        const numberToOccupancy = (value: number): Occupancy => {
+        const numberToOccupancy = (value: number): TOccupancy => {
             if (value >= 90) return 'critical';
             if (value >= 70) return 'attention';
             return 'normal';
@@ -137,7 +137,7 @@ export const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({
                         Object.entries(hospital.metrics.departmental).forEach(([dept, data]) => {
                             if (!acc[dept]) {
                                 acc[dept] = { 
-                                    occupancy: 'normal' as Occupancy, 
+                                    occupancy: 'normal' as TOccupancy, 
                                     beds: 0, 
                                     patients: 0,
                                     occupancyValue: 0 // campo auxiliar para cálculos
@@ -151,7 +151,7 @@ export const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({
                     }
                     return acc;
                 }, {} as Record<string, {
-                    occupancy: Occupancy;
+                    occupancy: TOccupancy;
                     occupancyValue: number;
                     beds: number;
                     patients: number;
@@ -405,7 +405,7 @@ export const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({
         }
     ];
 
-    const SubCard = ({ title, icon, gradient, content }: SubCard) => {
+    const SubCard = ({ title, icon, gradient, content }: ISubCard) => {
         return (
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -423,7 +423,7 @@ export const AIAnaliticsMetrics: React.FC<AIAnaliticsMetricsProps> = ({
         );
     };
 
-    const ContentLine = ({ title, content }: ColumnContent) => {
+    const ContentLine = ({ title, content }: IColumnContent) => {
         return (
             <div className="flex-1 bg-white/10 p-6 rounded-xl">
                 <h4 className="text-white/90 font-medium mb-2 text-lg">{title}</h4>

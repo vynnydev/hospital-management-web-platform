@@ -93,7 +93,62 @@
                 "name": "João Silva",
                 "admissionDate": "2024-01-20",
                 "diagnosis": "Post-cardiac surgery",
-                "expectedDischarge": "2024-01-27"
+                "expectedDischarge": "2024-01-27",
+                "careHistory": {
+                  "admissionId": "ADM-001",
+                  "startDate": "2024-01-20",
+                  "primaryDiagnosis": "Post-cardiac surgery",
+                  "status": "active",
+                  "totalLOS": 7,
+                  "events": [
+                    {
+                      "id": "EVT-001",
+                      "timestamp": "2024-01-20T08:00:00",
+                      "type": "admission",
+                      "description": "Admissão na UTI Cardíaca",
+                      "department": "UTI",
+                      "responsibleStaff": {
+                        "id": "D001",
+                        "name": "Dra. Ana Santos",
+                        "role": "Cardiologista"
+                      },
+                      "details": {
+                        "toDepartment": "UTI"
+                      }
+                    },
+                    {
+                      "id": "EVT-002",
+                      "timestamp": "2024-01-20T10:00:00",
+                      "type": "procedure",
+                      "description": "Cirurgia Cardíaca Realizada",
+                      "department": "Centro Cirúrgico",
+                      "responsibleStaff": {
+                        "id": "D002",
+                        "name": "Dr. Carlos Silveira",
+                        "role": "Cirurgião Cardíaco"
+                      },
+                      "details": {
+                        "procedureType": "Revascularização do Miocárdio"
+                      }
+                    },
+                    {
+                      "id": "EVT-003",
+                      "timestamp": "2024-01-20T15:00:00",
+                      "type": "transfer",
+                      "description": "Transferência para UTI",
+                      "department": "UTI",
+                      "responsibleStaff": {
+                        "id": "D001",
+                        "name": "Dra. Ana Santos",
+                        "role": "Cardiologista"
+                      },
+                      "details": {
+                        "fromDepartment": "Centro Cirúrgico",
+                        "toDepartment": "UTI"
+                      }
+                    }
+                  ]
+                }
               }
             },
             {
@@ -129,7 +184,62 @@
                 "name": "Maria Santos",
                 "admissionDate": "2024-01-19",
                 "diagnosis": "Hip replacement recovery",
-                "expectedDischarge": "2024-01-25"
+                "expectedDischarge": "2024-01-25",
+                "careHistory": {
+                  "admissionId": "ADM-002",
+                  "startDate": "2024-01-19",
+                  "primaryDiagnosis": "Hip replacement recovery",
+                  "status": "active",
+                  "totalLOS": 6,
+                  "events": [
+                    {
+                      "id": "EVT-004",
+                      "timestamp": "2024-01-19T09:00:00",
+                      "type": "admission",
+                      "description": "Admissão para Cirurgia Ortopédica",
+                      "department": "Enfermaria",
+                      "responsibleStaff": {
+                        "id": "D003",
+                        "name": "Dr. Ricardo Ortiz",
+                        "role": "Ortopedista"
+                      },
+                      "details": {
+                        "toDepartment": "Enfermaria"
+                      }
+                    },
+                    {
+                      "id": "EVT-005",
+                      "timestamp": "2024-01-19T11:00:00",
+                      "type": "procedure",
+                      "description": "Artroplastia Total do Quadril",
+                      "department": "Centro Cirúrgico",
+                      "responsibleStaff": {
+                        "id": "D003",
+                        "name": "Dr. Ricardo Ortiz",
+                        "role": "Ortopedista"
+                      },
+                      "details": {
+                        "procedureType": "Artroplastia Total do Quadril"
+                      }
+                    },
+                    {
+                      "id": "EVT-006",
+                      "timestamp": "2024-01-19T14:30:00",
+                      "type": "transfer",
+                      "description": "Transferência para Enfermaria",
+                      "department": "Enfermaria",
+                      "responsibleStaff": {
+                        "id": "D003",
+                        "name": "Dr. Ricardo Ortiz",
+                        "role": "Ortopedista"
+                      },
+                      "details": {
+                        "fromDepartment": "Centro Cirúrgico",
+                        "toDepartment": "Enfermaria"
+                      }
+                    }
+                  ]
+                }
               }
             },
             {
@@ -216,49 +326,6 @@
           }
         }
       },
-      "patients": [
-        {
-          "id": "P001",
-          "qrCode": "hash_unique_qr",
-          "personalInfo": {
-            "name": "João Silva",
-            "age": 45,
-            "gender": "M",
-            "bloodType": "O+",
-            "photo": "url_photo",
-            "contactInfo": {
-              "phone": "11999999999",
-              "emergency": "11988888888",
-              "address": "Rua Example, 123"
-            }
-          },
-          "admission": {
-            "date": "2024-12-15",
-            "reason": "Pneumonia",
-            "type": "Clínica",
-            "status": "Internado",
-            "statusHistory": [
-              {
-                "department": "Enfermaria",
-                "status": "Aguardando Atendimento",
-                "timestamp": "2024-12-15T12:00:00"
-              },
-              {
-                "department": "Enfermaria",
-                "status": "Em Observação",
-                "timestamp": "2024-12-16T09:00:00"
-              }
-            ],
-            "predictedDischarge": "2024-12-22",
-            "bed": {
-              "id": "B001",
-              "number": "201",
-              "wing": "Leste",
-              "type": "Enfermaria"
-            }
-          }
-        }
-      ],
       "staff": {
         "doctors": [
           {
@@ -337,7 +404,76 @@
                 "name": "Pedro Oliveira",
                 "admissionDate": "2024-01-18",
                 "diagnosis": "Post-chemotherapy monitoring",
-                "expectedDischarge": "2024-01-24"
+                "expectedDischarge": "2024-01-24",
+                "careHistory": {
+                  "admissionId": "ADM-003",
+                  "startDate": "2024-01-18",
+                  "primaryDiagnosis": "Post-chemotherapy monitoring - Linfoma não-Hodgkin",
+                  "status": "active",
+                  "totalLOS": 6,
+                  "events": [
+                    {
+                      "id": "EVT-007",
+                      "timestamp": "2024-01-18T08:30:00",
+                      "type": "admission",
+                      "description": "Admissão para monitoramento pós-quimioterapia",
+                      "department": "UTI",
+                      "responsibleStaff": {
+                        "id": "D004",
+                        "name": "Dra. Carla Mendes",
+                        "role": "Oncologista"
+                      },
+                      "details": {
+                        "toDepartment": "UTI"
+                      }
+                    },
+                    {
+                      "id": "EVT-008",
+                      "timestamp": "2024-01-18T10:15:00",
+                      "type": "exam",
+                      "description": "Coleta de exames laboratoriais completos",
+                      "department": "UTI",
+                      "responsibleStaff": {
+                        "id": "N002",
+                        "name": "Enfermeira Paula Silva",
+                        "role": "Enfermeira"
+                      },
+                      "details": {
+                        "examType": "Hemograma completo, função renal e hepática"
+                      }
+                    },
+                    {
+                      "id": "EVT-009",
+                      "timestamp": "2024-01-18T14:00:00",
+                      "type": "medication",
+                      "description": "Início de antibioticoterapia profilática",
+                      "department": "UTI",
+                      "responsibleStaff": {
+                        "id": "D004",
+                        "name": "Dra. Carla Mendes",
+                        "role": "Oncologista"
+                      },
+                      "details": {
+                        "medicationName": "Levofloxacino 750mg IV"
+                      }
+                    },
+                    {
+                      "id": "EVT-010",
+                      "timestamp": "2024-01-19T09:00:00",
+                      "type": "exam",
+                      "description": "Avaliação cardíaca de acompanhamento",
+                      "department": "UTI",
+                      "responsibleStaff": {
+                        "id": "D005",
+                        "name": "Dr. Roberto Cardoso",
+                        "role": "Cardiologista"
+                      },
+                      "details": {
+                        "examType": "Ecocardiograma"
+                      }
+                    }
+                  ]
+                }
               }
             }
           ]
@@ -421,7 +557,92 @@
                 "name": "Maria do Céu",
                 "admissionDate": "2024-01-18",
                 "diagnosis": "Post-chemotherapy monitoring",
-                "expectedDischarge": "2024-01-24"
+                "expectedDischarge": "2024-01-24",
+                "careHistory": {
+                  "admissionId": "ADM-004",
+                  "startDate": "2024-01-18",
+                  "primaryDiagnosis": "Post-chemotherapy monitoring - Câncer de mama metastático",
+                  "status": "active",
+                  "totalLOS": 6,
+                  "events": [
+                    {
+                      "id": "EVT-011",
+                      "timestamp": "2024-01-18T07:45:00",
+                      "type": "admission",
+                      "description": "Admissão para manejo de efeitos pós-quimioterapia",
+                      "department": "UTI",
+                      "responsibleStaff": {
+                        "id": "D006",
+                        "name": "Dra. Beatriz Santos",
+                        "role": "Oncologista"
+                      },
+                      "details": {
+                        "toDepartment": "UTI"
+                      }
+                    },
+                    {
+                      "id": "EVT-012",
+                      "timestamp": "2024-01-18T09:30:00",
+                      "type": "exam",
+                      "description": "Coleta de exames de urgência",
+                      "department": "UTI",
+                      "responsibleStaff": {
+                        "id": "N003",
+                        "name": "Enfermeiro João Costa",
+                        "role": "Enfermeiro"
+                      },
+                      "details": {
+                        "examType": "Hemograma, eletrólitos e função renal"
+                      }
+                    },
+                    {
+                      "id": "EVT-013",
+                      "timestamp": "2024-01-18T11:00:00",
+                      "type": "medication",
+                      "description": "Administração de antieméticos e hidratação",
+                      "department": "UTI",
+                      "responsibleStaff": {
+                        "id": "D006",
+                        "name": "Dra. Beatriz Santos",
+                        "role": "Oncologista"
+                      },
+                      "details": {
+                        "medicationName": "Ondansetrona 8mg IV + Hidratação 1000ml"
+                      }
+                    },
+                    {
+                      "id": "EVT-014",
+                      "timestamp": "2024-01-18T16:00:00",
+                      "type": "procedure",
+                      "description": "Instalação de cateter central",
+                      "department": "UTI",
+                      "responsibleStaff": {
+                        "id": "D007",
+                        "name": "Dr. Marcos Lima",
+                        "role": "Intensivista"
+                      },
+                      "details": {
+                        "procedureType": "Implantação de PICC"
+                      }
+                    },
+                    {
+                      "id": "EVT-015",
+                      "timestamp": "2024-01-19T08:00:00",
+                      "type": "exam",
+                      "description": "Raio-X de tórax para confirmação de PICC",
+                      "department": "UTI",
+                      "responsibleStaff": {
+                        "id": "D007",
+                        "name": "Dr. Marcos Lima",
+                        "role": "Intensivista"
+                      },
+                      "details": {
+                        "examType": "Raio-X de tórax",
+                        "result": "Posicionamento adequado do cateter"
+                      }
+                    }
+                  ]
+                }
               }
             },
             {

@@ -1,12 +1,12 @@
 import Image from 'next/image';
-import { GeneratedData, Patient } from '../types/types';
+import { IGeneratedData, IPatient } from '../types/types';
 import { HiSparkles } from 'react-icons/hi'; // ícone de brilho (sparkles)
 import { LoadingState } from './LoadingState';
 
 interface PatientCardProps {
-  patient: Patient;
+  patient: IPatient;
   status: string;
-  generatedData: GeneratedData;
+  generatedData: IGeneratedData;
   // Atributos de carregamento de imagens e recomendações geradas por IA (passando para o LoadingState)
   isLoading: boolean;
   loadingMessage?: string;

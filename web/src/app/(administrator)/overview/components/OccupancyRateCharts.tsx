@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from 'react';
 import { Card } from "@/components/ui/organisms/card";
-import { Hospital } from "@/types/hospital-network-types";
+import { IHospital } from "@/types/hospital-network-types";
 import {
     Bar,
     BarChart,
@@ -12,8 +12,8 @@ import {
     ResponsiveContainer
 } from "recharts";
 
-interface OccupancyRateChartsProps {
-    filteredHospitals: Hospital[]
+interface IOccupancyRateChartsProps {
+    filteredHospitals: IHospital[]
 }
 
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -41,7 +41,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     return null;
 };
 
-export const OccupancyRateCharts: React.FC<OccupancyRateChartsProps> = ({
+export const OccupancyRateCharts: React.FC<IOccupancyRateChartsProps> = ({
     filteredHospitals,
 }) => {
     const [chartWidth, setChartWidth] = useState(0);

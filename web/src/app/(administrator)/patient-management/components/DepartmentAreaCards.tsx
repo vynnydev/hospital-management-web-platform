@@ -22,7 +22,7 @@ const departmentIcons: Record<string, JSX.Element> = {
     placeholder: <FaHospital size={24} />
 };
 
-interface DepartmentAreaCardsProps {
+interface IDepartmentAreaCardsProps {
     departments: { area: string; count: number; capacity: number }[];
     onClick: (area: string) => void;
     selectedArea: string;
@@ -107,7 +107,7 @@ const LoadingCard: React.FC = () => (
     </motion.div>
 );
 
-export const DepartmentAreaCards: React.FC<DepartmentAreaCardsProps> = ({ 
+export const DepartmentAreaCards: React.FC<IDepartmentAreaCardsProps> = ({ 
     departments, 
     onClick, 
     selectedArea,

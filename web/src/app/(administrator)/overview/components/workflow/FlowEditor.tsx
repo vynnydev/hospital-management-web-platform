@@ -21,12 +21,12 @@ import { FlowValidationContext, FlowValidationContextProvider } from "@/componen
 import DeletableEdge from "./edges/DeletableEdge";
 import BaseNodeComponent from "./nodes/NodeComponent";
 import {
-  AppNode,
-  AppEdge,
-  FlowEditorProps,
-  DragEvent,
-  OnConnect,
-  NodeType
+  IAppNode,
+  TAppEdge,
+  IFlowEditorProps,
+  IDragEvent,
+  TOnConnect,
+  TNodeType
 } from "./types";
 import { IntegrationsPreviewPressable } from "@/components/ui/organisms/IntegrationsPreviewPressable";
 import { ConfigurationAndUserModalMenus } from "@/components/ui/templates/ConfigurationAndUserModalMenus";
@@ -45,9 +45,9 @@ const edgeTypes = {
 const snapGrid: [number, number] = [50, 50];
 const fitViewOptions = { padding: 0.4, minZoom: 0.5, maxZoom: 1.0 };
 
-export const FlowEditor = ({ networkData }: FlowEditorProps) => {
-  const [nodes, setNodes, onNodesChange] = useNodesState<AppNode>([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState<AppEdge>([]);
+export const FlowEditor = ({ networkData }: IFlowEditorProps) => {
+  const [nodes, setNodes, onNodesChange] = useNodesState<IAppNode>([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState<TAppEdge>([]);
   const flowValidation = useContext(FlowValidationContext);
 
   const [isIntegrationsOpen, setIsIntegrationsOpen] = useState(false);
@@ -69,7 +69,7 @@ export const FlowEditor = ({ networkData }: FlowEditorProps) => {
     }
 
     // 1. Criar nó da rede
-    const networkNode: AppNode = {
+    const networkNode: IAppNode = {
       id: 'network-hospital',
       type: 'network',
       position: { x: 750, y: 100 },
@@ -89,7 +89,7 @@ export const FlowEditor = ({ networkData }: FlowEditorProps) => {
     };
 
     // 2. Criar nós dos hospitais
-    const hospitalNodes: AppNode[] = networkData.hospitals.map((hospital, index) => ({
+    const hospitalNodes: IAppNode[] = networkData.hospitals.map((hospital, index) => ({
       id: hospital.id,
       type: 'hospital',
       position: { 
@@ -100,7 +100,6 @@ export const FlowEditor = ({ networkData }: FlowEditorProps) => {
         type: 'hospital',
         label: hospital.name,
         metrics: {
-          beds: hospital.metrics.overall.totalBeds,
           patients: hospital.metrics.overall.totalPatients,
           occupancy: hospital.metrics.overall.occupancyRate,
           avgStay: hospital.metrics.overall.avgStayDuration,
@@ -115,8 +114,8 @@ export const FlowEditor = ({ networkData }: FlowEditorProps) => {
     }));
 
     // 3. Criar nós dos departamentos (código que você já tem)
-    const departmentNodes: AppNode[] = networkData.hospitals.flatMap((hospital, hospitalIndex) =>
-      Object.entries(hospital.metrics.capacity.departmental).map(([deptName, dept]): AppNode => ({
+    const departmentNodes: IAppNode[] = networkData.hospitals.flatMap((hospital, hospitalIndex) =>
+      Object.entries(hospital.metrics.capacity.departmental).map(([deptName, dept]): IAppNode => ({
         id: `${hospital.id}-${deptName}`,
         type: 'department',
         position: { 
@@ -139,7 +138,7 @@ export const FlowEditor = ({ networkData }: FlowEditorProps) => {
     );
 
     // Criar arestas
-    const networkEdges: AppEdge[] = networkData.hospitals.map(hospital => ({
+    const networkEdges: TAppEdge[] = networkData.hospitals.map(hospital => ({
       id: `network-hospital-${hospital.id}`,
       source: 'network-hospital',
       target: hospital.id,
@@ -152,7 +151,7 @@ export const FlowEditor = ({ networkData }: FlowEditorProps) => {
     }));
 
     // Criar arestas dos departamentos
-    const departmentEdges: AppEdge[] = networkData.hospitals.flatMap(hospital =>
+    const departmentEdges: TAppEdge[] = networkData.hospitals.flatMap(hospital =>
       Object.keys(hospital.metrics.capacity.departmental).map(deptName => ({
         id: `${hospital.id}-${deptName}-edge`,
         source: hospital.id,
@@ -174,23 +173,24 @@ export const FlowEditor = ({ networkData }: FlowEditorProps) => {
     }
   }, [networkData, setNodes, setEdges, flowValidation]);
 
-  const onDragOver = useCallback((event: DragEvent) => {
+  const onDragOver = useCallback((event: IDragEvent) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = "move";
   }, []);
 
-  const onDrop = useCallback((event: React.DragEvent) => {
+  const onDrop = useCallback((event: IDragEvent) => {
     event.preventDefault();
+    
     const typeData = event.dataTransfer.getData("application/reactflow");
-    const type = typeData as NodeType;
+    const type = typeData as TNodeType;
     if (!type) return;
-
+  
     const position = {
       x: event.clientX,
       y: event.clientY,
     };
-
-    const newNode: AppNode = {
+  
+    const newNode: IAppNode = {
       id: `${type}-${Date.now()}`,
       type,
       position,
@@ -201,11 +201,11 @@ export const FlowEditor = ({ networkData }: FlowEditorProps) => {
       draggable: true,
       selectable: true,
     };
-
+  
     setNodes(nds => nds.concat(newNode));
   }, [setNodes]);
 
-  const onConnect: OnConnect = useCallback(
+  const onConnect: TOnConnect = useCallback(
     (params: Connection) => {
       setEdges((eds) => addEdge({ ...params, animated: true }, eds));
       if (flowValidation) {
@@ -274,7 +274,7 @@ export const FlowEditor = ({ networkData }: FlowEditorProps) => {
             <FlowMenu onSelect={handleMenuAction} />
 
             {/* Deixar mostrando no maximo 5 com o plus */}
-            <div className='ml-[500px] py-2'>
+            <div className='ml-[550px] py-2'>
                 <IntegrationsPreviewPressable onSelectIntegration={handleOpenModal} />
 
                 <ConfigurationAndUserModalMenus 

@@ -95,7 +95,7 @@ export const HospitalFlowAutomationMenu = () => {
   );
 };
 
-interface HospitalMenuBtnProps {
+interface IHospitalMenuBtnProps {
   icon: React.ElementType;
   label: string;
   bgColor: string;
@@ -107,7 +107,7 @@ function HospitalMenuBtn({
   label,
   bgColor,
   hoverColor
-}: HospitalMenuBtnProps) {
+}: IHospitalMenuBtnProps) {
   return (
     <Button
       variant="secondary"

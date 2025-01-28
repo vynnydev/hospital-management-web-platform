@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Hospital, NetworkInfo, Patient, HospitalMetrics } from '../types/types';
+import { IHospital, INetworkInfo, IPatient, IHospitalMetrics } from '../types/types';
 import { DepartmentAreaCards } from './DepartmentAreaCards';
 import { PatientTaskManagement } from './PatientTaskManagement';
 import { PatientReportCard } from './PatientReportCard';
@@ -10,10 +10,10 @@ type FontSize = 'small' | 'normal' | 'large' | 'extra-large';
 
 export const PatientManagementComponent: React.FC = () => {
     // Estados para a nova estrutura
-    const [networkInfo, setNetworkInfo] = useState<NetworkInfo | null>(null);
-    const [hospitals, setHospitals] = useState<Hospital[]>([]);
-    const [selectedHospital, setSelectedHospital] = useState<Hospital | null>(null);
-    const [metrics, setMetrics] = useState<HospitalMetrics>({
+    const [networkInfo, setNetworkInfo] = useState<INetworkInfo | null>(null);
+    const [hospitals, setHospitals] = useState<IHospital[]>([]);
+    const [selectedHospital, setSelectedHospital] = useState<IHospital | null>(null);
+    const [metrics, setMetrics] = useState<IHospitalMetrics>({
         capacity: {
             total: {
                 maxBeds: 0,
@@ -38,7 +38,7 @@ export const PatientManagementComponent: React.FC = () => {
         departmental: {}
     });
     const [selectedArea, setSelectedArea] = useState<string>('');
-    const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
+    const [selectedPatient, setSelectedPatient] = useState<IPatient | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [fontSize, setFontSize] = useState<FontSize>('normal');

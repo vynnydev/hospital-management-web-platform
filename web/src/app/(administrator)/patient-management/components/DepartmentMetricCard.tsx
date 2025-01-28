@@ -1,4 +1,4 @@
-import { MetricCardProps } from "@/types/metrics";
+import { IMetricCardProps } from "@/types/metrics";
 
 // components/StatusBadge.tsx
 const StatusBadge: React.FC<{ status: string }> = ({ status }) => {
@@ -64,7 +64,7 @@ const formatDateTime = (date: Date): string => {
 };
 
 // components/MetricCard.tsx
-export const DepartmentMetricCard: React.FC<MetricCardProps> = ({
+export const DepartmentMetricCard: React.FC<IMetricCardProps> = ({
   title,
   value,
   unit,

@@ -18,15 +18,6 @@ import { MessageCenter } from './components/MessageCenter';
 import { ModernTabs } from './components/ModernTabs';
 import AIDAHealthAssistant from '@/components/ui/aida-assistant/AIDAHealthAssistant';
 
-// Add department status interface
-interface DepartmentStatus {
-  name: string;
-  status: 'normal' | 'attention' | 'critical';
-  occupancy: number;
-  waitingList: number;
-  icon: React.ElementType;
-}
-
 const Overview: React.FC = () => {
   const { networkData, currentUser, loading, error } = useNetworkData();
   const [selectedHospital, setSelectedHospital] = useState<string | null>(null);

@@ -22,40 +22,35 @@ import {
   Puzzle
 } from 'lucide-react';
 import { HospitalNetworkMetrics } from './HospitalNetworkMetrics';
-import { NetworkData } from '@/types/hospital-network-types';
+import { INetworkData } from '@/types/hospital-network-types';
 import { IntegrationsPreviewPressable } from '@/components/ui/organisms/IntegrationsPreviewPressable';
 import { ConfigurationAndUserModalMenus } from '@/components/ui/templates/ConfigurationAndUserModalMenus';
 
-interface HospitalMetrics {
+interface IHospitalMetrics {
   unit: {
     state: string;
     name?: string;
   };
 }
 
-interface NetworkInfo {
-  name: string;
-  logo?: string;
-}
-
-interface CurrentMetrics {
+interface ICurrentMetrics {
   totalBeds: number;
   totalPatients: number;
   averageOccupancy: number;
 }
 
-interface ManagementNetworkMetricsProps {
-  networkData: NetworkData;
-  filteredHospitals: HospitalMetrics[];
+interface IManagementNetworkMetricsProps {
+  networkData: INetworkData;
+  filteredHospitals: IHospitalMetrics[];
   selectedRegion: string;
   setSelectedRegion: React.Dispatch<React.SetStateAction<string>>;
   setDisplayMode: React.Dispatch<React.SetStateAction<"dashboard" | "tv">>;
   displayMode: "dashboard" | "tv";
-  currentMetrics: CurrentMetrics;
+  currentMetrics: ICurrentMetrics;
   canChangeRegion: boolean | undefined;
 }
 
-export const ManagementNetworkMetrics: React.FC<ManagementNetworkMetricsProps> = ({
+export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> = ({
   networkData,
   selectedRegion,
   setSelectedRegion,
@@ -102,7 +97,7 @@ export const ManagementNetworkMetrics: React.FC<ManagementNetworkMetricsProps> =
             </div>
 
             {/* Deixar mostrando no maximo 5 com o plus */}
-            <div className='mr-[790px]'>
+            <div className='mr-[830px]'>
               <IntegrationsPreviewPressable onSelectIntegration={handleOpenModal} />
 
               <ConfigurationAndUserModalMenus 

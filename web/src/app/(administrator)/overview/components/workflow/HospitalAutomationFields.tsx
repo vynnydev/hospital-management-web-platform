@@ -1,15 +1,15 @@
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/organisms/card";
-import { TaskParamType } from "@/types/workflow/task";
+import { ETaskParamType } from "@/types/workflow/task";
 import { Workflow } from "lucide-react";
 import { NodeInput } from './nodes/NodeInputs';
 import { NodeOutput } from './nodes/NodeOutputs';
 
-interface HospitalAutomationFieldsProps {
+interface IHospitalAutomationFieldsProps {
     nodeId: string
 }
 
-export const HospitalAutomationFields = ({ nodeId }: HospitalAutomationFieldsProps) => {
+export const HospitalAutomationFields = ({ nodeId }: IHospitalAutomationFieldsProps) => {
   return (
     <div className="space-y-4 p-6 bg-gray-50 dark:bg-gray-800 mt-8 rounded-md">
       <div className="flex items-center gap-2 mb-8">
@@ -28,7 +28,7 @@ export const HospitalAutomationFields = ({ nodeId }: HospitalAutomationFieldsPro
                 <NodeInput
                   input={{
                     name: "ocupação_maxima",
-                    type: TaskParamType.STRING,
+                    type: ETaskParamType.STRING,
                     label: "Ocupação Máxima",
                   }}
                   nodeId={nodeId}
@@ -42,7 +42,7 @@ export const HospitalAutomationFields = ({ nodeId }: HospitalAutomationFieldsPro
                 <NodeInput
                   input={{
                     name: "tempo_resposta",
-                    type: TaskParamType.SELECT,
+                    type: ETaskParamType.SELECT,
                     label: "Tempo de Resposta",
                     className: "bg-gray-50 dark:bg-gray-800",
                     options: [
@@ -65,14 +65,14 @@ export const HospitalAutomationFields = ({ nodeId }: HospitalAutomationFieldsPro
               <NodeOutput 
                 output={{
                   name: "status_leitos",
-                  type: TaskParamType.STRING,
+                  type: ETaskParamType.STRING,
                   label: "Status dos Leitos"
                 }}
               />
               <NodeOutput 
                 output={{
                   name: "alerta_ocupacao",
-                  type: TaskParamType.STRING,
+                  type: ETaskParamType.STRING,
                   label: "Alerta de Ocupação"
                 }}
               />

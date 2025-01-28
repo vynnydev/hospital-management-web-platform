@@ -1,10 +1,10 @@
 import { Card } from "@/components/ui/organisms/card";
-import { NetworkData } from "@/types/hospital-network-types";
+import { INetworkData } from "@/types/hospital-network-types";
 import { Activity, Users, Bed, Stethoscope, ChevronLeft, ChevronRight, Building2 } from "lucide-react";
 import { useState, useRef, useEffect } from 'react';
 
-interface DepartmentStatusProps {
-    networkData: NetworkData,
+interface IDepartmentStatusProps {
+    networkData: INetworkData,
     selectedHospital: string | null,
     getStatusColor: (status: "normal" | "attention" | "critical") => string
 }
@@ -23,7 +23,7 @@ const getProgressColor = (occupancy: number | string) => {
     return 'bg-gradient-to-r from-emerald-400 to-teal-400';
 };
 
-export const DepartmentStatus: React.FC<DepartmentStatusProps> = ({
+export const DepartmentStatus: React.FC<IDepartmentStatusProps> = ({
     networkData,
     selectedHospital
 }) => {

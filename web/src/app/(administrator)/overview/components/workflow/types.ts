@@ -1,27 +1,28 @@
+import { INetworkData } from '@/types/hospital-network-types';
 import { Edge, Connection, NodeChange, EdgeChange } from '@xyflow/react';
 
 // Tipo para o tipo de nó
-export type NodeType = "network" | "hospital" | "department";
+export type TNodeType = "network" | "hospital" | "department";
 
 // Se precisar incluir edges na validação:
-export type IsValidConnectionFuncWithEdges = (params: Connection, edges: Edge[]) => boolean;
+export type TIsValidConnectionFuncWithEdges = (params: Connection, edges: Edge[]) => boolean;
 
 // Tipos básicos do sistema hospitalar
-export interface DepartmentalMetrics {
+export interface IDepartmentalMetrics {
   maxOccupancy: number;
   maxBeds: number;
   currentPatients?: number;
 }
 
 // ou ainda mais específico:
-export type IsValidConnectionFunc = (params: {
+export type TIsValidConnectionFunc = (params: {
   source: string | null;
   target: string | null;
   sourceHandle: string | null;
   targetHandle: string | null;
 }) => boolean;
 
-export interface OverallMetrics {
+export interface IOverallMetrics {
   totalBeds: number;
   totalPatients: number;
   occupancyRate: number;
@@ -29,24 +30,19 @@ export interface OverallMetrics {
   turnoverRate: number;
 }
 
-export interface HospitalCapacity {
+export interface IHospitalCapacity {
   departmental: {
-    [key: string]: DepartmentalMetrics;
+    [key: string]: IDepartmentalMetrics;
   };
 }
 
-export interface HospitalMetrics {
-  overall: OverallMetrics;
-  capacity: HospitalCapacity;
-}
-
-export interface Hospital {
+export interface IHospital {
   id: string;
   name: string;
-  metrics: HospitalMetrics;
+  metrics: IAIMetrics;
 }
 
-export interface NetworkInfo {
+export interface INetworkInfo {
   name: string;
   networkMetrics: {
     totalBeds: number;
@@ -54,13 +50,8 @@ export interface NetworkInfo {
   };
 }
 
-export interface NetworkData {
-  networkInfo: NetworkInfo;
-  hospitals: Hospital[];
-}
-
 // Tipos para os nós do React Flow
-export interface NodeMetrics {
+export interface INodeMetrics {
   beds?: number;
   patients?: number;
   occupancy?: number;
@@ -71,60 +62,60 @@ export interface NodeMetrics {
   maxBeds?: number;
 }
 
-export interface AIMetrics {
+export interface IAIMetrics {
   prediction?: number;
   saturation?: number;
 }
 
-export interface AppNodeData {
+export interface IAppNodeData {
     type: 'network' | 'hospital' | 'department';
     label: string;
-    metrics?: NodeMetrics;
-    aiMetrics?: AIMetrics;
+    metrics?: INodeMetrics;
+    aiMetrics?: IAIMetrics;
     alert?: string;
     statusColor?: string;
     // Adiciona um index signature para permitir propriedades string adicionais
     [key: string]: unknown;
 }
 
-export interface AppNode {
+export interface IAppNode {
   id: string;
-  type: NodeType;
+  type: TNodeType;
   position: { x: number; y: number };
-  data: AppNodeData;
+  data: IAppNodeData;
   draggable: boolean;
   selectable: boolean;
 }
 
-export type AppEdge = Edge;
+export type TAppEdge = Edge;
 
 // Props e State interfaces
-export interface FlowEditorProps {
-  networkData: NetworkData;
+export interface IFlowEditorProps {
+  networkData: INetworkData;
 }
 
-export interface WorkflowNode {
+export interface IWorkflowNode {
   id: string;
   type: string;
   position: {
     x: number;
     y: number;
   };
-  data: AppNodeData;
+  data: IAppNodeData;
 }
 
-export interface FlowEditorState {
-  nodes: AppNode[];
-  edges: AppEdge[];
+export interface IFlowEditorState {
+  nodes: IAppNode[];
+  edges: TAppEdge[];
 }
 
 // Tipos para as funções de callback
-export type OnConnect = (connection: Connection) => void;
-export type OnNodesChange = (changes: NodeChange[]) => void;
-export type OnEdgesChange = (changes: EdgeChange[]) => void;
-export type IsValidConnection = (connection: Connection) => boolean;
+export type TOnConnect = (connection: Connection) => void;
+export type TOnNodesChange = (changes: NodeChange[]) => void;
+export type TOnEdgesChange = (changes: EdgeChange[]) => void;
+export type TIsValidConnection = (connection: Connection) => boolean;
 
 // Tipo para evento de arrastar
-export interface DragEvent extends React.DragEvent<HTMLDivElement> {
+export interface IDragEvent extends React.DragEvent<HTMLDivElement> {
   dataTransfer: DataTransfer;
 }

@@ -5,14 +5,14 @@ import { ChevronLeft, ChevronRight, Users } from "lucide-react";
 import React from "react";
 import { BedModelCanva, BedSpace, BedStatus, CorridorIndicator, EmptyBedSpace } from "./BedModelCanva";
 
-interface CorridorViewProps {
+interface ICorridorViewProps {
   beds: IBed[];
   onBedSelect: (bed: IBed) => void;
   selectedBed: IBed | null;
   departmentName: string;
 }
 
-export const CorridorView: React.FC<CorridorViewProps> = ({ 
+export const CorridorView: React.FC<ICorridorViewProps> = ({ 
   beds, 
   onBedSelect, 
   selectedBed,

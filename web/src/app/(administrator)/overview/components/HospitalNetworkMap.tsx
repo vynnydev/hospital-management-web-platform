@@ -1,12 +1,12 @@
 import React from 'react';
 import { MapPin } from 'lucide-react';
-import { Hospital } from '@/types/hospital-network-types';
+import { IHospital } from '@/types/hospital-network-types';
 
-interface HospitalListProps {
-    hospitals: Hospital[];
+interface IHospitalListProps {
+    hospitals: IHospital[];
 }
 
-export const HospitalNetworkMap: React.FC<HospitalListProps> = ({ hospitals }) => {
+export const HospitalNetworkMap: React.FC<IHospitalListProps> = ({ hospitals }) => {
   return (
     <div className="rounded-lg bg-white dark:bg-gray-800 shadow-lg p-4">
       <div className="mb-4 flex justify-between items-center">

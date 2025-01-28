@@ -12,7 +12,7 @@ import {
     Bot
 } from 'lucide-react';
 import { LineChart, XAxis, YAxis, Tooltip, Line, ResponsiveContainer } from 'recharts';
-import { FontSize, GeneratedData, Patient, VitalSign } from '../types/types';
+import { TFontSize, IGeneratedData, IPatient, IVitalSign } from '../types/types';
 import { AIPatientAssistant } from './AIPatientAssistant';
 import { useState, useRef } from 'react';
 import { Card, CardContent } from '@/components/ui/organisms/card';
@@ -20,18 +20,18 @@ import { Button } from '@/components/ui/organisms/button';
 import { QRCodeCanvas } from 'qrcode.react';
 
 interface PatientCardModal {
-    selectedPatient: Patient | null;
-    setSelectedPatient: (patient: Patient | null) => void;
-    generateData: (patient: Patient) => Promise<void>;
+    selectedPatient: IPatient | null;
+    setSelectedPatient: (patient: IPatient | null) => void;
+    generateData: (patient: IPatient) => Promise<void>;
     isHighContrast: boolean;
     setIsHighContrast: React.Dispatch<React.SetStateAction<boolean>>;
     setShowAudioControls: React.Dispatch<React.SetStateAction<boolean>>;
     showAudioControls: boolean;
-    setFontSize: (size: FontSize) => void;
-    fontSize: FontSize;
+    setFontSize: (size: TFontSize) => void;
+    fontSize: TFontSize;
     aiQuery: string;
     setAiQuery: React.Dispatch<React.SetStateAction<string>>;
-    generatedData: GeneratedData;
+    generatedData: IGeneratedData;
     setCurrentUtterance: React.Dispatch<React.SetStateAction<SpeechSynthesisUtterance | null>>;
     setSynthesis: React.Dispatch<React.SetStateAction<SpeechSynthesis | null>>;
     synthesis: SpeechSynthesis | null;
@@ -118,7 +118,7 @@ export const PatientCardModal: React.FC<PatientCardModal> = ({
         return `${baseClass} contrast-high brightness-110`;
     };
 
-    const generateProgressData = (vitals: VitalSign[]) => {
+    const generateProgressData = (vitals: IVitalSign[]) => {
         return vitals.map(vital => ({
             date: new Date(vital.timestamp).toLocaleDateString(),
             progress: vital.oxygenSaturation,
@@ -155,7 +155,7 @@ export const PatientCardModal: React.FC<PatientCardModal> = ({
                                     </button>
                                     <select
                                         value={fontSize}
-                                        onChange={(e) => setFontSize(e.target.value as FontSize)}
+                                        onChange={(e) => setFontSize(e.target.value as TFontSize)}
                                         className="p-2 rounded-lg bg-transparent border border-gray-200 dark:border-gray-500"
                                     >
                                         <option value="normal">Fonte: Normal</option>

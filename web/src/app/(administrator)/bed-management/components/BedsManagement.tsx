@@ -9,25 +9,29 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useNetworkData } from '@/services/hooks/useNetworkData';
 import { CorridorView } from './beds-management-map/CorridorView';
 import type { 
-  UseNetworkDataReturn,
-  Hospital,
+  IUseNetworkDataReturn,
+  IHospital,
   IBed,
-  Department,
-  NetworkData
+  IDepartment,
+  INetworkData
 } from '@/types/hospital-network-types';
+import { IntegrationsPreviewPressable } from '@/components/ui/organisms/IntegrationsPreviewPressable';
+import { ConfigurationAndUserModalMenus } from '@/components/ui/templates/ConfigurationAndUserModalMenus';
 
-interface BedsManagementProps {
+interface IBedsManagementProps {
   className?: string;
 }
 
-export const BedsManagement: React.FC<BedsManagementProps> = ({ className }) => {
+export const BedsManagement: React.FC<IBedsManagementProps> = ({ className }) => {
   const { networkData, floors, beds, loading, error, getBedsForFloor } = useNetworkData();
-  const [selectedHospital, setSelectedHospital] = useState<Hospital | null>(null);
+  const [selectedHospital, setSelectedHospital] = useState<IHospital | null>(null);
   const [selectedDepartment, setSelectedDepartment] = useState<string>('');
   const [selectedSpecialty, setSelectedSpecialty] = useState<string>('');
   const [selectedBed, setSelectedBed] = useState<IBed | null>(null);
   const [selectedFloor, setSelectedFloor] = useState<string>('1');
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [defaultSection, setDefaultSection] = useState<string>('integrations');
 
   // Reset selections when hospital changes
   useEffect(() => {
@@ -43,7 +47,7 @@ export const BedsManagement: React.FC<BedsManagementProps> = ({ className }) => 
     if (!networkData?.hospitals) return [];
     if (!searchTerm) return networkData.hospitals;
 
-    return networkData.hospitals.filter(hospital => 
+    return networkData.hospitals.filter(hospital  => 
       hospital.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [networkData?.hospitals, searchTerm]);
@@ -107,6 +111,12 @@ export const BedsManagement: React.FC<BedsManagementProps> = ({ className }) => 
     label: `${f}º Andar`,
     value: f
   }));
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+    setDefaultSection('integrations');
+  };
+
 
   return (
     <div className={`pt-2 pb-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md ${className}`}>
@@ -181,6 +191,7 @@ export const BedsManagement: React.FC<BedsManagementProps> = ({ className }) => 
                       {selectedHospital.metrics.overall.totalPatients} patients
                     </span>
                   </div>
+
                 </div>
 
                 {/* Departments and Floor Selection */}
@@ -188,22 +199,54 @@ export const BedsManagement: React.FC<BedsManagementProps> = ({ className }) => 
                   <div className="flex-1 flex gap-3">
                     {selectedHospital.departments.map((dept) => (
                       <button
-                        key={dept.name}
-                        onClick={() => setSelectedDepartment(dept.name)}
-                        className={`px-6 py-3 rounded-xl transition-all flex items-center gap-2
-                          ${selectedDepartment === dept.name
-                            ? 'bg-blue-600 text-white shadow-lg'
-                            : 'bg-gray-800/50 text-gray-100 hover:bg-gray-700'
-                          }`}
-                      >
+                      key={dept.name}
+                      onClick={() => setSelectedDepartment(dept.name)}
+                      className={`px-6 py-3 rounded-xl transition-all flex items-center gap-2
+                        ${selectedDepartment === dept.name
+                        ? 'bg-blue-600 text-white shadow-lg'
+                        : 'bg-gray-800/50 text-gray-100 hover:bg-gray-700'
+                        }`}
+                        >
                         <Users className="h-4 w-4" />
                         {dept.name}
                       </button>
                     ))}
                   </div>
 
+                  {/* Deixar mostrando no maximo 5 com o plus */}
+                  <div className=''>
+                    <IntegrationsPreviewPressable onSelectIntegration={handleOpenModal} />
+      
+                    <ConfigurationAndUserModalMenus 
+                        isOpen={isModalOpen}
+                        onClose={() => setIsModalOpen(false)}
+                        defaultSection={defaultSection}
+                        user={null}
+                    />
+                  </div>
+                </div>
+
+                {/* Specialties */}
+                <div className='flex flex-row space-x-60'>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedHospital.specialties.map((specialty) => (
+                      <button
+                        key={specialty}
+                        onClick={() => setSelectedSpecialty(specialty)}
+                        className={`px-4 py-2 rounded-xl transition-all flex items-center gap-2
+                          ${selectedSpecialty === specialty
+                            ? 'bg-blue-600 text-white shadow-lg'
+                            : 'bg-gray-800/50 text-gray-100 hover:bg-gray-700'
+                          }`}
+                      >
+                        <Stethoscope className="h-4 w-4" />
+                        {specialty}
+                      </button>
+                    ))}
+                  </div>
+
                   <Select value={selectedFloor} onValueChange={setSelectedFloor}>
-                    <SelectTrigger className="w-48 bg-gray-100 dark:bg-gray-800/50 text-white border-0 rounded-xl">
+                    <SelectTrigger className="w-40 bg-gray-100 dark:bg-gray-800/50 text-white border-0 rounded-xl">
                       <ChevronsUpDown className="h-4 w-4 mr-2 text-gray-400" />
                       <SelectValue placeholder="Select floor" />
                     </SelectTrigger>
@@ -220,24 +263,6 @@ export const BedsManagement: React.FC<BedsManagementProps> = ({ className }) => 
                     </SelectContent>
                   </Select>
                 </div>
-
-                {/* Specialties */}
-                <div className="flex flex-wrap gap-3">
-                  {selectedHospital.specialties.map((specialty) => (
-                    <button
-                      key={specialty}
-                      onClick={() => setSelectedSpecialty(specialty)}
-                      className={`px-4 py-2 rounded-xl transition-all flex items-center gap-2
-                        ${selectedSpecialty === specialty
-                          ? 'bg-blue-600 text-white shadow-lg'
-                          : 'bg-gray-800/50 text-gray-100 hover:bg-gray-700'
-                        }`}
-                    >
-                      <Stethoscope className="h-4 w-4" />
-                      {specialty}
-                    </button>
-                  ))}
-                </div>
               </div>
 
               {/* Beds Grid by Department */}
@@ -246,7 +271,7 @@ export const BedsManagement: React.FC<BedsManagementProps> = ({ className }) => 
                   .filter(dept => selectedDepartment === dept.name)
                   .map((dept) => (
                     <div key={dept.name} 
-                      className="bg-gray-800/50 p-6 rounded-2xl shadow-lg backdrop-blur-sm border border-gray-700"
+                      className="bg-gray-800/50 p-4 rounded-2xl shadow-lg backdrop-blur-sm border border-gray-700"
                     >
                       <h3 className="text-lg font-medium text-gray-200 mb-6 flex items-center gap-2">
                         <Grid className="h-5 w-5 text-blue-400" />
@@ -279,13 +304,13 @@ export const BedsManagement: React.FC<BedsManagementProps> = ({ className }) => 
             <div className="space-y-6">
               <h2 className="text-2xl font-bold text-gray-100 flex items-center gap-2">
                 <AlertCircle className="h-6 w-6 text-blue-400" />
-                Patient Information
+                Informações sobre o paciente
               </h2>
               <div className="space-y-4 bg-gray-900/50 p-6 rounded-xl">
                 <div>
                   <h3 className="font-medium text-gray-400 flex items-center gap-2 mb-2">
                     <Calendar className="h-4 w-4" />
-                    Admission Date
+                    Data de admissão
                   </h3>
                   <p className="text-gray-100">
                     {selectedBed.patient.admissionDate}
@@ -294,7 +319,7 @@ export const BedsManagement: React.FC<BedsManagementProps> = ({ className }) => 
                 <div>
                   <h3 className="font-medium text-gray-400 flex items-center gap-2 mb-2">
                     <Clock className="h-4 w-4" />
-                    Expected Discharge
+                    Data prevista para alta 
                   </h3>
                   <p className="text-gray-100">
                     {selectedBed.patient.expectedDischarge}

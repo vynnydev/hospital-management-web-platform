@@ -14,14 +14,14 @@ import {
   HeartPulse,
   AlertTriangle
 } from "lucide-react";
-import { AppNodeData } from "@/types/workflow/appNode";
+import { IAppNodeData } from "@/types/workflow/appNode";
 import { TaskRegistry } from "@/lib/workflow/task/registry";
 import { HospitalNodeModal } from "./node-modals/HospitalNodeModal";
 
 // Componente base para todos os nós
 const BaseNodeComponent = memo((props: NodeProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const nodeData = props.data as AppNodeData;
+  const nodeData = props.data as IAppNodeData;
   const CardComponent = getCardComponent(nodeData.type);
   
   return (
@@ -56,7 +56,7 @@ const BaseNodeComponent = memo((props: NodeProps) => {
 });
 
 // Card da Rede de Hospitais
-const NetworkNode = ({ data }: { data: AppNodeData }) => (
+const NetworkNode = ({ data }: { data: IAppNodeData }) => (
   <Card className="min-w-[320px] bg-blue-900/90 shadow-lg text-white">
     <div className="p-4">
       <div className="flex items-center gap-2 mb-4">
@@ -88,7 +88,7 @@ const NetworkNode = ({ data }: { data: AppNodeData }) => (
 );
 
 // Card do Hospital
-const HospitalNode = ({ data }: { data: AppNodeData }) => (
+const HospitalNode = ({ data }: { data: IAppNodeData }) => (
   <Card className="min-w-[280px] bg-gray-900/90 shadow-lg text-white">
     <div className="p-4">
       <div className="flex items-center justify-between mb-4">
@@ -139,7 +139,7 @@ const HospitalNode = ({ data }: { data: AppNodeData }) => (
 );
 
 // Card do Departamento
-const DepartmentNode = ({ data }: { data: AppNodeData }) => (
+const DepartmentNode = ({ data }: { data: IAppNodeData }) => (
   <Card className="min-w-[220px] bg-gray-900/80 shadow-lg text-white">
     <div className="p-3">
       <div className="flex items-center justify-between mb-3">

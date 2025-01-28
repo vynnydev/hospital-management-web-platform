@@ -1,37 +1,37 @@
 // types/auth-types.ts
-export type Permission = 'VIEW_ALL_HOSPITALS' | 'VIEW_SINGLE_HOSPITAL';
+export type TPermission = 'VIEW_ALL_HOSPITALS' | 'VIEW_SINGLE_HOSPITAL';
 
-export type Role = 'Admin' | 'Hospital Manager' | 'User';
+export type TRole = 'Admin' | 'Hospital Manager' | 'User';
 
-export interface AppUser {
+export interface IAppUser {
   id: string;
   name: string;
   email: string;
   password?: string;
-  role: Role;
+  role: TRole;
   profileImage: string,
-  permissions: Permission[];
+  permissions: TPermission[];
   hospitalId?: string;
 }
 
-export interface AuthResponse {
-  user: AppUser | null;
+export interface IAuthResponse {
+  user: IAppUser | null;
   token: string;
   isLoading: boolean;
   error: string | null;
 }
 
-export interface PermissionCheck {
+export interface IPermissionCheck {
   hasPermission: boolean;
   requiredHospitalId?: string;
 }
 
-export interface LoginCredentials {
+export interface ILoginCredentials {
   email: string;
   password: string;
 }
 
-export interface CreateUserData {
+export interface ICreateUserData {
   name: string;
   email: string;
   password: string;

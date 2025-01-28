@@ -7,19 +7,19 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/organisms/card';
 import { ScrollArea } from '@/components/ui/organisms/scroll-area';
 import { Skeleton } from '@/components/ui/organisms/skeleton';
-import { FontSize, GeneratedData } from '../types/types';
+import { TFontSize, IGeneratedData } from '../types/types';
 import { FaPills } from 'react-icons/fa';
 
-interface Recommendation {
+interface IRecommendation {
     text: string;
     tags: string[];
     image?: string;
 }
 
-interface AIPatientAssistantProps {
-    fontSize: FontSize;
+interface IAIPatientAssistantProps {
+    fontSize: TFontSize;
     showAudioControls: boolean;
-    generatedData: GeneratedData;
+    generatedData: IGeneratedData;
     isHighContrast: boolean;
     isLoading?: boolean;
     setCurrentUtterance: React.Dispatch<React.SetStateAction<SpeechSynthesisUtterance | null>>;
@@ -28,12 +28,12 @@ interface AIPatientAssistantProps {
     synthesis: SpeechSynthesis | null;
 }
 
-interface RecommendationModalProps {
+interface IRecommendationModalProps {
     isOpen: boolean;
     onClose: () => void;
-    recommendation: Recommendation | null;
+    recommendation: IRecommendation | null;
     image: string | undefined;
-    fontSize: FontSize;
+    fontSize: TFontSize;
     showAudioControls: boolean;
     handleTextToSpeech: (text: string | undefined) => void;
     createdAt?: string;
@@ -55,7 +55,7 @@ const LoadingCard: React.FC = () => (
     </Card>
 );
 
-const RecommendationCard: React.FC<{ data: GeneratedData }> = ({ data }) => {
+const RecommendationCard: React.FC<{ data: IGeneratedData }> = ({ data }) => {
     // Função para processar as recomendações e aplicar os ajustes
     const parseRecommendation = (text?: string) => {
         if (!text) return [];
@@ -134,7 +134,7 @@ const RecommendationCard: React.FC<{ data: GeneratedData }> = ({ data }) => {
     );
 };
 
-const RecommendationModal: React.FC<RecommendationModalProps> = ({ 
+const RecommendationModal: React.FC<IRecommendationModalProps> = ({ 
     isOpen,
     onClose, 
     recommendation, 
@@ -218,7 +218,7 @@ const RecommendationModal: React.FC<RecommendationModalProps> = ({
     );
 };
 
-export const AIPatientAssistant: React.FC<AIPatientAssistantProps> = ({
+export const AIPatientAssistant: React.FC<IAIPatientAssistantProps> = ({
     fontSize,
     showAudioControls,
     generatedData,
@@ -228,7 +228,7 @@ export const AIPatientAssistant: React.FC<AIPatientAssistantProps> = ({
     setSynthesis,
     synthesis
 }) => {
-    const [selectedRecommendation, setSelectedRecommendation] = useState<Recommendation | null>(null);
+    const [selectedRecommendation, setSelectedRecommendation] = useState<IRecommendation | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isLoadingState, setIsLoadingState] = useState(initialIsLoading);
     const [treatmentImage, setTreatmentImage] = useState<string | undefined>(undefined);
@@ -299,7 +299,7 @@ export const AIPatientAssistant: React.FC<AIPatientAssistantProps> = ({
     };
 
     const getFontSizeClass = (baseClass: string) => {
-        const sizeMap: Record<FontSize, string> = {
+        const sizeMap: Record<TFontSize, string> = {
             small: 'text-sm',
             normal: 'text-base',
             large: 'text-lg',
@@ -322,11 +322,11 @@ export const AIPatientAssistant: React.FC<AIPatientAssistantProps> = ({
         window.speechSynthesis.speak(utterance);
     };
 
-    const parseRecommendations = (text: string | undefined): Recommendation[] => {
+    const parseRecommendations = (text: string | undefined): IRecommendation[] => {
         if (!text) return [];
         const regex = /\*\*(\d+)\..*?\*\*/g;
         let matches;
-        const recommendations: Recommendation[] = [];
+        const recommendations: IRecommendation[] = [];
         let lastIndex = 0;
 
         while ((matches = regex.exec(text)) !== null) {

@@ -5,34 +5,18 @@ import { Badge } from "@/components/ui/organisms/badge";
 import { Button } from "@/components/ui/organisms/button";
 import { CreateFlowNode } from "@/lib/workflow/createFlowNode";
 import { TaskRegistry } from "@/lib/workflow/task/registry";
-import { AppNode } from "@/types/workflow/appNode";
-import { TaskType } from "@/types/workflow/task";
+import { IAppNode } from "@/types/workflow/appNode";
+import { ETaskType } from "@/types/workflow/task";
 import { useReactFlow } from "@xyflow/react";
 import { CoinsIcon, CopyIcon, GripVerticalIcon, TrashIcon } from "lucide-react";
-
-interface BaseTask {
-  type: TaskType;
-  label: string;
-  icon: any;
-  inputs: any[];
-  outputs: any[];
-  credits: number;
-  isEntryPoint?: boolean;
- }
- 
- interface NetworkTask extends BaseTask {
-  type: TaskType.NETWORK;
-  isEntryPoint?: boolean;
- }
  
  // No NodeHeader.tsx
- export const NodeHeader = ({ taskType, nodeId }: { taskType: TaskType; nodeId: string }) => {
-  const task = TaskRegistry[taskType];
+ export const NodeHeader = ({ taskType, nodeId }: { taskType: ETaskType; nodeId: string }) => {
   // const Icon = task.icon;
   const { deleteElements, getNode, addNodes } = useReactFlow();
  
   const handleCopy = () => {
-    const node = getNode(nodeId) as AppNode;
+    const node = getNode(nodeId) as IAppNode;
     if (node?.measured?.height) {
       const newX = node.position.x;
       const newY = node.position.y + node.measured.height + 20;

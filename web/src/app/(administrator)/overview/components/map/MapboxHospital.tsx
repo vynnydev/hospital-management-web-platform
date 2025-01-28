@@ -2,20 +2,20 @@
 import React, { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { Hospital } from "@/types/hospital-network-types";
-import { AppUser } from "@/types/auth-types";
+import { IHospital } from "@/types/hospital-network-types";
+import { IAppUser } from "@/types/auth-types";
 import { Building2 } from 'lucide-react';
 
-interface MapboxHospitalProps {
-  hospitals: Hospital[];
+interface IMapboxHospitalProps {
+  hospitals: IHospital[];
   selectedHospital: string | null;
   setSelectedHospital: (id: string | null) => void;
-  currentUser: AppUser | null;
+  currentUser: IAppUser | null;
 }
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
 
-export const MapboxHospital: React.FC<MapboxHospitalProps> = ({
+export const MapboxHospital: React.FC<IMapboxHospitalProps> = ({
   hospitals,
   selectedHospital,
   setSelectedHospital,

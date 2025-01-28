@@ -1,8 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Patient } from '../types/types';
+import { IPatient } from '../types/types';
 
-export const PatientReportCard: React.FC<{ patient: Patient | null }> = ({ patient }) => {
+export const PatientReportCard: React.FC<{ patient: IPatient | null }> = ({ patient }) => {
     return (
         <motion.div
             initial={{ opacity: 0 }}

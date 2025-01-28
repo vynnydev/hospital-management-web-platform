@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect } from 'react';
-import type { NetworkData, NetworkInfo, Hospital, IBed } from '../../types/hospital-network-types';
-import type { AppUser } from '../../types/auth-types';
+import type { INetworkData, INetworkInfo, IHospital, IBed, IPatientCareHistory } from '../../types/hospital-network-types';
+import type { IAppUser } from '../../types/auth-types';
 import { authService } from '../auth/AuthService';
 import { usePermissions } from './auth/usePermissions';
+import { isValidCareHistory } from '../validators/careHistoryValidators';
 
 export const useNetworkData = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [networkData, setNetworkData] = useState<NetworkData | null>(null);
-  const [currentUser, setCurrentUser] = useState<AppUser | null>(null);
+  const [networkData, setNetworkData] = useState<INetworkData | null>(null);
+  const [currentUser, setCurrentUser] = useState<IAppUser | null>(null);
   const [floors] = useState(['1', '2', '3', '4', '5']);
   const [beds, setBeds] = useState<IBed[]>([]);
 
@@ -19,7 +20,7 @@ export const useNetworkData = () => {
 
   const { permissions, loading: permissionsLoading } = usePermissions();
 
-  const calculateNetworkMetrics = (hospitals: Hospital[]) => {
+  const calculateNetworkMetrics = (hospitals: IHospital[]) => {
     if (!hospitals.length) return null;
 
     const totalPatients = hospitals.reduce((acc, hospital) => 
@@ -72,7 +73,7 @@ export const useNetworkData = () => {
     };
   };
 
-  const filterHospitalsByPermissions = (hospitals: Hospital[], user: AppUser): Hospital[] => {
+  const filterHospitalsByPermissions = (hospitals: IHospital[], user: IAppUser): IHospital[] => {
     if (!user?.permissions) return [];
     
     if (user.permissions.includes('VIEW_ALL_HOSPITALS')) {
@@ -86,7 +87,7 @@ export const useNetworkData = () => {
     return [];
   };
   
-  const organizeBedsByFloor = (hospitals: Hospital[]): IBed[] => {
+  const organizeBedsByFloor = (hospitals: IHospital[]): IBed[] => {
     const allBeds: IBed[] = [];
     
     hospitals.forEach(hospital => {
@@ -108,6 +109,27 @@ export const useNetworkData = () => {
     });
 
     return allBeds;
+  };
+
+  const getPatientCareHistory = (patientId: string): IPatientCareHistory | null => {
+    if (!networkData) return null;
+
+    for (const hospital of networkData.hospitals) {
+      for (const department of hospital.departments) {
+        for (const bed of department.beds) {
+          if (bed.patient?.id === patientId && bed.patient.careHistory) {
+            // Validar os dados antes de retornar
+            if (isValidCareHistory(bed.patient.careHistory)) {
+              return bed.patient.careHistory;
+            } else {
+              console.warn(`Dados inválidos do histórico para o paciente ${patientId}`);
+              return null;
+            }
+          }
+        }
+      }
+    }
+    return null;
   };
 
   useEffect(() => {
@@ -132,8 +154,8 @@ export const useNetworkData = () => {
           throw new Error('Falha ao buscar dados');
         }
 
-        const networkInfo: NetworkInfo = await networkInfoResponse.json();
-        const hospitals: Hospital[] = await hospitalsResponse.json();
+        const networkInfo: INetworkInfo = await networkInfoResponse.json();
+        const hospitals: IHospital[] = await hospitalsResponse.json();
         
         if (!mounted) return;
 
@@ -177,6 +199,7 @@ export const useNetworkData = () => {
     beds,
     loading, 
     error,
+    getPatientCareHistory,
     getBedsForFloor: (floorNumber: string) => beds.filter(b => b.floor === floorNumber)
   };
 };

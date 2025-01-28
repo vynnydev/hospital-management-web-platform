@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export enum TaskType {
+export enum ETaskType {
     LAUNCH_BROWSER = "LAUNCH_BROWSER",
     PAGE_TO_HTML = "PAGE_TO_HTML",
     EXTRACT_TEXT_FROM_ELEMENT = "EXTRACT_TEXT_FROM_ELEMENT",
@@ -17,7 +17,7 @@ export enum TaskType {
     DEPARTMENT = "DEPARTMENT"
   }
   
-  export enum TaskParamType {
+  export enum ETaskParamType {
     STRING = "STRING",
     BROWSER_INSTANCE = "BROWSER_INSTANCE",
     SELECT = "SELECT",
@@ -26,9 +26,9 @@ export enum TaskType {
     NUMBER = "NUMBER"
   }
   
-  export interface TaskParam {
+  export interface ITaskParam {
     name: string;
-    type: TaskParamType;
+    type: ETaskParamType;
     helperText?: string;
     required?: boolean;
     hideHandle?: boolean;

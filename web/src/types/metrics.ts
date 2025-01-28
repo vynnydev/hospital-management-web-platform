@@ -1,35 +1,35 @@
 import { TrendDirection } from "./trends";
 
 // Interface para capacidade máxima departamental
-export interface DepartmentCapacity {
+export interface IDepartmentCapacity {
   maxBeds: number;
   maxOccupancy: number;
   recommendedMaxOccupancy: number;
 }
 
 // Interface para capacidade total
-export interface TotalCapacity {
+export interface ITotalCapacity {
   maxBeds: number;
   maxOccupancy: number;
 }
 
 // Interface para todas as capacidades
-export interface Capacity {
-  total: TotalCapacity;
+export interface ICapacity {
+  total: ITotalCapacity;
   departmental: {
-    uti: DepartmentCapacity;
-    enfermaria: DepartmentCapacity;
+    uti: IDepartmentCapacity;
+    enfermaria: IDepartmentCapacity;
   };
 }
 
 // Interface para tendências
-export interface TrendData {
+export interface ITrendData {
   value: number;
   direction: 'up' | 'down' | 'stable';  // Adicionado 'stable'
 }
 
 // Interface para detalhamento
-export interface Breakdown {
+export interface IBreakdown {
   label: string;
   value: string;
 }
@@ -37,23 +37,23 @@ export interface Breakdown {
 // Interface para detalhes das métricas
 export interface MetricDetails {
   subtitle: string;
-  breakdown: Breakdown[];
+  breakdown: IBreakdown[];
 }
 
 export interface ApiResponse {
-  data: HospitalMetrics;
+  data: IHospitalMetrics;
   status: number;
   message?: string;
 }
 
 // type MetricStatus = 'empty' | 'normal' | 'warning' | 'critical';
 
-export interface MetricCardProps {
+export interface IMetricCardProps {
   title: string;
   value: number;
   unit: string;
   maxValue?: number;  // Valor máximo para a barra de progresso
-  trend?: TrendData;
+  trend?: ITrendData;
   status: 'normal' | 'empty' | 'warning' | 'critical';
   timestamp: Date;
   icon?: React.ReactNode;
@@ -66,14 +66,14 @@ export interface MetricCardProps {
 }
 
 // Interface auxiliar para cálculos de progresso
-export interface ProgressCalculation {
+export interface IProgressCalculation {
   percentage: number;
   status: 'normal' | 'warning' | 'critical';
   remainingCapacity: number;
 }
 
 // Interface para métricas departamentais
-export interface DepartmentMetrics {
+export interface IDepartmentMetrics {
   occupancy: number;
   beds: number;
   patients: number;
@@ -89,14 +89,14 @@ export interface DepartmentMetrics {
 }
 
 // Interface para comparação de períodos
-export interface PeriodComparison {
+export interface IPeriodComparison {
   value: number;
   trend: 'stable' | 'up' | 'down';
 }
 
 // Interface principal de métricas hospitalares
-export interface HospitalMetrics {
-  capacity: Capacity,
+export interface IHospitalMetrics {
+  capacity: ICapacity,
   overall: {
     // Métricas de ocupação
     occupancyRate: number;
@@ -130,22 +130,22 @@ export interface HospitalMetrics {
     
     // Comparações de período
     periodComparison: {
-      occupancy: PeriodComparison;
-      patients: PeriodComparison;
-      beds: PeriodComparison;
-      turnover: PeriodComparison;
-      mortality: PeriodComparison;
-      readmission: PeriodComparison;
-      infection: PeriodComparison;
-      revenue: PeriodComparison;
-      costs: PeriodComparison;
+      occupancy: IPeriodComparison;
+      patients: IPeriodComparison;
+      beds: IPeriodComparison;
+      turnover: IPeriodComparison;
+      mortality: IPeriodComparison;
+      readmission: IPeriodComparison;
+      infection: IPeriodComparison;
+      revenue: IPeriodComparison;
+      costs: IPeriodComparison;
     };
   };
   
   // Métricas por departamento
   departmental: {
-    uti: DepartmentMetrics;
-    enfermaria: DepartmentMetrics;
+    uti: IDepartmentMetrics;
+    enfermaria: IDepartmentMetrics;
   };
   
   // Métricas de qualidade
@@ -173,13 +173,13 @@ export interface HospitalMetrics {
 }
 
 // Interface para filtros de data
-export interface DateFilter {
+export interface IDateFilter {
   startDate: Date;
   endDate: Date;
 }
 
 // Interface para configurações de visualização
-export interface MetricsVisualization {
+export interface IMetricsVisualization {
   timeFrame: 'daily' | 'weekly' | 'monthly' | 'yearly';
   departments: string[];
   metrics: string[];

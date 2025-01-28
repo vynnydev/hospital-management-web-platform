@@ -2,11 +2,11 @@ import React from 'react';
 import { Menu } from '@/components/ui/organisms/menu';
 import { Activity, BrainCircuit, LineChart, Workflow, Bot, AlertTriangle, Calendar } from 'lucide-react';
 
-interface FlowMenuProps {
+interface IFlowMenuProps {
   onSelect: (option: string) => void;
 }
 
-export const FlowMenu = ({ onSelect }: FlowMenuProps) => {
+export const FlowMenu = ({ onSelect }: IFlowMenuProps) => {
   const menuItems = [
     {
       label: 'Análise Preditiva',

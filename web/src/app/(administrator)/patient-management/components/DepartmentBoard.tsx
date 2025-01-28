@@ -6,16 +6,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/organisms/select';
-import { GeneratedData, Metrics, Patient } from '../types/types';
+import { IGeneratedData, IHospitalMetrics, IPatient } from '../types/types';
 import { PatientCard } from './PatientCard';
 
+
 interface DepartmentBoardProps {
-  data: Metrics;
+  data: IHospitalMetrics;
   selectedArea: string;
-  patients: Patient[];
-  setSelectedPatient: (patient: Patient | null) => void;  // Alterado para aceitar null
-  generateData: (patient: Patient) => Promise<void>;      // Alterado para Promise<void>
-  generatedData: GeneratedData // Recomendações geradas por inteligencia artificial
+  patients: IPatient[];
+  setSelectedPatient: (patient: IPatient | null) => void;  // Alterado para aceitar null
+  generateData: (patient: IPatient) => Promise<void>;      // Alterado para Promise<void>
+  generatedData: IGeneratedData // Recomendações geradas por inteligencia artificial
   // Carregamento de recomendações e imagens geradas por IA
   isLoading: boolean,
   loadingMessage?: string;

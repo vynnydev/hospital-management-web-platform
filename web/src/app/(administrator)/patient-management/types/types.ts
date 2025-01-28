@@ -1,25 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 // Interfaces existentes que não precisam mudar
-export interface GeneratedData {
+export interface IGeneratedData {
   recommendation?: string;
   treatmentImage?: string;
   carePlanImage?: string;
   monitoringImage?: string;
 }
 
-export interface GeneratedImages {
+export interface IGeneratedImages {
   [key: string]: {
     treatment: string;
     carePlan: string;
   };
 }
 
-export type Department = 'uti' | 'enfermaria' | 'pediatria' | 'cardiologia' | 'oncologia' | 'neurologia';
-export type FontSize = 'small' | 'normal' | 'large' | 'extra-large';
+export type TDepartment = 'uti' | 'enfermaria' | 'pediatria' | 'cardiologia' | 'oncologia' | 'neurologia';
+export type TFontSize = 'small' | 'normal' | 'large' | 'extra-large';
 
 // Interface para métricas da rede
-export interface NetworkMetrics {
+export interface INetworkMetrics {
   totalBeds: number;
   totalPatients: number;
   averageOccupancy: number;
@@ -38,40 +38,40 @@ export interface NetworkMetrics {
 }
 
 // Interface para a rede hospitalar
-export interface NetworkInfo {
+export interface INetworkInfo {
   id: string;
   name: string;
   logo: string;
   totalHospitals: number;
-  networkMetrics: NetworkMetrics;
+  networkMetrics: INetworkMetrics;
 }
 
 // Interface para capacidade departamental
-export interface DepartmentCapacity {
+export interface IDepartmentCapacity {
   maxBeds: number;
   maxOccupancy: number;
   recommendedMaxOccupancy: number;
 }
 
 // Interface para métricas de capacidade
-export interface CapacityMetrics {
+export interface ICapacityMetrics {
   total: {
     maxBeds: number;
     maxOccupancy: number;
   };
   departmental: {
-    [key in Department]?: DepartmentCapacity;
+    [key in TDepartment]?: IDepartmentCapacity;
   };
 }
 
 // Interface para comparação de período
-export interface PeriodComparison {
+export interface IPeriodComparison {
   value: number;
   trend: 'up' | 'down';
 }
 
 // Interface para métricas gerais
-export interface OverallMetrics {
+export interface IOverallMetrics {
   occupancyRate: number;
   totalPatients: number;
   availableBeds: number;
@@ -80,14 +80,14 @@ export interface OverallMetrics {
   totalBeds: number;
   lastUpdate: string;
   periodComparison: {
-    occupancy: PeriodComparison;
-    patients: PeriodComparison;
-    beds: PeriodComparison;
+    occupancy: IPeriodComparison;
+    patients: IPeriodComparison;
+    beds: IPeriodComparison;
   };
 }
 
 // Interface para métricas departamentais
-export interface DepartmentMetrics {
+export interface IDepartmentMetrics {
   occupancy: number;
   beds: number;
   patients: number;
@@ -95,16 +95,16 @@ export interface DepartmentMetrics {
 }
 
 // Interface principal de métricas do hospital
-export interface HospitalMetrics {
-  capacity: CapacityMetrics;
-  overall: OverallMetrics;
+export interface IHospitalMetrics {
+  capacity: ICapacityMetrics;
+  overall: IOverallMetrics;
   departmental: {
-    [key: string]: DepartmentMetrics;
+    [key: string]: IDepartmentMetrics;
   };
 }
 
 // Interface para localização do hospital
-export interface HospitalUnit {
+export interface IHospitalUnit {
   address: string;
   city: string;
   state: string;
@@ -115,26 +115,26 @@ export interface HospitalUnit {
 }
 
 // Interface para classificação na rede
-export interface NetworkRank {
+export interface INetworkRank {
   occupancy: number;
   efficiency: number;
   quality: number;
 }
 
 // Interface para hospital
-export interface Hospital {
+export interface IHospital {
   id: string;
   name: string;
-  unit: HospitalUnit;
+  unit: IHospitalUnit;
   type: string;
   specialties: string[];
-  metrics: HospitalMetrics;
-  patients?: Patient[];
-  networkRank?: NetworkRank;
+  metrics: IHospitalMetrics;
+  patients?: IPatient[];
+  networkRank?: INetworkRank;
 }
 
 // Interface para usuário
-export interface User {
+export interface IUser {
   id: string;
   name: string;
   email: string;
@@ -145,7 +145,7 @@ export interface User {
   hospitalId?: string;
 }
 
-export interface VitalSign {
+export interface IVitalSign {
   timestamp: string;
   temperature: number;
   bloodPressure: string;
@@ -156,7 +156,7 @@ export interface VitalSign {
   respiratoryRate: number;
   mobility: string;}
   
-export interface Patient {
+export interface IPatient {
     id: string;
     qrCode: string;
     personalInfo: {
@@ -198,7 +198,7 @@ export interface Patient {
         duration: string;
         startDate: string;
       }>;
-      vitals: VitalSign[];
+      vitals: IVitalSign[];
       procedures: Array<{
         type: string;
         date: string;

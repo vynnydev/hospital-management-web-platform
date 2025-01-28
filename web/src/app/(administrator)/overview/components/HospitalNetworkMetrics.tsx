@@ -19,10 +19,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/organisms/tooltip";
-import { NetworkData } from '@/types/hospital-network-types';
+import { INetworkData } from '@/types/hospital-network-types';
 
-interface MetricsProps {
-  networkData: NetworkData;
+interface IMetricsProps {
+  networkData: INetworkData;
   currentMetrics: {
     totalBeds: number;
     totalPatients: number;
@@ -44,7 +44,7 @@ const MetricTooltip = ({ title, description, children }: { title: string; descri
   </TooltipProvider>
 );
 
-export const HospitalNetworkMetrics = ({ networkData, currentMetrics }: MetricsProps) => {
+export const HospitalNetworkMetrics = ({ networkData, currentMetrics }: IMetricsProps) => {
   const efficiency = networkData?.networkInfo?.networkMetrics?.networkEfficiency;
   const periodComparison = networkData?.hospitals[0]?.metrics?.overall?.periodComparison;
   

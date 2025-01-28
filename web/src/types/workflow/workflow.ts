@@ -1,35 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { AppNode } from "@/types/workflow/appNode";
-import { TaskParam, TaskType } from "@/types/workflow/task";
+import { IAppNode } from "@/types/workflow/appNode";
+import { ITaskParam, ETaskType } from "@/types/workflow/task";
 import { LucideProps } from "lucide-react";
 
-export interface BaseHospitalTask extends Omit<WorkflowTask, 'type'> {
-  type: TaskType.NETWORK | TaskType.HOSPITAL | TaskType.DEPARTMENT;
-  execute: () => Promise<Record<string, any>>;
-}
-
-export interface BaseTask {
-  execute: () => Promise<Record<string, any>>;
-}
-export interface NetworkTask extends WorkflowTask {
-  type: TaskType.NETWORK;
-}
-
-export interface HospitalTask extends BaseHospitalTask {
-  type: TaskType.HOSPITAL;
-}
-
-export interface DepartmentTask extends BaseHospitalTask {
-  type: TaskType.DEPARTMENT;
-}
-
-export enum WorkflowStatus {
+export enum IWorkflowStatus {
   DRAFT = "DRAFT",
   PUBLISHED = "PUBLISHED",
 }
-export interface WorkflowTask extends BaseTask {
-  type: TaskType;
+export interface IWorkflowTask extends IBaseTask {
+  type: ETaskType;
   execute: () => Promise<Record<string, any>>;
   label: string;
   icon: any;
@@ -38,26 +18,47 @@ export interface WorkflowTask extends BaseTask {
   credits: number;
 }
 
-export type WorkflowExecutionPlanPhase = {
+export type IWorkflowExecutionPlanPhase = {
   phase: number;
-  nodes: AppNode[];
+  nodes: IAppNode[];
 };
 
-export type WorkflowExecutionPlan = WorkflowExecutionPlanPhase[];
+export interface IBaseHospitalTask extends Omit<IWorkflowTask, 'type'> {
+  type: ETaskType.NETWORK | ETaskType.HOSPITAL | ETaskType.DEPARTMENT;
+  execute: () => Promise<Record<string, any>>;
+}
 
-export enum WorkflowExecutionStatus {
+export interface IBaseTask {
+  execute: () => Promise<Record<string, any>>;
+}
+export interface INetworkTask extends IWorkflowTask {
+  type: ETaskType.NETWORK;
+}
+
+export interface IHospitalTask extends IBaseHospitalTask {
+  type: ETaskType.HOSPITAL;
+}
+
+export interface IDepartmentTask extends IBaseHospitalTask {
+  type: ETaskType.DEPARTMENT;
+}
+
+
+export type TWorkflowExecutionPlan = IWorkflowExecutionPlanPhase[];
+
+export enum EWorkflowExecutionStatus {
   PENDING = "PENDING",
   RUNNING = "RUNNING",
   COMPLETED = "COMPLETED",
   FAILED = "FAILED",
 }
 
-export enum WorkflowExecutionTrigger {
+export enum EWorkflowExecutionTrigger {
   MANUAL = "MANUAL",
   CRON = "CRON",
 }
 
-export enum ExecutionPhaseStatus {
+export enum EExecutionPhaseStatus {
   CREATED = "CREATED",
   PENDING = "PENDING",
   RUNNING = "RUNNING",

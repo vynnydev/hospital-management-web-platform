@@ -6,11 +6,14 @@ import { BedsManagement } from './components/BedsManagement';
 
 const BedManagement: React.FC = () => {
   return (
-    <div className="space-y-20 p-8 -mt-20">
-      <BedsManagement />
+    <>    
+      <div className="space-y-20 p-8 -mt-20">
+        <BedsManagement />
+        
+      </div>
       
       <AIDAHealthAssistant />
-    </div>
+    </>
   );
 };
 

@@ -1,17 +1,17 @@
 import React from 'react';
 import { NetworkListHospital } from './NetworkListHospital';
 import { MapboxHospital } from './map/MapboxHospital';
-import { Hospital } from "@/types/hospital-network-types";
-import { AppUser } from "@/types/auth-types";
+import { IHospital } from "@/types/hospital-network-types";
+import { IAppUser } from "@/types/auth-types";
 
-interface HospitalsLocationsProps {
-  hospitals: Hospital[];
-  currentUser: AppUser | null;
+interface IHospitalsLocationsProps {
+  hospitals: IHospital[];
+  currentUser: IAppUser | null;
   selectedHospital: string | null;
   setSelectedHospital: React.Dispatch<React.SetStateAction<string | null>>
 }
 
-export const HospitalsLocations: React.FC<HospitalsLocationsProps> = ({
+export const HospitalsLocations: React.FC<IHospitalsLocationsProps> = ({
   hospitals,
   currentUser,
   selectedHospital,

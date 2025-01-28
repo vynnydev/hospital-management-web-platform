@@ -7,16 +7,16 @@ import {
 } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/organisms/card';
 import { ScrollArea } from '@/components/ui/organisms/scroll-area';
-import type { NetworkData, Hospital } from '@/types/hospital-network-types';
-import type { AppUser, Role } from '@/types/auth-types';
+import type { INetworkData, IHospital } from '@/types/hospital-network-types';
+import type { IAppUser, TRole } from '@/types/auth-types';
 
-interface MessageCenterProps {
-  networkData: NetworkData;
-  currentUser: AppUser | null;
+interface IMessageCenterProps {
+  networkData: INetworkData;
+  currentUser: IAppUser | null;
   loading: boolean;
 }
 
-export const MessageCenter: React.FC<MessageCenterProps> = ({ networkData, currentUser, loading }) => {
+export const MessageCenter: React.FC<IMessageCenterProps> = ({ networkData, currentUser, loading }) => {
   const [selectedTab, setSelectedTab] = useState('announcements');
   const [searchQuery, setSearchQuery] = useState('');
   const [message, setMessage] = useState('');
@@ -40,10 +40,10 @@ export const MessageCenter: React.FC<MessageCenterProps> = ({ networkData, curre
     }
   };
   const [userSearchQuery, setUserSearchQuery] = useState('');
-  const [selectedUsers, setSelectedUsers] = useState<AppUser[]>([]);
+  const [selectedUsers, setSelectedUsers] = useState<IAppUser[]>([]);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
-  const [filteredUsers, setFilteredUsers] = useState<AppUser[]>([]);
-  const [filteredHospitals, setFilteredHospitals] = useState<Hospital[]>([]);
+  const [filteredUsers, setFilteredUsers] = useState<IAppUser[]>([]);
+  const [filteredHospitals, setFilteredHospitals] = useState<IHospital[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [attachedFile, setAttachedFile] = useState<File | null>(null);
 
@@ -69,7 +69,7 @@ export const MessageCenter: React.FC<MessageCenterProps> = ({ networkData, curre
     }
   ];
 
-  const handleUserSelect = (user: AppUser) => {
+  const handleUserSelect = (user: IAppUser) => {
     if (!selectedUsers.find(u => u.id === user.id)) {
       setSelectedUsers([...selectedUsers, user]);
     }

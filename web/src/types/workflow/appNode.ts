@@ -1,25 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { TaskParam, TaskType } from "@/types/workflow/task";
+import { ITaskParam, ETaskType } from "@/types/workflow/task";
 import { Node } from "@xyflow/react";
 
-export interface AppNodeData {
-  type: TaskType;
+export interface IAppNodeData {
+  type: ETaskType;
   inputs: Record<string, string>;
   [key: string]: any;
 }
 
-export interface AppNode extends Node {
-  data: AppNodeData;
+export interface IAppNode extends Node {
+  data: IAppNodeData;
 }
 
-export interface ParamProps {
-  param: TaskParam;
+export interface IParamProps {
+  param: ITaskParam;
   value: string;
   updateNodeParamValue: (newValue: string) => void;
   disabled?: boolean;
 }
 
-export type AppNodeMissingInputs = {
+export type IAppNodeMissingInputs = {
   nodeId: string;
   inputs: string[];
 };
