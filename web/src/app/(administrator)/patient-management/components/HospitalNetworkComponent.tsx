@@ -5,13 +5,22 @@ import { DepartmentAreaCards } from './DepartmentAreaCards';
 import type { 
   INetworkInfo, 
   IHospital,
+  IBed,
+  IDepartmentalCapacity,
 } from '@/types/hospital-network-types';
 import type { IAppUser } from '@/types/auth-types';
 
 interface IDepartment {
+  name: string;
+  beds: IBed[];
+  capacity: IDepartmentalCapacity;
+}
+
+interface IDepartmentMetric {
   area: string;
   count: number;
   capacity: number;
+  occupancy: number;
 }
 
 interface HospitalNetworkComponentProps {
@@ -19,7 +28,9 @@ interface HospitalNetworkComponentProps {
   hospitals: IHospital[] | undefined;
   currentUser: IAppUser | null;
   onHospitalSelect: (hospitalId: string) => void;
+  onDepartmentSelect: (department: string) => void;
   selectedHospital: string | null;
+  selectedDepartment: string | null;
   loading: boolean;
   error: string | null;
 }
@@ -29,13 +40,28 @@ export const HospitalNetworkComponent: React.FC<HospitalNetworkComponentProps> =
   hospitals,
   currentUser,
   onHospitalSelect,
+  onDepartmentSelect,
   selectedHospital,
+  selectedDepartment,
   loading,
-  error 
+  error
 }) => {
   const [authorizedHospitals, setAuthorizedHospitals] = useState<IHospital[]>([]);
-  const [departments, setDepartments] = useState<IDepartment[]>([]);
+  const [departments, setDepartments] = useState<IDepartmentMetric[]>([]);
 
+  // Função para calcular a ocupação do departamento
+  const calculateDepartmentOccupancy = (department: IDepartment): number => {
+    const occupiedBeds = department.beds.filter(bed => bed.status === 'occupied').length;
+    const totalBeds = department.beds.length;
+    return totalBeds > 0 ? (occupiedBeds / totalBeds) * 100 : 0;
+  };
+
+  // Função para contar pacientes no departamento
+  const countDepartmentPatients = (department: IDepartment): number => {
+    return department.beds.filter(bed => bed.status === 'occupied' && bed.patient).length;
+  };
+
+  // Efeito para filtrar hospitais baseado nas permissões do usuário
   useEffect(() => {
     if (!hospitals || !currentUser) return;
     
@@ -46,16 +72,18 @@ export const HospitalNetworkComponent: React.FC<HospitalNetworkComponentProps> =
     setAuthorizedHospitals(filteredHospitals);
   }, [hospitals, currentUser]);
 
+  // Efeito para atualizar departamentos quando um hospital é selecionado
   useEffect(() => {
     if (selectedHospital && hospitals) {
       const hospital = hospitals.find(h => h.id === selectedHospital);
-      if (hospital?.metrics?.departmental) {
-        const deptArray = Object.entries(hospital.metrics.departmental).map(([area, data]) => ({
-          area,
-          count: data.patients,
-          capacity: data.beds
+      if (hospital?.departments) {
+        const deptMetrics: IDepartmentMetric[] = hospital.departments.map(dept => ({
+          area: dept.name,
+          count: countDepartmentPatients(dept),
+          capacity: dept.beds.length,
+          occupancy: calculateDepartmentOccupancy(dept)
         }));
-        setDepartments(deptArray);
+        setDepartments(deptMetrics);
       }
     }
   }, [selectedHospital, hospitals]);
@@ -75,19 +103,30 @@ export const HospitalNetworkComponent: React.FC<HospitalNetworkComponentProps> =
     );
   }
 
+  // Função para renderizar os cards de departamento
+  const renderDepartmentCards = () => {
+    return (
+      <div className="w-full bg-gray-50/50 dark:bg-gray-900/50 rounded-xl shadow-lg overflow-hidden">
+        <div className="p-6">
+          <DepartmentAreaCards
+            departments={departments}
+            onClick={onDepartmentSelect}
+            selectedArea={selectedDepartment || ''}
+            loading={loading}
+            error={error}
+          />
+        </div>
+      </div>
+    );
+  };
+
+  console.log("Departamentos:", departments)
   return (
     <div className="w-full space-y-6">
       {/* Área dos Departamentos */}
       <div className="w-full bg-gray-50/50 dark:bg-gray-900/50 rounded-xl shadow-lg overflow-hidden">
         <div className="p-6">
-          <DepartmentAreaCards
-            departments={departments}
-            onClick={() => {}}
-            selectedArea=""
-            loading={loading}
-            error={error}
-            onRetry={() => {}}
-          />
+          {renderDepartmentCards()}
         </div>
       </div>
 

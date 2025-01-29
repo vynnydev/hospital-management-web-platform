@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect } from 'react';
-import type { INetworkData, INetworkInfo, IHospital, IBed, IPatientCareHistory } from '../../types/hospital-network-types';
+import type { INetworkData, INetworkInfo, IHospital, IBed, IPatientCareHistory, IStatusHistory } from '../../types/hospital-network-types';
 import type { IAppUser } from '../../types/auth-types';
 import { authService } from '../auth/AuthService';
 import { usePermissions } from './auth/usePermissions';
@@ -132,6 +132,18 @@ export const useNetworkData = () => {
     return null;
   };
 
+  const getPatientStatusHistory = (patientId: string): IStatusHistory[] | null => {
+    const careHistory = getPatientCareHistory(patientId);
+    if (!careHistory?.statusHistory) return null;
+    return careHistory.statusHistory;
+  };
+
+  const getCurrentPatientStatus = (patientId: string): IStatusHistory | null => {
+    const statusHistory = getPatientStatusHistory(patientId);
+    if (!statusHistory?.length) return null;
+    return statusHistory[statusHistory.length - 1];
+  };
+
   useEffect(() => {
     let mounted = true;
 
@@ -193,13 +205,15 @@ export const useNetworkData = () => {
   }, [permissionsLoading]);
 
   return { 
-    networkData, 
-    currentUser, 
-    floors, 
+    networkData,
+    currentUser,
+    floors,
     beds,
-    loading, 
+    loading,
     error,
+    getBedsForFloor: (floorNumber: string) => beds.filter(b => b.floor === floorNumber),
     getPatientCareHistory,
-    getBedsForFloor: (floorNumber: string) => beds.filter(b => b.floor === floorNumber)
+    getPatientStatusHistory,
+    getCurrentPatientStatus
   };
 };

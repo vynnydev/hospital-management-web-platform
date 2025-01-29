@@ -19,7 +19,7 @@ import { Card, CardContent } from '@/components/ui/organisms/card';
 import { Button } from '@/components/ui/organisms/button';
 import { QRCodeCanvas } from 'qrcode.react';
 
-interface PatientCardModal {
+interface PatientCardModalProps {
     selectedPatient: IPatient | null;
     setSelectedPatient: (patient: IPatient | null) => void;
     generateData: (patient: IPatient) => Promise<void>;
@@ -37,16 +37,17 @@ interface PatientCardModal {
     synthesis: SpeechSynthesis | null;
 }
 
-export const PatientCardModal: React.FC<PatientCardModal> = ({
+export const PatientCardModal: React.FC<PatientCardModalProps> = ({
     selectedPatient,
     setSelectedPatient,
+    generateData,
     isHighContrast,
     setIsHighContrast,
     setShowAudioControls,
     showAudioControls,
     fontSize,
     setFontSize,
-    // aiQuery,
+    aiQuery,
     setAiQuery,
     generatedData,
     setCurrentUtterance,
@@ -103,14 +104,20 @@ export const PatientCardModal: React.FC<PatientCardModal> = ({
         }
     };
 
-    const handleAIQuestion = (question: string) => {
+    const handleAIQuestion = async (question: string) => {
+        if (!selectedPatient) return;
+    
         setIsGeneratingAI(true);
         setAiQuery(question);
-        // Simulação de resposta da IA
-        setTimeout(() => {
-            setAiResponse("Baseado na análise dos dados do paciente...");
-            setIsGeneratingAI(false);
-        }, 1500);
+        try {
+          await generateData(selectedPatient);
+          setAiResponse("Baseado na análise dos dados do paciente...");
+        } catch (error) {
+          console.error('Erro ao gerar resposta:', error);
+          setAiResponse("Erro ao gerar resposta. Por favor, tente novamente.");
+        } finally {
+          setIsGeneratingAI(false);
+        }
     };
 
     const getContrastClass = (baseClass: string) => {

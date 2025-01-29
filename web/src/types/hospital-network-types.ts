@@ -1,9 +1,17 @@
 import { IAppUser } from "./auth-types";
 
 // Network Interfaces
-export type TOccupancy = 'normal' | 'attention' | 'critical';
+export type TOccupancy = number;
 export type TCareEventType = 'admission' | 'transfer' | 'procedure' | 'medication' | 'exam' | 'discharge';
 export type TCareHistoryStatus = 'active' | 'discharged' | 'transferred';
+
+export interface IStatusHistory {
+  department: string;
+  status: string;
+  timestamp: string;
+  specialty: string;
+  updatedBy: IResponsibleStaff;
+}
 
 interface INetworkInfo {
   id: string;
@@ -119,7 +127,7 @@ interface IUnit {
   coordinates: ICoordinates;
 }
 
-interface IDepartmentalCapacity {
+export interface IDepartmentalCapacity {
   maxBeds: number;
   maxOccupancy: number;
   recommendedMaxOccupancy: number;
@@ -189,6 +197,7 @@ export interface IPatientCareHistory {
   endDate?: string;
   primaryDiagnosis: string;
   events: ICareEvent[];
+  statusHistory: IStatusHistory[];
   status: TCareHistoryStatus;
   totalLOS: number;
 }
@@ -202,4 +211,6 @@ export interface IUseNetworkDataReturn {
   error: string | null;
   getBedsForFloor: (floorNumber: string) => IBed[];
   getPatientCareHistory: (patientId: string) => IPatientCareHistory | null;
+  getPatientStatusHistory: (patientId: string) => IStatusHistory[] | null;
+  getCurrentPatientStatus: (patientId: string) => IStatusHistory | null;
 }

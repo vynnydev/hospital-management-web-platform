@@ -9,26 +9,46 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import type { 
   IGeneratedData,
   IGeneratedImages,
-  IHospitalMetrics, 
-  IPatient 
+  IHospitalMetrics,
+  TFontSize, 
 } from '../types/types';
 import { generateEnhancedPrompt } from './functions/AI/aiAssistantPatientBoard';
 import { isValidBase64Image } from '@/components/ui/aida-assistant/report-modal-ai/services/functions/imagePresenter';
+import { IPatient } from '@/types/hospital-network-types';
 
 const hfInference = new HfInference(process.env.HUGGING_FACE_API_KEY!);
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY!);
 
 type FontSize = 'small' | 'normal' | 'large' | 'extra-large';
 
-interface Props {
+// Função helper para normalizar nomes de departamentos
+const normalizeDepartmentName = (name: string): string => {
+  return name.toLowerCase().trim();
+};
+
+// Função helper para verificar departamento
+const hasDepartment = (data: IHospitalMetrics, area: string): boolean => {
+  if (!data?.departmental) return false;
+
+  const normalizedArea = normalizeDepartmentName(area);
+  return normalizedArea === 'uti' || normalizedArea === 'enfermaria';
+};
+
+// Helper para obter dados do departamento
+const getDepartmentData = (data: IHospitalMetrics, area: string) => {
+  const normalizedArea = normalizeDepartmentName(area);
+  return data.departmental?.[normalizedArea];
+};
+
+interface PatientTaskManagementProps {
   data: IHospitalMetrics;
   patients: IPatient[];
   selectedArea: string;
-  onSelect: (patient: IPatient) => void;
+  onSelectPatient: (patient: IPatient | null) => void; // Atualizando para aceitar null
   departments: Record<string, string[]>;
   onClose: () => void;
-  fontSize: FontSize;
-  setFontSize: (size: FontSize) => void;
+  fontSize: TFontSize;
+  setFontSize: (size: TFontSize) => void;
   loading: boolean;
   error: string | null;
   onRetry: () => void;
@@ -41,7 +61,7 @@ const MetricCard: React.FC<{
   trend?: { value: number; trend: 'up' | 'down' };
   loading: boolean;
 }> = ({ title, value, icon, trend, loading }) => (
-  <div className="relative overflow-hidden bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg 
+  <div className="relative overflow-hidden bg-white dark:bg-gray-700 rounded-xl p-6 shadow-lg 
                  transition-all duration-300 hover:shadow-xl">
     {loading ? (
       <div className="animate-pulse space-y-4">
@@ -69,27 +89,25 @@ const MetricCard: React.FC<{
   </div>
 );
 
-export const PatientTaskManagement: React.FC<Props> = ({
+export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
   data,
   patients,
   selectedArea,
-  onSelect,
+  onSelectPatient,
   departments,
   onClose,
   fontSize,
   setFontSize,
   loading,
   error,
-  onRetry,
+  onRetry
 }) => {
   const [selectedPatient, setSelectedPatient] = useState<IPatient | null>(null);
   const [generatedData, setGeneratedData] = useState<IGeneratedData>({});
   const [generatedImages, setGeneratedImages] = useState<IGeneratedImages>({});
   const [aiQuery, setAiQuery] = useState('');
   const [isHighContrast, setIsHighContrast] = useState(false);
-  const [showAudioDescription, setShowAudioDescription] = useState(false);
   const [showAudioControls, setShowAudioControls] = useState(false);
-  const [currentAudio, setCurrentAudio] = useState<SpeechSynthesisUtterance | null>(null);
   const [currentUtterance, setCurrentUtterance] = useState<SpeechSynthesisUtterance | null>(null);
   const [synthesis, setSynthesis] = useState<SpeechSynthesis | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -336,6 +354,24 @@ export const PatientTaskManagement: React.FC<Props> = ({
     }
   };
 
+  // Handler para seleção de paciente
+  const handlePatientSelect = async (patient: IPatient | null) => {
+    setSelectedPatient(patient);
+    onSelectPatient(patient);
+    
+    if (patient) {
+      try {
+        setIsLoading(true);
+        setLoadingMessage('Gerando dados...');
+        await generateData(patient);
+      } catch (error) {
+        console.error('Erro ao gerar dados:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
   const renderNoAreaSelected = () => (
     <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-700/50 
                    rounded-xl p-8 text-center shadow-lg">
@@ -353,93 +389,128 @@ export const PatientTaskManagement: React.FC<Props> = ({
     </div>
   );
 
-  return (
-    <div className="w-full space-y-6">
-      <div className={`relative ${error ? 'opacity-50' : ''}`}>
-        {/* Métricas em Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <MetricCard
-            title="Taxa de Ocupação"
-            value={`${safeData.overall.occupancyRate}%`}
-            icon={<Users className="w-6 h-6 text-primary" />}
-            trend={safeData.overall.periodComparison.occupancy}
-            loading={loading}
-          />
-          <MetricCard
-            title="Leitos Disponíveis"
-            value={safeData.overall.availableBeds}
-            icon={<Bed className="w-6 h-6 text-primary" />}
-            trend={safeData.overall.periodComparison.beds}
-            loading={loading}
-          />
-          <MetricCard
-            title="Tempo Médio de Internação"
-            value={`${safeData.overall.avgStayDuration} dias`}
-            icon={<Clock className="w-6 h-6 text-primary" />}
-            loading={loading}
-          />
-        </div>
+  // Verifica se o departamento existe e obtém seus dados
+  const normalizedArea = selectedArea ? normalizeDepartmentName(selectedArea) : '';
+  const departmentData = selectedArea ? getDepartmentData(data, selectedArea) : null;
+  const isDepartmentAvailable = selectedArea && departmentData;
 
-        {/* Área Principal */}
-        {selectedArea && safeData.departmental?.[selectedArea] ? (
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-            <DepartmentBoard
-              data={safeData}
-              selectedArea={selectedArea}
-              patients={patients}
-              setSelectedPatient={setSelectedPatient}
-              isLoading={loading}
-              loadingMessage="Carregando dados do departamento..."
-              loadingProgress={0}
+  useEffect(() => {
+    console.log('Dados do departamento:', {
+      selectedArea,
+      normalizedArea,
+      departmentData,
+      isDepartmentAvailable,
+      allDepartments: data?.departmental ? Object.keys(data.departmental) : []
+    });
+  }, [selectedArea, data, departmentData, isDepartmentAvailable]);
+
+  return (
+    <div className='bg-gradient-to-r py-2 from-blue-700 to-cyan-700 rounded-md shadow-md'>
+      <div className="w-full space-y-6 p-4 bg-gray-100 dark:bg-gray-800 rounded-md">
+        <div className={`relative ${error ? 'opacity-50' : ''}`}>
+          {/* Métricas em Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2">
+            <MetricCard
+              title="Taxa de Ocupação"
+              value={`${data.overall.occupancyRate}%`}
+              icon={<Users className="w-6 h-6 text-primary" />}
+              trend={data.overall.periodComparison.occupancy}
+              loading={loading}
             />
+            <MetricCard
+              title="Leitos Disponíveis"
+              value={data.overall.availableBeds}
+              icon={<Bed className="w-6 h-6 text-primary" />}
+              trend={data.overall.periodComparison.beds}
+              loading={loading}
+            />
+            <MetricCard
+              title="Tempo Médio de Internação"
+              value={`${data.overall.avgStayDuration} dias`}
+              icon={<Clock className="w-6 h-6 text-primary" />}
+              loading={loading}
+            />
+          </div>
+
+        {/* Área Principal com verificação corrigida */}
+        {isDepartmentAvailable && departmentData ? (
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+            <DepartmentBoard
+              data={data}
+              selectedArea={normalizedArea} // Usando área normalizada
+              patients={patients.filter(patient => {
+                const patientDepartment = patient.careHistory?.statusHistory?.[0]?.department;
+                return patientDepartment && 
+                       normalizeDepartmentName(patientDepartment) === normalizedArea;
+              })}
+              setSelectedPatient={handlePatientSelect}
+              generateData={generateData}
+              generatedData={generatedData}
+              isLoading={isLoading}
+              loadingMessage={loadingMessage}
+              loadingProgress={loadingProgress}
+            />
+          </div>
+        ) : selectedArea ? (
+          <div className="bg-yellow-50 dark:bg-yellow-900/50 p-4 rounded-xl">
+            <p className="text-yellow-800 dark:text-yellow-200">
+              Departamento "{selectedArea}" não encontrado ou sem dados disponíveis.
+            </p>
+            <pre className="mt-2 text-sm bg-white/50 dark:bg-black/50 p-2 rounded">
+              Departamentos disponíveis: {Object.keys(data?.departmental || {}).join(', ')}
+            </pre>
           </div>
         ) : (
           renderNoAreaSelected()
         )}
 
-        {/* Modal do Paciente */}
-        <PatientCardModal 
-          selectedPatient={selectedPatient}
-          setSelectedPatient={setSelectedPatient}
-          isHighContrast={false}
-          setIsHighContrast={() => {}}
-          setShowAudioControls={() => {}}
-          showAudioControls={false}
-          setFontSize={setFontSize}
-          fontSize={fontSize}
-          aiQuery=""
-          setAiQuery={() => {}}
-          generatedData={{}}
-          setCurrentUtterance={() => {}}
-          setSynthesis={() => {}}
-          synthesis={null}
-        />
-      </div>
-
-      {/* Mensagem de Erro */}
-      {error && (
-        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-white dark:bg-gray-800 
-                      rounded-xl shadow-lg border border-red-200 dark:border-red-800 p-4 
-                      w-full max-w-2xl mx-auto">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <AlertCircle className="w-5 h-5 text-red-500" />
-              <div>
-                <h3 className="font-medium text-red-500">Erro ao carregar dados</h3>
-                <p className="text-sm text-red-400">{error}</p>
-              </div>
-            </div>
-            <button
-              onClick={onRetry}
-              className="inline-flex items-center space-x-2 px-3 py-1.5 bg-red-500 hover:bg-red-600 
-                       text-white text-sm rounded-md transition-colors"
-            >
-              <RefreshCw className="w-4 h-4" />
-              <span>Tentar novamente</span>
-            </button>
-          </div>
+          {/* Modal do Paciente */}
+          {selectedPatient && (
+            <PatientCardModal
+              selectedPatient={selectedPatient}
+              setSelectedPatient={handlePatientSelect}
+              generateData={generateData}
+              isHighContrast={isHighContrast}
+              setIsHighContrast={setIsHighContrast}
+              showAudioControls={showAudioControls}
+              setShowAudioControls={setShowAudioControls}
+              fontSize={fontSize}
+              setFontSize={setFontSize}
+              aiQuery={aiQuery}
+              setAiQuery={setAiQuery}
+              generatedData={generatedData}
+              setCurrentUtterance={setCurrentUtterance}
+              setSynthesis={setSynthesis}
+              synthesis={synthesis}
+            />
+          )}
         </div>
-      )}
+
+        {/* Mensagem de Erro */}
+        {error && (
+          <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-white dark:bg-gray-800 
+                        rounded-xl shadow-lg border border-red-200 dark:border-red-800 p-4 
+                        w-full max-w-2xl mx-auto">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <AlertCircle className="w-5 h-5 text-red-500" />
+                <div>
+                  <h3 className="font-medium text-red-500">Erro ao carregar dados</h3>
+                  <p className="text-sm text-red-400">{error}</p>
+                </div>
+              </div>
+              <button
+                onClick={onRetry}
+                className="inline-flex items-center space-x-2 px-3 py-1.5 bg-red-500 hover:bg-red-600 
+                        text-white text-sm rounded-md transition-colors"
+              >
+                <RefreshCw className="w-4 h-4" />
+                <span>Tentar novamente</span>
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

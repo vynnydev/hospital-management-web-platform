@@ -100,6 +100,41 @@
                   "primaryDiagnosis": "Post-cardiac surgery",
                   "status": "active",
                   "totalLOS": 7,
+                  "statusHistory": [
+                    {
+                      "department": "UTI",
+                      "status": "Aguardando Atendimento",
+                      "timestamp": "2024-01-20T08:00:00",
+                      "specialty": "Cardiologia",
+                      "updatedBy": {
+                        "id": "D001",
+                        "name": "Dra. Ana Santos",
+                        "role": "Cardiologista"
+                      }
+                    },
+                    {
+                      "department": "Centro Cirúrgico",
+                      "status": "Em Procedimento",
+                      "timestamp": "2024-01-20T10:00:00",
+                      "specialty": "Cardiologia",
+                      "updatedBy": {
+                        "id": "D002",
+                        "name": "Dr. Carlos Silveira",
+                        "role": "Cirurgião Cardíaco"
+                      }
+                    },
+                    {
+                      "department": "UTI",
+                      "status": "Em Recuperação",
+                      "timestamp": "2024-01-20T15:00:00",
+                      "specialty": "Cardiologia",
+                      "updatedBy": {
+                        "id": "D001",
+                        "name": "Dra. Ana Santos",
+                        "role": "Cardiologista"
+                      }
+                    }
+                  ],
                   "events": [
                     {
                       "id": "EVT-001",
@@ -191,6 +226,41 @@
                   "primaryDiagnosis": "Hip replacement recovery",
                   "status": "active",
                   "totalLOS": 6,
+                  "statusHistory": [
+                    {
+                      "department": "Enfermaria",
+                      "status": "Aguardando Atendimento",
+                      "timestamp": "2024-01-19T09:00:00",
+                      "specialty": "Ortopedia",
+                      "updatedBy": {
+                        "id": "D003",
+                        "name": "Dr. Ricardo Ortiz",
+                        "role": "Ortopedista"
+                      }
+                    },
+                    {
+                      "department": "Centro Cirúrgico",
+                      "status": "Em Procedimento",
+                      "timestamp": "2024-01-19T11:00:00",
+                      "specialty": "Ortopedia",
+                      "updatedBy": {
+                        "id": "D003",
+                        "name": "Dr. Ricardo Ortiz",
+                        "role": "Ortopedista"
+                      }
+                    },
+                    {
+                      "department": "Enfermaria",
+                      "status": "Em Observação",
+                      "timestamp": "2024-01-19T14:30:00",
+                      "specialty": "Ortopedia",
+                      "updatedBy": {
+                        "id": "D003",
+                        "name": "Dr. Ricardo Ortiz",
+                        "role": "Ortopedista"
+                      }
+                    }
+                  ],
                   "events": [
                     {
                       "id": "EVT-004",
@@ -411,6 +481,41 @@
                   "primaryDiagnosis": "Post-chemotherapy monitoring - Linfoma não-Hodgkin",
                   "status": "active",
                   "totalLOS": 6,
+                  "statusHistory": [
+                    {
+                      "department": "UTI",
+                      "status": "Aguardando Atendimento",
+                      "timestamp": "2024-01-18T08:30:00",
+                      "specialty": "Oncologia",
+                      "updatedBy": {
+                        "id": "D004",
+                        "name": "Dra. Carla Mendes",
+                        "role": "Oncologista"
+                      }
+                    },
+                    {
+                      "department": "UTI",
+                      "status": "Em Procedimento",
+                      "timestamp": "2024-01-18T10:15:00",
+                      "specialty": "Oncologia",
+                      "updatedBy": {
+                        "id": "D004",
+                        "name": "Dra. Carla Mendes",
+                        "role": "Oncologista"
+                      }
+                    },
+                    {
+                      "department": "UTI",
+                      "status": "Em Recuperação",
+                      "timestamp": "2024-01-19T09:00:00",
+                      "specialty": "Oncologia",
+                      "updatedBy": {
+                        "id": "D004",
+                        "name": "Dra. Carla Mendes",
+                        "role": "Oncologista"
+                      }
+                    }
+                  ],
                   "events": [
                     {
                       "id": "EVT-007",
@@ -526,6 +631,30 @@
               "trend": "down"
             }
           }
+        },
+        "departmental": {
+          "uti": {
+            "occupancy": 92,
+            "beds": 8,
+            "patients": 7,
+            "validStatuses": [
+              "Aguardando Atendimento",
+              "Em Procedimento",
+              "Em Recuperação",
+              "Alta"
+            ]
+          },
+          "enfermaria": {
+            "occupancy": 78,
+            "beds": 37,
+            "patients": 29,
+            "validStatuses": [
+              "Aguardando Atendimento",
+              "Em Observação",
+              "Em Recuperação",
+              "Alta"
+            ]
+          }
         }
       }
     },
@@ -564,6 +693,52 @@
                   "primaryDiagnosis": "Post-chemotherapy monitoring - Câncer de mama metastático",
                   "status": "active",
                   "totalLOS": 6,
+                  "statusHistory": [
+                    {
+                      "department": "UTI",
+                      "status": "Aguardando Atendimento",
+                      "timestamp": "2024-01-18T07:45:00",
+                      "specialty": "Oncologia",
+                      "updatedBy": {
+                        "id": "D006",
+                        "name": "Dra. Beatriz Santos",
+                        "role": "Oncologista"
+                      }
+                    },
+                    {
+                      "department": "UTI",
+                      "status": "Em Procedimento",
+                      "timestamp": "2024-01-18T09:30:00",
+                      "specialty": "Oncologia",
+                      "updatedBy": {
+                        "id": "D006",
+                        "name": "Dra. Beatriz Santos",
+                        "role": "Oncologista"
+                      }
+                    },
+                    {
+                      "department": "UTI",
+                      "status": "Em Procedimento",
+                      "timestamp": "2024-01-18T16:00:00",
+                      "specialty": "Oncologia",
+                      "updatedBy": {
+                        "id": "D007",
+                        "name": "Dr. Marcos Lima",
+                        "role": "Intensivista"
+                      }
+                    },
+                    {
+                      "department": "UTI",
+                      "status": "Em Recuperação",
+                      "timestamp": "2024-01-19T08:00:00",
+                      "specialty": "Oncologia",
+                      "updatedBy": {
+                        "id": "D007",
+                        "name": "Dr. Marcos Lima",
+                        "role": "Intensivista"
+                      }
+                    }
+                  ],
                   "events": [
                     {
                       "id": "EVT-011",
@@ -710,6 +885,30 @@
               "value": 8,
               "trend": "up"
             }
+          }
+        },
+        "departmental": {
+          "uti": {
+            "occupancy": 92,
+            "beds": 8,
+            "patients": 7,
+            "validStatuses": [
+              "Aguardando Atendimento",
+              "Em Procedimento",
+              "Em Recuperação",
+              "Alta"
+            ]
+          },
+          "enfermaria": {
+            "occupancy": 78,
+            "beds": 37,
+            "patients": 29,
+            "validStatuses": [
+              "Aguardando Atendimento",
+              "Em Observação",
+              "Em Recuperação",
+              "Alta"
+            ]
           }
         }
       }

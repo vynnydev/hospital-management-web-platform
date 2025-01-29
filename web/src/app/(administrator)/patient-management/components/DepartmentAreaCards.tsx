@@ -86,27 +86,29 @@ const LoadingCard: React.FC = () => (
 
 // Card quando nenhum hospital está selecionado
 const NoHospitalSelectedCard: React.FC = () => (
-    <motion.div
-        whileHover={{ scale: 1.02 }}
-        className="relative p-6 rounded-2xl cursor-default shadow-lg bg-gradient-to-br 
-                 from-blue-50/50 to-blue-100/50 dark:from-blue-900/20 dark:to-blue-800/20 
-                 border border-blue-200/50 dark:border-blue-700/50 w-[200px] h-[220px]"
-    >
-        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/10 
-                     via-transparent to-transparent opacity-50">
-        </div>
-        <div className="relative z-10 flex flex-col items-center justify-center h-full space-y-4">
-            <div className="p-4 bg-blue-100/50 dark:bg-blue-800/30 rounded-full">
-                <Building2 className="w-8 h-8 text-blue-500 dark:text-blue-400" />
+    <div className='pl-12'>
+        <motion.div
+            whileHover={{ scale: 1.02 }}
+            className="relative p-6 rounded-2xl cursor-default shadow-lg bg-gradient-to-br 
+                    from-blue-50/50 to-blue-100/50 dark:from-blue-900/20 dark:to-blue-800/20 
+                    border border-blue-200/50 dark:border-blue-700/50 w-[200px] h-[220px]"
+        >
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/10 
+                        via-transparent to-transparent opacity-50">
             </div>
-            <h3 className="text-sm font-semibold text-blue-700 dark:text-blue-300 text-center">
-                Selecione um Hospital
-            </h3>
-            <p className="text-xs text-blue-600/80 dark:text-blue-400/80 text-center">
-                Visualize os departamentos
-            </p>
-        </div>
-    </motion.div>
+            <div className="relative z-10 flex flex-col items-center justify-center h-full space-y-4">
+                <div className="p-4 bg-blue-100/50 dark:bg-blue-800/30 rounded-full">
+                    <Building2 className="w-8 h-8 text-blue-500 dark:text-blue-400" />
+                </div>
+                <h3 className="text-sm font-semibold text-blue-700 dark:text-blue-300 text-center">
+                    Selecione um Hospital
+                </h3>
+                <p className="text-xs text-blue-600/80 dark:text-blue-400/80 text-center">
+                    Visualize os departamentos
+                </p>
+            </div>
+        </motion.div>
+    </div>
 );
 
 // Card de erro
@@ -243,16 +245,18 @@ export const DepartmentAreaCards: React.FC<IDepartmentAreaCardsProps> = ({
         );
     }
 
+    console.log("Area selecionada:", selectedArea)
+
     return (
         <div className="relative">
-            <Slider {...settings} className="gap-x-4 -mx-2 pl-20">
+            <Slider {...settings} className="pl-12">
                 {uniqueDepartments.map(({ area, count, capacity }) => {
                     const progressPercentage = (count / capacity) * 100;
                     const isSelected = selectedArea === area;
                     const colors = departmentColors[area] || departmentColors.placeholder;
 
                     return (
-                        <div key={area} className="px-2">
+                        <div key={area}>
                             <motion.div
                                 whileHover={{ scale: 1.03 }}
                                 className={`relative p-6 rounded-2xl cursor-pointer transition-all duration-300 

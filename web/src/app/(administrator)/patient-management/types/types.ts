@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { TOccupancy } from "@/types/hospital-network-types";
+
 // Interfaces existentes que não precisam mudar
 export interface IGeneratedData {
   recommendation?: string;
@@ -88,7 +90,7 @@ export interface IOverallMetrics {
 
 // Interface para métricas departamentais
 export interface IDepartmentMetrics {
-  occupancy: number;
+  occupancy: TOccupancy;
   beds: number;
   patients: number;
   validStatuses: string[];
@@ -96,12 +98,90 @@ export interface IDepartmentMetrics {
 
 // Interface principal de métricas do hospital
 export interface IHospitalMetrics {
-  capacity: ICapacityMetrics;
-  overall: IOverallMetrics;
-  departmental: {
-    [key: string]: IDepartmentMetrics;
+  capacity: {
+    total: {
+      maxBeds: number;
+      maxOccupancy: number;
+    };
+    departmental: {
+      uti: {
+        maxBeds: number;
+        maxOccupancy: number;
+        recommendedMaxOccupancy: number;
+      };
+      enfermaria: {
+        maxBeds: number;
+        maxOccupancy: number;
+        recommendedMaxOccupancy: number;
+      };
+    };
   };
+  overall: {
+    occupancyRate: number;
+    totalPatients: number;
+    availableBeds: number;
+    avgStayDuration: number;
+    turnoverRate: number;
+    totalBeds: number;
+    lastUpdate: string;
+    periodComparison: {
+      occupancy: { value: number; trend: "up" | "down" };
+      patients: { value: number; trend: "up" | "down" };
+      beds: { value: number; trend: "up" | "down" };
+    };
+  };
+  departmental: Record<string, IDepartmentMetrics>;
 }
+
+// Estado inicial das métricas com a estrutura correta
+export const initialMetrics: IHospitalMetrics = {
+  capacity: {
+    total: {
+      maxBeds: 0,
+      maxOccupancy: 0
+    },
+    departmental: {
+      uti: {
+        maxBeds: 0,
+        maxOccupancy: 0,
+        recommendedMaxOccupancy: 0
+      },
+      enfermaria: {
+        maxBeds: 0,
+        maxOccupancy: 0,
+        recommendedMaxOccupancy: 0
+      }
+    }
+  },
+  overall: {
+    occupancyRate: 0,
+    totalPatients: 0,
+    availableBeds: 0,
+    avgStayDuration: 0,
+    turnoverRate: 0,
+    totalBeds: 0,
+    lastUpdate: new Date().toISOString(),
+    periodComparison: {
+      occupancy: { value: 0, trend: "up" },
+      patients: { value: 0, trend: "up" },
+      beds: { value: 0, trend: "up" }
+    }
+  },
+  departmental: {
+    uti: {
+      occupancy: 0,
+      beds: 0,
+      patients: 0,
+      validStatuses: []
+    },
+    enfermaria: {
+      occupancy: 0,
+      beds: 0,
+      patients: 0,
+      validStatuses: []
+    }
+  }
+};
 
 // Interface para localização do hospital
 export interface IHospitalUnit {

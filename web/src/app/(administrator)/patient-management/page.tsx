@@ -5,7 +5,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend'; // Use o pacote correto
 
 import AIDAHealthAssistant from '@/components/ui/aida-assistant/AIDAHealthAssistant';
-import { MainPatientManagementComponente } from './components/MainPatientManagementComponente';
+import { MainPatientManagementComponent } from './components/MainPatientManagementComponent';
 
 const PatientManagement: React.FC = () => {
   return (
@@ -13,7 +13,7 @@ const PatientManagement: React.FC = () => {
       {/* Implementar o lógica do departamento pelo hospital selecionado que o usuário faz parte */}
       {/* Implementar o "DepartmentDashboardMetrics" por departamento */}
       <DndProvider backend={HTML5Backend}>
-        <MainPatientManagementComponente />
+        <MainPatientManagementComponent />
       </DndProvider>
       
       <AIDAHealthAssistant />
