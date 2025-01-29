@@ -1,11 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/organisms/select';
 import { IGeneratedData, IHospitalMetrics } from '../types/types';
 import { PatientCard } from './PatientCard';
 import { IPatient } from '@/types/hospital-network-types';

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import Image from 'next/image';
 import { IGeneratedData } from '../types/types';
 import { HiSparkles } from 'react-icons/hi'; // ícone de brilho (sparkles)
@@ -70,10 +71,12 @@ export const PatientCard: React.FC<PatientCardProps> = ({
             ) : (
               generatedData.treatmentImage && (
                 <div className="mt-4 relative w-full h-40 rounded-lg overflow-hidden">
-                  <img
+                  <Image
                     src={generatedData.treatmentImage}
                     alt="Visualização do tratamento"
                     className="w-full h-full object-cover"
+                    width={40}
+                    height={40}
                   />
                 </div>
               )

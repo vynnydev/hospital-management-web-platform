@@ -154,8 +154,14 @@ export const DepartmentAreaCards: React.FC<IDepartmentAreaCardsProps> = ({
     error,
     onRetry 
 }) => {
+    // Função para normalizar a área (converter para minúsculo)
+    const normalizeArea = (area: string): string => area.toLowerCase();
+
     const uniqueDepartments = Array.from(
-        new Map(departments.map((dept) => [dept.area, dept])).values()
+        new Map(departments.map((dept) => ({
+            ...dept,
+            area: normalizeArea(dept.area)
+        })).map(dept => [dept.area, dept])).values()
     );
 
     const settings = {
@@ -245,14 +251,13 @@ export const DepartmentAreaCards: React.FC<IDepartmentAreaCardsProps> = ({
         );
     }
 
-    console.log("Area selecionada:", selectedArea)
-
     return (
         <div className="relative">
             <Slider {...settings} className="pl-12">
                 {uniqueDepartments.map(({ area, count, capacity }) => {
                     const progressPercentage = (count / capacity) * 100;
-                    const isSelected = selectedArea === area;
+                    // Normaliza a área selecionada antes de comparar
+                    const isSelected = selectedArea ? normalizeArea(selectedArea) === area : false;
                     const colors = departmentColors[area] || departmentColors.placeholder;
 
                     return (

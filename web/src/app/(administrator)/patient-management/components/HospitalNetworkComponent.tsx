@@ -103,6 +103,8 @@ export const HospitalNetworkComponent: React.FC<HospitalNetworkComponentProps> =
     );
   }
 
+  console.log("DEPARTAMENTO SELECIONADA PARA O DEPARTMENT AREA CARDS:", departments)
+
   // Função para renderizar os cards de departamento
   const renderDepartmentCards = () => {
     return (

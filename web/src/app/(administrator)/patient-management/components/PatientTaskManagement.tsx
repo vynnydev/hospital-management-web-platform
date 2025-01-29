@@ -15,30 +15,19 @@ import type {
 import { generateEnhancedPrompt } from './functions/AI/aiAssistantPatientBoard';
 import { isValidBase64Image } from '@/components/ui/aida-assistant/report-modal-ai/services/functions/imagePresenter';
 import { IPatient } from '@/types/hospital-network-types';
+import {
+  getPatientVitals,
+  getPatientMedications,
+  getLatestProcedure,
+  getLatestStatus,
+  generateCarePlanPrompt as generatePatientCarePlanPrompt,
+  categorizePatients,
+  normalizeDepartmentName,
+  getDepartmentData
+} from '@/utils/patientDataUtils';
 
 const hfInference = new HfInference(process.env.HUGGING_FACE_API_KEY!);
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY!);
-
-type FontSize = 'small' | 'normal' | 'large' | 'extra-large';
-
-// Função helper para normalizar nomes de departamentos
-const normalizeDepartmentName = (name: string): string => {
-  return name.toLowerCase().trim();
-};
-
-// Função helper para verificar departamento
-const hasDepartment = (data: IHospitalMetrics, area: string): boolean => {
-  if (!data?.departmental) return false;
-
-  const normalizedArea = normalizeDepartmentName(area);
-  return normalizedArea === 'uti' || normalizedArea === 'enfermaria';
-};
-
-// Helper para obter dados do departamento
-const getDepartmentData = (data: IHospitalMetrics, area: string) => {
-  const normalizedArea = normalizeDepartmentName(area);
-  return data.departmental?.[normalizedArea];
-};
 
 interface PatientTaskManagementProps {
   data: IHospitalMetrics;
@@ -114,84 +103,56 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [loadingMessage, setLoadingMessage] = useState('');
 
-  const categorizedPatients: Record<string, Record<string, IPatient[]>> = {};
+  // Usar a função categorizePatients do utilitário
+  const categorizedPatients = categorizePatients(patients, departments);
 
-  Object.keys(departments).forEach((department) => {
-    categorizedPatients[department] = {};
-    departments[department].forEach((status) => {
-      categorizedPatients[department][status] = [];
-    });
-  });
-  // console.log("Departamentos com seus status:", departments)
-
-  patients.forEach((patient: IPatient) => {
-    const latestStatus = patient?.admission?.statusHistory?.sort(
-      (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-    )[0];
-
-    const department = latestStatus?.department?.trim().toLowerCase() || "sem departamento";
-    const status = latestStatus?.status?.trim().toLowerCase() || "status desconhecido";
-
-    if (!categorizedPatients[department]) {
-      categorizedPatients[department] = {};
-    }
-    if (!categorizedPatients[department][status]) {
-      categorizedPatients[department][status] = [];
-    }
-    categorizedPatients[department][status].push(patient);
-  });
-
-  useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-      if (e.altKey && e.key === 'c') setIsHighContrast(prev => !prev);
-      if (e.altKey && e.key === 'a') setShowAudioControls(prev => !prev);
-    };
-
-    window.addEventListener('keydown', handleKeyPress);
-    return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [onClose]);
-
-  // Clean up do áudio quando o componente for desmontado
-  useEffect(() => {
-    return () => {
-      if (synthesis) {
-        synthesis.cancel();
-      }
-    };
-  }, [synthesis]);
-
-  const processImageResponse = async (response: Blob): Promise<string> => {
-          if (response.size === 0) {
-              throw new Error('Blob vazio recebido');
-          }
-  
-          return new Promise((resolve, reject) => {
-              const reader = new FileReader();
-              reader.onloadend = () => {
-                  const result = reader.result as string;
-                  if (!result || !isValidBase64Image(result)) {
-                      reject(new Error('Imagem base64 inválida gerada'));
-                  } else {
-                      resolve(result);
-                  }
-              };
-              reader.onerror = () => reject(new Error('Erro ao ler blob'));
-              reader.readAsDataURL(response);
-          });
-    }
-
-  // Constantes para configuração
+  // Configurações da IA permanecem as mesmas
   const IMAGE_MODELS = {
     STABLE_DIFFUSION: "stabilityai/stable-diffusion-3.5-large",
-    FLUX_DEV: "black-forest-labs/FLUX.1-dev", // Alternativa mais rápida
-    FLUX_SCHNELL: "black-forest-labs/FLUX.1-schnell" // Alternativa mais rápida ainda
+    FLUX_DEV: "black-forest-labs/FLUX.1-dev",
+    FLUX_SCHNELL: "black-forest-labs/FLUX.1-schnell"
   } as const;
 
   const IMAGE_PARAMETERS = {
     negative_prompt: "texto, palavras, letras, números, baixa qualidade, borrado, pessoas, rostos humanos",
-    num_inference_steps: 50, // Aumentei para melhor qualidade
-    guidance_scale: 8.5, // Aumentei um pouco para mais precisão
+    num_inference_steps: 50,
+    guidance_scale: 8.5,
+  };
+
+  const processImageResponse = async (response: Blob): Promise<string> => {
+    if (response.size === 0) {
+        throw new Error('Blob vazio recebido');
+    }
+
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const result = reader.result as string;
+            if (!result || !isValidBase64Image(result)) {
+                reject(new Error('Imagem base64 inválida gerada'));
+            } else {
+                resolve(result);
+            }
+        };
+        reader.onerror = () => reject(new Error('Erro ao ler blob'));
+        reader.readAsDataURL(response);
+    });
+  }
+
+  const generateImage = async (prompt: string) => {
+    console.time('generateImage');
+    try {
+      const result = await hfInference.textToImage({
+        inputs: prompt,
+        parameters: IMAGE_PARAMETERS,
+        model: IMAGE_MODELS.FLUX_SCHNELL,
+      });
+      console.timeEnd('generateImage');
+      return processImageResponse(result);
+    } catch (error) {
+      console.timeEnd('generateImage');
+      throw error;
+    }
   };
 
   const generateData = async (patient: IPatient): Promise<void> => {
@@ -199,11 +160,12 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
     setLoadingProgress(0);
     setLoadingMessage('Iniciando geração...');
     console.time('generateData');
-    const enhancedPrompt = generateEnhancedPrompt(patient);
-    
+
     try {
+      const enhancedPrompt = generateEnhancedPrompt(patient);
       setLoadingProgress(20);
       setLoadingMessage('Gerando recomendações...');
+
       const [recommendationResult, imageResult] = await Promise.all([
         genAI
           .getGenerativeModel({ model: "gemini-pro" })
@@ -216,71 +178,41 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
               maxOutputTokens: 1024,
             },
           })
-          .then((res) => {
-            console.log('Recomendação gerada com sucesso');
-            return res.response.text();
-          })
-          .catch((error) => {
-            console.error('Erro ao gerar recomendação:', error);
-            throw new Error('Falha ao gerar recomendação');
-          }),
-  
+          .then(res => res.response.text()),
         generateImage(enhancedPrompt)
-          .then((result) => {
-            console.log('Primeira imagem gerada com sucesso');
-            return result;
-          })
-          .catch((error) => {
-            console.error('Erro ao gerar primeira imagem:', error);
-            throw new Error('Falha ao gerar primeira imagem');
-          })
       ]);
-  
+
       console.log('Gerando imagem do plano de cuidados...');
-      const latestVitals = patient.treatment.vitals[patient.treatment.vitals.length - 1];
-      
-      const carePlanPrompt = generateCarePlanPrompt(patient, latestVitals);
-      
-      const carePlanImage = await generateImage(carePlanPrompt)
-        .catch((error) => {
-          console.error('Erro ao gerar imagem do plano de cuidados:', error);
-          throw new Error('Falha ao gerar imagem do plano de cuidados');
-        });
-  
+      // Usar as funções utilitárias para obter dados do paciente
+      const carePlanPrompt = generatePatientCarePlanPrompt(patient);
+      const carePlanImage = await generateImage(carePlanPrompt);
+
       setLoadingProgress(60);
       setLoadingMessage('Gerando imagem do plano de cuidados...');
       console.log('Todas as gerações concluídas com sucesso');
-  
+
       setGeneratedData({
         recommendation: recommendationResult,
         treatmentImage: imageResult,
         carePlanImage: carePlanImage,
-      } as IGeneratedData);
-      
-      setGeneratedImages((prev: IGeneratedImages) => ({
+      });
+
+      setGeneratedImages(prev => ({
         ...prev,
         [patient.id]: { treatment: imageResult, carePlan: carePlanImage }
       }));
-  
-      console.timeEnd('generateData');
-      // Removido o return do GeneratedData
 
       setLoadingProgress(100);
       setLoadingMessage('Concluído!');
+
     } catch (error: any) {
-      console.error('Erro durante a geração de dados:', {
-        error: error.message,
-        stack: error.stack,
-        patientId: patient.id
-      });
-  
+      console.error('Erro durante a geração de dados:', error);
       setGeneratedData({
         recommendation: `Erro ao gerar recomendação: ${error.message}. Por favor, tente novamente.`,
         treatmentImage: undefined,
         carePlanImage: undefined,
       });
       setLoadingMessage('Erro ao gerar recomendação!');
-  
       throw error;
     } finally {
       setTimeout(() => {
@@ -288,69 +220,6 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
         setLoadingProgress(0);
         setLoadingMessage('');
       }, 1000);
-    }
-  };
-
-  // Função auxiliar para geração de imagens
-  const generateImage = async (prompt: string) => {
-    console.time('generateImage');
-    
-    try {
-      const result = await hfInference
-        .textToImage({
-          inputs: prompt,
-          parameters: IMAGE_PARAMETERS,
-          model: IMAGE_MODELS.FLUX_SCHNELL, // Você pode trocar para FLUX_DEV ou FLUX_SCHNELL
-        });
-      
-      console.timeEnd('generateImage');
-      return processImageResponse(result);
-    } catch (error) {
-      console.timeEnd('generateImage');
-      throw error;
-    }
-  };
-
-  // Função auxiliar para gerar prompt do plano de cuidados
-  const generateCarePlanPrompt = (patient: IPatient, latestVitals: any) => {
-    return `Representação visual técnica e detalhada em português brasileiro:
-      - TIPO: Diagrama médico técnico hospitalar
-      - CONTEÚDO: Fluxograma de monitoramento de sinais vitais
-      - DADOS: FC ${latestVitals.heartRate}bpm | Temp ${latestVitals.temperature}°C | SatO2 ${latestVitals.oxygenSaturation}%
-      - ESTILO: Diagrama profissional médico, alto contraste
-      - ELEMENTOS: Equipamentos médicos, gráficos de monitoramento, símbolos hospitalares
-      - LAYOUT: Organizado em grade com setas de fluxo
-      - CORES: Esquema profissional hospitalar
-      - TEXTO: Todas as legendas em português do Brasil
-      - ATENÇÃO: Sem pessoas, sem rostos, apenas equipamentos e diagramas`;
-  };
-
-  // Valores default seguros para métricas com a nova estrutura
-  const defaultMetrics = {
-    overall: {
-      occupancyRate: 0,
-      totalPatients: 0,
-      availableBeds: 0,
-      avgStayDuration: 0,
-      turnoverRate: 0,
-      totalBeds: 0,
-      lastUpdate: new Date().toISOString(),
-      periodComparison: {
-        occupancy: { value: 0, trend: 'up' as const },
-        patients: { value: 0, trend: 'up' as const },
-        beds: { value: 0, trend: 'up' as const }
-      }
-    },
-    departmental: {}
-  };
-
-  // Combinar dados recebidos com valores default
-  const safeData = {
-    ...defaultMetrics,
-    ...data,
-    overall: {
-      ...defaultMetrics.overall,
-      ...data?.overall
     }
   };
 
@@ -389,20 +258,33 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
     </div>
   );
 
-  // Verifica se o departamento existe e obtém seus dados
+  // Verificações de departamento usando utilitários
   const normalizedArea = selectedArea ? normalizeDepartmentName(selectedArea) : '';
   const departmentData = selectedArea ? getDepartmentData(data, selectedArea) : null;
   const isDepartmentAvailable = selectedArea && departmentData;
 
+  // Event listeners
   useEffect(() => {
-    console.log('Dados do departamento:', {
-      selectedArea,
-      normalizedArea,
-      departmentData,
-      isDepartmentAvailable,
-      allDepartments: data?.departmental ? Object.keys(data.departmental) : []
-    });
-  }, [selectedArea, data, departmentData, isDepartmentAvailable]);
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+      if (e.altKey && e.key === 'c') setIsHighContrast(prev => !prev);
+      if (e.altKey && e.key === 'a') setShowAudioControls(prev => !prev);
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [onClose]);
+
+  // Clean up do áudio
+  useEffect(() => {
+    return () => {
+      if (synthesis) {
+        synthesis.cancel();
+      }
+    };
+  }, [synthesis]);
+
+  console.log("Paciente para o Modal do Paciente:", selectedPatient)
 
   return (
     <div className='bg-gradient-to-r py-2 from-blue-700 to-cyan-700 rounded-md shadow-md'>
@@ -432,37 +314,27 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
             />
           </div>
 
-        {/* Área Principal com verificação corrigida */}
-        {isDepartmentAvailable && departmentData ? (
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg">
-            <DepartmentBoard
-              data={data}
-              selectedArea={normalizedArea} // Usando área normalizada
-              patients={patients.filter(patient => {
-                const patientDepartment = patient.careHistory?.statusHistory?.[0]?.department;
-                return patientDepartment && 
-                       normalizeDepartmentName(patientDepartment) === normalizedArea;
-              })}
-              setSelectedPatient={handlePatientSelect}
-              generateData={generateData}
-              generatedData={generatedData}
-              isLoading={isLoading}
-              loadingMessage={loadingMessage}
-              loadingProgress={loadingProgress}
-            />
-          </div>
-        ) : selectedArea ? (
-          <div className="bg-yellow-50 dark:bg-yellow-900/50 p-4 rounded-xl">
-            <p className="text-yellow-800 dark:text-yellow-200">
-              Departamento "{selectedArea}" não encontrado ou sem dados disponíveis.
-            </p>
-            <pre className="mt-2 text-sm bg-white/50 dark:bg-black/50 p-2 rounded">
-              Departamentos disponíveis: {Object.keys(data?.departmental || {}).join(', ')}
-            </pre>
-          </div>
-        ) : (
-          renderNoAreaSelected()
-        )}
+          {/* Área Principal */}
+          {isDepartmentAvailable && departmentData ? (
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+              <DepartmentBoard
+                data={data}
+                selectedArea={normalizedArea}
+                patients={patients.filter(patient => {
+                  const status = getLatestStatus(patient);
+                  return status && normalizeDepartmentName(status.department) === normalizedArea;
+                })}
+                setSelectedPatient={handlePatientSelect}
+                generateData={generateData}
+                generatedData={generatedData}
+                isLoading={isLoading}
+                loadingMessage={loadingMessage}
+                loadingProgress={loadingProgress}
+              />
+            </div>
+          ) : (
+            renderNoAreaSelected()
+          )}
 
           {/* Modal do Paciente */}
           {selectedPatient && (

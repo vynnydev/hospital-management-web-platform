@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { PatientTaskManagement } from './PatientTaskManagement';
-import { DepartmentAreaCards } from './DepartmentAreaCards';
 import { useNetworkData } from '@/services/hooks/useNetworkData';
 import { HospitalNetworkComponent } from './HospitalNetworkComponent';
 import { initialMetrics, type IHospitalMetrics } from '../types/types';
@@ -24,7 +24,7 @@ export const MainPatientManagementComponent: React.FC = () => {
   const convertHospitalMetrics = (metrics: any): IHospitalMetrics => {
     // Garante que a estrutura básica existe
     const safeMetrics = {
-      ...initialMetrics,
+      ...initialMetrics, 
       ...metrics,
       departmental: {
         ...initialMetrics.departmental
@@ -135,11 +135,14 @@ export const MainPatientManagementComponent: React.FC = () => {
     setSelectedArea(department); // Mantém consistência com o estado existente
   };
 
-  const handlePatientSelect = (patient: IPatient) => {
-    if (!patient) return null
+  const handlePatientSelect = (patient: IPatient | null) => {
     console.log('👤 Selecionando paciente:', patient);
     setSelectedPatient(patient);
-    setIsOpen(true);
+    if (patient) {
+      setIsOpen(true);
+    } else {
+      setIsOpen(false);
+    }
   };
 
   const handleClose = () => {
@@ -173,6 +176,8 @@ export const MainPatientManagementComponent: React.FC = () => {
     }, {} as Record<string, string[]>);
   };
 
+  console.log("Hospital selecionado:", selectedHospital)
+
   return (
     <div className="min-h-screen p-4 space-y-6">
       <HospitalNetworkComponent
@@ -187,27 +192,24 @@ export const MainPatientManagementComponent: React.FC = () => {
         error={networkError}
       />
 
-      {selectedHospital && (
-        <>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="col-span-2">
-              <PatientTaskManagement
-                data={metrics}
-                patients={getFilteredPatients()}
-                selectedArea={selectedArea}
-                onSelectPatient={handlePatientSelect}
-                departments={getDepartments()}
-                onClose={handleClose}
-                fontSize={fontSize}
-                setFontSize={setFontSize}
-                loading={loading}
-                error={error}
-                onRetry={handleRetry}
-              />
-            </div>
-          </div>
-        </>
-      )}
+      {/* PatientTaskManagement sempre visível */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="col-span-2">
+          <PatientTaskManagement
+            data={selectedHospital ? metrics : initialMetrics}
+            patients={selectedHospital ? getFilteredPatients() : []}
+            selectedArea={selectedArea}
+            onSelectPatient={handlePatientSelect}
+            departments={selectedHospital ? getDepartments() : {}}
+            onClose={handleClose}
+            fontSize={fontSize}
+            setFontSize={setFontSize}
+            loading={loading}
+            error={error}
+            onRetry={handleRetry}
+          />
+        </div>
+      </div>
 
       {loading && (
         <div className="fixed inset-0 bg-black/5 backdrop-blur-sm flex items-center justify-center">
