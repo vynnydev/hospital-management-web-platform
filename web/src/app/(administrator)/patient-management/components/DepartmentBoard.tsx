@@ -4,7 +4,6 @@ import { IGeneratedData, IHospitalMetrics } from '../types/types';
 import { PatientCard } from './PatientCard';
 import { IPatient } from '@/types/hospital-network-types';
 
-
 interface DepartmentBoardProps {
   data: IHospitalMetrics;
   selectedArea: string;
@@ -28,17 +27,8 @@ export const DepartmentBoard: React.FC<DepartmentBoardProps> = ({
   loadingMessage,
   loadingProgress,
 }) => {
-  // Inicializa com a primeira chave do objeto departmental
   const departmentKeys = Object.keys(data.departmental);
   const [selectedDepartment, setSelectedDepartment] = useState<string>(departmentKeys[0] || '');
-  console.log("Departamento chave:", departmentKeys)
-
-  console.log("Recomendações de AI no card do Board:", generateData)
-
-  // Debug logs
-  // console.log('Selected Department:', selectedDepartment);
-  // console.log('Available Departments:', departmentKeys);
-  console.log('Department Data:', data.departmental[selectedDepartment]);
 
   const getDepartmentPatients = (department: string, status: string) => {
     return patients.filter(patient => {
@@ -52,13 +42,19 @@ export const DepartmentBoard: React.FC<DepartmentBoardProps> = ({
     });
   };
 
-  console.log("Area selecionada para o board:", selectedArea)
+  // Manipulador para clique no card que abre o modal
+  const handleCardClick = (patient: IPatient) => {
+    setSelectedPatient(patient);
+  };
+
+  // Manipulador para gerar recomendações
+  const handleGenerateRecommendation = async (patient: IPatient) => {
+    await generateData(patient);
+  };
 
   const renderDepartmentColumns = (department: string) => {
     const depMetrics = data.departmental?.[department.toLowerCase()];
     if (!depMetrics?.validStatuses) return null;
-
-    console.log("Métricas do departamento:", depMetrics)
 
     return (
       <div className="grid grid-cols-4 gap-2 w-full h-full">
@@ -73,10 +69,7 @@ export const DepartmentBoard: React.FC<DepartmentBoardProps> = ({
 
             <div className="flex-1 p-4 space-y-4 overflow-y-auto">
               {getDepartmentPatients(department, status).map((patient) => (
-                <div key={patient.id} onClick={() => {
-                  setSelectedPatient(patient);
-                  generateData(patient);
-                }}>
+                <div key={patient.id}>
                   <PatientCard
                     patient={patient}
                     status={status}
@@ -84,6 +77,8 @@ export const DepartmentBoard: React.FC<DepartmentBoardProps> = ({
                     isLoading={isLoading}
                     loadingMessage={loadingMessage}
                     loadingProgress={loadingProgress}
+                    onCardClick={handleCardClick}
+                    onGenerateRecommendation={handleGenerateRecommendation}
                   />
                 </div>
               ))}

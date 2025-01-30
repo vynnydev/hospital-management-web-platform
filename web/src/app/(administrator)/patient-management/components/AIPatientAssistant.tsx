@@ -22,7 +22,7 @@ interface IAIPatientAssistantProps {
     setShowAudioControls: React.Dispatch<React.SetStateAction<boolean>>;
     synthesis: SpeechSynthesis | null;
     generatedData: IGeneratedData;
-    onGenerateRecommendation?: () => void;
+    onGenerateRecommendation?: () => Promise<void>;
     isLoading?: boolean;
 }
 
@@ -197,7 +197,15 @@ export const AIPatientAssistant: React.FC<IAIPatientAssistantProps> = ({
                                     Recomendações Geradas
                                 </CardTitle>
                                 <Button
-                                    onClick={onGenerateRecommendation}
+                                    onClick={async () => {
+                                        if (onGenerateRecommendation) {
+                                            try {
+                                                await onGenerateRecommendation();
+                                            } catch (error) {
+                                                console.error('Erro ao gerar recomendação:', error);
+                                            }
+                                        }
+                                    }}
                                     className="bg-blue-600 hover:bg-blue-700 text-white"
                                     disabled={isLoading}
                                 >

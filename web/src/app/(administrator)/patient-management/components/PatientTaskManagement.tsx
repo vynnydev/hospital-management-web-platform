@@ -79,6 +79,7 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
   error,
   onRetry
 }) => {
+  // Estados existentes
   const [selectedPatient, setSelectedPatient] = useState<IPatient | null>(null);
   const [generatedData, setGeneratedData] = useState<IGeneratedData>({});
   const [aiQuery, setAiQuery] = useState('');
@@ -90,10 +91,8 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [loadingMessage, setLoadingMessage] = useState('');
 
-  // Usar a função categorizePatients do utilitário
+  // Utilitários e verificações de departamento
   const categorizedPatients = categorizePatients(patients, departments);
-
-  // Verificações de departamento usando utilitários
   const normalizedArea = selectedArea ? normalizeDepartmentName(selectedArea) : '';
   const departmentData = selectedArea ? getDepartmentData(data, selectedArea) : null;
   const isDepartmentAvailable = selectedArea && departmentData;
@@ -110,7 +109,7 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [onClose]);
 
-  // Clean up do áudio
+  // Cleanup do áudio
   useEffect(() => {
     return () => {
       if (synthesis) {
@@ -119,37 +118,45 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
     };
   }, [synthesis]);
 
+  // Handler para apenas selecionar o paciente (abrir modal)
   const handlePatientSelect = (patient: IPatient | null) => {
     setSelectedPatient(patient);
     onSelectPatient(patient);
   };
 
+  // Handler para geração de IA
   const handleAIGeneration = async (patient: IPatient) => {
-    try {
-      setIsLoading(true);
-      const result = await generateAIContent(patient, {
-        onStart: () => {
-          setLoadingProgress(0);
-          setLoadingMessage('Iniciando geração...');
-        },
-        onProgress: (progress, message) => {
-          setLoadingProgress(progress);
-          setLoadingMessage(message);
-        },
-        onComplete: () => {
-          setIsLoading(false);
-        },
-        onError: (error) => {
-          console.error('Erro na geração:', error);
-          setIsLoading(false);
-        }
-      });
+      try {
+          setIsLoading(true);
+          const result = await generateAIContent(patient, {
+              onStart: () => {
+                  setLoadingProgress(0);
+                  setLoadingMessage('Iniciando geração...');
+              },
+              onProgress: (progress, message) => {
+                  setLoadingProgress(progress);
+                  setLoadingMessage(message);
+              },
+              onComplete: () => {
+                  setIsLoading(false);
+              },
+              onError: (error) => {
+                  console.error('Erro na geração:', error);
+                  setIsLoading(false);
+              }
+          });
 
-      setGeneratedData(result);
-    } catch (error) {
-      console.error('Erro ao gerar dados:', error);
-      setIsLoading(false);
-    }
+          setGeneratedData(result);
+      } catch (error) {
+          console.error('Erro ao gerar dados:', error);
+          setIsLoading(false);
+      }
+  };
+
+  // Handler específico para o botão esfera no modal
+  const handleSphereButtonGeneration = async () => {
+    if (!selectedPatient) return;
+    await handleAIGeneration(selectedPatient);
   };
 
   const renderNoAreaSelected = () => (
@@ -201,18 +208,18 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
           {isDepartmentAvailable && departmentData ? (
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg">
               <DepartmentBoard
-                data={data}
-                selectedArea={normalizedArea}
-                patients={patients.filter(patient => {
-                  const status = getLatestStatus(patient);
-                  return status && normalizeDepartmentName(status.department) === normalizedArea;
-                })}
-                setSelectedPatient={handlePatientSelect}
-                generatedData={generatedData}
-                isLoading={isLoading}
-                loadingMessage={loadingMessage}
-                loadingProgress={loadingProgress} 
-                generateData={handleAIGeneration}
+                  data={data}
+                  selectedArea={normalizedArea}
+                  patients={patients.filter(patient => {
+                      const status = getLatestStatus(patient);
+                      return status && normalizeDepartmentName(status.department) === normalizedArea;
+                  })}
+                  setSelectedPatient={handlePatientSelect}
+                  generatedData={generatedData}
+                  isLoading={isLoading}
+                  loadingMessage={loadingMessage}
+                  loadingProgress={loadingProgress} 
+                  generateData={handleAIGeneration}
               />
             </div>
           ) : (
@@ -236,8 +243,8 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
               setSynthesis={setSynthesis}
               synthesis={synthesis}
               generatedData={generatedData}
-              isLoading={isLoading} 
-              generateData={handleAIGeneration}          
+              isLoading={isLoading}
+              onGenerateRecommendation={handleSphereButtonGeneration}
             />
           )}
         </div>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useRef } from 'react';
 import { X, Upload, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';

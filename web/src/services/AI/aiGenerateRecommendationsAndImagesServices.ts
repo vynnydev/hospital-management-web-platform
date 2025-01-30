@@ -17,9 +17,17 @@ const IMAGE_PARAMETERS = {
   negative_prompt: "texto, palavras, letras, números, baixa qualidade, borrado, pessoas, rostos humanos",
   num_inference_steps: 50,
   guidance_scale: 8.5,
+  width: 512,  // Adicionando largura padrão
+  height: 512  // Adicionando altura padrão
+} satisfies {
+  negative_prompt?: string;
+  num_inference_steps?: number;
+  guidance_scale?: number;
+  width?: number;
+  height?: number;
 };
 
-export interface AIGenerationCallbacks {
+export interface IAIGenerationCallbacks {
   onStart?: () => void;
   onProgress?: (progress: number, message: string) => void;
   onComplete?: () => void;
@@ -28,7 +36,7 @@ export interface AIGenerationCallbacks {
 
 export const generateAIContent = async (
     patient: IPatient,
-    callbacks: AIGenerationCallbacks = {}
+    callbacks: IAIGenerationCallbacks = {}
   ) => {
     try {
       callbacks.onStart?.();

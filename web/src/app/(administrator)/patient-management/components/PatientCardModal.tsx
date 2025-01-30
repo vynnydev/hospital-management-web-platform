@@ -53,7 +53,6 @@ interface UploadResponse {
 interface PatientCardModalProps {
     selectedPatient: IPatient | null;
     setSelectedPatient: (patient: IPatient | null) => void;
-    generateData: (patient: IPatient) => Promise<void>;
     isHighContrast: boolean;
     setIsHighContrast: React.Dispatch<React.SetStateAction<boolean>>;
     setShowAudioControls: React.Dispatch<React.SetStateAction<boolean>>;
@@ -66,14 +65,13 @@ interface PatientCardModalProps {
     setCurrentUtterance: React.Dispatch<React.SetStateAction<SpeechSynthesisUtterance | null>>;
     setSynthesis: React.Dispatch<React.SetStateAction<SpeechSynthesis | null>>;
     synthesis: SpeechSynthesis | null;
-    onGenerateRecommendation?: () => void;
+    onGenerateRecommendation?: () => Promise<void>;
     isLoading?: boolean;
 }
 
 export const PatientCardModal: React.FC<PatientCardModalProps> = ({
     selectedPatient,
     setSelectedPatient,
-    generateData,
     isHighContrast,
     setIsHighContrast,
     setShowAudioControls,
@@ -198,8 +196,10 @@ export const PatientCardModal: React.FC<PatientCardModalProps> = ({
         setIsGeneratingAI(true);
         setAiQuery(question);
         try {
-            await generateData(selectedPatient);
-            setAiResponse("Baseado na análise dos dados do paciente...");
+            if (onGenerateRecommendation) {
+                await onGenerateRecommendation();
+                setAiResponse("Baseado na análise dos dados do paciente...");
+            }
         } catch (error) {
             console.error('Erro ao gerar resposta:', error);
             setAiResponse("Erro ao gerar resposta. Por favor, tente novamente.");
