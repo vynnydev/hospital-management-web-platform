@@ -1,0 +1,7 @@
+# pack-refs with: peeled fully-peeled sorted 
+9dba2eb49d00a0a0dee9e0c3e832fe890a23e3da refs/remotes/origin/develop
+5a0485042d95c940b7ae0267affee71679944fdf refs/remotes/origin/feature/ai-analitics-metrics
+535bc88ffaf0f5ebdb7dec9c4e72068df513c6ac refs/remotes/origin/feature/aida-assistant
+cc4a19afb7327ad488355b05c3cadb49e944ea2b refs/remotes/origin/feature/initial-project-structure
+9e458499595afca70626b5862474b3d89c4ae641 refs/remotes/origin/feature/overview-dashboard-metrics
+c06ea4066896d2464cefa7e132dcd0206dae157e refs/remotes/origin/main

@@ -67,6 +67,7 @@ interface PatientCardModalProps {
     setSynthesis: React.Dispatch<React.SetStateAction<SpeechSynthesis | null>>;
     synthesis: SpeechSynthesis | null;
     onGenerateRecommendation?: () => void;
+    isLoading?: boolean;
 }
 
 export const PatientCardModal: React.FC<PatientCardModalProps> = ({
@@ -85,7 +86,8 @@ export const PatientCardModal: React.FC<PatientCardModalProps> = ({
     setCurrentUtterance,
     setSynthesis,
     synthesis,
-    onGenerateRecommendation
+    onGenerateRecommendation,
+    isLoading
 }) => {
     const [isGeneratingAI, setIsGeneratingAI] = useState(false);
     const [aiResponse, setAiResponse] = useState<string>("");
@@ -337,15 +339,17 @@ export const PatientCardModal: React.FC<PatientCardModalProps> = ({
 
                     {/* Seção de Recomendações da IA */}
                     <AIPatientAssistant 
+                        selectedPatient={selectedPatient}
                         fontSize={fontSize}
                         showAudioControls={showAudioControls}
-                        generatedData={generatedData}
                         isHighContrast={isHighContrast}
                         setCurrentUtterance={setCurrentUtterance}
                         setSynthesis={setSynthesis}
                         setShowAudioControls={setShowAudioControls}
                         synthesis={synthesis}
+                        isLoading={isLoading}
                         onGenerateRecommendation={onGenerateRecommendation}
+                        generatedData={generatedData}
                     />
 
                     {/* O trecho abaixo precisa ser corrigido */}

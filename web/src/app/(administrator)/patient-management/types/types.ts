@@ -5,8 +5,8 @@ import { TOccupancy } from "@/types/hospital-network-types";
 // Interfaces existentes que não precisam mudar
 export interface IGeneratedData {
   recommendation?: string;
-  treatmentImage?: string;
-  carePlanImage?: string;
+  treatmentImage?: string | null;
+  carePlanImage?: string | null;
   monitoringImage?: string;
 }
 

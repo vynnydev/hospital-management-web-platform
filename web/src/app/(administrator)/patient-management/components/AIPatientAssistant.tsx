@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { Sparkles, Volume2, Tag, RefreshCw, Lightbulb, Activity, Image as ImageIcon } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/organisms/card';
@@ -5,18 +7,23 @@ import { ScrollArea } from '@/components/ui/organisms/scroll-area';
 import { Button } from '@/components/ui/organisms/button';
 import Image from 'next/image';
 import { TFontSize, IGeneratedData } from '../types/types';
+import { generateAIContent } from '@/services/AI/aiGenerateRecommendationsAndImagesServices';
+import { IPatient } from '@/types/hospital-network-types';
+import { AISphereButton } from './AI/AISphereButton';
+import { AILoadingCard } from './AI/AILoadingCard';
 
 interface IAIPatientAssistantProps {
+    selectedPatient: IPatient | null;
     fontSize: TFontSize;
     showAudioControls: boolean;
-    generatedData: IGeneratedData;
     isHighContrast: boolean;
-    isLoading?: boolean;
     setCurrentUtterance: React.Dispatch<React.SetStateAction<SpeechSynthesisUtterance | null>>;
     setSynthesis: React.Dispatch<React.SetStateAction<SpeechSynthesis | null>>;
     setShowAudioControls: React.Dispatch<React.SetStateAction<boolean>>;
     synthesis: SpeechSynthesis | null;
+    generatedData: IGeneratedData;
     onGenerateRecommendation?: () => void;
+    isLoading?: boolean;
 }
 
 const suggestedPrompts = [
@@ -27,20 +34,39 @@ const suggestedPrompts = [
     "Análise dos sinais vitais",
 ];
 
+const SuggestedPrompt: React.FC<{ active: boolean; children: React.ReactNode }> = ({ active, children }) => (
+    <div className={`
+        p-0.5 rounded-full transform transition-all duration-500
+        ${active ? 'scale-105' : 'scale-100 opacity-80'}
+        bg-gradient-to-r from-blue-700 to-cyan-700
+    `}>
+        <div className="bg-gray-600 px-4 py-2 rounded-full">
+            <span className="text-white text-sm">{children}</span>
+        </div>
+    </div>
+);
+
 export const AIPatientAssistant: React.FC<IAIPatientAssistantProps> = ({
+    selectedPatient,
     fontSize,
     showAudioControls,
     generatedData,
     isHighContrast,
-    isLoading = false,
+    isLoading: aiISLoading = false,
     setCurrentUtterance,
     setSynthesis,
     synthesis,
     onGenerateRecommendation
 }) => {
+    const [isAnimating, setIsAnimating] = useState(false);
     const [activeTab, setActiveTab] = useState<'text' | 'image'>('text');
     const [hasInteracted, setHasInteracted] = useState(false);
     const [currentPromptIndex, setCurrentPromptIndex] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
+    const [loadingProgress, setLoadingProgress] = useState(0);
+    const [loadingMessage, setLoadingMessage] = useState('');
+    const [generatedContent, setGeneratedContent] = useState<any>(null);
+    const [error, setError] = useState<string | null>(null);
 
     const handleTextToSpeech = (text: string | undefined) => {
         if (!text) return;
@@ -62,16 +88,55 @@ export const AIPatientAssistant: React.FC<IAIPatientAssistantProps> = ({
 
     const [showGeneratedContent, setShowGeneratedContent] = useState(false);
 
-    const handleSphereClick = () => {
-        setHasInteracted(true);
-        setShowGeneratedContent(true);
-        if (onGenerateRecommendation) {
-            onGenerateRecommendation();
+    const handleSphereClick = async () => {
+        if (!selectedPatient) {
+          setError('Nenhum paciente selecionado');
+          return;
+        }
+    
+        setIsLoading(true);
+        setError(null);
+        
+        try {
+          const result = await generateAIContent(selectedPatient, {
+            onStart: () => {
+              setLoadingProgress(0);
+              setLoadingMessage('Iniciando...');
+            },
+            onProgress: (progress, message) => {
+              setLoadingProgress(progress);
+              setLoadingMessage(message);
+            },
+            onComplete: () => {
+              setIsLoading(false);
+              setLoadingProgress(100);
+              setLoadingMessage('');
+            },
+            onError: (error) => {
+              setError(error.message);
+              setIsLoading(false);
+            }
+          });
+    
+          setGeneratedContent(result);
+          setHasInteracted(true);
+          setShowGeneratedContent(true);
+          
+        } catch (error: any) {
+          setError(error.message);
+        } finally {
+          setIsLoading(false);
         }
     };
 
+    const containerClassName = `
+    bg-gradient-to-r from-blue-700 to-cyan-700 p-1 mt-8 rounded-md
+    transition-all duration-500 transform
+    ${isAnimating ? 'animate-rotate-content' : ''}
+    `;
+
     return (
-        <div className='bg-gradient-to-r from-blue-700 to-cyan-700 p-1 mt-8 rounded-md'>
+        <div className={containerClassName}>
             <div className="space-y-6 p-4 bg-gray-100 dark:bg-gray-800 rounded-md">
                 {/* Header Section - Always visible */}
                 <div className="bg-gradient-to-r from-blue-700 to-cyan-700 rounded-xl p-6 shadow-lg">
@@ -90,38 +155,35 @@ export const AIPatientAssistant: React.FC<IAIPatientAssistantProps> = ({
 
                 {/* Interactive Sphere Section - Initial State */}
                 {!hasInteracted && (
-                    <div className="flex flex-col items-center justify-center space-y-8 py-12">
+                    <div className="flex flex-col items-center justify-center space-y-6 py-12">
                         {/* Suggested Prompts */}
-                        <div className="flex flex-wrap justify-center gap-3 mb-8 px-4">
+                        <div className="flex flex-wrap justify-center gap-4">
                             {suggestedPrompts.map((prompt, index) => (
-                                <div
+                                <SuggestedPrompt 
                                     key={prompt}
-                                    className={`bg-white/10 dark:bg-white/5 backdrop-blur-sm rounded-full px-4 py-2 text-sm 
-                                    text-white transition-all duration-500 transform
-                                    ${index === currentPromptIndex ? 'scale-110 bg-white/20' : 'scale-100 opacity-60'}`}
+                                    active={index === currentPromptIndex}
                                 >
                                     {prompt}
-                                </div>
+                                </SuggestedPrompt>
                             ))}
                         </div>
 
-                        {/* Animated Sphere */}
-                        <button
+                        {/* Text with gradient border */}
+                        <AILoadingCard 
+                            isLoading={isLoading}
+                            message={loadingMessage}
+                        />
+
+                        {/* Animated Sphere Button */}
+                        <AISphereButton 
                             onClick={handleSphereClick}
-                            className="group relative w-48 h-48 cursor-pointer focus:outline-none"
-                        >
-                            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 to-purple-500 
-                                          animate-pulse group-hover:from-blue-500 group-hover:to-purple-600">
-                                <div className="absolute inset-2 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 
-                                              animate-spin group-hover:from-cyan-500 group-hover:to-blue-600">
-                                    <div className="absolute inset-2 rounded-full bg-gradient-to-r from-indigo-400 to-purple-500 
-                                                  blur-sm group-hover:from-indigo-500 group-hover:to-purple-600"></div>
-                                </div>
-                            </div>
-                            <div className="absolute inset-0 flex items-center justify-center">
-                                <span className="text-white text-lg font-medium">Clique para gerar</span>
-                            </div>
-                        </button>
+                            isLoading={isLoading}
+                            loadingMessage={loadingMessage}
+                            // Props opcionais
+                            // size={200} // Customizar tamanho
+                            // disabled={true} // Desabilitar botão
+                            // className="custom-class" // Adicionar classes personalizadas
+                        />
                     </div>
                 )}
 

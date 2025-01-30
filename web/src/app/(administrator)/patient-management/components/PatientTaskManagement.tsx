@@ -1,39 +1,27 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { TrendingUp, TrendingDown, AlertCircle, Clock, Users, Bed, RefreshCw } from 'lucide-react';
 import { DepartmentBoard } from './DepartmentBoard';
 import { PatientCardModal } from './PatientCardModal';
-import { HfInference } from "@huggingface/inference";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import type { 
   IGeneratedData,
-  IGeneratedImages,
   IHospitalMetrics,
   TFontSize, 
 } from '../types/types';
-import { generateEnhancedPrompt } from './functions/AI/aiAssistantPatientBoard';
-import { isValidBase64Image } from '@/components/ui/medimind-ai-assistant/report-modal-ai/services/functions/imagePresenter';
 import { IPatient } from '@/types/hospital-network-types';
 import {
-  getPatientVitals,
-  getPatientMedications,
-  getLatestProcedure,
   getLatestStatus,
-  generateCarePlanPrompt as generatePatientCarePlanPrompt,
   categorizePatients,
   normalizeDepartmentName,
   getDepartmentData
 } from '@/utils/patientDataUtils';
-
-const hfInference = new HfInference(process.env.NEXT_PUBLIC_HUGGING_FACE_API_KEY!);
-const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY!);
+import { generateAIContent } from '@/services/AI/aiGenerateRecommendationsAndImagesServices';
 
 interface PatientTaskManagementProps {
   data: IHospitalMetrics;
   patients: IPatient[];
   selectedArea: string;
-  onSelectPatient: (patient: IPatient | null) => void; // Atualizando para aceitar null
+  onSelectPatient: (patient: IPatient | null) => void;
   departments: Record<string, string[]>;
   onClose: () => void;
   fontSize: TFontSize;
@@ -93,7 +81,6 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
 }) => {
   const [selectedPatient, setSelectedPatient] = useState<IPatient | null>(null);
   const [generatedData, setGeneratedData] = useState<IGeneratedData>({});
-  const [generatedImages, setGeneratedImages] = useState<IGeneratedImages>({});
   const [aiQuery, setAiQuery] = useState('');
   const [isHighContrast, setIsHighContrast] = useState(false);
   const [showAudioControls, setShowAudioControls] = useState(false);
@@ -105,173 +92,6 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
 
   // Usar a função categorizePatients do utilitário
   const categorizedPatients = categorizePatients(patients, departments);
-
-  // Configurações da IA permanecem as mesmas
-  const IMAGE_MODELS = {
-    STABLE_DIFFUSION: "stabilityai/stable-diffusion-3.5-large",
-    FLUX_DEV: "black-forest-labs/FLUX.1-dev",
-    FLUX_SCHNELL: "black-forest-labs/FLUX.1-schnell"
-  } as const;
-
-  const IMAGE_PARAMETERS = {
-    negative_prompt: "texto, palavras, letras, números, baixa qualidade, borrado, pessoas, rostos humanos",
-    num_inference_steps: 50,
-    guidance_scale: 8.5,
-  };
-
-  const processImageResponse = async (response: Blob): Promise<string> => {
-    if (response.size === 0) {
-        throw new Error('Blob vazio recebido');
-    }
-
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            const result = reader.result as string;
-            if (!result || !isValidBase64Image(result)) {
-                reject(new Error('Imagem base64 inválida gerada'));
-            } else {
-                resolve(result);
-            }
-        };
-        reader.onerror = () => reject(new Error('Erro ao ler blob'));
-        reader.readAsDataURL(response);
-    });
-  }
-
-  const generateImage = async (prompt: string) => {
-    console.time('generateImage');
-    try {
-      if (!process.env.NEXT_PUBLIC_HUGGING_FACE_API_KEY) {
-        throw new Error('Token de acesso HuggingFace não configurado');
-      }
-  
-      const result = await hfInference.textToImage({
-        inputs: prompt,
-        parameters: IMAGE_PARAMETERS,
-        model: IMAGE_MODELS.FLUX_SCHNELL,
-      });
-      console.timeEnd('generateImage');
-      return processImageResponse(result);
-    } catch (error: any) {
-      console.timeEnd('generateImage');
-      console.error('Erro ao gerar imagem:', error);
-      if (error.message.includes('TooManyRequests')) {
-        throw new Error('Limite de requisições excedido. Tente novamente em alguns minutos.');
-      }
-      throw error;
-    }
-  };
-
-  const generateData = async (patient: IPatient): Promise<void> => {
-    setIsLoading(true);
-    setLoadingProgress(0);
-    setLoadingMessage('Iniciando geração...');
-    console.time('generateData');
-
-    try {
-      const enhancedPrompt = generateEnhancedPrompt(patient);
-      setLoadingProgress(20);
-      setLoadingMessage('Gerando recomendações...');
-
-      const [recommendationResult, imageResult] = await Promise.all([
-        genAI
-          .getGenerativeModel({ model: "gemini-pro" })
-          .generateContent({
-            contents: [{ role: 'user', parts: [{ text: enhancedPrompt }]}],
-            generationConfig: {
-              temperature: 0.7,
-              topK: 40,
-              topP: 0.95,
-              maxOutputTokens: 1024,
-            },
-          })
-          .then(res => res.response.text()),
-        generateImage(enhancedPrompt)
-      ]);
-
-      console.log('Gerando imagem do plano de cuidados...');
-      // Usar as funções utilitárias para obter dados do paciente
-      const carePlanPrompt = generatePatientCarePlanPrompt(patient);
-      const carePlanImage = await generateImage(carePlanPrompt);
-
-      setLoadingProgress(60);
-      setLoadingMessage('Gerando imagem do plano de cuidados...');
-      console.log('Todas as gerações concluídas com sucesso');
-
-      setGeneratedData({
-        recommendation: recommendationResult,
-        treatmentImage: imageResult,
-        carePlanImage: carePlanImage,
-      });
-
-      setGeneratedImages(prev => ({
-        ...prev,
-        [patient.id]: { treatment: imageResult, carePlan: carePlanImage }
-      }));
-
-      setLoadingProgress(100);
-      setLoadingMessage('Concluído!');
-
-    } catch (error: any) {
-      console.error('Erro durante a geração de dados:', error);
-      setGeneratedData({
-        recommendation: `Erro ao gerar recomendação: ${error.message}. Por favor, tente novamente.`,
-        treatmentImage: undefined,
-        carePlanImage: undefined,
-      });
-      setLoadingMessage('Erro ao gerar recomendação!');
-      throw error;
-    } finally {
-      setTimeout(() => {
-        setIsLoading(false);
-        setLoadingProgress(0);
-        setLoadingMessage('');
-      }, 1000);
-    }
-  };
-
-  // Handler para seleção de paciente
-  const handlePatientSelect = async (patient: IPatient | null) => {
-    setSelectedPatient(patient);
-    onSelectPatient(patient);
-    
-    // Não gera dados automaticamente ao selecionar o paciente
-    // Agora os dados só serão gerados quando o usuário clicar na esfera
-    setIsLoading(false);
-  };
-
-  const handleGenerateRecommendation = async () => {
-    if (!selectedPatient) return;
-    
-    try {
-        setIsLoading(true);
-        setLoadingMessage('Gerando dados...');
-        await generateData(selectedPatient);
-    } catch (error) {
-        console.error('Erro ao gerar dados:', error);
-        // Adicionar tratamento de erro apropriado aqui
-    } finally {
-        setIsLoading(false);
-    } 
-  };
-
-  const renderNoAreaSelected = () => (
-    <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-700/50 
-                   rounded-xl p-8 text-center shadow-lg">
-      <div className="flex flex-col items-center justify-center space-y-4">
-        <div className="p-4 bg-gray-100 dark:bg-gray-700/50 rounded-full">
-          <AlertCircle className="w-8 h-8 text-gray-500 dark:text-gray-400" />
-        </div>
-        <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300">
-          Selecione um departamento
-        </h3>
-        <p className="text-gray-600 dark:text-gray-400 max-w-md">
-          Escolha um departamento para visualizar informações detalhadas e gerenciar pacientes
-        </p>
-      </div>
-    </div>
-  );
 
   // Verificações de departamento usando utilitários
   const normalizedArea = selectedArea ? normalizeDepartmentName(selectedArea) : '';
@@ -299,10 +119,58 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
     };
   }, [synthesis]);
 
-  console.log("Paciente para o Modal do Paciente:", selectedPatient)
+  const handlePatientSelect = (patient: IPatient | null) => {
+    setSelectedPatient(patient);
+    onSelectPatient(patient);
+  };
+
+  const handleAIGeneration = async (patient: IPatient) => {
+    try {
+      setIsLoading(true);
+      const result = await generateAIContent(patient, {
+        onStart: () => {
+          setLoadingProgress(0);
+          setLoadingMessage('Iniciando geração...');
+        },
+        onProgress: (progress, message) => {
+          setLoadingProgress(progress);
+          setLoadingMessage(message);
+        },
+        onComplete: () => {
+          setIsLoading(false);
+        },
+        onError: (error) => {
+          console.error('Erro na geração:', error);
+          setIsLoading(false);
+        }
+      });
+
+      setGeneratedData(result);
+    } catch (error) {
+      console.error('Erro ao gerar dados:', error);
+      setIsLoading(false);
+    }
+  };
+
+  const renderNoAreaSelected = () => (
+    <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-700/50 
+                   rounded-xl p-8 text-center shadow-lg">
+      <div className="flex flex-col items-center justify-center space-y-4">
+        <div className="p-4 bg-gray-100 dark:bg-gray-700/50 rounded-full">
+          <AlertCircle className="w-8 h-8 text-gray-500 dark:text-gray-400" />
+        </div>
+        <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300">
+          Selecione um departamento
+        </h3>
+        <p className="text-gray-600 dark:text-gray-400 max-w-md">
+          Escolha um departamento para visualizar informações detalhadas e gerenciar pacientes
+        </p>
+      </div>
+    </div>
+  );
 
   return (
-    <div className='bg-gradient-to-r py-2 from-blue-700 to-cyan-700 rounded-md shadow-md'>
+    <div className='py-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md'>
       <div className="w-full space-y-6 p-4 bg-gray-100 dark:bg-gray-800 rounded-md">
         <div className={`relative ${error ? 'opacity-50' : ''}`}>
           {/* Métricas em Cards */}
@@ -340,11 +208,11 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
                   return status && normalizeDepartmentName(status.department) === normalizedArea;
                 })}
                 setSelectedPatient={handlePatientSelect}
-                generateData={generateData}
                 generatedData={generatedData}
                 isLoading={isLoading}
                 loadingMessage={loadingMessage}
-                loadingProgress={loadingProgress}
+                loadingProgress={loadingProgress} 
+                generateData={handleAIGeneration}
               />
             </div>
           ) : (
@@ -356,7 +224,6 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
             <PatientCardModal
               selectedPatient={selectedPatient}
               setSelectedPatient={handlePatientSelect}
-              generateData={generateData}
               isHighContrast={isHighContrast}
               setIsHighContrast={setIsHighContrast}
               showAudioControls={showAudioControls}
@@ -365,11 +232,12 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
               setFontSize={setFontSize}
               aiQuery={aiQuery}
               setAiQuery={setAiQuery}
-              generatedData={generatedData}
               setCurrentUtterance={setCurrentUtterance}
               setSynthesis={setSynthesis}
               synthesis={synthesis}
-              onGenerateRecommendation={handleGenerateRecommendation}
+              generatedData={generatedData}
+              isLoading={isLoading} 
+              generateData={handleAIGeneration}          
             />
           )}
         </div>

@@ -1,13 +1,10 @@
 import Image from 'next/image';
 import { IGeneratedData } from '../types/types';
 import { HiSparkles } from 'react-icons/hi';
-import { LoadingState } from './LoadingState';
 import { IPatient } from '@/types/hospital-network-types';
 import { QRCodeSVG } from 'qrcode.react';
 import {
     getPatientVitals,
-    getPatientMedications,
-    getLatestProcedure,
     getLatestStatus
 } from '@/utils/patientDataUtils';
 
@@ -23,7 +20,6 @@ interface PatientCardProps {
 
 export const PatientCard: React.FC<PatientCardProps> = ({ 
     patient,
-    status,
     generatedData,
     isLoading,
     loadingMessage = "Carregando imagem...",
@@ -65,7 +61,7 @@ export const PatientCard: React.FC<PatientCardProps> = ({
     };
 
     return (
-        <div className="bg-gradient-to-br from-teal-400 to-blue-500 dark:from-teal-700 dark:to-blue-700 rounded-xl p-1">
+        <div className="bg-gradient-to-br from-blue-500 to-teal-400 dark:from-blue-700 dark:to-teal-700 rounded-xl p-1">
             <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent" />
                 

@@ -17,6 +17,10 @@ module.exports = {
 		  'opacity-60': 'rgba(var(--tw-bg-opacity), 0.6)',
 		  'opacity-80': 'rgba(var(--tw-bg-opacity), 0.8)'
 		},
+		backgroundImage: {
+			'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+			'gradient-conic': 'conic-gradient(var(--tw-gradient-stops))',
+		},
 		keyframes: {
 		  'accordion-down': {
 			from: { height: '0' },
