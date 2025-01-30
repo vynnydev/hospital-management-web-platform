@@ -1,5 +1,5 @@
 'use client'
-import AIDAHealthAssistant from "@/components/ui/aida-assistant/AIDAHealthAssistant";
+import MediMindAIAssistant from "@/components/ui/medimind-ai-assistant/MediMindAIAssistant";
 
 const TeamManagement: React.FC = () => {
   return (
@@ -8,7 +8,7 @@ const TeamManagement: React.FC = () => {
         Team Management
       </div>
 
-      <AIDAHealthAssistant />
+      <MediMindAIAssistant />
     </div>
   );
 };

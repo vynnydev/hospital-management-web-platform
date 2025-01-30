@@ -1,5 +1,5 @@
 import { LRUCache } from 'lru-cache';
-import { CachedRecommendation, PatientContext } from './types/aida-assistant';
+import { CachedRecommendation, PatientContext } from './types/medimind-ai-assistant';
 
 class RecommendationCache {
     private cache: LRUCache<string, CachedRecommendation>;

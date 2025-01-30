@@ -1,12 +1,12 @@
 'use client'
-import AIDAHealthAssistant from "@/components/ui/aida-assistant/AIDAHealthAssistant"
+import MediMindAIAssistant from "@/components/ui/medimind-ai-assistant/MediMindAIAssistant"
 
 const PredictiveAnalisys = () => {
     return (
         <div className="-mt-12">
             <div>Predictive Analisys</div>
 
-            <AIDAHealthAssistant />
+            <MediMindAIAssistant />
         </div>
     )
 }

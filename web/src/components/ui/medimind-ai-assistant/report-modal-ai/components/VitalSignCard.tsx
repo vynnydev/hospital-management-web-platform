@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import { ReportModalComponentsProps, VitalSignCardProps } from "../types";
 import { Activity, Heart, Thermometer } from "lucide-react";
-// import { PatientContext, PatientData } from "@/services/AI/aida-assistant/types/aida-assistant";
+// import { PatientContext, PatientData } from "@/services/AI/medimind-ai-assistant/types/medimind-ai-assistant";
 
 // function prepareVitalsContext(patientData: PatientData): any {
 //   console.log(patientData)

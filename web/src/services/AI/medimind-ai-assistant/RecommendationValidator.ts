@@ -1,4 +1,4 @@
-import { PatientContext, ValidationResult } from "./types/aida-assistant";
+import { PatientContext, ValidationResult } from "./types/medimind-ai-assistant";
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 class RecommendationValidator {

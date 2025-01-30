@@ -1,4 +1,4 @@
-import { KnowledgeBaseEntry } from "./types/aida-assistant";
+import { KnowledgeBaseEntry } from "./types/medimind-ai-assistant";
 
 class MedicalKnowledgeBase {
     private static instance: MedicalKnowledgeBase;

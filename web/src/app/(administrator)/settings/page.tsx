@@ -11,7 +11,7 @@ import Subscription from './components/Subscription';
 import AlexaIntegration from './components/AlexaIntegration';
 import Community from './components/Community';
 import PaymentMethodCard from '@/components/ui/payments/PaymentMethodCard';
-import AIDAHealthAssistant from '@/components/ui/aida-assistant/AIDAHealthAssistant';
+import MediMindAIAssistant from '@/components/ui/medimind-ai-assistant/MediMindAIAssistant';
 import AccessibilitySettings from './components/AccessibilitySettings';
 
 const SettingsPage: React.FC = () => {
@@ -41,7 +41,7 @@ const SettingsPage: React.FC = () => {
         {renderContent()}
       </div>
 
-      <AIDAHealthAssistant />
+      <MediMindAIAssistant />
     </div>
   );
 };

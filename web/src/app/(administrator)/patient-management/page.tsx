@@ -4,7 +4,7 @@ import React from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend'; // Use o pacote correto
 
-import AIDAHealthAssistant from '@/components/ui/aida-assistant/AIDAHealthAssistant';
+import { MediMindAIAssistant } from '@/components/ui/medimind-ai-assistant/MediMindAIAssistant';
 import { MainPatientManagementComponent } from './components/MainPatientManagementComponent';
 
 const PatientManagement: React.FC = () => {
@@ -16,7 +16,7 @@ const PatientManagement: React.FC = () => {
         <MainPatientManagementComponent />
       </DndProvider>
       
-      <AIDAHealthAssistant />
+      <MediMindAIAssistant />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { Medication, PatientData, VitalSigns } from "./types/aida-assistant";
+import { Medication, PatientData, VitalSigns } from "./types/medimind-ai-assistant";
 
 class RiskScoreCalculator {
     private static readonly RISK_FACTORS = {

@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 
-import AIDAHealthAssistant from '@/components/ui/aida-assistant/AIDAHealthAssistant';
+import { MediMindAIAssistant } from '@/components/ui/medimind-ai-assistant/MediMindAIAssistant';
 import { BedsManagement } from './components/BedsManagement';
 
 const BedManagement: React.FC = () => {
@@ -12,7 +12,7 @@ const BedManagement: React.FC = () => {
         
       </div>
       
-      <AIDAHealthAssistant />
+      <MediMindAIAssistant />
     </>
   );
 };

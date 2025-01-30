@@ -13,7 +13,7 @@ import type {
   TFontSize, 
 } from '../types/types';
 import { generateEnhancedPrompt } from './functions/AI/aiAssistantPatientBoard';
-import { isValidBase64Image } from '@/components/ui/aida-assistant/report-modal-ai/services/functions/imagePresenter';
+import { isValidBase64Image } from '@/components/ui/medimind-ai-assistant/report-modal-ai/services/functions/imagePresenter';
 import { IPatient } from '@/types/hospital-network-types';
 import {
   getPatientVitals,
@@ -26,7 +26,7 @@ import {
   getDepartmentData
 } from '@/utils/patientDataUtils';
 
-const hfInference = new HfInference(process.env.HUGGING_FACE_API_KEY!);
+const hfInference = new HfInference(process.env.NEXT_PUBLIC_HUGGING_FACE_API_KEY!);
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY!);
 
 interface PatientTaskManagementProps {
@@ -142,6 +142,10 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
   const generateImage = async (prompt: string) => {
     console.time('generateImage');
     try {
+      if (!process.env.NEXT_PUBLIC_HUGGING_FACE_API_KEY) {
+        throw new Error('Token de acesso HuggingFace não configurado');
+      }
+  
       const result = await hfInference.textToImage({
         inputs: prompt,
         parameters: IMAGE_PARAMETERS,
@@ -149,8 +153,12 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
       });
       console.timeEnd('generateImage');
       return processImageResponse(result);
-    } catch (error) {
+    } catch (error: any) {
       console.timeEnd('generateImage');
+      console.error('Erro ao gerar imagem:', error);
+      if (error.message.includes('TooManyRequests')) {
+        throw new Error('Limite de requisições excedido. Tente novamente em alguns minutos.');
+      }
       throw error;
     }
   };
@@ -228,17 +236,24 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
     setSelectedPatient(patient);
     onSelectPatient(patient);
     
-    if (patient) {
-      try {
+    // Não gera dados automaticamente ao selecionar o paciente
+    // Agora os dados só serão gerados quando o usuário clicar na esfera
+    setIsLoading(false);
+  };
+
+  const handleGenerateRecommendation = async () => {
+    if (!selectedPatient) return;
+    
+    try {
         setIsLoading(true);
         setLoadingMessage('Gerando dados...');
-        await generateData(patient);
-      } catch (error) {
+        await generateData(selectedPatient);
+    } catch (error) {
         console.error('Erro ao gerar dados:', error);
-      } finally {
+        // Adicionar tratamento de erro apropriado aqui
+    } finally {
         setIsLoading(false);
-      }
-    }
+    } 
   };
 
   const renderNoAreaSelected = () => (
@@ -354,6 +369,7 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
               setCurrentUtterance={setCurrentUtterance}
               setSynthesis={setSynthesis}
               synthesis={synthesis}
+              onGenerateRecommendation={handleGenerateRecommendation}
             />
           )}
         </div>

@@ -82,7 +82,7 @@
   animation: shimmer 2s infinite;
 }
 
-/* animação do botão da assistente de inteligencia artificial AIDA */
+/* animação do botão da assistente de inteligencia artificial MediMind AI */
 @keyframes pulse-gradient {
   0% {
     background-position: 0% 50%;

@@ -7,7 +7,7 @@ import { WhyChooseUsSections } from './components/WhyChooseUsSections/WhyChooseU
 import { FrequentlyAskedQuestions } from './components/FrequentlyAskedQuestions/FrequentlyAskedQuestions'
 import { Footer } from './components/Footer/Footer'
 import { JoinUsSection } from './components/JoinUsSection/JoinUsSection'
-import AIDAHealthAssistantSection from './components/AIDAHealthAssistantSection/AIDAHealthAssistantSection'
+import MediMindAIAssistantSection from './components/MediMindAIAssistantSection/MediMindAIAssistantSection'
 import AccessibilityAssistantSection from './components/AccessibilityAssistantSection/AccessibilityAssistantSection'
 
 export const HomeSite = () => {
@@ -17,7 +17,7 @@ export const HomeSite = () => {
             <AboutSection />
             <ControlAgricultureSection />
             <ServicesSection />
-            <AIDAHealthAssistantSection />
+            <MediMindAIAssistantSection />
             <WhyChooseUsSections />
             <AccessibilityAssistantSection />
             <FrequentlyAskedQuestions />

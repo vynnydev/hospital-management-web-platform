@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { VitalSigns } from "./types/aida-assistant";
+import { VitalSigns } from "./types/medimind-ai-assistant";
 
 // Classes de análise específica
 class VitalSignsAnalyzer {

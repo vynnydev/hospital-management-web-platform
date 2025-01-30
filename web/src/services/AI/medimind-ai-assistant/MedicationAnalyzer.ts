@@ -1,4 +1,4 @@
-import { Medication, PatientContext } from "./types/aida-assistant";
+import { Medication, PatientContext } from "./types/medimind-ai-assistant";
 
 interface MedicationInteraction {
     medications: string[];

@@ -21,7 +21,6 @@ module.exports = {
         return config;
     },
     env: {
-        HUGGING_FACE_API_KEY: process.env.HUGGING_FACE_API_KEY,
         REPLICATE_API_TOKEN: process.env.REPLICATE_API_TOKEN,
     },
 };

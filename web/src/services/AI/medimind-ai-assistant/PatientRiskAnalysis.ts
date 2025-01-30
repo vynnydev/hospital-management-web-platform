@@ -5,7 +5,7 @@ import {
   PatientContext, 
   PatientData,
   CachedRecommendation,
-} from './types/aida-assistant';
+} from './types/medimind-ai-assistant';
 import { ImageGenerationService } from './ImageGenerationService';
 import { MedicationImageRequest } from './types/image-types';
 
@@ -17,7 +17,7 @@ class PatientRiskAnalysis {
     private imageService: ImageGenerationService;
 
     constructor() {
-        if (!process.env.HUGGING_FACE_API_KEY) {
+        if (!process.env.NEXT_PUBLIC_HUGGING_FACE_API_KEY) {
             throw new Error('Token Hugging Face não configurado');
         }
         this.genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY!);

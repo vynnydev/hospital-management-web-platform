@@ -4,7 +4,7 @@ import {
     MedicationImageRequest, 
     ImageGenerationConfig
 } from './types/image-types';
-import { isValidBase64Image } from '@/components/ui/aida-assistant/report-modal-ai/services/functions/imagePresenter';
+import { isValidBase64Image } from '@/components/ui/medimind-ai-assistant/report-modal-ai/services/functions/imagePresenter';
 
 import pQueue from 'p-queue';
 
@@ -27,7 +27,7 @@ interface ImageValidationCriteria {
     };
 }
 
-export const sharedHfInstance = new HfInference(process.env.HUGGING_FACE_API_KEY);
+export const sharedHfInstance = new HfInference(process.env.NEXT_PUBLIC_HUGGING_FACE_API_KEY);
 
 export class ImageGenerationService {
     private hf: HfInference = sharedHfInstance;
@@ -37,7 +37,7 @@ export class ImageGenerationService {
     private queue: pQueue;
 
     constructor() {
-        const hfToken = process.env.HUGGING_FACE_API_KEY;
+        const hfToken = process.env.NEXT_PUBLIC_HUGGING_FACE_API_KEY;
         
         if (!hfToken) {
             throw new Error('Token Hugging Face não configurado');

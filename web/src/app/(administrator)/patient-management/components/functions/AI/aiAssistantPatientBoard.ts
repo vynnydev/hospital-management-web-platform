@@ -1,28 +1,37 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Patient } from "../../../types/types";
+import { IPatient } from '@/types/hospital-network-types';
+import { 
+    getPatientVitals,
+    getPatientMedications,
+    getLatestStatus
+} from '@/utils/patientDataUtils';
 
-export const generateEnhancedPrompt = (patient: Patient) => {
-  const latestVitals = patient.treatment.vitals[patient.treatment.vitals.length - 1];
-  const vitalsTrend = analyzeVitalsTrend(patient.treatment.vitals);
-  const medications = patient.treatment.medications
-    .map(med => `${med.name} (${med.dosage}, ${med.frequency})`)
-    .join(', ');
+export const generateEnhancedPrompt = (patient: IPatient) => {
+  // Obter dados usando funções utilitárias
+  const vitals = getPatientVitals(patient);
+  const medications = getPatientMedications(patient);
+  const latestStatus = getLatestStatus(patient);
+
+  // Criar string de medicações
+  const medicationsStr = medications
+    .map(med => `${med.name} (${med.description})`)
+    .join(', ') || 'Nenhuma medicação registrada';
 
   return `Instruções técnicas e visuais para procedimentos médicos hospitalares:
 
 DADOS DO PACIENTE:
-- Nome: ${patient.personalInfo.name}
-- Idade: ${patient.personalInfo.age} anos
-- Status: ${patient.admission.statusHistory[0].status}
-- Departamento: ${patient.admission.statusHistory[0].department}
-- Condição: ${patient.admission.reason}
+- Nome: ${patient.name}
+- Data de Admissão: ${new Date(patient.admissionDate).toLocaleDateString()}
+- Status: ${latestStatus?.status || 'N/A'}
+- Departamento: ${latestStatus?.department || 'N/A'}
+- Condição: ${patient.diagnosis}
 
 SINAIS VITAIS:
-- FC: ${latestVitals.heartRate} bpm (${vitalsTrend.heartRate})
-- Temperatura: ${latestVitals.temperature}°C (${vitalsTrend.temperature})
-- SpO2: ${latestVitals.oxygenSaturation}% (${vitalsTrend.oxygenSaturation})
+- FC: ${vitals.heartRate || 'N/A'} bpm
+- Temperatura: ${vitals.temperature || 'N/A'}°C
+- SpO2: ${vitals.oxygenSaturation || 'N/A'}%
 
-MEDICAÇÕES ATUAIS: ${medications}
+MEDICAÇÕES ATUAIS: ${medicationsStr}
 
 [INSTRUÇÕES VISUAIS PASSO A PASSO]
 

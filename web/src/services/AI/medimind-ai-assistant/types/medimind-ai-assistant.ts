@@ -132,7 +132,7 @@ export interface Patient {
   };
 }
 
-// AIDA Assistant
+// MediMind AI Assistant
 export interface PatientData {
     medicalTeam: any;
     personalInfo: {

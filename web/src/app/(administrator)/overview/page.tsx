@@ -16,7 +16,7 @@ import { AIAnaliticsMetrics } from './components/AIAnaliticsMetrics';
 import { FlowEditor } from './components/workflow/FlowEditor';
 import { MessageCenter } from './components/MessageCenter';
 import { ModernTabs } from './components/ModernTabs';
-import AIDAHealthAssistant from '@/components/ui/aida-assistant/AIDAHealthAssistant';
+import { MediMindAIAssistant } from '@/components/ui/medimind-ai-assistant/MediMindAIAssistant';
 
 const Overview: React.FC = () => {
   const { networkData, currentUser, loading, error } = useNetworkData();
@@ -185,7 +185,7 @@ const Overview: React.FC = () => {
           <FlowEditor networkData={networkData}/>
         </div>
 
-        <AIDAHealthAssistant />
+        <MediMindAIAssistant />
     </>
   );
 };
