@@ -94,6 +94,15 @@
                 "admissionDate": "2024-01-20",
                 "diagnosis": "Post-cardiac surgery",
                 "expectedDischarge": "2024-01-27",
+                "age": 25,
+                "gender": "M",
+                "bloodType": "O+",
+                "photo": "",
+                "contactInfo": {
+                    "phone": "11987654321",
+                    "emergency": "11987654322",
+                    "address": "Rua dos Ipês, 123 - Jardim Paulista"
+                },
                 "careHistory": {
                   "admissionId": "ADM-001",
                   "startDate": "2024-01-20",
@@ -220,6 +229,15 @@
                 "admissionDate": "2024-01-19",
                 "diagnosis": "Hip replacement recovery",
                 "expectedDischarge": "2024-01-25",
+                "age": 32,
+                "gender": "F",
+                "bloodType": "A-",
+                "photo": "",
+                "contactInfo": {
+                    "phone": "11998765432",
+                    "emergency": "11998765433",
+                    "address": "Avenida Paulista, 1578 - Bela Vista"
+                },
                 "careHistory": {
                   "admissionId": "ADM-002",
                   "startDate": "2024-01-19",
@@ -475,6 +493,15 @@
                 "admissionDate": "2024-01-18",
                 "diagnosis": "Post-chemotherapy monitoring",
                 "expectedDischarge": "2024-01-24",
+                "age": 58,
+                "gender": "M",
+                "bloodType": "B+",
+                "photo": "",
+                "contactInfo": {
+                    "phone": "11976543210",
+                    "emergency": "11976543211",
+                    "address": "Rua Augusta, 789 - Consolação"
+                },
                 "careHistory": {
                   "admissionId": "ADM-003",
                   "startDate": "2024-01-18",
@@ -693,6 +720,16 @@
                   "primaryDiagnosis": "Post-chemotherapy monitoring - Câncer de mama metastático",
                   "status": "active",
                   "totalLOS": 6,
+                  "name": "Maria do Céu",
+                  "age": 27,
+                  "gender": "F",
+                  "bloodType": "AB+",
+                  "photo": "",
+                  "contactInfo": {
+                      "phone": "11965432109",
+                      "emergency": "11965432110",
+                      "address": "Rua Oscar Freire, 456 - Jardins"
+                  },
                   "statusHistory": [
                     {
                       "department": "UTI",

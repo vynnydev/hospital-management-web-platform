@@ -87,12 +87,23 @@ export interface IMetrics {
   };
 }
 
+export interface IContactInfo {
+  phone: string;
+  emergency: string;
+  address: string;
+}
+
 export interface IPatient {
   id: string;
   name: string;
   admissionDate: string;
   diagnosis: string;
   expectedDischarge: string;
+  age: number;
+  gender: 'M' | 'F';  // Union type para garantir apenas valores válidos
+  bloodType: 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-';
+  photo: string;
+  contactInfo: IContactInfo;
   careHistory?: IPatientCareHistory;
 }
 

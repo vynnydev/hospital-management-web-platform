@@ -1,5 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import React from 'react';
+import Image from 'next/image'
 import { IGeneratedData } from '../types/types';
+import { User } from 'lucide-react';
 import { IPatient } from '@/types/hospital-network-types';
 import { QRCodeSVG } from 'qrcode.react';
 import {
@@ -31,18 +33,20 @@ export const PatientCard: React.FC<PatientCardProps> = ({
     const latestStatus = getLatestStatus(patient);
     const vitals = getPatientVitals(patient);
 
-    // Manipulador para o clique no card principal
+    // Função para lidar com erro no carregamento da imagem
+    // const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    //     e.currentTarget.src = '/images/default-avatar.png';
+    // };
+
     const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        // Previne a propagação se o clique vier do AIRecommendationCardPressable
         if (!(e.target as HTMLElement).closest('.ai-recommendation-card')) {
             e.stopPropagation();
             onCardClick?.(patient);
         }
     };
 
-    // Manipulador específico para gerar recomendação
     const handleGenerateRecommendation = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation(); // Previne a propagação do clique
+        e.stopPropagation();
         onGenerateRecommendation?.(patient);
     };
 
@@ -80,8 +84,24 @@ export const PatientCard: React.FC<PatientCardProps> = ({
                 <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent" />
                 
                 <div className="flex items-start justify-between gap-4 relative">
-                    <div className="flex-1 flex-col">
-                        <div>
+                    <div className="flex items-start gap-4">
+                        <div className="flex-shrink-0">
+                            {patient.photo && (patient.photo.startsWith('http') || patient.photo.startsWith('/')) ? (
+                                <Image
+                                    src={patient.photo}
+                                    alt={`Foto de ${patient.name}`}
+                                    className="w-12 h-12 rounded-full object-cover border-2 border-blue-500"
+                                    height={48}
+                                    width={48}
+                                    priority
+                                />
+                            ) : (
+                                <div className="w-12 h-12 rounded-full bg-gray-100 border-2 border-blue-500 flex items-center justify-center">
+                                    <User className="w-6 h-6 text-gray-400" />
+                                </div>
+                            )}
+                        </div>
+                        <div className="flex-1">
                             <p className="font-bold text-lg text-gray-800 dark:text-white">
                                 {patient.name}
                             </p>
@@ -110,16 +130,18 @@ export const PatientCard: React.FC<PatientCardProps> = ({
                 </div>
 
                 <div>
-                    {latestStatus && (
-                        <div className="flex flex-row gap-2">
+                    {latestStatus && patient && (
+                        <div className="flex flex-row gap-2 mt-4">
                             <span className="px-3 py-1 rounded-full bg-green-100/80 dark:bg-green-900/80 text-green-800 dark:text-green-100 text-sm font-medium">
                                 {latestStatus.specialty}
+                            </span>
+                            <span className="px-3 py-1 rounded-full bg-blue-100/80 dark:bg-blue-900/80 text-blue-800 dark:text-blue-100 text-sm font-medium">
+                                ID {patient.id}
                             </span>
                         </div>
                     )}
                 </div>
         
-                {/* Área de Recomendação IA */}
                 <div className="ai-recommendation-card">
                     <AIRecommendationCardPressable
                         onGenerateImage={handleGenerateRecommendation}
