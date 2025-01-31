@@ -12,7 +12,7 @@ import { OccupancyRateCharts } from './components/OccupancyRateCharts';
 import { MaintenanceHospitalRecommendations } from './components/MaintenanceHospitalRecommendations';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { HospitalsLocations } from './components/HospitalsLocations';
-import { AIAnaliticsMetrics } from './components/AIAnaliticsMetrics';
+import { AIAnalyticsMetrics } from './components/AIAnalyticsMetrics';
 import { FlowEditor } from './components/workflow/FlowEditor';
 import { MessageCenter } from './components/MessageCenter';
 import { ModernTabs } from './components/ModernTabs';
@@ -124,9 +124,16 @@ const Overview: React.FC = () => {
                     displayMode={displayMode}
                     currentMetrics={currentMetrics}
                     canChangeRegion={canChangeRegion}
+
+                    // FOR FullscreenModeModal TO DepartmentStatus
+                    selectedHospital={selectedHospital}
+                    getStatusColor={getStatusColor}
+
+                    // FOR FullscreenModeModal TO Analitics
+                    getFilteredHospitals={getFilteredHospitals}
+
+                    setSelectedHospital={setSelectedHospital}
                 />
-
-
             </div>
           </div>
 
@@ -162,12 +169,9 @@ const Overview: React.FC = () => {
                       />
                     ),
                     analytics: (
-                      <AIAnaliticsMetrics 
+                      <AIAnalyticsMetrics
                         filteredHospitals={getFilteredHospitals() || []}
                         currentUser={currentUser}
-                        onRefresh={() => {
-                          // Sua lógica de refresh
-                        }}
                       />
                     ),
                     messageCenter: (

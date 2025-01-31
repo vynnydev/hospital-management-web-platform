@@ -11,7 +11,7 @@ import { WelcomeMsg } from "@/components/ui/templates/WelcomeMsg"
 import { Button } from "@/components/ui/organisms/button"
 import { authService } from "@/services/auth/AuthService"
 import { useState } from "react"
-import { ConfigurationAndUserModalMenus } from '../templates/ConfigurationAndUserModalMenus';
+import { ConfigurationAndUserModalMenus } from '../templates/modals/ConfigurationAndUserModalMenus';
 import { IntegrationsContent } from '../templates/modal-contents/IntegrationsContent';
 
 export const Header = () => {

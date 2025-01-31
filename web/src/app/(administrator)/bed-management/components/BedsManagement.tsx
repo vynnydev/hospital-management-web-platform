@@ -16,7 +16,7 @@ import type {
   INetworkData
 } from '@/types/hospital-network-types';
 import { IntegrationsPreviewPressable } from '@/components/ui/organisms/IntegrationsPreviewPressable';
-import { ConfigurationAndUserModalMenus } from '@/components/ui/templates/ConfigurationAndUserModalMenus';
+import { ConfigurationAndUserModalMenus } from '@/components/ui/templates/modals/ConfigurationAndUserModalMenus';
 
 interface IBedsManagementProps {
   className?: string;

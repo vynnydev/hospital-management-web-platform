@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { IntegrationsPreviewPressable } from "@/components/ui/organisms/IntegrationsPreviewPressable";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/organisms/tabs";
-import { ConfigurationAndUserModalMenus } from "@/components/ui/templates/ConfigurationAndUserModalMenus";
+import { ConfigurationAndUserModalMenus } from "@/components/ui/templates/modals/ConfigurationAndUserModalMenus";
 import { Home, Activity, MessageSquare, Map } from "lucide-react";
 import { useState } from "react";
 

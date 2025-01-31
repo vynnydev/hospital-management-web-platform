@@ -1,16 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
-import { X, LogOut } from 'lucide-react';
+import { X } from 'lucide-react';
 import Image from 'next/image';
-import { IntegrationsContent } from './modal-contents/IntegrationsContent';
-import { AppUser } from '@/types/auth-types';
+import { IntegrationsContent } from '../modal-contents/IntegrationsContent';
+import { IAppUser } from '@/types/auth-types';
+import { LayoutTheme } from '../modal-contents/LayoutTheme';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  user: AppUser | null;
+  user: IAppUser | null;
   onLogout?: () => void;
-  defaultSection?: string; // Nova prop
+  defaultSection?: string;
 }
 
 interface AccessibilityOptions {
@@ -19,14 +20,30 @@ interface AccessibilityOptions {
   closedCaptions: boolean;
 }
 
+interface AppearanceSettings {
+  brandColor: string;
+  compactSidebar: boolean;
+  transparentSidebar: boolean;
+  showHeader: boolean;
+  tableView: 'default' | 'compact';
+}
+
 export const ConfigurationAndUserModalMenus: React.FC<Props> = ({ 
   isOpen, 
   onClose,
   user,
   onLogout,
-  defaultSection = 'profile' // Define 'profile' como padrão
+  defaultSection = 'profile'
 }) => {
   const [activeSection, setActiveSection] = useState(defaultSection);
+  
+  const [appearanceSettings, setAppearanceSettings] = useState<AppearanceSettings>({
+    brandColor: '#2C68F6',
+    compactSidebar: false,
+    transparentSidebar: false,
+    showHeader: true,
+    tableView: 'default'
+  });
 
   const [accessibilitySettings, setAccessibilitySettings] = useState<AccessibilityOptions>({
     highContrast: false,
@@ -63,6 +80,14 @@ export const ConfigurationAndUserModalMenus: React.FC<Props> = ({
       ]
     },
     {
+      title: 'APARÊNCIA',
+      items: [
+        { id: 'theme', label: 'Tema da Interface', icon: '🎨' },
+        { id: 'layout', label: 'Layout & Exibição', icon: '📱' },
+        { id: 'branding', label: 'Identidade Visual', icon: '✨' },
+      ]
+    },
+    {
       title: 'ACESSIBILIDADE',
       items: [
         { id: 'visual-settings', label: 'Configurações Visuais', icon: '👁️' },
@@ -71,6 +96,106 @@ export const ConfigurationAndUserModalMenus: React.FC<Props> = ({
       ]
     }
   ];
+
+  const renderAppearanceContent = () => {
+    switch(activeSection) {
+      case 'theme':
+        return <LayoutTheme />;
+      
+      case 'layout':
+        return (
+          <div className="space-y-8">
+            <div>
+              <h3 className="text-lg font-medium mb-4">Layout & Exibição</h3>
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="font-medium">Mostrar Cabeçalho</div>
+                    <div className="text-sm text-gray-500">Exibe ou oculta o cabeçalho da aplicação</div>
+                  </div>
+                  <button
+                    onClick={() => setAppearanceSettings(prev => ({ ...prev, showHeader: !prev.showHeader }))}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full ${
+                      appearanceSettings.showHeader ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700'
+                    }`}
+                  >
+                    <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${
+                      appearanceSettings.showHeader ? 'translate-x-6' : 'translate-x-1'
+                    }`} />
+                  </button>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="font-medium">Barra Lateral Compacta</div>
+                    <div className="text-sm text-gray-500">Reduz o tamanho da barra lateral</div>
+                  </div>
+                  <button
+                    onClick={() => setAppearanceSettings(prev => ({ ...prev, compactSidebar: !prev.compactSidebar }))}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full ${
+                      appearanceSettings.compactSidebar ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700'
+                    }`}
+                  >
+                    <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${
+                      appearanceSettings.compactSidebar ? 'translate-x-6' : 'translate-x-1'
+                    }`} />
+                  </button>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="font-medium">Visualização de Tabelas</div>
+                    <div className="text-sm text-gray-500">Escolha o estilo de exibição das tabelas</div>
+                  </div>
+                  <select
+                    value={appearanceSettings.tableView}
+                    onChange={(e) => setAppearanceSettings(prev => ({ 
+                      ...prev, 
+                      tableView: e.target.value as 'default' | 'compact' 
+                    }))}
+                    className="rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2"
+                  >
+                    <option value="default">Padrão</option>
+                    <option value="compact">Compacto</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'branding':
+        return (
+          <div className="space-y-8">
+            <div>
+              <h3 className="text-lg font-medium mb-4">Identidade Visual</h3>
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium mb-2">Cor Principal</label>
+                  <div className="flex items-center space-x-4">
+                    <input
+                      type="color"
+                      value={appearanceSettings.brandColor}
+                      onChange={(e) => setAppearanceSettings(prev => ({ ...prev, brandColor: e.target.value }))}
+                      className="h-10 w-20 rounded cursor-pointer"
+                    />
+                    <input
+                      type="text"
+                      value={appearanceSettings.brandColor.toUpperCase()}
+                      onChange={(e) => setAppearanceSettings(prev => ({ ...prev, brandColor: e.target.value }))}
+                      className="px-3 py-2 border rounded-md w-32 bg-white dark:bg-gray-800"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
 
   const getActiveMenuTitle = () => {
     for (const section of menuSections) {
@@ -159,6 +284,7 @@ export const ConfigurationAndUserModalMenus: React.FC<Props> = ({
           <div className="p-8">
             <div className="max-w-[1000px] mx-auto">
               {activeSection === 'integrations' && <IntegrationsContent />}
+              {['theme', 'layout', 'branding'].includes(activeSection) && renderAppearanceContent()}
             </div>
           </div>
         </div>

@@ -29,7 +29,7 @@ import {
   TNodeType
 } from "./types";
 import { IntegrationsPreviewPressable } from "@/components/ui/organisms/IntegrationsPreviewPressable";
-import { ConfigurationAndUserModalMenus } from "@/components/ui/templates/ConfigurationAndUserModalMenus";
+import { ConfigurationAndUserModalMenus } from "@/components/ui/templates/modals/ConfigurationAndUserModalMenus";
 import { FlowMenu } from "./FlowMenu";
 
 export const nodeTypes = {
