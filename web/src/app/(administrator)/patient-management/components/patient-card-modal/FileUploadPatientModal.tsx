@@ -59,7 +59,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
     };
 
     return (
-        <div className={`w-full bg-white dark:bg-gray-700 rounded-xl shadow-sm ${className}`}>
+        <div className={`lg:min-w-[425px] bg-white dark:bg-gray-700 rounded-xl shadow-sm ${className}`}>
             {/* Tabs */}
             <div className="flex rounded-t-xl overflow-hidden border-b border-gray-200 dark:border-gray-700">
                 <button

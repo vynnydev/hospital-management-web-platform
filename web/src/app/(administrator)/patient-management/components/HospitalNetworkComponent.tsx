@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React, { useState, useEffect } from 'react';
-import { Building2, Hospital } from 'lucide-react';
+import { Building2 } from 'lucide-react';
 import { DepartmentAreaCards } from './DepartmentAreaCards';
 import type { 
   INetworkInfo, 
@@ -9,6 +9,7 @@ import type {
   IDepartmentalCapacity,
 } from '@/types/hospital-network-types';
 import type { IAppUser } from '@/types/auth-types';
+import { HospitalNetworkListSlider } from './HospitalNetworkListSlider';
 
 interface IDepartment {
   name: string;
@@ -169,69 +170,14 @@ export const HospitalNetworkComponent: React.FC<HospitalNetworkComponentProps> =
         </div>
 
         {/* Lista de Hospitais */}
-        <div className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {authorizedHospitals.map((hospital) => {
-              const isSelected = hospital.id === selectedHospital;
-              
-              return (
-                <button
-                  key={hospital.id}
-                  onClick={() => onHospitalSelect(hospital.id)}
-                  className={`p-4 rounded-xl transition-all duration-300 
-                           ${isSelected 
-                             ? 'bg-blue-50 dark:bg-blue-900/20 ring-2 ring-blue-500/50' 
-                             : 'bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
-                >
-                  <div className="flex flex-col items-start space-y-6 p-4">
-                    <div className='flex flex-row space-x-4'>
-                        <div className={`p-2 rounded-lg ${isSelected 
-                            ? 'bg-blue-100 dark:bg-blue-800/50' 
-                            : 'bg-gray-200 dark:bg-gray-600/50'}`}
-                        >
-                            <Hospital className={`h-5 w-5 ${isSelected 
-                                ? 'text-blue-500 dark:text-blue-400' 
-                                : 'text-gray-500 dark:text-gray-400'}`} />
-                        </div>
-                        <div className="flex-1 text-left">
-                            <h3 className={`font-semibold ${isSelected
-                                ? 'text-blue-700 dark:text-blue-300'
-                                : 'text-gray-700 dark:text-gray-300'}`}>
-                                {hospital.name}
-                            </h3>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">
-                                {hospital.unit.city}, {hospital.unit.state}
-                            </p>
-                        </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4 mt-2 w-full">
-                      <div className={`p-2 rounded-lg ${isSelected
-                        ? 'bg-blue-100/50 dark:bg-blue-900/30'
-                        : 'bg-gray-100 dark:bg-gray-600/30'}`}>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">Leitos</p>
-                        <p className={`text-sm font-semibold ${isSelected
-                          ? 'text-blue-700 dark:text-blue-300'
-                          : 'text-gray-700 dark:text-gray-300'}`}>
-                          {hospital.metrics?.overall?.totalBeds || 0}
-                        </p>
-                      </div>
-                      <div className={`p-2 rounded-lg ${isSelected
-                        ? 'bg-blue-100/50 dark:bg-blue-900/30'
-                        : 'bg-gray-100 dark:bg-gray-600/30'}`}>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">Ocupação</p>
-                        <p className={`text-sm font-semibold ${isSelected
-                          ? 'text-blue-700 dark:text-blue-300'
-                          : 'text-gray-700 dark:text-gray-300'}`}>
-                          {hospital.metrics?.overall?.occupancyRate?.toFixed(1) || 0}%
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        </div>
+
+        <HospitalNetworkListSlider 
+          hospitals={authorizedHospitals}
+          selectedHospital={selectedHospital}
+          onHospitalSelect={(hospitalId) => {
+            onHospitalSelect(hospitalId);
+          }}
+        />
       </div>
     </div>
   );
