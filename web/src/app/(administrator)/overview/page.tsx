@@ -2,28 +2,38 @@
 'use client'
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/organisms/card';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/organisms/tabs';
 import { useNetworkData } from '@/services/hooks/useNetworkData';
+
+import 'mapbox-gl/dist/mapbox-gl.css';
+import { MediMindAIAssistant } from '@/components/ui/medimind-ai-assistant/MediMindAIAssistant';
+import { ReorderableSectionsInOverviewPage } from '@/components/ui/templates/ReorderableSectionsInOverviewPage';
 import { ManagementNetworkMetrics } from './components/ManagementNetworkMetrics';
-import { HospitalNetworkMetrics } from './components/HospitalNetworkMetrics';
 import { DepartmentStatus } from './components/DepartmentStatus';
+import { ModernTabs } from './components/ModernTabs';
 import { NetworkListHospital } from './components/NetworkListHospital';
 import { OccupancyRateCharts } from './components/OccupancyRateCharts';
-import { MaintenanceHospitalRecommendations } from './components/MaintenanceHospitalRecommendations';
-import 'mapbox-gl/dist/mapbox-gl.css';
 import { HospitalsLocations } from './components/HospitalsLocations';
 import { AIAnalyticsMetrics } from './components/AIAnalyticsMetrics';
-import { FlowEditor } from './components/workflow/FlowEditor';
 import { MessageCenter } from './components/MessageCenter';
-import { ModernTabs } from './components/ModernTabs';
-import { MediMindAIAssistant } from '@/components/ui/medimind-ai-assistant/MediMindAIAssistant';
+import { FlowEditor } from './components/workflow/FlowEditor';
+import { RepositionActionsBar } from '@/components/ui/templates/RepositionActionsBar';
 
 const Overview: React.FC = () => {
   const { networkData, currentUser, loading, error } = useNetworkData();
   const [selectedHospital, setSelectedHospital] = useState<string | null>(null);
   const [selectedRegion, setSelectedRegion] = useState<string>('all');
   const [displayMode, setDisplayMode] = useState<'dashboard' | 'tv'>('dashboard');
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+  const [isReorderMode, setIsReorderMode] = useState<boolean>(false);
+
+  // Para salvar o estado da funcionalidade de reposicionamento dos componentes
+  const [initialSectionsOrder, setInitialSectionsOrder] = useState<string[]>(['metrics', 'departments', 'flow']);
+  const [currentSectionsOrder, setCurrentSectionsOrder] = useState<string[]>(['metrics', 'departments', 'flow']);
+
+  const handleSaveLayout = () => {
+    // Salva a ordem atual como a nova ordem inicial
+    setInitialSectionsOrder([...currentSectionsOrder]);
+    // Aqui você pode implementar a lógica para salvar no backend
+  };
 
   console.log("Usuário atual logado:", currentUser)
 
@@ -110,88 +120,110 @@ const Overview: React.FC = () => {
 
   return (
     <>
-        <div className="space-y-20 p-6 -mt-20 rounded-md">
+      <RepositionActionsBar
+        isReorderMode={isReorderMode}
+        setIsReorderMode={setIsReorderMode}
+        onSave={handleSaveLayout}
+        initialSectionsOrder={initialSectionsOrder}
+        currentSectionsOrder={currentSectionsOrder}
+      />
 
+      {isReorderMode ? (
+        <ReorderableSectionsInOverviewPage
+          networkData={networkData}
+          filteredHospitals={filteredHospitals}
+          selectedHospital={selectedHospital}
+          setSelectedHospital={setSelectedHospital}
+          currentUser={currentUser}
+          selectedRegion={selectedRegion}
+          setSelectedRegion={setSelectedRegion}
+          displayMode={displayMode}
+          setDisplayMode={setDisplayMode}
+          currentMetrics={currentMetrics}
+          canChangeRegion={canChangeRegion}
+          getStatusColor={getStatusColor}
+          getFilteredHospitals={getFilteredHospitals}
+          loading={loading}
+          isReorderMode={isReorderMode}
+          onSectionsOrderChange={setCurrentSectionsOrder}
+        />
+      ) : (
+        <div className="space-y-20 p-6 -mt-20 rounded-md">
           <div className='pt-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md'>
             <div className='p-4 bg-gray-800 rounded-md'>
-                {/* Header Section */}
-                <ManagementNetworkMetrics 
-                    networkData={networkData}
-                    filteredHospitals={filteredHospitals}
-                    selectedRegion={selectedRegion}
-                    setSelectedRegion={setSelectedRegion}
-                    setDisplayMode={setDisplayMode}
-                    displayMode={displayMode}
-                    currentMetrics={currentMetrics}
-                    canChangeRegion={canChangeRegion}
-
-                    // FOR FullscreenModeModal TO DepartmentStatus
-                    selectedHospital={selectedHospital}
-                    getStatusColor={getStatusColor}
-
-                    // FOR FullscreenModeModal TO Analitics
-                    getFilteredHospitals={getFilteredHospitals}
-
-                    setSelectedHospital={setSelectedHospital}
-                />
+              <ManagementNetworkMetrics 
+                networkData={networkData}
+                filteredHospitals={filteredHospitals}
+                selectedRegion={selectedRegion}
+                setSelectedRegion={setSelectedRegion}
+                setDisplayMode={setDisplayMode}
+                displayMode={displayMode}
+                currentMetrics={currentMetrics}
+                canChangeRegion={canChangeRegion}
+                selectedHospital={selectedHospital}
+                getStatusColor={getStatusColor}
+                getFilteredHospitals={getFilteredHospitals}
+                setSelectedHospital={setSelectedHospital}
+                isReorderMode={isReorderMode}
+                setIsReorderMode={setIsReorderMode}
+              />
             </div>
           </div>
 
           <div className='pt-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md'>
             <div className='p-4 bg-gray-800'>
-                <DepartmentStatus 
-                    networkData={networkData}
-                    selectedHospital={selectedHospital}
-                    getStatusColor={getStatusColor}
-                />
+              <DepartmentStatus 
+                networkData={networkData}
+                selectedHospital={selectedHospital}
+                getStatusColor={getStatusColor}
+              />
 
-                {/* Main Content Area */}
-                <ModernTabs>
-                  {{
-                    overview: (
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        <NetworkListHospital 
-                          filteredHospitals={filteredHospitals}
-                          setSelectedHospital={setSelectedHospital}
-                          currentUser={currentUser}
-                        />
-                        <OccupancyRateCharts 
-                          filteredHospitals={filteredHospitals}
-                        />
-                      </div>
-                    ),
-                    hospitalsLocations: (
-                      <HospitalsLocations
-                        hospitals={networkData?.hospitals}
-                        currentUser={currentUser} 
-                        selectedHospital={selectedHospital} 
-                        setSelectedHospital={setSelectedHospital}          
-                      />
-                    ),
-                    analytics: (
-                      <AIAnalyticsMetrics
-                        filteredHospitals={getFilteredHospitals() || []}
+              <ModernTabs>
+                {{
+                  overview: (
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                      <NetworkListHospital 
+                        filteredHospitals={filteredHospitals}
+                        setSelectedHospital={setSelectedHospital}
                         currentUser={currentUser}
                       />
-                    ),
-                    messageCenter: (
-                      <MessageCenter 
-                        networkData={networkData}
-                        currentUser={currentUser}
-                        loading={loading}
+                      <OccupancyRateCharts 
+                        filteredHospitals={filteredHospitals}
                       />
-                    )
-                  }}
-                </ModernTabs>
+                    </div>
+                  ),
+                  hospitalsLocations: (
+                    <HospitalsLocations
+                      hospitals={networkData?.hospitals}
+                      currentUser={currentUser} 
+                      selectedHospital={selectedHospital} 
+                      setSelectedHospital={setSelectedHospital}          
+                    />
+                  ),
+                  analytics: (
+                    <AIAnalyticsMetrics
+                      filteredHospitals={getFilteredHospitals() || []}
+                      currentUser={currentUser}
+                    />
+                  ),
+                  messageCenter: (
+                    <MessageCenter 
+                      networkData={networkData}
+                      currentUser={currentUser}
+                      loading={loading}
+                    />
+                  )
+                }}
+              </ModernTabs>
             </div>
           </div>
 
           <FlowEditor networkData={networkData}/>
         </div>
-
-        <MediMindAIAssistant />
+      )}
+      <MediMindAIAssistant />
     </>
   );
 };
 
-export default Overview
+export default Overview;

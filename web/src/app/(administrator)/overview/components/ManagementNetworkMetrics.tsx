@@ -61,6 +61,10 @@ interface IManagementNetworkMetricsProps {
 
   // NetworkListHospital and HospitalsLocations
   setSelectedHospital: React.Dispatch<React.SetStateAction<string | null>>
+
+  // Reposicionamento dos componentes
+  isReorderMode?: boolean;
+  setIsReorderMode?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> = ({
@@ -81,7 +85,11 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
   getFilteredHospitals,
 
   // NetworkListHospital and HospitalsLocations
-  setSelectedHospital  
+  setSelectedHospital,
+  
+  // Reposicionamento dos componentes
+  isReorderMode,
+  setIsReorderMode
 }) => {
   const [isIntegrationsOpen, setIsIntegrationsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
@@ -111,8 +119,10 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
     
     if (mode === 'fullscreen') {
       setIsFullscreenMode(true);
-    } else {
-      // Handle reposition mode
+      setDisplayMode('tv');
+    } else if (mode === 'reposition') {
+      // Ativa o modo de reposicionamento
+      setIsReorderMode?.(true);
     }
   };
 
@@ -147,20 +157,25 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
               <div className="flex items-center space-x-4">
                 {/* Display Mode Toggle Button */}
                 <Button
-                  onClick={() => setIsDashboardModeModalOpen(true)}
-                  variant="outline"
-                  size="default"
-                  className={`
-                    flex items-center space-x-2 
-                    bg-gray-50 hover:bg-gray-100 
-                    dark:bg-gray-700 dark:hover:bg-gray-600
-                    border-gray-200 dark:border-gray-600
-                    transition-all duration-200
-                  `}
-                >
-                  <LayoutGrid size={18} className="text-gray-500 dark:text-gray-400" />
-                  <span>Modo Dashboard</span>
-                </Button>
+                    onClick={() => setIsDashboardModeModalOpen(true)}
+                    variant="outline"
+                    size="default"
+                    className={`
+                      flex items-center space-x-2 
+                      ${isReorderMode 
+                        ? 'bg-blue-50 hover:bg-blue-100 border-blue-200 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 dark:border-blue-800' 
+                        : 'bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 border-gray-200 dark:border-gray-600'}
+                      transition-all duration-200
+                    `}
+                  >
+                    <LayoutGrid 
+                      size={18} 
+                      className={isReorderMode ? "text-blue-500" : "text-gray-500 dark:text-gray-400"} 
+                    />
+                    <span className={isReorderMode ? "text-blue-600" : ""}>
+                      {isReorderMode ? 'Modo Reposição' : 'Modo Dashboard'}
+                    </span>
+                  </Button>
 
                 {canChangeRegion && (
                   <div className="relative">

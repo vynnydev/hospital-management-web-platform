@@ -634,7 +634,7 @@
         },
         "departmental": {
           "uti": {
-            "occupancy": 92,
+            "occupancy": 87,
             "beds": 8,
             "patients": 7,
             "validStatuses": [
@@ -645,7 +645,7 @@
             ]
           },
           "enfermaria": {
-            "occupancy": 78,
+            "occupancy": 60,
             "beds": 37,
             "patients": 29,
             "validStatuses": [
@@ -889,7 +889,7 @@
         },
         "departmental": {
           "uti": {
-            "occupancy": 92,
+            "occupancy": 80,
             "beds": 8,
             "patients": 7,
             "validStatuses": [
@@ -900,7 +900,7 @@
             ]
           },
           "enfermaria": {
-            "occupancy": 78,
+            "occupancy": 68,
             "beds": 37,
             "patients": 29,
             "validStatuses": [

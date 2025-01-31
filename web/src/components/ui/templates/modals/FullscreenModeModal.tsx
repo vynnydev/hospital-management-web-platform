@@ -1,18 +1,10 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React from 'react';
 import { X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+
 import { IHospital, INetworkData } from '@/types/hospital-network-types';
-import { ManagementNetworkMetrics } from '@/app/(administrator)/overview/components/ManagementNetworkMetrics';
-import { DepartmentStatus } from '@/app/(administrator)/overview/components/DepartmentStatus';
-import { ModernTabs } from '@/app/(administrator)/overview/components/ModernTabs';
-import { NetworkListHospital } from '@/app/(administrator)/overview/components/NetworkListHospital';
-import { OccupancyRateCharts } from '@/app/(administrator)/overview/components/OccupancyRateCharts';
-import { HospitalsLocations } from '@/app/(administrator)/overview/components/HospitalsLocations';
-import { AIAnalyticsMetrics } from '@/app/(administrator)/overview/components/AIAnalyticsMetrics';
-import { MessageCenter } from '@/app/(administrator)/overview/components/MessageCenter';
 import { useNetworkData } from '@/services/hooks/useNetworkData';
-import { IHospitalMetrics } from '@/app/(administrator)/patient-management/types/types';
-import { FlowEditor } from '@/app/(administrator)/overview/components/workflow/FlowEditor';
+import { ReorderableSectionsInDashboardModeTV } from '../ReorderableSectionsInDashboardModeTV';
   
 interface ICurrentMetrics {
     totalBeds: number;
@@ -70,13 +62,7 @@ export const FullscreenModeModal: React.FC<FullscreenModeModalProps> = ({
   // NetworkListHospital and HospitalsLocations
   setSelectedHospital
 }) => {
-    const { currentUser, loading, error: networkError } = useNetworkData();
-    const [isIntegrationsOpen, setIsIntegrationsOpen] = useState(false);
-    const [activeSection, setActiveSection] = useState('');
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [defaultSection, setDefaultSection] = useState<string>('integrations');
-    const [isDashboardModeModalOpen, setIsDashboardModeModalOpen] = useState(false);
-    const [isFullscreenMode, setIsFullscreenMode] = useState(false);
+    const { currentUser } = useNetworkData();
 
     return (
         <AnimatePresence>
@@ -121,95 +107,25 @@ export const FullscreenModeModal: React.FC<FullscreenModeModalProps> = ({
               {/* Container de conteúdo com padding e espaçamento apropriados */}
               <div className="min-h-screen w-full p-8 space-y-4">
                 <div>
-                    <p className='p-2 text-xl font-semibold'>Modo Dashboard - Monitor</p>
-                </div>
-                {/* Primeiro Card */}
-                <div className="mt-8 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md">
-                  <div className="p-4 bg-gray-800 rounded-md">
-                        {/* Header Section */}
-                        <ManagementNetworkMetrics 
-                            networkData={networkData}
-                            filteredHospitals={filteredHospitals}
-                            selectedRegion={selectedRegion}
-                            setSelectedRegion={setSelectedRegion}
-                            setDisplayMode={setDisplayMode}
-                            displayMode={displayMode}
-                            currentMetrics={currentMetrics}
-                            canChangeRegion={canChangeRegion}
-
-                            // FOR FullscreenModeModal TO DepartmentStatus
-                            selectedHospital={selectedHospital}
-                            getStatusColor={getStatusColor}
-
-                            // FOR Analitics TO DepartmentStatus
-                            getFilteredHospitals={getFilteredHospitals}
-
-                              // NetworkListHospital and HospitalsLocations
-                            setSelectedHospital={setSelectedHospital}
-                        />
-                  </div>
-                </div>
-    
-                {/* Segundo Card */}
-                <div className="mt-4 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md">
-                  <div className="p-4 bg-gray-800 rounded-md">
-                    <DepartmentStatus 
-                      networkData={networkData}
-                      selectedHospital={selectedHospital}
-                      getStatusColor={getStatusColor}
-                    />
-    
-                    {/* ModernTabs Section */}
-                    <div className="mt-4">
-                      <ModernTabs>
-                        {{
-                          overview: (
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
-                              <NetworkListHospital 
-                                filteredHospitals={filteredHospitals}
-                                setSelectedHospital={setSelectedHospital}
-                                currentUser={currentUser}
-                              />
-                              <OccupancyRateCharts 
-                                filteredHospitals={filteredHospitals}
-                              />
-                            </div>
-                          ),
-                          hospitalsLocations: (
-                            <div className="mt-4">
-                              <HospitalsLocations
-                                hospitals={networkData?.hospitals}
-                                currentUser={currentUser} 
-                                selectedHospital={selectedHospital} 
-                                setSelectedHospital={setSelectedHospital}          
-                              />
-                            </div>
-                          ),
-                          analytics: (
-                            <div className="mt-4">
-                              <AIAnalyticsMetrics 
-                                filteredHospitals={getFilteredHospitals() || []}
-                                currentUser={currentUser}
-                              />
-                            </div>
-                          ),
-                          messageCenter: (
-                            <div className="mt-4">
-                              <MessageCenter 
-                                networkData={networkData}
-                                currentUser={currentUser}
-                                loading={loading}
-                              />
-                            </div>
-                          )
-                        }}
-                      </ModernTabs>
-                    </div>
-
-                  </div>
+                    <p className='p-2 text-xl font-semibold -mt-12 mb-8 pl-12'>Modo Dashboard - Monitor</p>
                 </div>
 
-                <FlowEditor networkData={networkData}/>
+
+                <ReorderableSectionsInDashboardModeTV
+                    networkData={networkData}
+                    filteredHospitals={filteredHospitals}
+                    selectedHospital={selectedHospital}
+                    setSelectedHospital={setSelectedHospital}
+                    currentUser={currentUser}
+                    selectedRegion={selectedRegion}
+                    setSelectedRegion={setSelectedRegion}
+                    setDisplayMode={setDisplayMode}
+                    displayMode={displayMode}
+                    currentMetrics={currentMetrics}
+                    canChangeRegion={canChangeRegion}
+                    getStatusColor={getStatusColor}
+                    getFilteredHospitals={getFilteredHospitals}
+                />
               </div>
             </motion.div>
           )}
