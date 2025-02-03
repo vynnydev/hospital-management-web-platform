@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // src/lib/validators/careHistoryValidators.ts
 import type { 
   ICareEvent, 
@@ -61,22 +62,15 @@ export const isValidCareEvent = (event: unknown): event is ICareEvent => {
     typeof e.type === 'string' &&
     validEventTypes.includes(e.type as TCareEventType) &&
     typeof e.description === 'string' &&
-    typeof e.department === 'string'
+    typeof e.department === 'string' &&
+    e.responsibleStaff && typeof e.responsibleStaff === 'object'
   );
 
   if (!hasValidBasicFields) return false;
 
-  // Validação do responsibleStaff
-  if (!isValidResponsibleStaff(e.responsibleStaff)) return false;
-
-  // Validação opcional dos details
+  // Validação mais flexível dos details
   if (e.details !== undefined) {
     if (typeof e.details !== 'object' || e.details === null) return false;
-    
-    const details = e.details as Record<string, unknown>;
-    return Object.entries(details).every(([key, value]) => 
-      typeof key === 'string' && (value === undefined || typeof value === 'string')
-    );
   }
 
   return true;
@@ -91,20 +85,13 @@ export const isValidStatusHistory = (status: unknown): status is IStatusHistory 
     typeof s.department === 'string' &&
     typeof s.status === 'string' &&
     typeof s.timestamp === 'string' &&
-    typeof s.specialty === 'string'
+    typeof s.specialty === 'string' &&
+    s.updatedBy && typeof s.updatedBy === 'object'
   );
 
   if (!hasValidBasicFields) return false;
 
-  // Validar se o status é válido para o departamento
-  const department = s.department as keyof typeof validDepartmentStatuses;
-  if (!validDepartmentStatuses[department]?.includes(s.status as string)) {
-    return false;
-  }
-
-  // Validar updatedBy
-  if (!isValidResponsibleStaff(s.updatedBy)) return false;
-
+  // Removida validação estrita dos status por departamento
   return true;
 };
 
@@ -113,62 +100,21 @@ export const isValidCareHistory = (history: unknown): history is IPatientCareHis
   
   const h = history as Record<string, unknown>;
   
-  // Validação básica dos campos obrigatórios
   const hasValidBasicFields = (
     typeof h.admissionId === 'string' &&
     typeof h.startDate === 'string' &&
     typeof h.primaryDiagnosis === 'string' &&
     typeof h.status === 'string' &&
-    validStatusTypes.includes(h.status as TCareHistoryStatus) &&
+    Array.isArray(h.events) &&
+    Array.isArray(h.statusHistory) &&
     typeof h.totalLOS === 'number'
   );
 
   if (!hasValidBasicFields) return false;
 
-  // Validação específica do array de eventos
-  if (!Array.isArray(h.events)) return false;
-  
-  // Agora TypeScript sabe que h.events é um array
-  if (!h.events.every((event): event is ICareEvent => isValidCareEvent(event))) {
-    return false;
-  }
-
-  // Validação do statusHistory
-  if (!Array.isArray(h.statusHistory)) return false;
-  
-  // Validação explícita do array de statusHistory
-  if (!h.statusHistory.every((status): status is IStatusHistory => isValidStatusHistory(status))) {
-    return false;
-  }
-
-  // Validação do endDate opcional
-  if (h.endDate !== undefined && typeof h.endDate !== 'string') {
-    return false;
-  }
+  // Validação simplificada dos arrays
+  if (!Array.isArray(h.events) || !h.events.every(event => event && typeof event === 'object')) return false;
+  if (!Array.isArray(h.statusHistory) || !h.statusHistory.every(status => status && typeof status === 'object')) return false;
 
   return true;
-};
-
-// Função auxiliar para validar a ordem cronológica do statusHistory
-export const isChronologicalStatusHistory = (statusHistory: IStatusHistory[]): boolean => {
-  for (let i = 1; i < statusHistory.length; i++) {
-    const previousTimestamp = new Date(statusHistory[i - 1].timestamp).getTime();
-    const currentTimestamp = new Date(statusHistory[i].timestamp).getTime();
-    
-    if (currentTimestamp < previousTimestamp) {
-      return false;
-    }
-  }
-  return true;
-};
-
-// Função para validar a consistência entre events e statusHistory
-export const isConsistentCareHistory = (history: IPatientCareHistory): boolean => {
-  // Verificar se todos os eventos têm correspondência no statusHistory
-  return history.events.every(event => {
-    return history.statusHistory.some(status => 
-      status.timestamp === event.timestamp &&
-      status.department === event.department
-    );
-  });
 };

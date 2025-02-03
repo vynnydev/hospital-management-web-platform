@@ -1,8 +1,33 @@
-// components/CustomNode.tsx
 import React, { memo } from 'react';
 import { Activity, Clock, Stethoscope, ArrowRight, Pill, FileText } from 'lucide-react';
 import { Handle, NodeProps, Position } from '@xyflow/react';
 import type { IPatientFlowNodeData } from '../types/flow-types';
+
+const formatKey = (key: string): string => {
+  const translations: Record<string, string> = {
+    'fromDepartment': 'Departamento de Origem',
+    'toDepartment': 'Departamento de Destino',
+    'procedureType': 'Tipo de Procedimento',
+    'department': 'Departamento',
+    'responsibleStaff': 'Responsável',
+    'diagnosis': 'Diagnóstico',
+    'medicationName': 'Medicação',
+    'examType': 'Tipo de Exame',
+    'result': 'Resultado'
+  };
+
+  return translations[key] || key.charAt(0).toUpperCase() + key.slice(1);
+};
+
+const formatDate = (dateString: string): string => {
+  return new Date(dateString).toLocaleString('pt-BR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+};
 
 const CustomNode = memo((props: NodeProps) => {
   const nodeData = props.data as IPatientFlowNodeData;
@@ -25,7 +50,7 @@ const CustomNode = memo((props: NodeProps) => {
   };
 
   return (
-    <div className="bg-gray-800 p-4 rounded-xl border border-gray-700 shadow-lg min-w-[200px]">
+    <div className="bg-gray-800 p-4 rounded-xl border border-gray-700 shadow-lg min-w-[280px]">
       <Handle type="target" position={Position.Top} />
       <div className="flex items-center gap-2 mb-2">
         {getIcon()}
@@ -34,15 +59,18 @@ const CustomNode = memo((props: NodeProps) => {
       {nodeData.timestamp && (
         <div className="flex items-center gap-2 text-sm text-gray-400">
           <Clock className="h-4 w-4" />
-          <span>{new Date(nodeData.timestamp).toLocaleString()}</span>
+          <span>{formatDate(nodeData.timestamp)}</span>
         </div>
       )}
       {nodeData.details && (
-        <div className="mt-2 text-sm text-gray-400">
+        <div className="mt-2 text-sm text-gray-400 space-y-1">
           {Object.entries(nodeData.details).map(([key, value]) => (
-            <p key={key} className="capitalize">
-              {key.replace(/([A-Z])/g, ' $1').trim()}: {value}
-            </p>
+            value && (
+              <p key={key} className="flex justify-between">
+                <span className="font-medium">{formatKey(key)}:</span>
+                <span className="text-right">{value}</span>
+              </p>
+            )
           ))}
         </div>
       )}

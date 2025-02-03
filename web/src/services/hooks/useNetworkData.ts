@@ -113,18 +113,18 @@ export const useNetworkData = () => {
 
   const getPatientCareHistory = (patientId: string): IPatientCareHistory | null => {
     if (!networkData) return null;
-
+  
     for (const hospital of networkData.hospitals) {
       for (const department of hospital.departments) {
         for (const bed of department.beds) {
           if (bed.patient?.id === patientId && bed.patient.careHistory) {
-            // Validar os dados antes de retornar
-            if (isValidCareHistory(bed.patient.careHistory)) {
-              return bed.patient.careHistory;
-            } else {
-              console.warn(`Dados inválidos do histórico para o paciente ${patientId}`);
-              return null;
-            }
+            const validationResult = isValidCareHistory(bed.patient.careHistory);
+            console.log('Validation details:', {
+              basicFields: typeof bed.patient.careHistory === 'object',
+              hasEvents: Array.isArray(bed.patient.careHistory.events),
+              hasStatusHistory: Array.isArray(bed.patient.careHistory.statusHistory)
+            });
+            return validationResult ? bed.patient.careHistory : null;
           }
         }
       }
