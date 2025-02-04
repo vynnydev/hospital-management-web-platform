@@ -265,11 +265,11 @@ export const PatientCalendar: React.FC<IPatientCalendarProps> = ({
     );
   
     return (
-      <div className="flex overflow-hidden bg-gradient-to-br from-slate-900 to-blue-950 rounded-xl">
+      <div className="flex h-[100vh] bg-gradient-to-br from-slate-900 to-blue-950 rounded-xl">
         {/* Sidebar */}
-        <div className="w-80 h-full flex flex-col bg-gradient-to-b from-blue-900/50 to-cyan-900/50 border-r border-blue-800/30">
+        <div className="w-80 flex flex-col bg-gradient-to-b from-blue-900/50 to-cyan-900/50 border-r border-blue-800/30">
           {/* Cabeçalho da Sidebar */}
-          <div className="shrink-0 p-4 border-b border-blue-800/30">
+          <div className="p-4 border-b border-blue-800/30">
             <h2 className="text-lg font-semibold text-white">
               Pacientes
             </h2>
@@ -279,8 +279,8 @@ export const PatientCalendar: React.FC<IPatientCalendarProps> = ({
           </div>
   
           {/* Lista de Pacientes com Scroll Suave */}
-          <div>
-            <ScrollArea className="flex-grow">
+          <div className='h-36'>
+            <ScrollArea className="h-full">
               <div className="p-2 space-y-2">
                 {patients.map((patient) => (
                   <button
@@ -316,9 +316,57 @@ export const PatientCalendar: React.FC<IPatientCalendarProps> = ({
               </div>
             </ScrollArea>
           </div>
+
+          {/* Lista de Eventos */}
+          <div className="flex-shrink-0 p-4 border-t border-blue-800/30 bg-gradient-to-b from-blue-900/30 to-cyan-900/30">
+            <div className="mb-4">
+              <h3 className="text-lg font-semibold text-white">Eventos do Paciente</h3>
+              <p className="text-sm text-blue-300/80">
+                {patientEvents.length} eventos programados
+              </p>
+            </div>
+            <ScrollArea className="h-52">
+              <div className="space-y-3">
+                {patientEvents
+                  .sort((a, b) => {
+                    const timeA = parseInt(a.time.split(':').join(''));
+                    const timeB = parseInt(b.time.split(':').join(''));
+                    return timeA - timeB;
+                  })
+                  .map((event) => (
+                    <div
+                      key={event.id}
+                      className={`p-3 rounded-lg bg-gradient-to-br from-slate-800/80 to-slate-900/80 
+                                border-l-4 ${getEventColor(event.type, 'border')} hover:from-slate-800 
+                                hover:to-slate-900 transition-all duration-200`}
+                    >
+                      <div className="flex items-start justify-between mb-2">
+                        <div className="flex items-center space-x-2">
+                          <div className={`p-2 rounded-lg ${getEventColor(event.type)}`}>
+                            {getEventIcon(event.type)}
+                          </div>
+                          <div>
+                            <Badge variant="outline" className={`${getEventColor(event.type)} border-0`}>
+                              <span className="capitalize">{event.type}</span>
+                            </Badge>
+                            <div className="flex items-center gap-1 text-white/80 mt-1">
+                              <Clock className="w-3 h-3" />
+                              <span className="text-xs font-medium">{event.time}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <p className="text-sm text-white/90 line-clamp-2">
+                        {event.description}
+                      </p>
+                    </div>
+                  ))}
+              </div>
+            </ScrollArea>
+          </div>
   
           {/* Mini Calendário Melhorado */}
-          <div className="shrink-0 p-4 mt-16 border-t border-blue-800/30 bg-gradient-to-b from-blue-900/30 to-cyan-900/30">
+          <div className="flex-shrink-0 p-4 border-t border-blue-800/30 bg-gradient-to-b from-blue-900/30 to-cyan-900/30">
             <div className="mb-4 flex justify-between items-center">
               <span className="text-lg font-semibold text-white">
                 {format(selectedDate, 'MMMM yyyy', { locale: ptBR })}
@@ -328,7 +376,6 @@ export const PatientCalendar: React.FC<IPatientCalendarProps> = ({
               mode="single"
               selected={selectedDate}
               onSelect={(date) => date && setSelectedDate(date)}
-              initialFocus
               locale={ptBR}
               showOutsideDays={false}
               className="rounded-lg border border-blue-800/30 bg-gradient-to-br from-blue-900/20 to-cyan-900/20"
@@ -363,9 +410,9 @@ export const PatientCalendar: React.FC<IPatientCalendarProps> = ({
         </div>
   
         {/* Área Principal */}
-        <div className="flex-1 flex flex-col h-screen max-h-screen overflow-hidden">
+        <div className="flex-1 flex flex-col">
           {/* Cabeçalho */}
-          <header className="shrink-0 flex items-center justify-between p-4 border-b border-blue-800/30 bg-gradient-to-r from-blue-900/30 to-cyan-900/30">
+          <header className="flex-shrink-0 flex items-center justify-between p-4 border-b border-blue-800/30 bg-gradient-to-r from-blue-900/30 to-cyan-900/30">
             <div>
               <h1 className="text-xl font-semibold text-white">
                 Olá, {currentUser?.name || 'Usuário'}
@@ -376,7 +423,7 @@ export const PatientCalendar: React.FC<IPatientCalendarProps> = ({
             </div>
   
             <div className="flex items-center gap-2">
-              <div className="flex rounded-lg overflow-hidden bg-blue-900/20">
+              <div className="flex rounded-lg overflow-y-auto bg-blue-900/20">
                 <Button
                   variant={view === 'day' ? 'default' : 'outline'}
                   size="sm"
@@ -441,9 +488,9 @@ export const PatientCalendar: React.FC<IPatientCalendarProps> = ({
           </header>
   
           {/* Área do Calendário */}
-          <div className="flex-1 flex flex-col overflow-hidden">
+          <div className="flex-1 flex flex-col min-h-0">
             {/* Grade de Dias da Semana */}
-            <div className="shrink-0 grid grid-cols-7 gap-2 p-4 border-b border-slate-700/50 bg-gradient-to-r from-blue-900/20 to-cyan-900/20">
+            <div className="flex-shrink-0 grid grid-cols-7 gap-2 p-4 border-b border-slate-700/50 bg-gradient-to-r from-blue-900/20 to-cyan-900/20">
               {weekDays.map((day) => {
                 const dayEvents = patientEvents.filter(event => isSameDay(event.date, day));
                 const isSelectedDay = isSameDay(day, selectedDate);
@@ -488,7 +535,7 @@ export const PatientCalendar: React.FC<IPatientCalendarProps> = ({
   
             {/* Grade de Tempo com Eventos */}
             <div className="flex-1 overflow-auto">
-              <div className="relative grid grid-cols-[auto,1fr] gap-4 h-full">
+              <div className="relative grid grid-cols-[auto,1fr] gap-4">
                 {/* Coluna de horários */}
                 <div className="sticky left-0 z-10 w-20 bg-gradient-to-r from-slate-900 to-slate-900/80">
                   {HOURS.map((hour) => (
@@ -569,18 +616,6 @@ export const PatientCalendar: React.FC<IPatientCalendarProps> = ({
                                         </div>
                                       </div>
                                     </div>
-                                    {/* {event.status && (
-                                      <Badge 
-                                        variant="outline" 
-                                        className={`${
-                                          event.status === 'done' 
-                                            ? 'bg-emerald-500/10 text-emerald-300 border-emerald-500/20' 
-                                            : 'bg-amber-500/10 text-amber-300 border-amber-500/20'
-                                        }`}
-                                      >
-                                        {event.status === 'done' ? 'Concluído' : 'Pendente'}
-                                      </Badge>
-                                    )} */}
                                   </div>
   
                                   {/* Conteúdo do Card */}
