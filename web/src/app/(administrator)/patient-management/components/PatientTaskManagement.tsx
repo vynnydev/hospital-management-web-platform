@@ -88,11 +88,12 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
   onRetry
 }) => {
   // Estados principais
+  const { currentUser } = useNetworkData();
   const [selectedPatient, setSelectedPatient] = useState<IPatient | null>(null);
   const [currentView, setCurrentView] = useState<ViewType>('board');
   const [filteredPatients, setFilteredPatients] = useState<IPatient[]>(patients);
   const [searchQuery, setSearchQuery] = useState('');
-  const { currentUser } = useNetworkData();
+  const [isChangingView, setIsChangingView] = useState(false);
 
   // Estados para IA e acessibilidade
   const [generatedData, setGeneratedData] = useState<IGeneratedData>({});
@@ -154,29 +155,40 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
 
   // Handlers
   const handleViewChange = (view: ViewType) => {
+    setIsChangingView(true); // Indica que está mudando de view
     setCurrentView(view);
     
     switch (view) {
       case 'board':
         setSearchQuery('');
+        setSelectedPatient(null); // Limpa a seleção ao mudar para board
         setFilteredPatients(filterPatientsByDepartment(patients, normalizedArea, normalizeDepartmentName));
         break;
       case 'list':
+        setSelectedPatient(null); // Limpa a seleção ao mudar para list
         break;
       case 'calendar':
-        // Quando mudar para a view de calendário, não limpa a seleção do paciente
+        // Mantém o selectedPatient apenas para o calendário
         break;
     }
+
+      // Reseta o estado após um pequeno delay para garantir que a transição seja suave
+    setTimeout(() => {
+      setIsChangingView(false);
+    }, 100);
   };
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
   };
 
-  // Modificado para não chamar onSelectPatient quando estiver na view de calendário
   const handlePatientSelect = (patient: IPatient | null) => {
-    setSelectedPatient(patient);
-    if (currentView !== 'calendar') {
+    if (currentView === 'calendar') {
+      // No calendário, apenas atualiza o estado interno
+      setSelectedPatient(patient);
+    } else {
+      // Nas outras views, atualiza o estado e notifica o componente pai
+      setSelectedPatient(patient);
       onSelectPatient(patient);
     }
   };
@@ -302,7 +314,7 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
           )}
 
           {/* Modal do Paciente - Modificado para não aparecer na view de calendário */}
-          {selectedPatient && currentView !== 'calendar' && (
+          {selectedPatient && currentView !== 'calendar' && !isChangingView && (
             <PatientCardModal
               selectedPatient={selectedPatient}
               setSelectedPatient={handlePatientSelect}
