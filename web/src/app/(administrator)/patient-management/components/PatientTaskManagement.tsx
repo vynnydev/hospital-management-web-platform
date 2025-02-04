@@ -172,10 +172,7 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
         break;
     }
 
-      // Reseta o estado após um pequeno delay para garantir que a transição seja suave
-    setTimeout(() => {
-      setIsChangingView(false);
-    }, 100);
+
   };
 
   const handleSearch = (query: string) => {
