@@ -3,6 +3,8 @@ import Image from 'next/image';
 
 interface IntegrationPreviewProps {
   onSelectIntegration: () => void;
+  wth: string
+  hgt: string
 }
 
 interface Integration {
@@ -11,9 +13,9 @@ interface Integration {
   alt: string;
 }
 
-const IntegrationButton = ({ imageUrl, color, alt, onClick }: Integration & { onClick: () => void }) => (
+const IntegrationButton = ({ imageUrl, color, alt, onClick, wth, hgt }: Integration & { onClick: () => void, wth: string, hgt: string }) => (
   <button onClick={onClick} className="relative group">
-    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${color} overflow-hidden`}>
+    <div className={`w-${wth} h-${hgt} rounded-full flex items-center justify-center ${color} overflow-hidden`}>
       <Image 
         src={imageUrl}
         alt={alt}
@@ -28,7 +30,7 @@ const IntegrationButton = ({ imageUrl, color, alt, onClick }: Integration & { on
   </button>
 );
 
-export const IntegrationsPreviewPressable: React.FC<IntegrationPreviewProps> = ({ onSelectIntegration }) => {
+export const IntegrationsPreviewPressable: React.FC<IntegrationPreviewProps> = ({ onSelectIntegration, wth, hgt }) => {
   const integrations: Integration[] = [
     {
         imageUrl: '/images/integrations/teams.png',
@@ -62,6 +64,8 @@ export const IntegrationsPreviewPressable: React.FC<IntegrationPreviewProps> = (
     <div className="flex -space-x-2">
       {integrations.map((integration, index) => (
         <IntegrationButton
+          wth={wth}
+          hgt={hgt}  
           key={index}
           {...integration}
           onClick={onSelectIntegration}

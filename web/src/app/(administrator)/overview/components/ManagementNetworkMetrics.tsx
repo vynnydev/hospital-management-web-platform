@@ -144,7 +144,7 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
 
               {/* Deixar mostrando no maximo 5 com o plus */}
               <div className='mr-[630px]'>
-                <IntegrationsPreviewPressable onSelectIntegration={handleOpenModal} />
+                <IntegrationsPreviewPressable onSelectIntegration={handleOpenModal} hgt='10' wth='10' />
 
                 <ConfigurationAndUserModalMenus 
                     isOpen={isModalOpen}

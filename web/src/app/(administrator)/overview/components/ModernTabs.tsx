@@ -39,7 +39,7 @@ export const ModernTabs: React.FC<IModernTabsProps> = ({ children }) => {
 
         {/* Deixar mostrando no maximo 5 com o plus */}
         <div className='ml-[870px] py-2'>
-          <IntegrationsPreviewPressable onSelectIntegration={handleOpenModal} />
+          <IntegrationsPreviewPressable onSelectIntegration={handleOpenModal} hgt='10' wth='10' />
 
           <ConfigurationAndUserModalMenus 
               isOpen={isModalOpen}

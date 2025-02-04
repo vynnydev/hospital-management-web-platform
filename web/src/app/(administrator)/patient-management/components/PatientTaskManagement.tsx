@@ -16,6 +16,9 @@ import {
   getDepartmentData
 } from '@/utils/patientDataUtils';
 import { generateAIContent } from '@/services/AI/aiGenerateRecommendationsAndImagesServices';
+import { ViewListMenuBar } from '@/components/ui/templates/ViewListMenuBar';
+import { ViewType } from '@/types/app-types';
+import { PatientListView } from './PatientListView';
 
 interface PatientTaskManagementProps {
   data: IHospitalMetrics;
@@ -90,6 +93,9 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [loadingMessage, setLoadingMessage] = useState('');
+
+  // Estado para controlar a view
+const [currentView, setCurrentView] = useState<ViewType>('board');
 
   // Utilitários e verificações de departamento
   const categorizedPatients = categorizePatients(patients, departments);
@@ -180,6 +186,11 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
     <div className='py-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md'>
       <div className="w-full space-y-6 p-4 bg-gray-100 dark:bg-gray-800 rounded-md">
         <div className={`relative ${error ? 'opacity-50' : ''}`}>
+          <ViewListMenuBar 
+            currentView={currentView}
+            onViewChange={(view) => setCurrentView(view as ViewType)}
+          />
+
           {/* Métricas em Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2">
             <MetricCard
@@ -207,12 +218,13 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
           {/* Área Principal */}
           {isDepartmentAvailable && departmentData ? (
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg">
-              <DepartmentBoard
+              {currentView === 'board' ? (
+                <DepartmentBoard
                   data={data}
                   selectedArea={normalizedArea}
                   patients={patients.filter(patient => {
-                      const status = getLatestStatus(patient);
-                      return status && normalizeDepartmentName(status.department) === normalizedArea;
+                    const status = getLatestStatus(patient);
+                    return status && normalizeDepartmentName(status.department) === normalizedArea;
                   })}
                   setSelectedPatient={handlePatientSelect}
                   generatedData={generatedData}
@@ -220,7 +232,20 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
                   loadingMessage={loadingMessage}
                   loadingProgress={loadingProgress} 
                   generateData={handleAIGeneration}
-              />
+                />
+              ) : currentView === 'list' ? (
+                <PatientListView
+                  patients={patients.filter(patient => {
+                    const status = getLatestStatus(patient);
+                    return status && normalizeDepartmentName(status.department) === normalizedArea;
+                  })}
+                  onSelectPatient={handlePatientSelect}
+                />
+              ) : (
+                <div className="p-8 text-center text-gray-500">
+                  Visualização de calendário em desenvolvimento
+                </div>
+              )}
             </div>
           ) : (
             renderNoAreaSelected()

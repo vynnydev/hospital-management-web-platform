@@ -215,7 +215,7 @@ export const BedsManagement: React.FC<IBedsManagementProps> = ({ className }) =>
 
                   {/* Deixar mostrando no maximo 5 com o plus */}
                   <div className=''>
-                    <IntegrationsPreviewPressable onSelectIntegration={handleOpenModal} />
+                    <IntegrationsPreviewPressable onSelectIntegration={handleOpenModal} hgt='10' wth='10'/>
       
                     <ConfigurationAndUserModalMenus 
                         isOpen={isModalOpen}
