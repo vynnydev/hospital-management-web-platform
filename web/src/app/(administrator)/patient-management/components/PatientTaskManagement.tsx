@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { TrendingUp, TrendingDown, AlertCircle, Clock, Users, Bed, RefreshCw } from 'lucide-react';
 import { DepartmentBoard } from './DepartmentBoard';
 import { PatientCardModal } from './PatientCardModal';
+import { PatientCalendar } from './PatientCalendar';
 import type { 
   IGeneratedData,
   IHospitalMetrics,
@@ -20,8 +21,9 @@ import { generateAIContent } from '@/services/AI/aiGenerateRecommendationsAndIma
 import { ViewListMenuBar } from '@/components/ui/templates/ViewListMenuBar';
 import { ViewType } from '@/types/app-types';
 import { PatientListView } from './PatientListView';
-import { PatientCalendar } from './PatientCalendar';
+import { useNetworkData } from '@/services/hooks/useNetworkData';
 
+// Interface Props mantém-se a mesma
 interface PatientTaskManagementProps {
   data: IHospitalMetrics;
   patients: IPatient[];
@@ -36,6 +38,7 @@ interface PatientTaskManagementProps {
   onRetry: () => void;
 }
 
+// Componente MetricCard mantém-se o mesmo
 const MetricCard: React.FC<{
   title: string;
   value: string | number;
@@ -89,6 +92,7 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
   const [currentView, setCurrentView] = useState<ViewType>('board');
   const [filteredPatients, setFilteredPatients] = useState<IPatient[]>(patients);
   const [searchQuery, setSearchQuery] = useState('');
+  const { currentUser } = useNetworkData();
 
   // Estados para IA e acessibilidade
   const [generatedData, setGeneratedData] = useState<IGeneratedData>({});
@@ -112,12 +116,10 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
   useEffect(() => {
     let result = patients;
     
-    // Filtra por departamento se houver área selecionada
     if (normalizedArea) {
       result = filterPatientsByDepartment(result, normalizedArea, normalizeDepartmentName);
     }
     
-    // Aplica filtro de busca se houver query
     if (searchQuery) {
       result = result.filter(patient => 
         patient.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -154,18 +156,15 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
   const handleViewChange = (view: ViewType) => {
     setCurrentView(view);
     
-    // Lógica específica para cada tipo de view
     switch (view) {
       case 'board':
-        // Reset do filtro de busca ao mudar para board view
         setSearchQuery('');
         setFilteredPatients(filterPatientsByDepartment(patients, normalizedArea, normalizeDepartmentName));
         break;
       case 'list':
-        // Mantém os filtros atuais
         break;
       case 'calendar':
-        // Lógica específica para calendar view quando implementado
+        // Quando mudar para a view de calendário, não limpa a seleção do paciente
         break;
     }
   };
@@ -174,9 +173,12 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
     setSearchQuery(query);
   };
 
+  // Modificado para não chamar onSelectPatient quando estiver na view de calendário
   const handlePatientSelect = (patient: IPatient | null) => {
     setSelectedPatient(patient);
-    onSelectPatient(patient);
+    if (currentView !== 'calendar') {
+      onSelectPatient(patient);
+    }
   };
 
   const handleAIGeneration = async (patient: IPatient) => {
@@ -230,9 +232,10 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
   );
 
   return (
-    <div className='py-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md'>
-      <div className="w-full space-y-6 p-4 bg-gray-100 dark:bg-gray-800 rounded-md">
-        <div className={`relative ${error ? 'opacity-50' : ''}`}>
+    <div className="flex flex-col bg-gradient-to-r from-blue-700 to-cyan-700 py-1 rounded-xl">
+      <div className="flex-1 p-4 space-y-4 bg-gray-100 dark:bg-gray-800 overflow-hidden rounded-xl">
+        <div className={`flex flex-col ${error ? 'opacity-50' : ''}`}>
+          {/* Barra de navegação e pesquisa */}
           <ViewListMenuBar
             currentView={currentView}
             onViewChange={handleViewChange}
@@ -263,9 +266,9 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
             />
           </div>
 
-          {/* Área Principal */}
+          {/* Área principal com altura flexível */}
           {isDepartmentAvailable && departmentData ? (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+            <div className="flex-1 bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
               {currentView === 'board' ? (
                 <DepartmentBoard
                   data={data}
@@ -284,12 +287,10 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
                   onSelectPatient={handlePatientSelect}
                 />
               ) : currentView === 'calendar' ? (
-                <div className="h-[calc(100vh-16rem)]">
+                <div className="mt-2">
                   <PatientCalendar
                     patients={filteredPatients}
-                    currentUser={{
-                      name: selectedPatient?.name || 'Usuário'
-                    }}
+                    currentUser={currentUser}
                     selectedPatient={selectedPatient}
                     onSelectPatient={handlePatientSelect}
                   />
@@ -300,8 +301,8 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
             renderNoAreaSelected()
           )}
 
-          {/* Modal do Paciente */}
-          {selectedPatient && (
+          {/* Modal do Paciente - Modificado para não aparecer na view de calendário */}
+          {selectedPatient && currentView !== 'calendar' && (
             <PatientCardModal
               selectedPatient={selectedPatient}
               setSelectedPatient={handlePatientSelect}
