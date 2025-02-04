@@ -91,9 +91,9 @@
               "patient": {
                 "id": "P001",
                 "name": "João Silva",
-                "admissionDate": "2024-01-20",
+                "admissionDate": "2024-02-20",
                 "diagnosis": "Post-cardiac surgery",
-                "expectedDischarge": "2024-01-27",
+                "expectedDischarge": "2024-02-27",
                 "age": 25,
                 "gender": "M",
                 "bloodType": "O+",
@@ -105,7 +105,7 @@
                 },
                 "careHistory": {
                   "admissionId": "ADM-001",
-                  "startDate": "2024-01-20",
+                  "startDate": "2024-02-20",
                   "primaryDiagnosis": "Post-cardiac surgery",
                   "status": "active",
                   "totalLOS": 7,
@@ -113,7 +113,7 @@
                     {
                       "department": "UTI",
                       "status": "Aguardando Atendimento",
-                      "timestamp": "2024-01-20T08:00:00",
+                      "timestamp": "2024-02-20T08:00:00",
                       "specialty": "Cardiologia",
                       "updatedBy": {
                         "id": "D001",
@@ -124,7 +124,7 @@
                     {
                       "department": "Centro Cirúrgico",
                       "status": "Em Procedimento",
-                      "timestamp": "2024-01-20T10:00:00",
+                      "timestamp": "2024-02-20T10:00:00",
                       "specialty": "Cardiologia",
                       "updatedBy": {
                         "id": "D002",
@@ -135,7 +135,7 @@
                     {
                       "department": "UTI",
                       "status": "Em Recuperação",
-                      "timestamp": "2024-01-20T15:00:00",
+                      "timestamp": "2024-02-20T15:00:00",
                       "specialty": "Cardiologia",
                       "updatedBy": {
                         "id": "D001",
@@ -147,7 +147,7 @@
                   "events": [
                     {
                       "id": "EVT-001",
-                      "timestamp": "2024-01-20T08:00:00",
+                      "timestamp": "2024-02-20T08:00:00",
                       "type": "admission",
                       "description": "Admissão na UTI Cardíaca",
                       "department": "UTI",
@@ -162,7 +162,7 @@
                     },
                     {
                       "id": "EVT-002",
-                      "timestamp": "2024-01-20T10:00:00",
+                      "timestamp": "2024-02-20T10:00:00",
                       "type": "procedure",
                       "description": "Cirurgia Cardíaca Realizada",
                       "department": "Centro Cirúrgico",
@@ -177,7 +177,7 @@
                     },
                     {
                       "id": "EVT-003",
-                      "timestamp": "2024-01-20T15:00:00",
+                      "timestamp": "2024-02-20T15:00:00",
                       "type": "transfer",
                       "description": "Transferência para UTI",
                       "department": "UTI",
@@ -226,9 +226,9 @@
               "patient": {
                 "id": "P002",
                 "name": "Maria Santos",
-                "admissionDate": "2024-01-19",
+                "admissionDate": "2024-02-19",
                 "diagnosis": "Hip replacement recovery",
-                "expectedDischarge": "2024-01-25",
+                "expectedDischarge": "2024-02-25",
                 "age": 32,
                 "gender": "F",
                 "bloodType": "A-",
@@ -240,7 +240,7 @@
                 },
                 "careHistory": {
                   "admissionId": "ADM-002",
-                  "startDate": "2024-01-19",
+                  "startDate": "2024-02-19",
                   "primaryDiagnosis": "Hip replacement recovery",
                   "status": "active",
                   "totalLOS": 6,
@@ -248,7 +248,7 @@
                     {
                       "department": "Enfermaria",
                       "status": "Aguardando Atendimento",
-                      "timestamp": "2024-01-19T09:00:00",
+                      "timestamp": "2024-02-19T09:00:00",
                       "specialty": "Ortopedia",
                       "updatedBy": {
                         "id": "D003",
@@ -259,7 +259,7 @@
                     {
                       "department": "Centro Cirúrgico",
                       "status": "Em Procedimento",
-                      "timestamp": "2024-01-19T11:00:00",
+                      "timestamp": "2024-02-19T11:00:00",
                       "specialty": "Ortopedia",
                       "updatedBy": {
                         "id": "D003",
@@ -270,7 +270,7 @@
                     {
                       "department": "Enfermaria",
                       "status": "Em Observação",
-                      "timestamp": "2024-01-19T14:30:00",
+                      "timestamp": "2024-02-19T14:30:00",
                       "specialty": "Ortopedia",
                       "updatedBy": {
                         "id": "D003",
@@ -282,7 +282,7 @@
                   "events": [
                     {
                       "id": "EVT-004",
-                      "timestamp": "2024-01-19T09:00:00",
+                      "timestamp": "2024-02-19T09:00:00",
                       "type": "admission",
                       "description": "Admissão para Cirurgia Ortopédica",
                       "department": "Enfermaria",
@@ -297,7 +297,7 @@
                     },
                     {
                       "id": "EVT-005",
-                      "timestamp": "2024-01-19T11:00:00",
+                      "timestamp": "2024-02-19T11:00:00",
                       "type": "procedure",
                       "description": "Artroplastia Total do Quadril",
                       "department": "Centro Cirúrgico",
@@ -312,7 +312,7 @@
                     },
                     {
                       "id": "EVT-006",
-                      "timestamp": "2024-01-19T14:30:00",
+                      "timestamp": "2024-02-19T14:30:00",
                       "type": "transfer",
                       "description": "Transferência para Enfermaria",
                       "department": "Enfermaria",
@@ -490,9 +490,9 @@
               "patient": {
                 "id": "P003",
                 "name": "Pedro Oliveira",
-                "admissionDate": "2024-01-18",
+                "admissionDate": "2024-02-18",
                 "diagnosis": "Post-chemotherapy monitoring",
-                "expectedDischarge": "2024-01-24",
+                "expectedDischarge": "2024-02-24",
                 "age": 58,
                 "gender": "M",
                 "bloodType": "B+",
@@ -504,7 +504,7 @@
                 },
                 "careHistory": {
                   "admissionId": "ADM-003",
-                  "startDate": "2024-01-18",
+                  "startDate": "2024-02-18",
                   "primaryDiagnosis": "Post-chemotherapy monitoring - Linfoma não-Hodgkin",
                   "status": "active",
                   "totalLOS": 6,
@@ -512,7 +512,7 @@
                     {
                       "department": "UTI",
                       "status": "Aguardando Atendimento",
-                      "timestamp": "2024-01-18T08:30:00",
+                      "timestamp": "2024-02-18T08:30:00",
                       "specialty": "Oncologia",
                       "updatedBy": {
                         "id": "D004",
@@ -523,7 +523,7 @@
                     {
                       "department": "UTI",
                       "status": "Em Procedimento",
-                      "timestamp": "2024-01-18T10:15:00",
+                      "timestamp": "2024-02-18T10:15:00",
                       "specialty": "Oncologia",
                       "updatedBy": {
                         "id": "D004",
@@ -534,7 +534,7 @@
                     {
                       "department": "UTI",
                       "status": "Em Recuperação",
-                      "timestamp": "2024-01-19T09:00:00",
+                      "timestamp": "2024-02-19T09:00:00",
                       "specialty": "Oncologia",
                       "updatedBy": {
                         "id": "D004",
@@ -546,7 +546,7 @@
                   "events": [
                     {
                       "id": "EVT-007",
-                      "timestamp": "2024-01-18T08:30:00",
+                      "timestamp": "2024-02-18T08:30:00",
                       "type": "admission",
                       "description": "Admissão para monitoramento pós-quimioterapia",
                       "department": "UTI",
@@ -561,7 +561,7 @@
                     },
                     {
                       "id": "EVT-008",
-                      "timestamp": "2024-01-18T10:15:00",
+                      "timestamp": "2024-02-18T10:15:00",
                       "type": "exam",
                       "description": "Coleta de exames laboratoriais completos",
                       "department": "UTI",
@@ -576,7 +576,7 @@
                     },
                     {
                       "id": "EVT-009",
-                      "timestamp": "2024-01-18T14:00:00",
+                      "timestamp": "2024-02-18T14:00:00",
                       "type": "medication",
                       "description": "Início de antibioticoterapia profilática",
                       "department": "UTI",
@@ -591,7 +591,7 @@
                     },
                     {
                       "id": "EVT-010",
-                      "timestamp": "2024-01-19T09:00:00",
+                      "timestamp": "2024-02-19T09:00:00",
                       "type": "exam",
                       "description": "Avaliação cardíaca de acompanhamento",
                       "department": "UTI",
@@ -711,12 +711,12 @@
               "patient": {
                 "id": "P004",
                 "name": "Maria do Céu",
-                "admissionDate": "2024-01-18",
+                "admissionDate": "2024-02-18",
                 "diagnosis": "Post-chemotherapy monitoring",
-                "expectedDischarge": "2024-01-24",
+                "expectedDischarge": "2024-02-24",
                 "careHistory": {
                   "admissionId": "ADM-004",
-                  "startDate": "2024-01-18",
+                  "startDate": "2024-02-18",
                   "primaryDiagnosis": "Post-chemotherapy monitoring - Câncer de mama metastático",
                   "status": "active",
                   "totalLOS": 6,
@@ -734,7 +734,7 @@
                     {
                       "department": "UTI",
                       "status": "Aguardando Atendimento",
-                      "timestamp": "2024-01-18T07:45:00",
+                      "timestamp": "2024-02-18T07:45:00",
                       "specialty": "Oncologia",
                       "updatedBy": {
                         "id": "D006",
@@ -745,7 +745,7 @@
                     {
                       "department": "UTI",
                       "status": "Em Procedimento",
-                      "timestamp": "2024-01-18T09:30:00",
+                      "timestamp": "2024-02-18T09:30:00",
                       "specialty": "Oncologia",
                       "updatedBy": {
                         "id": "D006",
@@ -756,7 +756,7 @@
                     {
                       "department": "UTI",
                       "status": "Em Procedimento",
-                      "timestamp": "2024-01-18T16:00:00",
+                      "timestamp": "2024-02-18T16:00:00",
                       "specialty": "Oncologia",
                       "updatedBy": {
                         "id": "D007",
@@ -767,7 +767,7 @@
                     {
                       "department": "UTI",
                       "status": "Em Recuperação",
-                      "timestamp": "2024-01-19T08:00:00",
+                      "timestamp": "2024-02-19T08:00:00",
                       "specialty": "Oncologia",
                       "updatedBy": {
                         "id": "D007",
@@ -779,7 +779,7 @@
                   "events": [
                     {
                       "id": "EVT-011",
-                      "timestamp": "2024-01-18T07:45:00",
+                      "timestamp": "2024-02-18T07:45:00",
                       "type": "admission",
                       "description": "Admissão para manejo de efeitos pós-quimioterapia",
                       "department": "UTI",
@@ -794,7 +794,7 @@
                     },
                     {
                       "id": "EVT-012",
-                      "timestamp": "2024-01-18T09:30:00",
+                      "timestamp": "2024-02-18T09:30:00",
                       "type": "exam",
                       "description": "Coleta de exames de urgência",
                       "department": "UTI",
@@ -809,7 +809,7 @@
                     },
                     {
                       "id": "EVT-013",
-                      "timestamp": "2024-01-18T11:00:00",
+                      "timestamp": "2024-02-18T11:00:00",
                       "type": "medication",
                       "description": "Administração de antieméticos e hidratação",
                       "department": "UTI",
@@ -824,7 +824,7 @@
                     },
                     {
                       "id": "EVT-014",
-                      "timestamp": "2024-01-18T16:00:00",
+                      "timestamp": "2024-02-18T16:00:00",
                       "type": "procedure",
                       "description": "Instalação de cateter central",
                       "department": "UTI",
@@ -839,7 +839,7 @@
                     },
                     {
                       "id": "EVT-015",
-                      "timestamp": "2024-01-19T08:00:00",
+                      "timestamp": "2024-02-19T08:00:00",
                       "type": "exam",
                       "description": "Raio-X de tórax para confirmação de PICC",
                       "department": "UTI",

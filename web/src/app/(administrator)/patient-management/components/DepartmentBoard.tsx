@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { IGeneratedData, IHospitalMetrics } from '../types/types';
 import { PatientCard } from './PatientCard';
 import { IPatient } from '@/types/hospital-network-types';
@@ -8,6 +8,7 @@ interface DepartmentBoardProps {
   data: IHospitalMetrics;
   selectedArea: string;
   patients: IPatient[];
+  searchQuery?: string;
   setSelectedPatient: (patient: IPatient | null) => void;
   generateData: (patient: IPatient) => Promise<void>;
   generatedData: IGeneratedData;
@@ -20,6 +21,7 @@ export const DepartmentBoard: React.FC<DepartmentBoardProps> = ({
   data,
   selectedArea,
   patients,
+  searchQuery = '',
   setSelectedPatient,
   generateData,
   generatedData,
@@ -30,8 +32,22 @@ export const DepartmentBoard: React.FC<DepartmentBoardProps> = ({
   const departmentKeys = Object.keys(data.departmental);
   const [selectedDepartment, setSelectedDepartment] = useState<string>(departmentKeys[0] || '');
 
+  // Filtra pacientes baseado no termo de busca
+  const filteredPatients = useMemo(() => {
+    if (!searchQuery) return patients;
+
+    const query = searchQuery.toLowerCase();
+    return patients.filter(patient => 
+      patient.name.toLowerCase().includes(query) ||
+      patient.id.toString().toLowerCase().includes(query) ||
+      patient.diagnosis.toLowerCase().includes(query) ||
+      patient.careHistory?.statusHistory?.[0]?.department.toLowerCase().includes(query) ||
+      patient.careHistory?.statusHistory?.[0]?.status.toLowerCase().includes(query)
+    );
+  }, [patients, searchQuery]);
+
   const getDepartmentPatients = (department: string, status: string) => {
-    return patients.filter(patient => {
+    return filteredPatients.filter(patient => {
       if (!patient.careHistory?.statusHistory?.length) return false;
       
       const latestStatus = patient.careHistory.statusHistory[0];
@@ -42,12 +58,10 @@ export const DepartmentBoard: React.FC<DepartmentBoardProps> = ({
     });
   };
 
-  // Manipulador para clique no card que abre o modal
   const handleCardClick = (patient: IPatient) => {
     setSelectedPatient(patient);
   };
 
-  // Manipulador para gerar recomendações
   const handleGenerateRecommendation = async (patient: IPatient) => {
     await generateData(patient);
   };
@@ -58,33 +72,45 @@ export const DepartmentBoard: React.FC<DepartmentBoardProps> = ({
 
     return (
       <div className="grid grid-cols-4 gap-2 w-full h-full">
-        {depMetrics.validStatuses.map((status) => (
-          <div key={status} className="flex flex-col bg-white dark:bg-gray-800 rounded-xl shadow-lg w-full h-full">
-            <div className="p-4 bg-gradient-to-r from-blue-500 to-teal-500 dark:bg-gradient-to-r dark:from-blue-700 dark:to-teal-700">
-              <h4 className="text-xl font-semibold text-white">{status}</h4>
-              <p className="text-sm text-white/90">
-                {getDepartmentPatients(department, status).length} pacientes
-              </p>
-            </div>
+        {depMetrics.validStatuses.map((status) => {
+          const departmentPatients = getDepartmentPatients(department, status);
+          return (
+            <div key={status} className="flex flex-col bg-white dark:bg-gray-800 rounded-xl shadow-lg w-full h-full">
+              <div className="p-4 bg-gradient-to-r from-blue-500 to-teal-500 dark:bg-gradient-to-r dark:from-blue-700 dark:to-teal-700">
+                <h4 className="text-xl font-semibold text-white">{status}</h4>
+                <p className="text-sm text-white/90">
+                  {departmentPatients.length} pacientes
+                  {searchQuery && departmentPatients.length === 0 && (
+                    <span className="text-xs text-white/70"> (nenhum resultado)</span>
+                  )}
+                </p>
+              </div>
 
-            <div className="flex-1 p-4 space-y-4 overflow-y-auto">
-              {getDepartmentPatients(department, status).map((patient) => (
-                <div key={patient.id}>
-                  <PatientCard
-                    patient={patient}
-                    status={status}
-                    generatedData={generatedData}
-                    isLoading={isLoading}
-                    loadingMessage={loadingMessage}
-                    loadingProgress={loadingProgress}
-                    onCardClick={handleCardClick}
-                    onGenerateRecommendation={handleGenerateRecommendation}
-                  />
-                </div>
-              ))}
+              <div className="flex-1 p-4 space-y-4 overflow-y-auto">
+                {departmentPatients.length > 0 ? (
+                  departmentPatients.map((patient) => (
+                    <div key={patient.id}>
+                      <PatientCard
+                        patient={patient}
+                        status={status}
+                        generatedData={generatedData}
+                        isLoading={isLoading}
+                        loadingMessage={loadingMessage}
+                        loadingProgress={loadingProgress}
+                        onCardClick={handleCardClick}
+                        onGenerateRecommendation={handleGenerateRecommendation}
+                      />
+                    </div>
+                  ))
+                ) : searchQuery ? (
+                  <div className="flex items-center justify-center h-32 text-gray-500 dark:text-gray-400">
+                    Nenhum paciente encontrado
+                  </div>
+                ) : null}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     );
   };

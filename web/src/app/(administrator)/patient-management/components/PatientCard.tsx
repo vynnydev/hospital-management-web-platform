@@ -86,7 +86,7 @@ export const PatientCard: React.FC<PatientCardProps> = ({
                 <div className="flex items-start justify-between gap-4 relative">
                     <div className="flex items-start gap-4">
                         <div className="flex-shrink-0">
-                            {patient.photo && (patient.photo.startsWith('http') || patient.photo.startsWith('/')) ? (
+                            {patient.photo !== 'null' && (patient.photo.startsWith('http') || patient.photo.startsWith('/')) ? (
                                 <Image
                                     src={patient.photo}
                                     alt={`Foto de ${patient.name}`}

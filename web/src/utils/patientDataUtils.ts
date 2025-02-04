@@ -128,3 +128,14 @@ export const getDepartmentData = (data: IHospitalMetrics, area: string) => {
     const normalizedArea = normalizeDepartmentName(area);
     return data.departmental?.[normalizedArea];
 };
+
+export const filterPatientsByDepartment = (
+  patients: IPatient[], 
+  department: string,
+  normalizeDepartmentName: (dept: string) => string
+): IPatient[] => {
+  return patients.filter(patient => {
+    const latestStatus = patient.careHistory?.statusHistory?.[patient.careHistory.statusHistory.length - 1];
+    return latestStatus && normalizeDepartmentName(latestStatus.department) === department;
+  });
+};

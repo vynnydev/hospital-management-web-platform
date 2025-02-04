@@ -13,12 +13,14 @@ import {
   getLatestStatus,
   categorizePatients,
   normalizeDepartmentName,
-  getDepartmentData
+  getDepartmentData,
+  filterPatientsByDepartment
 } from '@/utils/patientDataUtils';
 import { generateAIContent } from '@/services/AI/aiGenerateRecommendationsAndImagesServices';
 import { ViewListMenuBar } from '@/components/ui/templates/ViewListMenuBar';
 import { ViewType } from '@/types/app-types';
 import { PatientListView } from './PatientListView';
+import { PatientCalendar } from './PatientCalendar';
 
 interface PatientTaskManagementProps {
   data: IHospitalMetrics;
@@ -82,28 +84,52 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
   error,
   onRetry
 }) => {
-  // Estados existentes
+  // Estados principais
   const [selectedPatient, setSelectedPatient] = useState<IPatient | null>(null);
+  const [currentView, setCurrentView] = useState<ViewType>('board');
+  const [filteredPatients, setFilteredPatients] = useState<IPatient[]>(patients);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Estados para IA e acessibilidade
   const [generatedData, setGeneratedData] = useState<IGeneratedData>({});
   const [aiQuery, setAiQuery] = useState('');
   const [isHighContrast, setIsHighContrast] = useState(false);
   const [showAudioControls, setShowAudioControls] = useState(false);
   const [currentUtterance, setCurrentUtterance] = useState<SpeechSynthesisUtterance | null>(null);
   const [synthesis, setSynthesis] = useState<SpeechSynthesis | null>(null);
+  
+  // Estados de loading
   const [isLoading, setIsLoading] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [loadingMessage, setLoadingMessage] = useState('');
 
-  // Estado para controlar a view
-const [currentView, setCurrentView] = useState<ViewType>('board');
-
   // Utilitários e verificações de departamento
-  const categorizedPatients = categorizePatients(patients, departments);
   const normalizedArea = selectedArea ? normalizeDepartmentName(selectedArea) : '';
   const departmentData = selectedArea ? getDepartmentData(data, selectedArea) : null;
   const isDepartmentAvailable = selectedArea && departmentData;
 
-  // Event listeners
+  // Efeito para atualizar pacientes filtrados quando mudar a área selecionada ou a busca
+  useEffect(() => {
+    let result = patients;
+    
+    // Filtra por departamento se houver área selecionada
+    if (normalizedArea) {
+      result = filterPatientsByDepartment(result, normalizedArea, normalizeDepartmentName);
+    }
+    
+    // Aplica filtro de busca se houver query
+    if (searchQuery) {
+      result = result.filter(patient => 
+        patient.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        patient.id.toString().includes(searchQuery) ||
+        patient.diagnosis.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+    
+    setFilteredPatients(result);
+  }, [patients, normalizedArea, searchQuery]);
+
+  // Event listeners para teclas de atalho
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -124,42 +150,63 @@ const [currentView, setCurrentView] = useState<ViewType>('board');
     };
   }, [synthesis]);
 
-  // Handler para apenas selecionar o paciente (abrir modal)
+  // Handlers
+  const handleViewChange = (view: ViewType) => {
+    setCurrentView(view);
+    
+    // Lógica específica para cada tipo de view
+    switch (view) {
+      case 'board':
+        // Reset do filtro de busca ao mudar para board view
+        setSearchQuery('');
+        setFilteredPatients(filterPatientsByDepartment(patients, normalizedArea, normalizeDepartmentName));
+        break;
+      case 'list':
+        // Mantém os filtros atuais
+        break;
+      case 'calendar':
+        // Lógica específica para calendar view quando implementado
+        break;
+    }
+  };
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+  };
+
   const handlePatientSelect = (patient: IPatient | null) => {
     setSelectedPatient(patient);
     onSelectPatient(patient);
   };
 
-  // Handler para geração de IA
   const handleAIGeneration = async (patient: IPatient) => {
-      try {
-          setIsLoading(true);
-          const result = await generateAIContent(patient, {
-              onStart: () => {
-                  setLoadingProgress(0);
-                  setLoadingMessage('Iniciando geração...');
-              },
-              onProgress: (progress, message) => {
-                  setLoadingProgress(progress);
-                  setLoadingMessage(message);
-              },
-              onComplete: () => {
-                  setIsLoading(false);
-              },
-              onError: (error) => {
-                  console.error('Erro na geração:', error);
-                  setIsLoading(false);
-              }
-          });
-
-          setGeneratedData(result);
-      } catch (error) {
-          console.error('Erro ao gerar dados:', error);
+    try {
+      setIsLoading(true);
+      const result = await generateAIContent(patient, {
+        onStart: () => {
+          setLoadingProgress(0);
+          setLoadingMessage('Iniciando geração...');
+        },
+        onProgress: (progress, message) => {
+          setLoadingProgress(progress);
+          setLoadingMessage(message);
+        },
+        onComplete: () => {
           setIsLoading(false);
-      }
+        },
+        onError: (error) => {
+          console.error('Erro na geração:', error);
+          setIsLoading(false);
+        }
+      });
+
+      setGeneratedData(result);
+    } catch (error) {
+      console.error('Erro ao gerar dados:', error);
+      setIsLoading(false);
+    }
   };
 
-  // Handler específico para o botão esfera no modal
   const handleSphereButtonGeneration = async () => {
     if (!selectedPatient) return;
     await handleAIGeneration(selectedPatient);
@@ -186,9 +233,10 @@ const [currentView, setCurrentView] = useState<ViewType>('board');
     <div className='py-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md'>
       <div className="w-full space-y-6 p-4 bg-gray-100 dark:bg-gray-800 rounded-md">
         <div className={`relative ${error ? 'opacity-50' : ''}`}>
-          <ViewListMenuBar 
+          <ViewListMenuBar
             currentView={currentView}
-            onViewChange={(view) => setCurrentView(view as ViewType)}
+            onViewChange={handleViewChange}
+            onSearch={handleSearch}
           />
 
           {/* Métricas em Cards */}
@@ -222,10 +270,7 @@ const [currentView, setCurrentView] = useState<ViewType>('board');
                 <DepartmentBoard
                   data={data}
                   selectedArea={normalizedArea}
-                  patients={patients.filter(patient => {
-                    const status = getLatestStatus(patient);
-                    return status && normalizeDepartmentName(status.department) === normalizedArea;
-                  })}
+                  patients={filteredPatients}
                   setSelectedPatient={handlePatientSelect}
                   generatedData={generatedData}
                   isLoading={isLoading}
@@ -235,17 +280,21 @@ const [currentView, setCurrentView] = useState<ViewType>('board');
                 />
               ) : currentView === 'list' ? (
                 <PatientListView
-                  patients={patients.filter(patient => {
-                    const status = getLatestStatus(patient);
-                    return status && normalizeDepartmentName(status.department) === normalizedArea;
-                  })}
+                  patients={filteredPatients}
                   onSelectPatient={handlePatientSelect}
                 />
-              ) : (
-                <div className="p-8 text-center text-gray-500">
-                  Visualização de calendário em desenvolvimento
+              ) : currentView === 'calendar' ? (
+                <div className="h-[calc(100vh-16rem)]">
+                  <PatientCalendar
+                    patients={filteredPatients}
+                    currentUser={{
+                      name: selectedPatient?.name || 'Usuário'
+                    }}
+                    selectedPatient={selectedPatient}
+                    onSelectPatient={handlePatientSelect}
+                  />
                 </div>
-              )}
+              ) : null}
             </div>
           ) : (
             renderNoAreaSelected()

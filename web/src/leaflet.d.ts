@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 declare module 'leaflet' {
     export interface IconOptions {
       shadowUrl?: string;
