@@ -336,9 +336,26 @@ export const PatientCalendar: React.FC<IPatientCalendarProps> = ({
                   .map((event) => (
                     <div
                       key={event.id}
+                      onClick={() => {
+                        setSelectedDate(event.date);
+                        
+                        setTimeout(() => {
+                          const eventHour = parseInt(event.time.split(':')[0]);
+                          const eventMinutes = parseInt(event.time.split(':')[1]);
+                          const scrollPosition = (eventHour + eventMinutes / 60) * HOUR_HEIGHT;
+                          
+                          const scrollContainer = document.querySelector('.flex-1.overflow-auto');
+                          if (scrollContainer) {
+                            scrollContainer.scrollTo({
+                              top: scrollPosition - 100, // -100 para mostrar contexto acima
+                              behavior: 'smooth'
+                            });
+                          }
+                        }, 100);
+                      }}
                       className={`p-3 rounded-lg bg-gradient-to-br from-slate-800/80 to-slate-900/80 
                                 border-l-4 ${getEventColor(event.type, 'border')} hover:from-slate-800 
-                                hover:to-slate-900 transition-all duration-200`}
+                                hover:to-slate-900 transition-all duration-200 cursor-pointer`}
                     >
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex items-center space-x-2">
@@ -349,9 +366,17 @@ export const PatientCalendar: React.FC<IPatientCalendarProps> = ({
                             <Badge variant="outline" className={`${getEventColor(event.type)} border-0`}>
                               <span className="capitalize">{event.type}</span>
                             </Badge>
-                            <div className="flex items-center gap-1 text-white/80 mt-1">
-                              <Clock className="w-3 h-3" />
-                              <span className="text-xs font-medium">{event.time}</span>
+                            <div className="flex flex-col gap-1 text-white/80 mt-1">
+                              <div className="flex items-center gap-1">
+                                <CalendarIcon className="w-3 h-3" />
+                                <span className="text-xs font-medium">
+                                  {format(event.date, 'dd/MM/yyyy', { locale: ptBR })}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Clock className="w-3 h-3" />
+                                <span className="text-xs font-medium">{event.time}</span>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -590,10 +615,11 @@ export const PatientCalendar: React.FC<IPatientCalendarProps> = ({
                               return (
                                 <div
                                   key={event.id}
+                                  data-event-id={event.id}
                                   className={`absolute left-1 right-1 p-4 rounded-lg shadow-lg 
-                                            hover:shadow-xl transition-all duration-300 hover:scale-105 
-                                            ${getEventColor(event.type)} border-l-4 
-                                            ${getEventColor(event.type, 'border')}`}
+                                              hover:shadow-xl transition-all duration-300 hover:scale-105 
+                                              ${getEventColor(event.type)} border-l-4 
+                                              ${getEventColor(event.type, 'border')}`}
                                   style={{
                                     top: `${adjustedTop}px`,
                                     minHeight: '100px',
