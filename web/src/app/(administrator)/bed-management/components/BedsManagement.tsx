@@ -17,6 +17,7 @@ import type {
 } from '@/types/hospital-network-types';
 import { IntegrationsPreviewPressable } from '@/components/ui/organisms/IntegrationsPreviewPressable';
 import { ConfigurationAndUserModalMenus } from '@/components/ui/templates/modals/ConfigurationAndUserModalMenus';
+import { BedPatientInfoCard } from './BedPatientInfoCard';
 
 interface IBedsManagementProps {
   className?: string;
@@ -301,32 +302,7 @@ export const BedsManagement: React.FC<IBedsManagementProps> = ({ className }) =>
         {/* Right Sidebar - Patient Information */}
         <div className="w-96 bg-gray-800/50 p-6 rounded-l-3xl shadow-lg backdrop-blur-sm">
           {selectedBed?.patient ? (
-            <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-gray-100 flex items-center gap-2">
-                <AlertCircle className="h-6 w-6 text-blue-400" />
-                Informações sobre o paciente
-              </h2>
-              <div className="space-y-4 bg-gray-900/50 p-6 rounded-xl">
-                <div>
-                  <h3 className="font-medium text-gray-400 flex items-center gap-2 mb-2">
-                    <Calendar className="h-4 w-4" />
-                    Data de admissão
-                  </h3>
-                  <p className="text-gray-100">
-                    {selectedBed.patient.admissionDate}
-                  </p>
-                </div>
-                <div>
-                  <h3 className="font-medium text-gray-400 flex items-center gap-2 mb-2">
-                    <Clock className="h-4 w-4" />
-                    Data prevista para alta 
-                  </h3>
-                  <p className="text-gray-100">
-                    {selectedBed.patient.expectedDischarge}
-                  </p>
-                </div>
-              </div>
-            </div>
+            <BedPatientInfoCard selectedBed={selectedBed} />
           ) : (
             <div className="h-full flex items-center justify-center text-center text-gray-400">
               <div>
