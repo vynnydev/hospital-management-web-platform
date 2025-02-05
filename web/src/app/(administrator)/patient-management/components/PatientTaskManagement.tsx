@@ -243,6 +243,31 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
     </div>
   );
 
+  const renderMetricCards = () => (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2">
+      <MetricCard
+        title="Taxa de Ocupação"
+        value={`${data.overall.occupancyRate}%`}
+        icon={<Users className="w-6 h-6 text-primary" />}
+        trend={data.overall.periodComparison.occupancy}
+        loading={loading}
+      />
+      <MetricCard
+        title="Leitos Disponíveis"
+        value={data.overall.availableBeds}
+        icon={<Bed className="w-6 h-6 text-primary" />}
+        trend={data.overall.periodComparison.beds}
+        loading={loading}
+      />
+      <MetricCard
+        title="Tempo Médio de Internação"
+        value={`${data.overall.avgStayDuration} dias`}
+        icon={<Clock className="w-6 h-6 text-primary" />}
+        loading={loading}
+      />
+    </div>  
+  )
+
   return (
     <div className="flex flex-col bg-gradient-to-r from-blue-700 to-cyan-700 py-1 rounded-xl">
       <div className="flex-1 p-4 space-y-4 bg-gray-100 dark:bg-gray-800 overflow-hidden rounded-xl">
@@ -254,52 +279,36 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
             onSearch={handleSearch}
           />
 
-          {/* Métricas em Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2">
-            <MetricCard
-              title="Taxa de Ocupação"
-              value={`${data.overall.occupancyRate}%`}
-              icon={<Users className="w-6 h-6 text-primary" />}
-              trend={data.overall.periodComparison.occupancy}
-              loading={loading}
-            />
-            <MetricCard
-              title="Leitos Disponíveis"
-              value={data.overall.availableBeds}
-              icon={<Bed className="w-6 h-6 text-primary" />}
-              trend={data.overall.periodComparison.beds}
-              loading={loading}
-            />
-            <MetricCard
-              title="Tempo Médio de Internação"
-              value={`${data.overall.avgStayDuration} dias`}
-              icon={<Clock className="w-6 h-6 text-primary" />}
-              loading={loading}
-            />
-          </div>
-
           {/* Área principal com altura flexível */}
           {isDepartmentAvailable && departmentData ? (
             <div className="flex-1 bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
               {currentView === 'board' ? (
-                <DepartmentBoard
-                  data={data}
-                  selectedArea={normalizedArea}
-                  patients={filteredPatients}
-                  setSelectedPatient={handlePatientSelect}
-                  generatedData={generatedData}
-                  isLoading={isLoading}
-                  loadingMessage={loadingMessage}
-                  loadingProgress={loadingProgress} 
-                  generateData={handleAIGeneration}
-                />
+                <>
+                  {/* Métricas em Cards */}
+                  {renderMetricCards()}               
+                  <DepartmentBoard
+                    data={data}
+                    selectedArea={normalizedArea}
+                    patients={filteredPatients}
+                    setSelectedPatient={handlePatientSelect}
+                    generatedData={generatedData}
+                    isLoading={isLoading}
+                    loadingMessage={loadingMessage}
+                    loadingProgress={loadingProgress} 
+                    generateData={handleAIGeneration}
+                  />
+                </>
               ) : currentView === 'list' ? (
-                <PatientListView
-                  patients={filteredPatients}
-                  onSelectPatient={handlePatientSelect}
-                />
+                <>
+                  {/* Métricas em Cards */}
+                  {renderMetricCards()}                
+                  <PatientListView
+                    patients={filteredPatients}
+                    onSelectPatient={handlePatientSelect}
+                  />
+                </>
               ) : currentView === 'calendar' ? (
-                <div className="mt-2">
+                <div className="mt-0">
                   <PatientCalendar
                     patients={filteredPatients}
                     currentUser={currentUser}
@@ -310,7 +319,10 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
               ) : null}
             </div>
           ) : (
-            renderNoAreaSelected()
+            <>            
+              {renderMetricCards()}
+              {renderNoAreaSelected()}
+            </>
           )}
 
           {/* Modal do Paciente - Modificado para não aparecer na view de calendário */}

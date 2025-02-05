@@ -191,83 +191,10 @@ export const PatientCalendar: React.FC<IPatientCalendarProps> = ({
       </div>
     );
   
-    const renderEventCard = (event: any) => (
-      <div
-        key={event.id}
-        className={`absolute left-1 right-1 p-4 rounded-lg shadow-lg hover:shadow-xl 
-                    transition-all duration-300 hover:scale-105 ${getEventColor(event.type)} 
-                    border-l-4 ${getEventColor(event.type, 'border')}`}
-        style={{
-          top: `${(parseInt(event.time.split(':')[0]) + 
-                parseInt(event.time.split(':')[1]) / 60) * HOUR_HEIGHT}px`,
-          minHeight: '120px',
-          zIndex: 10
-        }}
-      >
-        {/* Cabeçalho do Card */}
-        <div className="flex items-start justify-between mb-3">
-          <div className="flex items-center space-x-2">
-            <div className="p-2 rounded-lg bg-white/10">
-              {getEventIcon(event.type)}
-            </div>
-            <div>
-              <Badge variant="outline" className="bg-white/10 text-white border-0">
-                <span className="capitalize">{event.type}</span>
-              </Badge>
-              <div className="flex items-center gap-1 text-white/80 mt-1">
-                <Clock className="w-3 h-3" />
-                <span className="text-xs font-medium">{event.time}</span>
-              </div>
-            </div>
-          </div>
-          {event.status && (
-            <Badge 
-              variant="outline" 
-              className={`${
-                event.status === 'done' 
-                  ? 'bg-emerald-500/10 text-emerald-300 border-emerald-500/20' 
-                  : 'bg-amber-500/10 text-amber-300 border-amber-500/20'
-              }`}
-            >
-              {event.status === 'done' ? 'Concluído' : 'Pendente'}
-            </Badge>
-          )}
-        </div>
-  
-        {/* Conteúdo do Card */}
-        <div className="space-y-3">
-          <h4 className="font-medium text-white text-sm">
-            {event.title}
-          </h4>
-  
-          <p className="text-white/70 text-xs line-clamp-2">
-            {event.description}
-          </p>
-  
-          {/* Participantes */}
-          <div className="pt-2 border-t border-white/10">
-            <div className="flex -space-x-2">
-              {event.participants.map((participant: string, index: number) => (
-                <div
-                  key={index}
-                  className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 
-                           flex items-center justify-center text-[10px] text-white font-medium
-                           border-2 border-white/20"
-                  title={participant}
-                >
-                  {participant.split(' ').map(n => n[0]).join('')}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  
     return (
       <div className="flex h-[100vh] bg-gradient-to-br from-slate-900 to-blue-950 rounded-xl">
         {/* Sidebar */}
-        <div className="w-80 flex flex-col bg-gradient-to-b from-blue-900/50 to-cyan-900/50 border-r border-blue-800/30">
+        <div className="w-80 flex flex-col bg-gradient-to-b from-blue-900/50 to-cyan-900/50 border-r border-blue-800/30 rounded-tl-xl">
           {/* Cabeçalho da Sidebar */}
           <div className="p-4 border-b border-blue-800/30">
             <h2 className="text-lg font-semibold text-white">
@@ -437,7 +364,7 @@ export const PatientCalendar: React.FC<IPatientCalendarProps> = ({
         {/* Área Principal */}
         <div className="flex-1 flex flex-col">
           {/* Cabeçalho */}
-          <header className="flex-shrink-0 flex items-center justify-between p-4 border-b border-blue-800/30 bg-gradient-to-r from-blue-900/30 to-cyan-900/30">
+          <header className="flex-shrink-0 flex items-center justify-between p-4 border-b border-blue-800/30 bg-gradient-to-r from-blue-900/30 to-cyan-900/30  rounded-tr-xl">
             <div>
               <h1 className="text-xl font-semibold text-white">
                 Olá, {currentUser?.name || 'Usuário'}

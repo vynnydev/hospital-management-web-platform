@@ -170,7 +170,6 @@ export const HospitalNetworkComponent: React.FC<HospitalNetworkComponentProps> =
         </div>
 
         {/* Lista de Hospitais */}
-
         <HospitalNetworkListSlider 
           hospitals={authorizedHospitals}
           selectedHospital={selectedHospital}
