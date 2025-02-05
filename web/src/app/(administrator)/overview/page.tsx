@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/organisms/card';
 import { useNetworkData } from '@/services/hooks/useNetworkData';
 
@@ -17,13 +17,21 @@ import { AIAnalyticsMetrics } from './components/AIAnalyticsMetrics';
 import { MessageCenter } from './components/MessageCenter';
 import { FlowEditor } from './components/workflow/FlowEditor';
 import { RepositionActionsBar } from '@/components/ui/templates/RepositionActionsBar';
+import { IAppUser } from '@/types/auth-types';
 
 const Overview: React.FC = () => {
-  const { networkData, currentUser, loading, error } = useNetworkData();
+  const { networkData, currentUser, setNetworkData, loading, error } = useNetworkData();
   const [selectedHospital, setSelectedHospital] = useState<string | null>(null);
   const [selectedRegion, setSelectedRegion] = useState<string>('all');
   const [displayMode, setDisplayMode] = useState<'dashboard' | 'tv'>('dashboard');
   const [isReorderMode, setIsReorderMode] = useState<boolean>(false);
+
+
+  // Props para o MessageCenter
+  const [selectedMessageUsers, setSelectedMessageUsers] = useState<IAppUser[]>([]);
+  const [showMessageUserDropdown, setShowMessageUserDropdown] = useState(false);
+  const [messageUserSearchQuery, setMessageUserSearchQuery] = useState('');
+  const [filteredMessageUsers, setFilteredMessageUsers] = useState<IAppUser[]>([]);
 
   // Para salvar o estado da funcionalidade de reposicionamento dos componentes
   const [initialSectionsOrder, setInitialSectionsOrder] = useState<string[]>(['metrics', 'departments', 'flow']);
@@ -84,10 +92,67 @@ const Overview: React.FC = () => {
   };
   
   const filteredHospitals = getFilteredHospitals();
+
+  // Função useEffect para filtrar os usuários quando a busca mudar
+  useEffect(() => {
+    if (!networkData?.users) {
+      setFilteredMessageUsers([]);
+      return;
+    }
+
+    if (!messageUserSearchQuery) {
+      setFilteredMessageUsers(networkData.users);
+      return;
+    }
+
+    const filtered = networkData.users.filter(user =>
+      user.name.toLowerCase().includes(messageUserSearchQuery.toLowerCase()) ||
+      user.role.toLowerCase().includes(messageUserSearchQuery.toLowerCase())
+    );
+
+    setFilteredMessageUsers(filtered);
+  }, [messageUserSearchQuery, networkData?.users]);
+
   const currentMetrics = getCurrentRegionMetrics();
   
   // Restrict single hospital users from changing regions
   const canChangeRegion = currentUser?.permissions.includes('VIEW_ALL_HOSPITALS');
+
+  // Função para selecionar um hospital no Message Center
+  const onHospitalSelect = (hospitalId: string | null) => {
+    // Se o usuário tiver permissão para ver todos os hospitais, permite a seleção
+    if (canChangeRegion) {
+      // Se o hospitalId for null, limpa a seleção
+      if (hospitalId === null) {
+        setSelectedHospital(null);
+        return;
+      }
+
+      // Verifica se o hospital existe nos dados da rede
+      const selectedHospital = networkData?.hospitals?.find(h => h.id === hospitalId);
+      
+      if (selectedHospital) {
+        // Define o hospital selecionado
+        setSelectedHospital(hospitalId);
+        
+        // Atualiza a região para o estado do hospital selecionado
+        setSelectedRegion(selectedHospital.unit.state);
+      }
+    } else {
+      // Se o usuário não tem permissão para ver todos os hospitais, 
+      // só permite selecionar o hospital associado ao seu usuário
+      if (hospitalId === currentUser?.hospitalId) {
+        setSelectedHospital(hospitalId);
+      }
+    }
+  };
+
+  const onRemoveUser = (userId: string) => {
+    // Filtra os usuários selecionados, removendo o usuário com o ID especificado
+    setSelectedMessageUsers(prevUsers => 
+      prevUsers.filter(user => user.id !== userId)
+    );
+  };
   
   if (loading) {
     return (
@@ -211,7 +276,9 @@ const Overview: React.FC = () => {
                       networkData={networkData}
                       currentUser={currentUser}
                       loading={loading}
-                    />
+                      hospitals={networkData.hospitals}
+                      onHospitalSelect={onHospitalSelect} 
+                      onRemoveUser={onRemoveUser}                  />
                   )
                 }}
               </ModernTabs>

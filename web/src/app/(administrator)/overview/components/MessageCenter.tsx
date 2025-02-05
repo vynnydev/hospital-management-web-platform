@@ -1,366 +1,223 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState, useEffect, useRef, useMemo } from 'react';
-import Image from 'next/image';
-import { 
-  Search, Bell, Users, Send, MessageSquare, Sparkles, 
-  Building2, Info, Plus, Paperclip, X, UserPlus 
-} from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/organisms/card';
-import { ScrollArea } from '@/components/ui/organisms/scroll-area';
+import React, { useState } from 'react';
 import type { INetworkData, IHospital } from '@/types/hospital-network-types';
-import type { IAppUser, TRole } from '@/types/auth-types';
+import type { IAppUser } from '@/types/auth-types';
+import type { IMessage } from '@/types/app-types';
+
+// Importando os componentes
+import { Header } from './message-center/Header';
+import { NavigationTabs } from './message-center/NavigationTabs';
+import { UsersList } from './message-center/UsersList';
+import { HospitalsList } from './message-center/HospitalsList';
+import { MessageComposer } from './message-center/MessageComposer';
+import { MessageThread } from './message-center/MessageThread';
+import { AISuggestions } from './message-center/AISuggestions';
+import { CommandMenu } from './message-center/CommandMenu';
+import { SelectedUsers } from './message-center/SelectedUsers';
+import { SelectedHospitalsTag } from './message-center/SelectedHospitalsTag';
 
 interface IMessageCenterProps {
   networkData: INetworkData;
   currentUser: IAppUser | null;
   loading: boolean;
+  hospitals: IHospital[];
+  onHospitalSelect: (hospitalId: string) => void;
+  onRemoveUser: (userId: string) => void;
 }
 
-export const MessageCenter: React.FC<IMessageCenterProps> = ({ networkData, currentUser, loading }) => {
+export const MessageCenter: React.FC<IMessageCenterProps> = ({
+  networkData,
+  currentUser,
+  loading,
+  hospitals,
+  onHospitalSelect: parentHospitalSelect,
+  onRemoveUser
+}) => {
+  // Estados
   const [selectedTab, setSelectedTab] = useState('announcements');
-  const [searchQuery, setSearchQuery] = useState('');
   const [message, setMessage] = useState('');
   const [selectedHospitals, setSelectedHospitals] = useState<string[]>([]);
-
-  const visibleHospitals = useMemo(() => {
-    if (!networkData || !currentUser) return [];
-    
-    if (currentUser.role === 'Admin' || currentUser.permissions.includes('VIEW_ALL_HOSPITALS')) {
-      return networkData.hospitals;
-    }
-    
-    return networkData.hospitals.filter(h => h.id === currentUser.hospitalId);
-  }, [networkData, currentUser]);
-
-  const handleHospitalSelect = (hospitalId: string) => {
-    if (selectedHospitals.includes(hospitalId)) {
-      setSelectedHospitals(selectedHospitals.filter(id => id !== hospitalId));
-    } else {
-      setSelectedHospitals([hospitalId]);
-    }
-  };
-  const [userSearchQuery, setUserSearchQuery] = useState('');
   const [selectedUsers, setSelectedUsers] = useState<IAppUser[]>([]);
-  const [showUserDropdown, setShowUserDropdown] = useState(false);
-  const [filteredUsers, setFilteredUsers] = useState<IAppUser[]>([]);
-  const [filteredHospitals, setFilteredHospitals] = useState<IHospital[]>([]);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [attachedFile, setAttachedFile] = useState<File | null>(null);
-
-  // Mock AI suggestions
-  const aiSuggestions = [
+  const [commandOpen, setCommandOpen] = useState(false);
+  
+  // Mock de mensagens para exemplo
+  const messages: IMessage[] = [
     {
-      icon: "🏥",
-      title: "Alta Ocupação",
-      description: "Alerta: Hospital Itaim com ocupação crítica",
-      gradient: "from-orange-500 to-red-500"
-    },
-    {
-      icon: "⚡",
-      title: "Otimização",
-      description: "Sugestão de redistribuição de pacientes",
-      gradient: "from-blue-500 to-cyan-500"
-    },
-    {
-      icon: "📊",
-      title: "Performance",
-      description: "Análise de métricas operacionais",
-      gradient: "from-green-500 to-emerald-500"
+      id: 1,
+      user: currentUser as IAppUser,
+      content: "Bom dia! Precisamos discutir a situação do Hospital A.",
+      timestamp: "09:30",
+      attachments: []
     }
   ];
+  
+  // Handler para seleção múltipla de hospitais
+  const handleHospitalSelect = (hospitalId: string) => {
+    setSelectedHospitals(prev => {
+      // Se já está selecionado, remove
+      if (prev.includes(hospitalId)) {
+        return prev.filter(id => id !== hospitalId);
+      }
+      // Se não está selecionado, adiciona
+      return [...prev, hospitalId];
+    });
+    // Notifica o componente pai
+    parentHospitalSelect(hospitalId);
+  };
+
+  // Handler para remover um hospital específico
+  const handleRemoveHospital = (hospitalId: string) => {
+    setSelectedHospitals(prev => prev.filter(id => id !== hospitalId));
+    parentHospitalSelect(hospitalId);
+  };
+
+  // Busca o hospital selecionado
+  const selectedHospital = selectedHospitals.length > 0 
+    ? hospitals.find(h => h.id === selectedHospitals[0])
+    : undefined;
+
+  // Busca os hospitais selecionados
+  const selectedHospitalsList = hospitals.filter(h => selectedHospitals.includes(h.id));
+
+  // Handlers
+  const handleTabChange = (tabId: string) => {
+    setSelectedTab(tabId);
+  };
 
   const handleUserSelect = (user: IAppUser) => {
     if (!selectedUsers.find(u => u.id === user.id)) {
       setSelectedUsers([...selectedUsers, user]);
     }
-    setUserSearchQuery('');
-    setShowUserDropdown(false);
   };
 
-  const handleRemoveUser = (userId: string) => {
-    setSelectedUsers(selectedUsers.filter(u => u.id !== userId));
+  const handleMessageChange = (newMessage: string) => {
+    setMessage(newMessage);
   };
 
-  const handleFileAttach = () => {
-    fileInputRef.current?.click();
+  const handleSendMessage = () => {
+    // Implementar lógica de envio
+    setMessage('');
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setAttachedFile(file);
-    }
+  const handleAISuggestionSelect = (suggestion: string) => {
+    setMessage(suggestion);
   };
 
-  const handleRemoveFile = () => {
-    setAttachedFile(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <div className="space-y-4 text-center">
+          <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto" />
+          <p className="text-gray-500 dark:text-gray-400">Carregando...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const renderContent = () => {
+    switch (selectedTab) {
+      case 'announcements':
+        return (
+          <>
+            <HospitalsList 
+              hospitals={hospitals}
+              selectedHospitals={selectedHospitals}
+              onHospitalSelect={handleHospitalSelect}
+            />
+            <SelectedUsers 
+              selectedUsers={selectedUsers}
+              onRemoveUser={onRemoveUser}
+            />
+            <MessageComposer 
+              message={message}
+              onMessageChange={setMessage}
+              onSendMessage={handleSendMessage}
+            />
+          </>
+        );
+      case 'messages':
+        return (
+          <>
+            <HospitalsList 
+              hospitals={hospitals}
+              selectedHospitals={selectedHospitals}
+              onHospitalSelect={handleHospitalSelect}
+            />
+            <SelectedUsers 
+              selectedUsers={selectedUsers}
+              onRemoveUser={onRemoveUser}
+            />
+            <MessageThread 
+              messages={messages}
+              currentUser={currentUser as IAppUser}
+            />
+            <MessageComposer 
+              message={message}
+              onMessageChange={setMessage}
+              onSendMessage={handleSendMessage}
+            />
+          </>
+        );
+      case 'ai-assist':
+        return (
+          <>
+            <AISuggestions onSuggestionSelect={handleAISuggestionSelect} />
+            <HospitalsList 
+              hospitals={hospitals}
+              selectedHospitals={selectedHospitals}
+              onHospitalSelect={handleHospitalSelect}
+            />
+            <SelectedUsers 
+              selectedUsers={selectedUsers}
+              onRemoveUser={onRemoveUser}
+            />
+            <MessageThread 
+              messages={messages}
+              currentUser={currentUser as IAppUser}
+            />
+            <MessageComposer 
+              message={message}
+              onMessageChange={setMessage}
+              onSendMessage={handleSendMessage}
+            />
+          </>
+        );
+      default:
+        return null;
     }
   };
 
   return (
-    <div className="space-y-6 bg-gray-100 dark:bg-gray-800 p-6 rounded-xl">
-      {/* Header com Tabs */}
-      <div className="flex justify-between items-center">
-        <div className="flex items-center gap-4">
-          <Image
-            src={currentUser?.profileImage || '/images/default-avatar.png'}
-            alt="Profile"
-            width={48}
-            height={48}
-            className="rounded-full"
-          />
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-              {currentUser?.name}
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400">{currentUser?.role}</p>
-          </div>
-        </div>
-        
-        <div className="flex gap-3">
-          {[
-            { id: 'announcements', label: 'Avisos Gerais', icon: Bell },
-            { id: 'messages', label: 'Mensagens', icon: MessageSquare },
-            { id: 'ai-assist', label: 'Auxílio IA', icon: Sparkles }
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setSelectedTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all
-                ${selectedTab === tab.id
-                  ? 'bg-gradient-to-r from-blue-700 to-cyan-700 text-white shadow-lg'
-                  : 'bg-gray-200 dark:bg-gray-700 hover:bg-gradient-to-r hover:from-blue-600/80 hover:to-cyan-600/80 hover:text-white'
-                }`}
-            >
-              <tab.icon className="w-4 h-4" />
-              <span>{tab.label}</span>
-            </button>
-          ))}
-        </div>
-      </div>
+    <div className="space-y-6 bg-gray-50 dark:bg-gray-900 p-6 rounded-xl">
+      <Header 
+        currentUser={currentUser}
+        onOpenCommand={() => setCommandOpen(true)}
+      />
+      
+      <NavigationTabs 
+        selectedTab={selectedTab}
+        onTabChange={setSelectedTab}
+      />
+      
+      <UsersList 
+        networkData={networkData}
+        onUserSelect={handleUserSelect}
+        onDropdownToggle={() => {}}
+      />
 
-      {/* Área de Seleção de Usuários */}
-      <div className="bg-white dark:bg-gray-700 p-4 rounded-xl shadow-sm">
-        <ScrollArea className="h-20">
-          <div className="flex flex-wrap gap-2">
-            {selectedUsers.map(user => (
-              <div
-                key={user.id}
-                className="flex items-center gap-2 bg-gray-100 dark:bg-gray-600 px-3 py-1 rounded-full"
-              >
-                <Image
-                  src={user.profileImage || '/images/default-avatar.png'}
-                  alt={user.name}
-                  width={24}
-                  height={24}
-                  className="rounded-full"
-                />
-                <span className="text-sm">{user.name}</span>
-                <button
-                  onClick={() => handleRemoveUser(user.id)}
-                  className="hover:text-red-500"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-            ))}
-            <div className="relative">
-              <div
-                className="flex items-center gap-2 bg-gray-100 dark:bg-gray-600 px-3 py-1 rounded-full cursor-pointer"
-                onClick={() => setShowUserDropdown(true)}
-              >
-                <UserPlus className="w-4 h-4" />
-                <span className="text-sm">Adicionar</span>
-              </div>
-              
-              {showUserDropdown && (
-                <div className="absolute z-10 mt-2 w-64 bg-white dark:bg-gray-700 rounded-lg shadow-lg">
-                  <input
-                    type="text"
-                    value={userSearchQuery}
-                    onChange={(e) => setUserSearchQuery(e.target.value)}
-                    placeholder="Buscar usuários..."
-                    className="w-full p-2 bg-transparent border-b border-gray-200 dark:border-gray-600"
-                  />
-                  <div className="max-h-48 overflow-y-auto">
-                    {filteredUsers.map(user => (
-                      <div
-                        key={user.id}
-                        className="flex items-center gap-2 p-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer"
-                        onClick={() => handleUserSelect(user)}
-                      >
-                        <Image
-                          src={user.profileImage || '/images/default-avatar.png'}
-                          alt={user.name}
-                          width={32}
-                          height={32}
-                          className="rounded-full"
-                        />
-                        <div>
-                          <p className="text-sm font-medium">{user.name}</p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">
-                            {user.role}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </ScrollArea>
-      </div>
-
-      {/* Hospital Tags */}
-      <div className="flex items-center gap-2 mb-4">
-        {selectedHospitals.length === 0 ? (
-          <span className="text-sm text-gray-500 dark:text-gray-400">
-            Selecione um hospital para continuar
-          </span>
-        ) : (
-          visibleHospitals
-            .filter(h => selectedHospitals.includes(h.id))
-            .map(hospital => (
-              <div
-                key={hospital.id}
-                className="flex items-center gap-2 px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full"
-              >
-                <Building2 className="w-4 h-4" />
-                <span>{hospital.name}</span>
-                <button
-                  onClick={() => handleHospitalSelect(hospital.id)}
-                  className="hover:text-red-500"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-            ))
-        )}
-      </div>
-
-      {/* Lista de Hospitais */}
-      <ScrollArea className="h-64">
-        <div className="grid grid-cols-3 gap-4">
-          {visibleHospitals.map(hospital => (
-            <Card
-              key={hospital.id}
-              onClick={() => handleHospitalSelect(hospital.id)}
-              className={`cursor-pointer transition-all relative overflow-hidden ${
-                selectedHospitals.includes(hospital.id)
-                  ? 'bg-gradient-to-r from-blue-700 to-cyan-700 text-white'
-                  : 'bg-white dark:bg-gray-700 hover:shadow-lg'
-              }`}
-            >
-              {hospital.metrics.overall.occupancyRate >= 85 && (
-                <div className="absolute inset-0 border-2 border-red-500 rounded-lg pointer-events-none" />
-              )}
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Building2 className="w-5 h-5" />
-                  <span className="text-xl">{hospital.name}</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <p className="text-sm">{hospital.unit.city}, {hospital.unit.state}</p>
-                  <div className="flex justify-between items-center">
-                    <span>Ocupação:</span>
-                    <span className={`font-medium ${
-                      !selectedHospitals.includes(hospital.id) && (
-                        hospital.metrics.overall.occupancyRate >= 85
-                          ? 'text-red-500'
-                          : hospital.metrics.overall.occupancyRate > 70
-                          ? 'text-yellow-500'
-                          : 'text-green-500'
-                      )
-                    }`}>
-                      {hospital.metrics.overall.occupancyRate}%
-                    </span>
-                  </div>
-                  <p className="flex justify-between">
-                    <span>Leitos:</span>
-                    <span>{hospital.metrics.overall.totalBeds}</span>
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </ScrollArea>
-
-      {/* Sugestões AI */}
-      {selectedTab === 'ai-assist' && (
-        <div className="grid grid-cols-3 gap-4 mb-6">
-          {aiSuggestions.map((suggestion, index) => (
-            <button
-              key={index}
-              onClick={() => setMessage(suggestion.description)}
-              className={`p-4 rounded-xl bg-white dark:bg-gray-700 hover:bg-gradient-to-r hover:from-blue-700 hover:to-cyan-700 
-                hover:text-white transition-all group text-left`}
-            >
-              <div className="text-2xl mb-2">{suggestion.icon}</div>
-              <h3 className="font-semibold mb-1">{suggestion.title}</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400 group-hover:text-gray-200">
-                {suggestion.description}
-              </p>
-            </button>
-          ))}
-        </div>
-      )}
-
-      {/* Campo de Mensagem */}
-      <div className="space-y-4">
-        <textarea
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Digite sua mensagem..."
-          className="w-full p-4 rounded-xl bg-white dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 resize-none h-32"
-        />
-        
-        <div className="flex justify-end items-center space-x-8">
-          <div className="flex items-center gap-4">
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              className="hidden"
-            />
-            <button
-              onClick={handleFileAttach}
-              className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-blue-500"
-            >
-              <Paperclip className="w-5 h-5" />
-              Anexar
-            </button>
-            {attachedFile && (
-              <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-600 px-3 py-1 rounded-full">
-                <span className="text-sm">{attachedFile.name}</span>
-                <button
-                  onClick={handleRemoveFile}
-                  className="hover:text-red-500"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-            )}
-          </div>
-          
-          <button
-            disabled={!message.trim()}
-            className={`px-6 py-2 rounded-lg flex items-center gap-2 transition-all
-              ${!message.trim()
-                ? 'bg-gray-400 cursor-not-allowed'
-                : 'bg-gradient-to-r from-blue-700 to-cyan-700 hover:from-blue-600 hover:to-cyan-600'
-              } text-white`}
-          >
-            <Send className="w-4 h-4" />
-            Enviar
-          </button>
-        </div>
-      </div>
+      {/* Agora o SelectedHospitalsTag é sempre renderizado, independente da seleção */}
+      <SelectedHospitalsTag 
+        hospitals={hospitals}
+        selectedHospitals={selectedHospitalsList}
+        onRemove={handleRemoveHospital}
+      />
+      
+      {renderContent()}
+      
+      <CommandMenu 
+        isOpen={commandOpen}
+        onClose={() => setCommandOpen(false)}
+      />
     </div>
   );
 };

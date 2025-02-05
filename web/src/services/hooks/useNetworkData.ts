@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect } from 'react';
 import type { INetworkData, INetworkInfo, IHospital, IBed, IPatientCareHistory, IStatusHistory } from '../../types/hospital-network-types';
-import type { IAppUser } from '../../types/auth-types';
+import type { IAppUser, TPermission } from '../../types/auth-types';
 import { authService } from '../auth/AuthService';
 import { usePermissions } from './auth/usePermissions';
 import { isValidCareHistory } from '../validators/careHistoryValidators';
@@ -87,6 +87,24 @@ export const useNetworkData = () => {
     return [];
   };
   
+  // Adiciona função para filtrar usuários baseado em permissões
+  const filterUsersByPermission = (users: IAppUser[], user: IAppUser): IAppUser[] => {
+    if (!user?.permissions) return [];
+
+    const hasAllHospitalsPermission = user.permissions.includes('VIEW_ALL_HOSPITALS' as TPermission);
+    const hasSingleHospitalPermission = user.permissions.includes('VIEW_SINGLE_HOSPITAL' as TPermission);
+
+    if (hasAllHospitalsPermission) {
+      return users;
+    }
+
+    if (hasSingleHospitalPermission && user.hospitalId) {
+      return users.filter(u => u.hospitalId === user.hospitalId);
+    }
+
+    return [];
+  };
+  
   const organizeBedsByFloor = (hospitals: IHospital[]): IBed[] => {
     const allBeds: IBed[] = [];
     
@@ -157,21 +175,25 @@ export const useNetworkData = () => {
         
         if (mounted) setCurrentUser(user);
 
-        const [networkInfoResponse, hospitalsResponse] = await Promise.all([
+        // Adiciona a busca de usuários junto com os outros dados
+        const [networkInfoResponse, hospitalsResponse, usersResponse] = await Promise.all([
           fetch('http://localhost:3001/networkInfo'),
-          fetch('http://localhost:3001/hospitals')
+          fetch('http://localhost:3001/hospitals'),
+          fetch('http://localhost:3001/users')
         ]);
 
-        if (!networkInfoResponse.ok || !hospitalsResponse.ok) {
+        if (!networkInfoResponse.ok || !hospitalsResponse.ok || !usersResponse.ok) {
           throw new Error('Falha ao buscar dados');
         }
 
         const networkInfo: INetworkInfo = await networkInfoResponse.json();
         const hospitals: IHospital[] = await hospitalsResponse.json();
+        const users: IAppUser[] = await usersResponse.json();
         
         if (!mounted) return;
 
         const filteredHospitals = filterHospitalsByPermissions(hospitals, user);
+        const filteredUsers = filterUsersByPermission(users, user);
         const bedsList = organizeBedsByFloor(filteredHospitals);
         const networkMetrics = calculateNetworkMetrics(filteredHospitals);
 
@@ -182,7 +204,8 @@ export const useNetworkData = () => {
             totalHospitals: filteredHospitals.length,
             networkMetrics: networkMetrics || networkInfo.networkMetrics
           },
-          hospitals: filteredHospitals
+          hospitals: filteredHospitals,
+          users: filteredUsers
         });
         
         setError(null);
@@ -204,6 +227,7 @@ export const useNetworkData = () => {
     };
   }, [permissionsLoading]);
 
+
   return { 
     networkData,
     currentUser,
@@ -211,6 +235,7 @@ export const useNetworkData = () => {
     beds,
     loading,
     error,
+    setNetworkData,
     getBedsForFloor: (floorNumber: string) => beds.filter(b => b.floor === floorNumber),
     getPatientCareHistory,
     getPatientStatusHistory,

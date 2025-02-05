@@ -162,6 +162,7 @@ interface IHospital {
 interface INetworkData {
   networkInfo: INetworkInfo;
   hospitals: IHospital[];
+  users: IAppUser[];
 }
 
 export interface IUseNetworkDataReturn {
