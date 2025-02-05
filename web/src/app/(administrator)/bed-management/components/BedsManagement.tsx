@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState, useMemo } from 'react';
 import { 
-  Building2, Users, AlertCircle, Calendar, Clock, Grid, 
-  MapPin, Loader2, ChevronsUpDown, BedDouble, Stethoscope,
-  Search 
+  Building2, Users, AlertCircle, BedDouble, 
+  MapPin, Loader2, ChevronsUpDown, Stethoscope, Search, 
+  Grid
 } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/organisms/select';
 import { useNetworkData } from '@/services/hooks/useNetworkData';
@@ -18,6 +18,7 @@ import type {
 import { IntegrationsPreviewPressable } from '@/components/ui/organisms/IntegrationsPreviewPressable';
 import { ConfigurationAndUserModalMenus } from '@/components/ui/templates/modals/ConfigurationAndUserModalMenus';
 import { BedPatientInfoCard } from './BedPatientInfoCard';
+import { MaintenanceStatusCards } from './MaintenanceStatusCards';
 
 interface IBedsManagementProps {
   className?: string;
@@ -33,6 +34,7 @@ export const BedsManagement: React.FC<IBedsManagementProps> = ({ className }) =>
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [defaultSection, setDefaultSection] = useState<string>('integrations');
+  const [isBedsOverviewActive, setIsBedsOverviewActive] = useState<boolean>(false);
 
   // Reset selections when hospital changes
   useEffect(() => {
@@ -40,10 +42,11 @@ export const BedsManagement: React.FC<IBedsManagementProps> = ({ className }) =>
       setSelectedDepartment('');
       setSelectedSpecialty('');
       setSelectedBed(null);
+      setIsBedsOverviewActive(false);
     }
   }, [selectedHospital]);
 
-  // Filtra os hospitais baseado no termo de busca
+  // Filter hospitals based on search term
   const filteredHospitals = useMemo(() => {
     if (!networkData?.hospitals) return [];
     if (!searchTerm) return networkData.hospitals;
@@ -56,7 +59,7 @@ export const BedsManagement: React.FC<IBedsManagementProps> = ({ className }) =>
   const getBedsForDepartment = (department: string): IBed[] => {
     if (!selectedHospital) return [];
     
-    // Filtrar os leitos existentes
+    // Filter existing beds
     const existingBeds = beds.filter(bed => 
       bed.hospital === selectedHospital.name &&
       bed.department === department &&
@@ -64,7 +67,7 @@ export const BedsManagement: React.FC<IBedsManagementProps> = ({ className }) =>
       (!selectedSpecialty || bed.specialty === selectedSpecialty)
     );
 
-    // Gerar array de 12 posições com leitos existentes ou vazios
+    // Generate array of 12 positions with existing or empty beds
     const allBeds = Array(12).fill(null).map((_, index) => {
       const row = Math.floor(index / 6);
       const position = (index % 6) + 1;
@@ -84,6 +87,12 @@ export const BedsManagement: React.FC<IBedsManagementProps> = ({ className }) =>
     return allBeds;
   };
 
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+    setDefaultSection('integrations');
+  };
+
+  // Loading and error states
   if (loading) return (
     <div className="flex h-screen items-center justify-center bg-gray-900">
       <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
@@ -112,12 +121,6 @@ export const BedsManagement: React.FC<IBedsManagementProps> = ({ className }) =>
     label: `${f}º Andar`,
     value: f
   }));
-
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-    setDefaultSection('integrations');
-  };
-
 
   return (
     <div className={`pt-2 pb-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md ${className}`}>
@@ -148,11 +151,32 @@ export const BedsManagement: React.FC<IBedsManagementProps> = ({ className }) =>
             <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-3 pt-2">
+            {/* Beds Overview Button */}
+            <button
+              onClick={() => {
+                setSelectedHospital(null);
+                setIsBedsOverviewActive(true);
+              }}
+              className={`w-full p-4 text-left rounded-2xl flex items-center gap-3 transition-all 
+                bg-gradient-to-r from-blue-700/90 to-cyan-700/90 
+                text-white hover:opacity-90 
+                ${isBedsOverviewActive 
+                  ? 'shadow-lg border border-blue-500/20' 
+                  : ''
+                }`}
+            >
+              <BedDouble className="h-5 w-5" />
+              <span className="font-medium">Visão Geral dos Leitos</span>
+            </button>
+
             {filteredHospitals.map((hospital) => (
               <button
                 key={hospital.id}
-                onClick={() => setSelectedHospital(hospital)}
+                onClick={() => {
+                  setSelectedHospital(hospital);
+                  setIsBedsOverviewActive(false);
+                }}
                 className={`w-full p-4 text-left rounded-2xl flex items-center gap-3 transition-all
                   ${selectedHospital?.id === hospital.id 
                     ? 'bg-blue-600/20 text-blue-100 shadow-lg border border-blue-500/20'
@@ -192,7 +216,6 @@ export const BedsManagement: React.FC<IBedsManagementProps> = ({ className }) =>
                       {selectedHospital.metrics.overall.totalPatients} patients
                     </span>
                   </div>
-
                 </div>
 
                 {/* Departments and Floor Selection */}
@@ -200,21 +223,20 @@ export const BedsManagement: React.FC<IBedsManagementProps> = ({ className }) =>
                   <div className="flex-1 flex gap-3">
                     {selectedHospital.departments.map((dept) => (
                       <button
-                      key={dept.name}
-                      onClick={() => setSelectedDepartment(dept.name)}
-                      className={`px-6 py-3 rounded-xl transition-all flex items-center gap-2
-                        ${selectedDepartment === dept.name
-                        ? 'bg-blue-600 text-white shadow-lg'
-                        : 'bg-gray-800/50 text-gray-100 hover:bg-gray-700'
-                        }`}
-                        >
+                        key={dept.name}
+                        onClick={() => setSelectedDepartment(dept.name)}
+                        className={`px-6 py-3 rounded-xl transition-all flex items-center gap-2
+                          ${selectedDepartment === dept.name
+                          ? 'bg-blue-600 text-white shadow-lg'
+                          : 'bg-gray-800/50 text-gray-100 hover:bg-gray-700'
+                          }`}
+                      >
                         <Users className="h-4 w-4" />
                         {dept.name}
                       </button>
                     ))}
                   </div>
 
-                  {/* Deixar mostrando no maximo 5 com o plus */}
                   <div className=''>
                     <IntegrationsPreviewPressable onSelectIntegration={handleOpenModal} hgt='10' wth='10'/>
       
@@ -289,8 +311,19 @@ export const BedsManagement: React.FC<IBedsManagementProps> = ({ className }) =>
                   ))}
               </div>
             </>
+          ) : isBedsOverviewActive ? (
+            <div className="h-full flex flex-col items-center justify-start text-gray-400 space-y-16 pt-8">
+              <MaintenanceStatusCards className="w-full max-w-3xl" />
+              
+              <div className="text-center">
+                <Building2 className="h-16 w-16 mx-auto mb-4 text-gray-500" />
+                <p className="text-lg">Selecione um hospital para visualizar os leitos</p>
+              </div>
+            </div>
           ) : (
-            <div className="h-full flex items-center justify-center text-gray-400">
+            <div className="h-full flex flex-col items-center justify-start text-gray-400 space-y-16 pt-8">
+              <MaintenanceStatusCards className="w-full max-w-3xl" />
+              
               <div className="text-center">
                 <Building2 className="h-16 w-16 mx-auto mb-4 text-gray-500" />
                 <p className="text-lg">Selecione um hospital para visualizar os leitos</p>

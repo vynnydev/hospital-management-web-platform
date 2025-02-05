@@ -128,7 +128,7 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
 
   return (
     <>    
-      <Card className="w-full bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6">
+      <Card className="w-full bg-white dark:bg-gray-800 shadow-lg rounded-3xl p-6">
         <CardContent className="p-0">
           <div className="flex flex-col space-y-6">
             {/* Network Info Section */}
