@@ -243,7 +243,7 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
     </div>
   );
 
-  const renderMetricCards = () => (
+  const renderMetricsCards = () => (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2">
       <MetricCard
         title="Taxa de Ocupação"
@@ -285,7 +285,7 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
               {currentView === 'board' ? (
                 <>
                   {/* Métricas em Cards */}
-                  {renderMetricCards()}               
+                  {renderMetricsCards()}               
                   <DepartmentBoard
                     data={data}
                     selectedArea={normalizedArea}
@@ -301,7 +301,7 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
               ) : currentView === 'list' ? (
                 <>
                   {/* Métricas em Cards */}
-                  {renderMetricCards()}                
+                  {renderMetricsCards()}                
                   <PatientListView
                     patients={filteredPatients}
                     onSelectPatient={handlePatientSelect}
@@ -320,7 +320,7 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
             </div>
           ) : (
             <>            
-              {renderMetricCards()}
+              {renderMetricsCards()}
               {renderNoAreaSelected()}
             </>
           )}
