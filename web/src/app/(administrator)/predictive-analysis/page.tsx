@@ -1,5 +1,5 @@
 'use client'
-import MediMindAIAssistant from "@/components/ui/medimind-ai-assistant/MediMindAIAssistant"
+import { MediMindAIAssistant } from "@/components/ui/medimind-ai-assistant/MediMindAIAssistant"
 
 const PredictiveAnalisys = () => {
     return (
