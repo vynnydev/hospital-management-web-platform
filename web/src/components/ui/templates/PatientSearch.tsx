@@ -6,7 +6,6 @@ interface SearchComponentProps {
   onSearch?: (query: string) => void;
 }
 
-// Componente de busca para pacientes
 export const PatientSearch: React.FC<SearchComponentProps> = ({ onSearch }) => {
   const [isSearchOpen, setIsSearchOpen] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -31,7 +30,7 @@ export const PatientSearch: React.FC<SearchComponentProps> = ({ onSearch }) => {
   };
 
   return (
-    <>
+    <div className="relative"> {/* Container relativo para posicionamento */}
       <button
         onClick={toggleSearch}
         className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all
@@ -52,19 +51,16 @@ export const PatientSearch: React.FC<SearchComponentProps> = ({ onSearch }) => {
         )}
       </button>
 
-      {/* Painel de busca animado */}
+      {/* Painel de busca com animação */}
       <div 
-        className={`absolute left-0 right-0 transform transition-all duration-300 ease-in-out ${
+        className={`absolute left-1/2 -translate-x-1/2 w-[600px] transition-all duration-300 ease-in-out ${
           isSearchOpen
-            ? 'translate-y-0 opacity-100 visible'
-            : '-translate-y-4 opacity-0 invisible'
+            ? 'opacity-100 translate-y-2 h-auto'
+            : 'opacity-0 -translate-y-4 h-0 overflow-hidden'
         }`}
-        style={{ 
-          top: 'calc(100% + 0.5rem)',
-          zIndex: 50
-        }}
+        style={{ zIndex: 50 }}
       >
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 mx-auto max-w-3xl">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
           <div className="relative py-2 px-3">
             <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
               <Search className="h-4 w-4 text-gray-400 dark:text-gray-500" />
@@ -82,6 +78,6 @@ export const PatientSearch: React.FC<SearchComponentProps> = ({ onSearch }) => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };

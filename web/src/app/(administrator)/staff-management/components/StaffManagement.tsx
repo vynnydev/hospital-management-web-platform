@@ -17,6 +17,7 @@ import { getDepartmentData, normalizeDepartmentName } from '@/utils/patientDataU
 import { IHospitalMetrics } from '@/types/hospital-network-types';
 import { StaffBoard } from './StaffBoard';
 import { StaffListView } from './StaffListView';
+import { StaffCardModal } from './StaffCardModal';
 
 interface StaffManagementProps {
     data: IHospitalMetrics | undefined;
@@ -139,9 +140,14 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
     };
 
     const handleTeamSelect = (team: IStaffTeam | null) => {
+        console.log('Team selected:', team); // Para debug
         setSelectedTeam(team);
         onSelectTeam(team);
     };
+
+    useEffect(() => {
+        console.log('Selected team changed:', selectedTeam);
+    }, [selectedTeam]);
 
     // Cálculos de métricas
     const calculateShiftCoverage = (): { value: number; trend: 'up' | 'down' } => {
@@ -269,7 +275,7 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
                                         selectedArea={normalizedArea}
                                         teams={filteredTeams}
                                         searchQuery={searchQuery}
-                                        setSelectedTeam={handleTeamSelect}
+                                        setSelectedTeam={handleTeamSelect} // Mantém essa linha
                                         analyticsData={analyticsData}
                                         isLoading={loading}
                                         loadingMessage="Gerando análise..."
@@ -278,12 +284,18 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
                                     />
                                 </>
                             ) : currentView === 'list' ? (
-                                <>
-                                {renderMetricsCards()}                
-                                <StaffListView
-                                  teams={teams} 
-                                  onSelectTeam={onSelectTeam}
-                                />
+                                <>             
+                                    {renderMetricsCards()}                
+                                    <StaffListView
+                                        teams={teams} 
+                                        onSelectTeam={handleTeamSelect}
+                                        selectedTeam={selectedTeam}
+                                        departmentMetrics={departmentMetrics}
+                                        fontSize={fontSize}
+                                        analyticsData={analyticsData}
+                                        isLoading={loading}
+                                        onGenerateAnalytics={handleGenerateAnalytics}
+                                    />
                                 </>
                             ) : currentView === 'calendar' ? (
                                 <div className="mt-0">
@@ -303,6 +315,20 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
                             </>
                         )}
                     </div>
+
+                    {/* Adicionar o Modal aqui */}
+                    {selectedTeam && (
+                        <StaffCardModal
+                            selectedTeam={selectedTeam}
+                            setSelectedTeam={setSelectedTeam}
+                            departmentMetrics={departmentMetrics}
+                            isHighContrast={false}
+                            fontSize={fontSize}
+                            analyticsData={analyticsData}
+                            isLoading={loading}
+                            onGenerateAnalytics={handleGenerateAnalytics}
+                        />
+                    )}
 
                     {/* Mensagem de Erro */}
                     {error && (
