@@ -1,4 +1,4 @@
-import { IMetricCardProps } from "@/types/metrics";
+import { IMetricCardProps } from "@/types/hospital-metrics-types";
 
 // components/StatusBadge.tsx
 const StatusBadge: React.FC<{ status: string }> = ({ status }) => {

@@ -1,16 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import { Sparkles, Volume2, Tag, RefreshCw, Lightbulb, Activity, Image as ImageIcon } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/organisms/card';
 import { ScrollArea } from '@/components/ui/organisms/scroll-area';
 import { Button } from '@/components/ui/organisms/button';
-import Image from 'next/image';
-import { TFontSize, IGeneratedData } from '../types/types';
+
 import { generateAIContent } from '@/services/AI/aiGenerateRecommendationsAndImagesServices';
 import { IPatient } from '@/types/hospital-network-types';
 import { AISphereButton } from './AI/AISphereButton';
 import { AILoadingCard } from './AI/AILoadingCard';
+import { TFontSize } from '@/types/utils-types';
+import { IGeneratedData } from '@/types/ai-types';
 
 interface IAIPatientAssistantProps {
     selectedPatient: IPatient | null;

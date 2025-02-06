@@ -86,6 +86,7 @@ export interface IDepartmentMetrics {
   waitTime: number;
   revenue: number;
   costs: number;
+  validStatuses: string[];
 }
 
 // Interface para comparação de períodos

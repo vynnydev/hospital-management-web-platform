@@ -1,6 +1,5 @@
 import React from 'react';
 import Image from 'next/image'
-import { IGeneratedData } from '../types/types';
 import { User } from 'lucide-react';
 import { IPatient } from '@/types/hospital-network-types';
 import { QRCodeSVG } from 'qrcode.react';
@@ -9,6 +8,7 @@ import {
     getLatestStatus
 } from '@/utils/patientDataUtils';
 import { AIRecommendationCardPressable } from './AI/AIRecommendationCardPressable';
+import { IGeneratedData } from '@/types/ai-types';
 
 interface PatientCardProps {
     patient: IPatient;

@@ -17,7 +17,8 @@ import {
     Download
 } from 'lucide-react';
 import { LineChart, XAxis, YAxis, Tooltip, Line, ResponsiveContainer } from 'recharts';
-import { TFontSize, IGeneratedData } from '../types/types';
+import { TFontSize } from '@/types/utils-types';
+import { IGeneratedData } from '@/types/ai-types';
 import { AIPatientAssistant } from './AIPatientAssistant';
 import { Card, CardContent } from '@/components/ui/organisms/card';
 import { Button } from '@/components/ui/organisms/button';

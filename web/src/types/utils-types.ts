@@ -1,0 +1,1 @@
+export type TFontSize = 'small' | 'normal' | 'large' | 'extra-large';

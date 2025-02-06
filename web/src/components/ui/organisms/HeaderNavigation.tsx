@@ -28,7 +28,7 @@ const routes = [
         label: 'Gestão de Pacientes',
     },
     {
-        href: '/team-management',
+        href: '/staff-management',
         label: 'Gestão de Equipes',
     },
     {

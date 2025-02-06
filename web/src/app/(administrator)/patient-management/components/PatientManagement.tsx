@@ -4,12 +4,7 @@ import { TrendingUp, TrendingDown, AlertCircle, Clock, Users, Bed, RefreshCw } f
 import { DepartmentBoard } from './DepartmentBoard';
 import { PatientCardModal } from './PatientCardModal';
 import { PatientCalendar } from './PatientCalendar';
-import type { 
-  IGeneratedData,
-  IHospitalMetrics,
-  TFontSize, 
-} from '../types/types';
-import { IPatient } from '@/types/hospital-network-types';
+import { IHospitalMetrics, IPatient } from '@/types/hospital-network-types';
 import {
   getLatestStatus,
   categorizePatients,
@@ -18,10 +13,12 @@ import {
   filterPatientsByDepartment
 } from '@/utils/patientDataUtils';
 import { generateAIContent } from '@/services/AI/aiGenerateRecommendationsAndImagesServices';
-import { ViewListMenuBar } from '@/components/ui/templates/ViewListMenuBar';
+import { PatientViewListMenuBar } from '@/components/ui/templates/PatientViewListMenuBar';
 import { ViewType } from '@/types/app-types';
 import { PatientListView } from './PatientListView';
 import { useNetworkData } from '@/services/hooks/useNetworkData';
+import { TFontSize } from '@/types/utils-types';
+import { IGeneratedData } from '@/types/ai-types';
 
 // Interface Props mantém-se a mesma
 interface PatientTaskManagementProps {
@@ -38,8 +35,8 @@ interface PatientTaskManagementProps {
   onRetry: () => void;
 }
 
-// Componente MetricCard mantém-se o mesmo
-const MetricCard: React.FC<{
+// Componente PatientPatientMetricCard mantém-se o mesmo
+const PatientMetricCard: React.FC<{
   title: string;
   value: string | number;
   icon: React.ReactNode;
@@ -74,7 +71,7 @@ const MetricCard: React.FC<{
   </div>
 );
 
-export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
+export const PatientManagement: React.FC<PatientTaskManagementProps> = ({
   data,
   patients,
   selectedArea,
@@ -245,21 +242,21 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
 
   const renderMetricsCards = () => (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2">
-      <MetricCard
+      <PatientMetricCard
         title="Taxa de Ocupação"
         value={`${data.overall.occupancyRate}%`}
         icon={<Users className="w-6 h-6 text-primary" />}
         trend={data.overall.periodComparison.occupancy}
         loading={loading}
       />
-      <MetricCard
+      <PatientMetricCard
         title="Leitos Disponíveis"
         value={data.overall.availableBeds}
         icon={<Bed className="w-6 h-6 text-primary" />}
         trend={data.overall.periodComparison.beds}
         loading={loading}
       />
-      <MetricCard
+      <PatientMetricCard
         title="Tempo Médio de Internação"
         value={`${data.overall.avgStayDuration} dias`}
         icon={<Clock className="w-6 h-6 text-primary" />}
@@ -273,7 +270,7 @@ export const PatientTaskManagement: React.FC<PatientTaskManagementProps> = ({
       <div className="flex-1 p-4 space-y-4 bg-gray-100 dark:bg-gray-800 overflow-hidden rounded-xl">
         <div className={`flex flex-col ${error ? 'opacity-50' : ''}`}>
           {/* Barra de navegação e pesquisa */}
-          <ViewListMenuBar
+          <PatientViewListMenuBar
             currentView={currentView}
             onViewChange={handleViewChange}
             onSearch={handleSearch}

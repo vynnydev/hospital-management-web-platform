@@ -1,6 +1,6 @@
 // metricsCalcService.ts
 import api from '@/services/api'
-import { HospitalMetrics } from '@/types/metrics'
+import { HospitalMetrics } from '@/types/hospital-metrics-types'
 
 export const metricsCalcService = {
   getMetrics: async (): Promise<HospitalMetrics> => {

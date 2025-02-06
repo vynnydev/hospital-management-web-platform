@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
-import { PatientTaskManagement } from './PatientTaskManagement';
+import { PatientManagement } from './PatientManagement';
 import { useNetworkData } from '@/services/hooks/useNetworkData';
-import { HospitalNetworkComponent } from './HospitalNetworkComponent';
-import { initialMetrics, type IHospitalMetrics } from '../types/types';
-import { IPatient } from '@/types/hospital-network-types';
+import { HospitalNetworkComponent } from '../../../../components/ui/templates/HospitalNetworkComponent';
+import { IHospitalMetrics, initialMetrics, IPatient } from '@/types/hospital-network-types';
 
-export const MainPatientManagementComponent: React.FC = () => {
+export const MainPatientManagement: React.FC = () => {
   const { networkData, currentUser, loading, error: networkError } = useNetworkData();
   const [selectedHospital, setSelectedHospital] = useState<string | null>(null);
   const [selectedArea, setSelectedArea] = useState<string>('');
@@ -192,10 +191,10 @@ export const MainPatientManagementComponent: React.FC = () => {
         error={networkError}
       />
 
-      {/* PatientTaskManagement sempre visível */}
+      {/* PatientManagement sempre visível */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="col-span-2">
-          <PatientTaskManagement
+          <PatientManagement
             data={selectedHospital ? metrics : initialMetrics}
             patients={selectedHospital ? getFilteredPatients() : []}
             selectedArea={selectedArea}

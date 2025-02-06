@@ -27,7 +27,7 @@ import {
   IDragEvent,
   TOnConnect,
   TNodeType
-} from "./types";
+} from "../../types/types";
 import { IntegrationsPreviewPressable } from "@/components/ui/organisms/IntegrationsPreviewPressable";
 import { ConfigurationAndUserModalMenus } from "@/components/ui/templates/modals/ConfigurationAndUserModalMenus";
 import { FlowMenu } from "./FlowMenu";

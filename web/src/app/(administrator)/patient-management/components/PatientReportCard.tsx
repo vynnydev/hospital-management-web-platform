@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { IPatient } from '../types/types';
+import { IPatient } from '@/types/hospital-network-types';
 
 export const PatientReportCard: React.FC<{ patient: IPatient | null }> = ({ patient }) => {
     return (

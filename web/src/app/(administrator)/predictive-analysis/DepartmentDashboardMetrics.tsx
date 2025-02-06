@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { DepartmentMetricCard } from './DepartmentMetricCard';
 import { metricsCalcService } from '@/services/calcs/metricsCalcService';
-import { IHospitalMetrics } from '@/types/metrics';
+import { IHospitalMetrics } from '@/types/hospital-metrics-types';
 import { useMetricsCalculations } from '@/services/hooks/calcs/useMetricsCalculations';
 
 import {

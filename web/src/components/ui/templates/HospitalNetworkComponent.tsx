@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React, { useState, useEffect } from 'react';
 import { Building2 } from 'lucide-react';
-import { DepartmentAreaCards } from './DepartmentAreaCards';
+import { DepartmentAreaCards } from '@/app/(administrator)/patient-management/components/DepartmentAreaCards';
 import type { 
   INetworkInfo, 
   IHospital,
@@ -9,7 +9,7 @@ import type {
   IDepartmentalCapacity,
 } from '@/types/hospital-network-types';
 import type { IAppUser } from '@/types/auth-types';
-import { HospitalNetworkListSlider } from './HospitalNetworkListSlider';
+import { HospitalNetworkListSlider } from '@/app/(administrator)/patient-management/components/HospitalNetworkListSlider';
 
 interface IDepartment {
   name: string;
@@ -103,8 +103,6 @@ export const HospitalNetworkComponent: React.FC<HospitalNetworkComponentProps> =
       </div>
     );
   }
-
-  console.log("DEPARTAMENTO SELECIONADA PARA O DEPARTMENT AREA CARDS:", departments)
 
   // Função para renderizar os cards de departamento
   const renderDepartmentCards = () => {

@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useMemo } from 'react';
-import { IGeneratedData, IHospitalMetrics } from '../types/types';
+import { IHospitalMetrics, IPatient } from '@/types/hospital-network-types';
+import { IGeneratedData } from '@/types/ai-types';
+
 import { PatientCard } from './PatientCard';
-import { IPatient } from '@/types/hospital-network-types';
 
 interface DepartmentBoardProps {
   data: IHospitalMetrics;
