@@ -1,7 +1,7 @@
 import React from 'react';
 import { Accessibility, Eye, Volume2 } from 'lucide-react';
 import { Button } from '@/components/ui/organisms/button';
-import { TFontSize } from '../../types/types';
+import { TFontSize } from '@/types/utils-types';
 
 interface AccessibilityBarProps {
   isHighContrast: boolean;

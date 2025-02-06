@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { TrendingUp, TrendingDown, AlertCircle, Clock, Users, Bed, RefreshCw } from 'lucide-react';
-import { DepartmentBoard } from './DepartmentBoard';
+import { PatientBoard } from './PatientBoard';
 import { PatientCardModal } from './PatientCardModal';
 import { PatientCalendar } from './PatientCalendar';
 import { IHospitalMetrics, IPatient } from '@/types/hospital-network-types';
@@ -42,19 +42,26 @@ const PatientMetricCard: React.FC<{
   icon: React.ReactNode;
   trend?: { value: number; trend: 'up' | 'down' };
   loading: boolean;
-}> = ({ title, value, icon, trend, loading }) => (
-  <div className="relative overflow-hidden bg-white dark:bg-gray-700 rounded-xl p-6 shadow-lg 
-                 transition-all duration-300 hover:shadow-xl">
+  subtitle?: string;
+  color?: string;
+}> = ({ title, value, icon, trend, loading, subtitle, color = 'primary' }) => (
+  <div className={`relative overflow-hidden bg-white dark:bg-gray-700 rounded-xl p-6 shadow-lg 
+                 transition-all duration-300 hover:shadow-xl border-l-4 border-${color}`}>
     {loading ? (
       <div className="animate-pulse space-y-4">
-        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
-        <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2" />
+        <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4" />
       </div>
     ) : (
       <>
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-gray-500 dark:text-gray-400 font-medium">{title}</h3>
-          <div className="p-2.5 bg-primary/10 dark:bg-primary/20 rounded-lg">
+          <div>
+            <h3 className="text-gray-500 dark:text-gray-400 font-medium">{title}</h3>
+            {subtitle && (
+              <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">{subtitle}</p>
+            )}
+          </div>
+          <div className={`p-2.5 bg-${color}/10 dark:bg-${color}/20 rounded-lg`}>
             {icon}
           </div>
         </div>
@@ -245,25 +252,31 @@ export const PatientManagement: React.FC<PatientTaskManagementProps> = ({
       <PatientMetricCard
         title="Taxa de Ocupação"
         value={`${data.overall.occupancyRate}%`}
+        subtitle={`${data.overall.totalPatients} pacientes internados`}
         icon={<Users className="w-6 h-6 text-primary" />}
         trend={data.overall.periodComparison.occupancy}
         loading={loading}
+        color="primary"
       />
       <PatientMetricCard
         title="Leitos Disponíveis"
         value={data.overall.availableBeds}
-        icon={<Bed className="w-6 h-6 text-primary" />}
+        subtitle={`De um total de ${data.overall.totalBeds} leitos`}
+        icon={<Bed className="w-6 h-6 text-blue-500" />}
         trend={data.overall.periodComparison.beds}
         loading={loading}
+        color="blue"
       />
       <PatientMetricCard
         title="Tempo Médio de Internação"
         value={`${data.overall.avgStayDuration} dias`}
-        icon={<Clock className="w-6 h-6 text-primary" />}
+        subtitle={`Taxa de rotatividade: ${data.overall.turnoverRate}`}
+        icon={<Clock className="w-6 h-6 text-green-500" />}
         loading={loading}
+        color="green"
       />
     </div>  
-  )
+  );
 
   return (
     <div className="flex flex-col bg-gradient-to-r from-blue-700 to-cyan-700 py-1 rounded-xl">
@@ -283,7 +296,7 @@ export const PatientManagement: React.FC<PatientTaskManagementProps> = ({
                 <>
                   {/* Métricas em Cards */}
                   {renderMetricsCards()}               
-                  <DepartmentBoard
+                  <PatientBoard
                     data={data}
                     selectedArea={normalizedArea}
                     patients={filteredPatients}

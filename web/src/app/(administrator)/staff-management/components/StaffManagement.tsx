@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { 
@@ -14,6 +15,8 @@ import type {
 import type { TFontSize } from '@/types/utils-types';
 import { getDepartmentData, normalizeDepartmentName } from '@/utils/patientDataUtils';
 import { IHospitalMetrics } from '@/types/hospital-network-types';
+import { StaffBoard } from './StaffBoard';
+import { StaffListView } from './StaffListView';
 
 interface StaffManagementProps {
     data: IHospitalMetrics | undefined;
@@ -99,6 +102,10 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
     const departmentData = selectedArea ? getDepartmentData(data, selectedArea) : null;
     const isDepartmentAvailable = selectedArea && departmentData;
 
+    // Estados para gerar analises o para os profissionais e seus times com IA
+    const [analyticsData, setAnalyticsData] = useState<Record<string, any>>({});
+    const [analyticsProgress, setAnalyticsProgress] = useState(0);
+
     // Efeito para filtrar equipes baseado na busca
     useEffect(() => {
         let result = teams;
@@ -149,10 +156,10 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
     const calculateStaffDistribution = () => {
         const { staffDistribution } = departmentMetrics;
         return {
-        total: staffDistribution.doctors + staffDistribution.nurses + staffDistribution.technicians,
-        doctors: staffDistribution.doctors,
-        nurses: staffDistribution.nurses,
-        technicians: staffDistribution.technicians
+            total: staffDistribution.doctors + staffDistribution.nurses + staffDistribution.technicians,
+            doctors: staffDistribution.doctors,
+            nurses: staffDistribution.nurses,
+            technicians: staffDistribution.technicians
         };
     };
 
@@ -191,6 +198,38 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
         );
     };
 
+
+    // Função para gerar analises para os profissionais e seus times com IA (modificar a função)
+    const handleGenerateAnalytics = async (team: IStaffTeam) => {
+        try {
+            setAnalyticsProgress(0);
+            // Aqui você implementaria a lógica real de geração de análises
+            // Por enquanto, vamos simular um progresso
+            for (let i = 0; i <= 100; i += 20) {
+                setAnalyticsProgress(i);
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+            
+            // Simula dados de análise gerados
+            setAnalyticsData(prev => ({
+                ...prev,
+                [team.id]: {
+                    performance: Math.random() * 100,
+                    efficiency: Math.random() * 100,
+                    recommendations: [
+                        'Otimizar distribuição de tarefas',
+                        'Revisar escala de turnos',
+                        'Considerar treinamento adicional'
+                    ]
+                }
+            }));
+        } catch (error) {
+            console.error('Erro ao gerar análise:', error);
+        } finally {
+            setAnalyticsProgress(100);
+        }
+    };
+
     const renderNoAreaSelected = () => (
         <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-700/50 
                         rounded-xl p-8 text-center shadow-lg">
@@ -224,25 +263,27 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
                             {currentView === 'board' ? (
                                 <>
                                 {renderMetricsCards()}               
-                                {/* <DepartmentBoard
-                                    data={data}
-                                    selectedArea={normalizedArea}
-                                    patients={filteredPatients}
-                                    setSelectedPatient={handlePatientSelect}
-                                    generatedData={generatedData}
-                                    isLoading={isLoading}
-                                    loadingMessage={loadingMessage}
-                                    loadingProgress={loadingProgress} 
-                                    generateData={handleAIGeneration}
-                                /> */}
+                                    <StaffBoard
+                                        data={data}
+                                        departmentMetrics={departmentMetrics}
+                                        selectedArea={normalizedArea}
+                                        teams={filteredTeams}
+                                        searchQuery={searchQuery}
+                                        setSelectedTeam={handleTeamSelect}
+                                        analyticsData={analyticsData}
+                                        isLoading={loading}
+                                        loadingMessage="Gerando análise..."
+                                        loadingProgress={analyticsProgress}
+                                        generateAnalytics={handleGenerateAnalytics}
+                                    />
                                 </>
                             ) : currentView === 'list' ? (
                                 <>
                                 {renderMetricsCards()}                
-                                {/* <PatientListView
-                                    patients={filteredPatients}
-                                    onSelectPatient={handlePatientSelect}
-                                /> */}
+                                <StaffListView
+                                  teams={teams} 
+                                  onSelectTeam={onSelectTeam}
+                                />
                                 </>
                             ) : currentView === 'calendar' ? (
                                 <div className="mt-0">

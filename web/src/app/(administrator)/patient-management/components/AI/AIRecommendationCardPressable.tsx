@@ -3,7 +3,7 @@
 import React from 'react';
 import { Sparkles } from 'lucide-react';
 import Image from 'next/image';
-import { IGeneratedData } from '../../types/types';
+import { IGeneratedData } from '@/types/ai-types';
 
 interface AIRecommendationCardPressableProps {
   onGenerateImage?: (e: React.MouseEvent<HTMLButtonElement>) => void;

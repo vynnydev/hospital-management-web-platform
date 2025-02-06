@@ -5,7 +5,7 @@ import { IGeneratedData } from '@/types/ai-types';
 
 import { PatientCard } from './PatientCard';
 
-interface DepartmentBoardProps {
+interface PatientBoardProps {
   data: IHospitalMetrics;
   selectedArea: string;
   patients: IPatient[];
@@ -18,7 +18,7 @@ interface DepartmentBoardProps {
   loadingProgress?: number;
 }
 
-export const DepartmentBoard: React.FC<DepartmentBoardProps> = ({ 
+export const PatientBoard: React.FC<PatientBoardProps> = ({ 
   data,
   selectedArea,
   patients,
@@ -67,6 +67,18 @@ export const DepartmentBoard: React.FC<DepartmentBoardProps> = ({
     await generateData(patient);
   };
 
+  const getStatusDescription = (status: string): string => {
+    const statusMap: Record<string, string> = {
+      'Aguardando Atendimento': 'Pacientes que necessitam de avaliação inicial',
+      'Em Procedimento': 'Pacientes em tratamento ou cirurgia',
+      'Em Recuperação': 'Pacientes em fase de recuperação',
+      'Em Observação': 'Pacientes sob monitoramento contínuo',
+      'Alta': 'Pacientes prontos para alta hospitalar'
+    };
+    
+    return statusMap[status] || '';
+  };
+
   const renderDepartmentColumns = (department: string) => {
     const depMetrics = data.departmental?.[department.toLowerCase()];
     if (!depMetrics?.validStatuses) return null;
@@ -80,10 +92,10 @@ export const DepartmentBoard: React.FC<DepartmentBoardProps> = ({
               <div className="p-4 bg-gradient-to-r from-blue-500 to-teal-500 dark:bg-gradient-to-r dark:from-blue-700 dark:to-teal-700">
                 <h4 className="text-xl font-semibold text-white">{status}</h4>
                 <p className="text-sm text-white/90">
-                  {departmentPatients.length} pacientes
-                  {searchQuery && departmentPatients.length === 0 && (
-                    <span className="text-xs text-white/70"> (nenhum resultado)</span>
-                  )}
+                  {departmentPatients.length} paciente{departmentPatients.length !== 1 ? 's' : ''}
+                </p>
+                <p className="text-xs text-white/80 mt-1">
+                  {getStatusDescription(status)}
                 </p>
               </div>
 
@@ -105,9 +117,13 @@ export const DepartmentBoard: React.FC<DepartmentBoardProps> = ({
                   ))
                 ) : searchQuery ? (
                   <div className="flex items-center justify-center h-32 text-gray-500 dark:text-gray-400">
-                    Nenhum paciente encontrado
+                    Nenhum paciente encontrada/o
                   </div>
-                ) : null}
+                ) : (
+                  <div className="flex items-center justify-center h-32 text-gray-500 dark:text-gray-400">
+                    Nenhum paciente nesta categoria
+                  </div>
+                )}
               </div>
             </div>
           );

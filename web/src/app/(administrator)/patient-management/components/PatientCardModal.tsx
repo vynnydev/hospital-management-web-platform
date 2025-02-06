@@ -1,41 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useRef } from 'react';
-import { 
-    X, 
-    Accessibility,
-    Volume2,
-    Eye,
-    Calendar,
-    Brain,
-    FileText,
-    ChevronRight,
-    ChevronLeft,
-    MessageSquare,
-    Bot,
-    FileUp,
-    Trash2,
-    Download
-} from 'lucide-react';
-import { LineChart, XAxis, YAxis, Tooltip, Line, ResponsiveContainer } from 'recharts';
 import { TFontSize } from '@/types/utils-types';
 import { IGeneratedData } from '@/types/ai-types';
 import { AIPatientAssistant } from './AIPatientAssistant';
-import { Card, CardContent } from '@/components/ui/organisms/card';
-import { Button } from '@/components/ui/organisms/button';
-import { QRCodeCanvas } from 'qrcode.react';
 import { IPatient } from '@/types/hospital-network-types';
-import {
-    getPatientVitals,
-    getPatientMedications,
-    getLatestProcedure,
-    getLatestStatus,
-    generateCarePlanPrompt
-} from '@/utils/patientDataUtils';
-import { AnimatePresence, motion } from 'framer-motion';
 import { FileUpload } from './patient-card-modal/FileUploadPatientModal';
-import { generateQRCodeUrl } from '@/utils/generateQRCodeUrl';
-import QRCodeView from '@/components/ui/templates/QRCodeView';
-import { QRCodeComponent } from '@/components/ui/templates/QRCodeComponent';
 import { AccessibilityBar } from './patient-card-modal/AccessibilityBar';
 import { PatientHeader } from './patient-card-modal/PatientHeader';
 import { VitalsChart } from './patient-card-modal/VitalsChart';
