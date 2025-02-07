@@ -128,13 +128,27 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
     }, [teams, searchQuery]);
 
     // Handlers
-    // Quando mudar de view, não vamos resetar o selectedTeam
+    // Quando mudar de view, vamos resetar o selectedTeam para o modal não abrir na mudança de aba
     const handleViewChange = (view: ViewType) => {
-        setIsChangingView(true);
+        setIsChangingView(true); // Indica que está mudando de view
         setCurrentView(view);
         
+        switch (view) {
+        case 'board':
+            setSearchQuery('');
+            setSelectedTeam(null); // Limpa a seleção ao mudar para board
+            break;
+        case 'list':
+            setSelectedTeam(null); // Limpa a seleção ao mudar para list
+            break;
+        case 'calendar':
+            // Mantém o selectedPatient apenas para o calendário
+            break;
+        }
+
+        // Reseta o estado após um pequeno delay para garantir que a transição seja suave
         setTimeout(() => {
-            setIsChangingView(false);
+        setIsChangingView(false);
         }, 100);
     };
 
