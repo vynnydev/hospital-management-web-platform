@@ -3,7 +3,7 @@ export type TShiftPeriod = 'Manhã' | 'Tarde' | 'Noite';
 export type TTaskStatus = 'pending' | 'in_progress' | 'completed' | 'delayed' | 'scheduled';
 export type TTaskPriority = 'low' | 'medium' | 'high';
 export type TTaskType = 'patient_visit' | 'procedure' | 'administrative' | 'meeting';
-export type TTeamCapacityStatus = 'optimal' | 'high_demand' | 'low_demand' | 'critical';
+export type TTeamCapacityStatus = 'optimal' | 'high_demand' | 'low_demand';
 export type TTeamStatus = 'active' | 'inactive' | 'on_leave';
 
 export interface IStaffTask {

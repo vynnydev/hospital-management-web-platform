@@ -5,7 +5,6 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { IPatient } from '@/types/hospital-network-types';
 import { generateEnhancedPrompt } from "@/app/(administrator)/patient-management/components/functions/AI/aiAssistantPatientBoard";
 
-
 const hfInference = new HfInference(process.env.NEXT_PUBLIC_HUGGING_FACE_API_KEY!);
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY!);
 

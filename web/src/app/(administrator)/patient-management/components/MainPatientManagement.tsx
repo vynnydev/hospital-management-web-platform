@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { PatientManagement } from './PatientManagement';
 import { useNetworkData } from '@/services/hooks/useNetworkData';
-import { HospitalNetworkComponent } from '../../../../components/ui/templates/HospitalNetworkComponent';
+import { HospitalNetworkComponent } from '@/components/ui/templates/HospitalNetworkComponent';
 import { IHospitalMetrics, initialMetrics, IPatient } from '@/types/hospital-network-types';
 
 export const MainPatientManagement: React.FC = () => {
