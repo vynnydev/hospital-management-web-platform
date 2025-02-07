@@ -18,6 +18,8 @@ import { IHospitalMetrics } from '@/types/hospital-network-types';
 import { StaffBoard } from './StaffBoard';
 import { StaffListView } from './StaffListView';
 import { StaffCardModal } from './StaffCardModal';
+import { StaffCalendar } from './StaffCalendar';
+import { useNetworkData } from '@/services/hooks/useNetworkData';
 
 interface StaffManagementProps {
     data: IHospitalMetrics | undefined;
@@ -92,6 +94,7 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
     onRetry
 }) => {
     // Estados
+    const { currentUser } = useNetworkData()
     const [currentView, setCurrentView] = useState<ViewType>('board');
     const [filteredTeams, setFilteredTeams] = useState<IStaffTeam[]>(teams);
     const [searchQuery, setSearchQuery] = useState('');
@@ -125,13 +128,13 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
     }, [teams, searchQuery]);
 
     // Handlers
+    // Quando mudar de view, não vamos resetar o selectedTeam
     const handleViewChange = (view: ViewType) => {
         setIsChangingView(true);
         setCurrentView(view);
-        setSelectedTeam(null);
         
         setTimeout(() => {
-        setIsChangingView(false);
+            setIsChangingView(false);
         }, 100);
     };
 
@@ -140,9 +143,9 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
     };
 
     const handleTeamSelect = (team: IStaffTeam | null) => {
-        console.log('Team selected:', team); // Para debug
+        console.log('Selecting team in StaffManagement:', team);
         setSelectedTeam(team);
-        onSelectTeam(team);
+        if (onSelectTeam) onSelectTeam(team);
     };
 
     useEffect(() => {
@@ -204,7 +207,6 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
         );
     };
 
-
     // Função para gerar analises para os profissionais e seus times com IA (modificar a função)
     const handleGenerateAnalytics = async (team: IStaffTeam) => {
         try {
@@ -253,6 +255,8 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
         </div>
     );
 
+    console.log("Time selecionado do StaffManagement:", selectedTeam)
+
     return (
         <div className="flex flex-col bg-gradient-to-r from-blue-700 to-cyan-700 py-1 rounded-xl">
             <div className="flex-1 p-4 space-y-4 bg-gray-100 dark:bg-gray-800 overflow-hidden rounded-xl">
@@ -299,12 +303,12 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
                                 </>
                             ) : currentView === 'calendar' ? (
                                 <div className="mt-0">
-                                {/* <PatientCalendar
-                                    patients={filteredPatients}
-                                    currentUser={currentUser}
-                                    selectedPatient={selectedPatient}
-                                    onSelectPatient={handlePatientSelect}
-                                /> */}
+                                    <StaffCalendar 
+                                        teams={teams} 
+                                        currentUser={currentUser} 
+                                        selectedTeam={selectedTeam} // Passamos o selectedTeam
+                                        onSelectTeam={handleTeamSelect} // Passamos nossa função de handler
+                                    />
                                 </div>
                             ) : null}
                             </div>
@@ -317,7 +321,7 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
                     </div>
 
                     {/* Adicionar o Modal aqui */}
-                    {selectedTeam && (
+                    {selectedTeam && currentView !== 'calendar' && !isChangingView && (
                         <StaffCardModal
                             selectedTeam={selectedTeam}
                             setSelectedTeam={setSelectedTeam}
@@ -339,8 +343,8 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
                             <div className="flex items-center space-x-3">
                                 <AlertCircle className="w-5 h-5 text-red-500" />
                                 <div>
-                                <h3 className="font-medium text-red-500">Erro ao carregar dados</h3>
-                                <p className="text-sm text-red-400">{error}</p>
+                                    <h3 className="font-medium text-red-500">Erro ao carregar dados</h3>
+                                    <p className="text-sm text-red-400">{error}</p>
                                 </div>
                             </div>
                             <button

@@ -8,6 +8,7 @@ interface CalendarHeaderProps {
   setView: (view: 'day' | 'week' | 'month') => void;
   selectedDate: Date;
   setSelectedDate: (date: Date) => void;
+  calendarContext: string
 }
 
 export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
@@ -16,6 +17,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
   setView,
   selectedDate,
   setSelectedDate,
+  calendarContext
 }) => {
   return (
     <header className="flex-shrink-0 flex items-center justify-between p-4 border-b border-blue-800/30 bg-gradient-to-r from-blue-900/30 to-cyan-900/30 rounded-tr-xl">
@@ -24,7 +26,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
           Olá, {currentUser?.name || 'Usuário'}
         </h1>
         <p className="text-sm text-blue-300/80">
-          Gerencie os eventos dos pacientes
+          Gerencie os eventos dos {calendarContext}
         </p>
       </div>
 

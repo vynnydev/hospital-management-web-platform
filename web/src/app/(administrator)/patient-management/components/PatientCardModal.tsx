@@ -2,7 +2,6 @@
 import React, { useState, useRef } from 'react';
 import { TFontSize } from '@/types/utils-types';
 import { IGeneratedData } from '@/types/ai-types';
-import { AIPatientAssistant } from './AIPatientAssistant';
 import { IPatient } from '@/types/hospital-network-types';
 import { FileUpload } from './patient-card-modal/FileUploadPatientModal';
 import { AccessibilityBar } from './patient-card-modal/AccessibilityBar';
@@ -147,7 +146,7 @@ export const PatientCardModal = ({
           <div className={getContrastClass("p-8 bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto")}>
             <AccessibilityBar {...props} />
             <PatientHeader patient={selectedPatient} onClose={() => setSelectedPatient(null)} />
-            <AIPatientAssistant {...props} selectedPatient={selectedPatient} />
+
             <VitalsChart patientData={selectedPatient} />
             <div className="flex flex-row gap-4 mt-8 mb-12">
               <RiskAnalysis patient={selectedPatient} />
@@ -169,4 +168,4 @@ export const PatientCardModal = ({
         </div>
       </div>
     );
-  };
+};

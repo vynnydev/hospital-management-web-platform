@@ -1,20 +1,21 @@
+// components/staff-calendar/StaffWeekView.tsx
 import React from 'react';
 import { isSameDay } from 'date-fns';
-import { IPatientCalendarEvent } from '@/types/patient-calendar';
-import { DayCell } from './DayCell';
+import { IStaffCalendarEvent } from '@/types/staff-calendar';
+import { StaffDayCell } from './StaffDayCell';
 
-interface WeekViewProps {
+interface StaffWeekViewProps {
   weekDays: Date[];
   selectedDate: Date;
   setSelectedDate: (date: Date) => void;
-  events: IPatientCalendarEvent[];
+  events: IStaffCalendarEvent[];
 }
 
-export const WeekView: React.FC<WeekViewProps> = ({
+export const StaffWeekView: React.FC<StaffWeekViewProps> = ({
   weekDays,
   selectedDate,
   setSelectedDate,
-  events,
+  events = [],
 }) => {
   return (
     <div className="flex-shrink-0 grid grid-cols-7 gap-2 p-4 border-b border-slate-700/50 bg-gradient-to-r from-blue-900/20 to-cyan-900/20">
@@ -23,7 +24,7 @@ export const WeekView: React.FC<WeekViewProps> = ({
         const isSelectedDay = isSameDay(day, selectedDate);
         
         return (
-          <DayCell
+          <StaffDayCell
             key={day.toString()}
             day={day}
             events={dayEvents}

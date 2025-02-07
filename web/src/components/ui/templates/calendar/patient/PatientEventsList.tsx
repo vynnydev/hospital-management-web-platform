@@ -8,12 +8,12 @@ import { getEventColor } from '@/utils/getEventColor';
 import { getEventIcon } from '@/utils/getEventIcon';
 import { IPatientCalendarEvent } from '@/types/patient-calendar';
 
-interface EventsListProps {
+interface PatientEventsListProps {
   events: IPatientCalendarEvent[];
   onEventClick: (event: IPatientCalendarEvent) => void;
 }
 
-export const EventsList: React.FC<EventsListProps> = ({
+export const PatientEventsList: React.FC<PatientEventsListProps> = ({
   events,
   onEventClick,
 }) => {

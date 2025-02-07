@@ -2,18 +2,18 @@ import React from 'react';
 import { format, isToday } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Badge } from '@/components/ui/organisms/badge';
-import { IPatientCalendarEvent } from '@/types/patient-calendar';
+import { IStaffCalendarEvent } from '@/types/staff-calendar';
 
-interface DayCellProps {
+interface StaffDayCellProps {
   day: Date;
-  events: IPatientCalendarEvent[];
+  events: IStaffCalendarEvent[];
   isSelected: boolean;
   onClick: () => void;
 }
 
-export const DayCell: React.FC<DayCellProps> = ({
+export const StaffDayCell: React.FC<StaffDayCellProps> = ({
   day,
-  events,
+  events = [],
   isSelected,
   onClick,
 }) => {

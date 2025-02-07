@@ -4,16 +4,16 @@ import { CalendarDays } from 'lucide-react';
 import { IPatient } from '@/types/hospital-network-types';
 
 // Components
-import { PatientsList } from './patient-calendar/PatientsList';
-import { EventsList } from './patient-calendar/EventsList';
-import { CalendarHeader } from './patient-calendar/CalendarHeader';
-import { WeekView } from './patient-calendar/WeekView';
-import { TimeGrid } from './patient-calendar/TimeGrid';
+import { PatientsList } from '@/components/ui/templates/calendar/patient/PatientsList';
+import { PatientEventsList } from '@/components/ui/templates/calendar/patient/PatientEventsList';
+import { CalendarHeader } from '@/components/ui/templates/calendar/CalendarHeader';
+import { PatientWeekView } from '@/components/ui/templates/calendar/patient/PatientWeekView';
+import { PatientTimeGrid } from '@/components/ui/templates/calendar/patient/PatientTimeGrid';
+import { MiniCalendar } from '@/components/ui/templates/calendar/MiniCalendar';
 
 // Hooks
 import { usePatientEvents } from '@/services/hooks/usePatientEvents';
 import { IPatientCalendarEvent } from '@/types/patient-calendar';
-import { MiniCalendar } from './patient-calendar/MiniCalendar';
 
 interface PatientCalendarProps {
   patients: IPatient[];
@@ -126,7 +126,7 @@ export const PatientCalendar: React.FC<PatientCalendarProps> = ({
               {events.length} eventos programados
             </p>
           </div>
-          <EventsList events={events} onEventClick={handleEventClick} />
+          <PatientEventsList events={events} onEventClick={handleEventClick} />
         </div>
 
         {/* Mini Calendário */}
@@ -145,12 +145,13 @@ export const PatientCalendar: React.FC<PatientCalendarProps> = ({
           setView={setView}
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
+          calendarContext={'pacientes'}
         />
 
         {/* Área do Calendário */}
         <div className="flex-1 flex flex-col min-h-0">
           {/* Grid de Dias da Semana */}
-          <WeekView
+          <PatientWeekView
             weekDays={weekDays}
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
@@ -160,7 +161,7 @@ export const PatientCalendar: React.FC<PatientCalendarProps> = ({
           {/* Grid de Tempo com Eventos */}
           {selectedPatient ? (
             <div className="flex-1 overflow-auto">
-              <TimeGrid
+              <PatientTimeGrid
                 weekDays={weekDays}
                 events={events}
                 hourHeight={80}

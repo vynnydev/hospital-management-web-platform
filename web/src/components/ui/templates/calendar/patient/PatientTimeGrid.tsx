@@ -6,13 +6,13 @@ import { getEventIcon } from '@/utils/getEventIcon';
 import { Clock, Users } from 'lucide-react';
 import { IPatientCalendarEvent } from '@/types/patient-calendar';
 
-interface TimeGridProps {
+interface PatientTimeGridProps {
   weekDays: Date[];
   events: IPatientCalendarEvent[];
   hourHeight?: number;
 }
 
-export const TimeGrid: React.FC<TimeGridProps> = ({
+export const PatientTimeGrid: React.FC<PatientTimeGridProps> = ({
   weekDays,
   events,
   hourHeight = 80 // Altura padrão para cada hora

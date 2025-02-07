@@ -12,7 +12,7 @@ export const MiniCalendar: React.FC<IMiniCalendarProps> = ({
     setSelectedDate
 }) => {
     return (
-        <div className="flex-shrink-0 p-4 border-t border-blue-800/30 bg-gradient-to-b from-blue-900/30 to-cyan-900/30">
+        <div className="flex-shrink-0 z-40 p-4 border-t border-blue-800/30 bg-gradient-to-b from-blue-900 to-cyan-900/30">
             <div className="mb-4 flex justify-between items-center">
                 <span className="text-lg font-semibold text-white">
                     {format(selectedDate, 'MMMM yyyy', { locale: ptBR })}
