@@ -183,3 +183,12 @@
 .animate-expand-pulse {
   animation: expand-pulse 3s ease-in-out infinite;
 }
+
+/* Estilo para esconder a barra de rolagem do quadro de análise preditiva de equipes */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

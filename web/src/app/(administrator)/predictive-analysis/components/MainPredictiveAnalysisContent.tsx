@@ -35,56 +35,12 @@ interface MainPredictiveAnalysisContentProps {
   error: string | null;
 }
 
-interface TeamCardProps {
-    team: IStaffTeam;
-    onAIGenerate: (team: IStaffTeam) => void;
-}
-
 interface IDepartmentMetric {
     area: string;
     count: number;
     capacity: number;
     occupancy: number;
 }
-
-const mockStaffMember = {
-    id: "STF001",
-    name: "Dr. Ana Santos",
-    role: "Cardiologista Senior",
-    department: "UTI",
-    shift: "Manhã",
-    skillPoints: 78,
-    keyCompetencies: ["Cardiologia", "Gestão de Equipe", "Procedimentos Intensivos"],
-    activeGoals: [
-      {
-        id: "GOAL001",
-        type: "KPI",
-        title: "Redução do Tempo de Resposta",
-        date: "2025-03-01",
-        status: "active",
-        progress: 75,
-        description: "Diminuir tempo médio de atendimento em 15%"
-      },
-      // ... mais objetivos
-    ],
-    achievedGoals: [
-      {
-        id: "GOAL003",
-        type: "TRAINING",
-        title: "Certificação em ACLS",
-        date: "2025-01-15",
-        status: "completed",
-        description: "Conclusão do curso avançado de suporte à vida"
-      },
-      // ... mais objetivos alcançados
-    ],
-    performanceMetrics: {
-      taskCompletion: 92,
-      patientSatisfaction: 88,
-      teamCollaboration: 95,
-      burnoutRisk: 15
-    }
-};
 
 // Segundo componente principal
 export const MainPredictiveAnalysisContent: React.FC<MainPredictiveAnalysisContentProps> = ({ 
@@ -249,6 +205,9 @@ export const MainPredictiveAnalysisContent: React.FC<MainPredictiveAnalysisConte
                 <TeamAnalyticsBoard 
                     teams={currentHospitalTeams}
                     department={selectedDepartment}
+                    onTeamSelect={(selectedTeam) => {
+                        setSelectedTeam(selectedTeam);
+                    }}
                 />
             </div>
         )}
