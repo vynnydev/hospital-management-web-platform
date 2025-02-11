@@ -22,12 +22,13 @@ import {
   LayoutGrid,
   Maximize2
 } from 'lucide-react';
-import { HospitalNetworkMetrics } from './HospitalNetworkMetrics';
+import { AdditionalHospitalMetrics } from './AdditionalHospitalMetrics';
 import { IHospital, INetworkData } from '@/types/hospital-network-types';
 import { IntegrationsPreviewPressable } from '@/components/ui/organisms/IntegrationsPreviewPressable';
 import { ConfigurationAndUserModalMenus } from '@/components/ui/templates/modals/ConfigurationAndUserModalMenus';
-import { DashboardModeModalOptions } from '../../../../components/ui/templates/modals/DashboardModeModalOptions';
+import { DashboardModeModalOptions } from '@/components/ui/templates/modals/DashboardModeModalOptions';
 import { FullscreenModeModal } from '@/components/ui/templates/modals/FullscreenModeModal';
+import { MainHospitalAlertMetrics } from './MainHospitalAlertMetrics';
 
 interface IHospitalMetrics {
   unit: {
@@ -208,8 +209,13 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
               </div>
             </div>
 
+            <MainHospitalAlertMetrics 
+                networkData={networkData}
+                currentMetrics={currentMetrics}
+            />
+
             {/* Metrics Cards */}
-            <HospitalNetworkMetrics 
+            <AdditionalHospitalMetrics 
                 networkData={networkData}
                 currentMetrics={currentMetrics}
             />

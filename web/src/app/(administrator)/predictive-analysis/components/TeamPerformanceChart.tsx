@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useMemo } from 'react';
 import { 
   BarChart, 
@@ -49,11 +50,14 @@ const generatePerformanceHistoryData = (teams: IStaffTeam[]): PerformanceData[] 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white/90 dark:bg-slate-800/90 p-4 rounded-xl shadow-lg border border-slate-200/20 dark:border-slate-700/20">
-        <p className="font-medium text-slate-700 dark:text-slate-200 mb-2">
-          Mês: {label}
-        </p>
-        {payload.map((entry: any) => (
+      <div className="bg-slate-100 dark:bg-slate-800/50 rounded-3xl p-6 space-y-6 
+        backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/30 
+        hover:bg-slate-200/70 dark:hover:bg-slate-800/60 
+        transition-all duration-300 ease-in-out">
+          <p className="font-medium text-slate-700 dark:text-slate-200 mb-2">
+            Mês: {label}
+          </p>
+          {payload.map((entry: any) => (
           <div key={entry.dataKey} className="flex justify-between items-center mt-1">
             <div className="flex items-center gap-2">
               <div 
@@ -86,7 +90,7 @@ export const TeamPerformanceChart: React.FC<TeamPerformanceChartProps> = ({ team
   if (teams.length === 0) return null;
 
   return (
-    <div className="bg-slate-900 rounded-3xl p-6 space-y-6">
+    <div className="bg-slate-800 rounded-3xl p-6 space-y-6">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-3">
           <Shield className="w-6 h-6 text-blue-500" />
@@ -97,6 +101,7 @@ export const TeamPerformanceChart: React.FC<TeamPerformanceChartProps> = ({ team
         <span className="text-sm text-slate-400">Últimos 6 meses</span>
       </div>
 
+      {/* Modificação nas barras para efeito de hover */}
       <div className="h-[300px] w-full">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
@@ -122,6 +127,7 @@ export const TeamPerformanceChart: React.FC<TeamPerformanceChartProps> = ({ team
                   '#8B5CF6'
                 }
                 barSize={30}
+                className="hover:opacity-80 transition-opacity duration-300"
               />
             ))}
           </BarChart>

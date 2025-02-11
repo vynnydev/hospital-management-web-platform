@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { Brain } from 'lucide-react';
 import { generateAIRecommendations } from '@/services/AI/aiStaffAnalysis';
@@ -60,14 +61,14 @@ export const MainPredictiveAnalysisContent: React.FC<MainPredictiveAnalysisConte
     const [departments, setDepartments] = useState<IDepartmentMetric[]>([]);
 
     const [selectedHospital, setSelectedHospital] = useState<string | null>(() => {
-        // First, check if user has VIEW_ALL_HOSPITALS permission
-        if (currentUser?.permissions.includes('VIEW_ALL_HOSPITALS')) {
-          // Safely get the first hospital's ID
-          return networkData?.hospitals?.[0]?.id ?? null;
-        }
-        
-        // If not, return the user's hospital ID
-        return currentUser?.hospitalId ?? null;
+      // Primeiro, verifica se o usuário tem permissão para ver todos os hospitais
+      if (currentUser?.permissions.includes('VIEW_ALL_HOSPITALS')) {
+        // Se houver hospitais, seleciona o primeiro
+        return networkData?.hospitals?.[0]?.id ?? null;
+      }
+      
+      // Se não, retorna o hospital do usuário
+      return currentUser?.hospitalId ?? null;
     });
   
     // Update department when hospital changes
@@ -135,6 +136,14 @@ export const MainPredictiveAnalysisContent: React.FC<MainPredictiveAnalysisConte
         const team = currentHospitalTeams[0];
         return transformTeamMemberToExtended(team.leader, team);
     }, [currentHospitalTeams, staffData]);
+
+    // Efeito para atualizar a seleção do hospital quando os dados da rede mudam
+    useEffect(() => {
+      if (!selectedHospital && networkData?.hospitals?.length) {
+        // Se não há hospital selecionado, seleciona o primeiro
+        setSelectedHospital(networkData.hospitals[0].id);
+      }
+    }, [networkData, selectedHospital]);
 
     // Função para renderizar os cards de departamento
     const renderDepartmentCardsWithDifferentIU = () => {
@@ -226,7 +235,11 @@ export const MainPredictiveAnalysisContent: React.FC<MainPredictiveAnalysisConte
         )}
 
         <div className='pt-8'>
-            <AnalysisChartStaffPredictive />
+          <AnalysisChartStaffPredictive 
+            hospitalId={selectedHospital || ''}
+            hospitalName={networkData?.hospitals?.find(h => h.id === selectedHospital)?.name || 'Hospital'}
+            staffTeams={staffData?.staffTeams || {}}
+          />
         </div>
       </div>
     );

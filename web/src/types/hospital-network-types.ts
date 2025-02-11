@@ -246,8 +246,15 @@ export interface IDepartmentMetrics {
   validStatuses: string[];
 }
 
+interface INetworkEfficiency {
+  avgWaitTime: number;
+  bedTurnover: number;
+  resourceUtilization: number;
+}
+
 // Interface principal de métricas do hospital
 export interface IHospitalMetrics {
+  networkEfficiency: INetworkEfficiency;
   capacity: {
     total: {
       maxBeds: number;
@@ -330,6 +337,11 @@ export const initialMetrics: IHospitalMetrics = {
       patients: 0,
       validStatuses: []
     }
+  },
+  networkEfficiency: {
+    avgWaitTime: 0,
+    bedTurnover: 0,
+    resourceUtilization: 0,
   }
 };
 
