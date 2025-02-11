@@ -27,21 +27,55 @@ const getSituationColors = (situation: TSituation) => {
     };
     return colors[situation];
 };
+
+const getStatusMessage = (card: TCardType, value: number): string => {
+    switch (card) {
+        case 'critical-hospital':
+            return value > 85 ? 'Requer Atenção Imediata' : 'Situação Normal';
+        case 'staff':
+            return value > 1 ? 'Atenção' : 'Situação Normal';
+        case 'maintenance':
+            return value > 1 ? 'Requer Atenção Imediata' : 'Situação Normal';
+        case 'waiting':
+            return value > 4 ? 'Atenção' : 'Tempo Dentro do Esperado';
+        default:
+            return 'Status não disponível';
+    }
+};
   
 // Função para determinar o tipo de situação
 const getSituationType = (card: TCardType, value: number): TSituation => {
-    switch (card) {
-      case 'critical-hospital':
-        return value > 85 ? 'critical' : value > 75 ? 'attention' : 'normal';
-      case 'staff':
-        return value > 2 ? 'critical' : value > 1 ? 'attention' : 'normal';
-      case 'maintenance':
-        return value > 2 ? 'critical' : value > 1 ? 'attention' : 'normal';
-      case 'waiting':
-        return value > 4 ? 'critical' : value > 3 ? 'attention' : 'normal';
-      default:
+    const status = getStatusMessage(card, value);
+    
+    if (status === 'Situação Normal' || status === 'Tempo Dentro do Esperado') {
         return 'normal';
     }
+    if (status === 'Requer Atenção Imediata') {
+        return 'critical';
+    }
+    return 'attention';
+};
+
+const getShortHospitalName = (fullName: string | null): string => {
+    if (!fullName) return 'Todos';
+    
+    // Pega o texto após o último hífen e remove espaços extras
+    const location = fullName.split('-').pop()?.trim();
+    return location || 'Todos';
+};
+
+const getFormattedHospitalName = (fullName: string | null, region: string |  null): string => {
+    if (!fullName) return 'Todos';
+    
+    // Pega o texto após o último hífen e remove espaços extras
+    const location = fullName.split('-').pop()?.trim();
+    
+    // Se não for "all", adiciona o estado
+    if (region && region !== 'all') {
+        return `${location} - ${region}`;
+    }
+    
+    return location || 'Todos';
 };
 
 // Definição das propriedades do componente
@@ -52,7 +86,8 @@ interface MainHospitalAlertMetricsProps {
       totalPatients: number;
       averageOccupancy: number;
     };
-    selectedRegion?: string;
+    selectedRegion: string | null;
+    selectedHospital: string | null,
     
     // Propriedades opcionais para personalização
     criticalOccupancyThreshold?: number;
@@ -77,6 +112,7 @@ export const MainHospitalAlertMetrics: React.FC<MainHospitalAlertMetricsProps> =
     networkData,
     currentMetrics,
     selectedRegion,
+    selectedHospital,
     criticalOccupancyThreshold = 90,
     staffingNormsThreshold = 0.6,
     emergencyWaitTimeThreshold = 4
@@ -109,21 +145,6 @@ export const MainHospitalAlertMetrics: React.FC<MainHospitalAlertMetricsProps> =
     };
 
     const alertMetrics = calculateAlertMetrics();
-
-    const getStatusMessage = (card: TCardType, value: number): string => {
-        switch (card) {
-            case 'critical-hospital':
-                return value > 85 ? 'Situação Crítica' : 'Situação Normal';
-            case 'staff':
-                return value > 1 ? 'Requer Atenção' : 'Situação Normal';
-            case 'maintenance':
-                return value > 1 ? 'Requer Atenção Imediata' : 'Manutenção em Dia';
-            case 'waiting':
-                return value > 4 ? 'Tempo Acima do Esperado' : 'Tempo Dentro do Esperado';
-            default:
-                return 'Status não disponível';
-        }
-    };
 
     const getAnalysisMessage = (card: TCardType, value: number): string => {
         switch (card) {
@@ -212,7 +233,7 @@ export const MainHospitalAlertMetrics: React.FC<MainHospitalAlertMetricsProps> =
                         </div>
                         <div className="px-2 py-1 rounded-lg bg-white/10 dark:bg-gray-800/40 backdrop-blur-sm">
                             <span className="text-xs font-medium text-gray-600 dark:text-gray-300">
-                                Todos
+                                {getFormattedHospitalName(selectedHospital, selectedRegion)}
                             </span>
                         </div>
                     </div>

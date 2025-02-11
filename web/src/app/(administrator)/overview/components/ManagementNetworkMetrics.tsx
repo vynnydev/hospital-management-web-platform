@@ -178,40 +178,45 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
                     </span>
                   </Button>
 
-                {canChangeRegion && (
-                  <div className="relative">
-                    <Select value={selectedRegion} onValueChange={setSelectedRegion}>
-                      <SelectTrigger className="w-64 bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600">
-                        <div className="flex items-center space-x-2">
-                          <Map size={18} className="text-gray-500 dark:text-gray-400" />
-                          <SelectValue placeholder="Selecione a região" />
-                        </div>
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">
+                  {canChangeRegion && (
+                    <div className="relative">
+                      <Select value={selectedRegion} onValueChange={setSelectedRegion}>
+                        <SelectTrigger className="w-64 bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600">
                           <div className="flex items-center space-x-2">
-                            <Users size={18} className="text-gray-500 dark:text-gray-400" />
-                            <span>Todas Regiões</span>
+                            <Map size={18} className="text-gray-500 dark:text-gray-400" />
+                            <SelectValue placeholder="Selecione a região" />
                           </div>
-                        </SelectItem>
-                        {regions.map(region => (
-                          <SelectItem key={region} value={region} className='bg-gray-200 dark:bg-gray-700'>
+                        </SelectTrigger>
+                        <SelectContent>
+                          {/* Item para todas as regiões */}
+                          <SelectItem value="all">
                             <div className="flex items-center space-x-2">
-                              <Map size={18} className="text-gray-500 dark:text-gray-400" />
-                              <span>{region}</span>
+                              <Users size={18} className="text-gray-500 dark:text-gray-400" />
+                              <span>Todas as Regiões</span>
                             </div>
                           </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                )}
+
+                          {/* Lista de regiões com estados */}
+                          {regions.map(region => (
+                            <SelectItem key={region} value={region} className='bg-gray-200 dark:bg-gray-700'>
+                              <div className="flex items-center space-x-2">
+                                <Map size={18} className="text-gray-500 dark:text-gray-400" />
+                                <span>Unidades - {region}</span>
+                              </div>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
               </div>
             </div>
 
             <MainHospitalAlertMetrics 
                 networkData={networkData}
                 currentMetrics={currentMetrics}
+                selectedHospital={selectedHospital}
+                selectedRegion={selectedRegion}
             />
 
             {/* Metrics Cards */}
