@@ -13,7 +13,8 @@ import {
   AlertTriangle,
   GraduationCap,
   Users2,
-  LucideIcon
+  LucideIcon,
+  AlertCircle
 } from 'lucide-react';
 import { INetworkData } from '@/types/hospital-network-types';
 
@@ -59,44 +60,62 @@ interface ICalculatedMetrics {
   departmentPatientVariation: number;
 }
 
-const getCardGradient = (cardType: TCardType): string => {
-  const gradients: Record<TCardType, string> = {
-    'hospital-critico': 'from-red-400/20 to-rose-500/20 dark:from-red-500/20 dark:to-rose-600/20',
-    'burnout': 'from-orange-400/20 to-amber-500/20 dark:from-orange-500/20 dark:to-amber-600/20',
-    'manutencao': 'from-blue-400/20 to-indigo-500/20 dark:from-blue-500/20 dark:to-indigo-600/20',
-    'taxa-giro': 'from-cyan-400/20 to-sky-500/20 dark:from-cyan-500/20 dark:to-sky-600/20',
-    'eficiencia': 'from-emerald-400/20 to-green-500/20 dark:from-emerald-500/20 dark:to-green-600/20',
-    'ocupacao': 'from-violet-400/20 to-purple-500/20 dark:from-violet-500/20 dark:to-purple-600/20',
-    'variacao': 'from-fuchsia-400/20 to-pink-500/20 dark:from-fuchsia-500/20 dark:to-pink-600/20',
-    'treinamento': 'from-teal-400/20 to-cyan-500/20 dark:from-teal-500/20 dark:to-cyan-600/20'
+// Funções auxiliares para status e cores
+const getStatusColor = (cardType: TCardType) => {
+  const colors = {
+    'hospital-critico': 'bg-[#4A5043]',  // Verde oliva escuro para normal
+    'burnout': 'bg-[#4A5043]',
+    'manutencao': 'bg-[#564343]',        // Marrom avermelhado para atenção
+    'taxa-giro': 'bg-[#4A5043]',
+    'eficiencia': 'bg-[#4A5043]',
+    'ocupacao': 'bg-[#4A5043]',
+    'variacao': 'bg-[#4A5043]',
+    'treinamento': 'bg-[#4A5043]'
   };
-  return gradients[cardType] || 'from-gray-400/20 to-gray-500/20';
+  return colors[cardType] || 'bg-[#4A5043]';
 };
 
-const getProgressWidth = (value: string | number, target: number): number => {
-  let numericValue: number;
-  
-  // Se o valor é uma string com %
-  if (typeof value === 'string' && value.includes('%')) {
-    numericValue = parseFloat(value.replace('%', ''));
-  } 
-  // Se é um número
-  else if (typeof value === 'number') {
-    numericValue = value;
-  }
-  // Fallback para string sem %
-  else {
-    numericValue = parseFloat(value as string);
-  }
+const getStatusMessage = (cardType: TCardType) => {
+  // Adapte com base nas regras de negócio específicas
+  const messages = {
+    'hospital-critico': 'Situação Normal',
+    'burnout': 'Situação Normal',
+    'manutencao': 'Requer Atenção Imediata',
+    'taxa-giro': 'Tempo Dentro do Esperado',
+    'eficiencia': 'Situação Normal',
+    'ocupacao': 'Situação Normal',
+    'variacao': 'Situação Normal',
+    'treinamento': 'Situação Normal'
+  };
+  return messages[cardType];
+};
 
-  // Se o valor é inválido, retorna 0
-  if (isNaN(numericValue)) return 0;
-  
-  // Calcula a porcentagem em relação à meta
-  const percentage = (numericValue / target) * 100;
-  
-  // Limita entre 0 e 100
-  return Math.min(100, Math.max(0, percentage));
+const getAnalysisMessage = (cardType: TCardType) => {
+  const messages = {
+    'hospital-critico': 'Taxa de ocupação dentro dos parâmetros esperados. Margem segura na gestão de leitos mantida.',
+    'burnout': 'Taxa de ocupação 1% menor que a média da rede. UTI requer atenção com média acima do esperado.',
+    'manutencao': 'Alta eficiência na gestão de leitos. Média de 42 altas/dia indica ótimo fluxo de pacientes.',
+    'taxa-giro': '2º lugar na rede com 85% de eficiência. Melhor resultado dos últimos 6 meses.',
+    'eficiencia': 'Performance acima da média da rede. Crescimento constante nos últimos 3 meses.',
+    'ocupacao': 'Ocupação dentro da meta estabelecida. Distribuição equilibrada entre departamentos.',
+    'variacao': 'Variação aceitável entre departamentos. UTI e Enfermaria com fluxos equilibrados.',
+    'treinamento': 'Meta de capacitação superada. Equipes com alto índice de participação nos treinamentos.'
+  };
+  return messages[cardType];
+};
+
+const getCardGradient = (cardType: TCardType): string => {
+  const gradients: Record<TCardType, string> = {
+    'hospital-critico': 'from-[#3D2A2A] to-[#2D1F1F]', // Tons de vermelho escuro
+    'burnout': 'from-[#3D3426] to-[#2D271F]',          // Tons de marrom
+    'manutencao': 'from-[#2A2F3D] to-[#1F222D]',      // Tons de azul escuro
+    'taxa-giro': 'from-[#2A323D] to-[#1F242D]',       // Tons de azul petróleo
+    'eficiencia': 'from-[#2A3D2E] to-[#1F2D22]',      // Tons de verde escuro
+    'ocupacao': 'from-[#2E2A3D] to-[#221F2D]',        // Tons de roxo escuro
+    'variacao': 'from-[#3D2A3A] to-[#2D1F2A]',        // Tons de rosa escuro
+    'treinamento': 'from-[#2A3D3D] to-[#1F2D2D]'      // Tons de teal escuro
+  };
+  return gradients[cardType] || 'from-gray-800 to-gray-900'; // Fallback
 };
 
 const MetricCard: React.FC<IMetricCardProps> = ({ 
@@ -106,7 +125,6 @@ const MetricCard: React.FC<IMetricCardProps> = ({
   color, 
   icon: Icon,
   trend, 
-  target,
   additionalInfo,
   selectedHospital,
   valueSize = 'normal',
@@ -115,95 +133,75 @@ const MetricCard: React.FC<IMetricCardProps> = ({
   <div className={`
     relative overflow-hidden
     bg-gradient-to-br ${getCardGradient(cardType)}
-    rounded-3xl p-6 shadow-lg backdrop-blur-sm
-    dark:border-${color}-800/20
-    hover:shadow-xl transition-all duration-300
+    rounded-3xl p-6
+    flex flex-col min-h-[280px]
   `}>
-    {/* Efeito de brilho no canto superior */}
-    <div className={`absolute -top-10 -right-10 w-20 h-20 bg-${color}-500/10 rounded-full blur-xl`} />
-    
-    <div className="flex justify-between items-start mb-5">
+    {/* Header */}
+    <div className="flex justify-between items-start mb-6">
       <div className="flex items-center space-x-3">
-        <div className={`
-          p-2 rounded-xl bg-${color}-100/30 dark:bg-${color}-900/30
-          backdrop-blur-sm
-        `}>
-          <Icon className={`text-${color}-600 dark:text-${color}-400`} size={20} />
+        <div className="p-2 rounded-xl bg-black/10">
+          <Icon className="text-white" size={20} />
         </div>
-        <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+        <h3 className="text-lg font-semibold text-white">
           {title}
         </h3>
       </div>
-      <div className="px-2 py-1 rounded-lg bg-white/10 dark:bg-gray-800/40 backdrop-blur-sm">
-        <span className="text-xs font-medium text-gray-600 dark:text-gray-300 truncate max-w-[100px] block">
+      <div className="px-2 py-1 rounded-lg bg-black/10">
+        <span className="text-xs font-medium text-white/80">
           {selectedHospital || 'Todos'}
         </span>
       </div>
     </div>
 
-    <div className={`
-      bg-${color}-100/30 dark:bg-${color}-900/30 
-      rounded-2xl p-4 backdrop-blur-sm
-    `}>
-      <div className="flex flex-col">
-        <div className="flex justify-between items-center mb-2">
-          <div>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
-              {subtitle}
-            </p>
-            <div className="flex items-baseline gap-2">
-              <h2 className={`
-                font-bold text-gray-900 dark:text-white
-                ${valueSize === 'small' ? 'text-xl' : 'text-3xl'}
-              `}>
-                {value}
-              </h2>
-              {trend && (
-                <div className={`
-                  flex items-center text-sm font-medium
-                  ${trend > 0 
-                    ? 'text-green-600 dark:text-green-400' 
-                    : 'text-red-600 dark:text-red-400'}
-                `}>
-                  {trend > 0 ? <ArrowUp size={16} /> : <ArrowDown size={16} />}
-                  <span>{Math.abs(trend)}%</span>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {target && (
-          <div className="mt-3">
-            <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
-              <span>0</span>
-              <span>Meta: {target}</span>
-              <span>100%</span>
-            </div>
-            <div className="h-1.5 bg-gray-200/50 dark:bg-gray-700/50 rounded-full overflow-hidden">
-              <div 
-                className={`h-full bg-${color}-500/70 rounded-full transition-all duration-500`}
-                style={{ width: `${getProgressWidth(value, target)}%` }}
-              />
-            </div>
-          </div>
-        )}
-
-        {additionalInfo && (
-          <div className="mt-4 pt-4 border-t border-gray-200/50 dark:border-gray-700/50">
-            <div className="flex justify-between">
-              <div>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {additionalInfo.label}
-                </p>
-                <p className="text-base font-semibold text-gray-800 dark:text-gray-200 mt-1">
-                  {additionalInfo.value}
-                </p>
-              </div>
-            </div>
+    {/* Conteúdo Principal */}
+    <div className="space-y-2 mb-6 bg-white/60 dark:bg-gray-800/40 rounded-2xl p-4 backdrop-blur-md">
+      <p className="text-sm text-gray-300">
+        {subtitle}
+      </p>
+      <div className="flex items-baseline gap-2">
+        <h2 className={`
+          font-bold text-white
+          ${valueSize === 'small' ? 'text-xl' : 'text-3xl'}
+        `}>
+          {value}
+        </h2>
+        {trend && (
+          <div className={`
+            flex items-center text-sm font-medium
+            ${trend > 0 ? 'text-green-400' : 'text-red-400'}
+          `}>
+            {trend > 0 ? <ArrowUp size={16} /> : <ArrowDown size={16} />}
+            <span>{Math.abs(trend)}%</span>
           </div>
         )}
       </div>
+      {additionalInfo && (
+        <p className="text-sm text-gray-300">
+          {additionalInfo.label}: {additionalInfo.value}
+        </p>
+      )}
+    </div>
+
+    {/* Análise Comparativa */}
+    <div className="mt-auto mb-6 bg-white/60 dark:bg-gray-800/40 rounded-2xl p-4 backdrop-blur-md">
+      <p className="text-sm font-medium text-white mb-2">
+        Análise comparativa
+      </p>
+      <p className="text-sm text-gray-300">
+        {getAnalysisMessage(cardType)}
+      </p>
+    </div>
+
+    {/* Status */}
+    <div className={`
+      ${getStatusColor(cardType)}
+      rounded-xl py-2 px-4
+      flex items-center
+    `}>
+      <AlertCircle className="w-4 h-4 mr-2 text-white" />
+      <span className="text-sm font-medium text-white">
+        {getStatusMessage(cardType)}
+      </span>
     </div>
   </div>
 );
@@ -376,17 +374,51 @@ export const AdditionalHospitalMetrics: React.FC<IMetricsProps> = ({
 
   return (
     <div className="mt-8">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200">
-          Métricas do Hospital
-        </h2>
-        <button 
-          onClick={() => setExpandedMetrics(!expandedMetrics)}
-          className="flex items-center gap-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
-        >
-          {expandedMetrics ? 'Ocultar' : 'Mostrar'} Métricas
-          {expandedMetrics ? <ChevronUp /> : <ChevronDown />}
-        </button>
+      <div className="flex justify-between items-center mt-8 mb-8 bg-gray-900/40 backdrop-blur-sm rounded-2xl p-4 border border-gray-700/30 hover:bg-gray-800/40 transition-all duration-200">
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-xl bg-blue-500/10 dark:bg-blue-900/30">
+              <Activity className="w-5 h-5 text-blue-500 dark:text-blue-400" />
+            </div>
+            <h2 className="text-xl font-semibold bg-gradient-to-r from-gray-100 to-gray-300 dark:from-gray-100 dark:to-blue-200 bg-clip-text text-transparent">
+              Métricas do Hospital
+            </h2>
+          </div>
+          {/* Mensagem sempre visível e maior */}
+          <p className="text-base text-gray-400 ml-10">
+            Clique para {expandedMetrics ? 'ocultar' : 'visualizar'} todas as métricas
+          </p>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <div className={`
+            w-2 h-2 rounded-full
+            ${expandedMetrics ? 'bg-green-500' : 'bg-blue-500'}
+            animate-pulse
+          `} />
+          
+          <button 
+            onClick={() => setExpandedMetrics(!expandedMetrics)}
+            className="
+              flex items-center gap-2 px-4 py-2
+              bg-gray-800/40 hover:bg-gray-700/40
+              dark:bg-gray-800/40 dark:hover:bg-gray-700/40
+              rounded-xl transition-all duration-200
+              border border-gray-700/30
+            "
+          >
+            <span className="text-sm font-medium text-gray-300 group-hover:text-white transition-colors">
+              {expandedMetrics ? 'Ocultar' : 'Mostrar'} Métricas
+            </span>
+            <div className="w-5 h-5 rounded-full bg-gray-700/50 flex items-center justify-center">
+              {expandedMetrics ? (
+                <ChevronUp className="w-4 h-4 text-gray-300 group-hover:text-white transition-colors" />
+              ) : (
+                <ChevronDown className="w-4 h-4 text-gray-300 group-hover:text-white transition-colors" />
+              )}
+            </div>
+          </button>
+        </div>
       </div>
 
       {expandedMetrics && (

@@ -193,10 +193,10 @@ export const MainHospitalAlertMetrics: React.FC<MainHospitalAlertMetricsProps> =
             {alertCards.map((card, index) => (
                 <div key={index} className={`
                     relative overflow-hidden
+                    flex flex-col min-h-[280px]
                     bg-gradient-to-br ${card.gradient}
                     rounded-3xl p-6 shadow-lg backdrop-blur-sm
-                    border border-${card.severity === "high" ? "red" : "gray"}-100/20 
-                    dark:border-${card.severity === "high" ? "red" : "gray"}-800/20
+                    ${card.severity === "high" ? "border border-red-100/20 dark:border-red-800/20" : ""}
                     hover:shadow-xl transition-all duration-300
                 `}>
                     {/* Header do Card */}
@@ -218,7 +218,7 @@ export const MainHospitalAlertMetrics: React.FC<MainHospitalAlertMetricsProps> =
                     </div>
 
                     {/* Conteúdo Principal */}
-                    <div className="bg-white/60 dark:bg-gray-800/60 rounded-2xl p-4 backdrop-blur-sm">
+                    <div className="space-y-2 mb-6 bg-white/60 dark:bg-gray-800/60 rounded-2xl p-4 backdrop-blur-sm">
                         <div className="flex flex-col">
                             <p className="text-sm text-gray-500 dark:text-gray-400">
                                 {card.subtitle}
@@ -234,15 +234,13 @@ export const MainHospitalAlertMetrics: React.FC<MainHospitalAlertMetricsProps> =
                     </div>
 
                     {/* Análise Comparativa */}
-                    <div className="bg-white/10 dark:bg-gray-800/40 rounded-2xl p-4 mt-4 backdrop-blur-sm mb-4">
-                        <div className="flex flex-col">
-                            <p className="text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">
-                                Análise comparativa
-                            </p>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">
-                                {getAnalysisMessage(card.cardType, typeof card.value === 'number' ? card.value : 0)}
-                            </p>
-                        </div>
+                    <div className="mt-auto bg-black/20 dark:bg-gray-800/60 rounded-2xl p-4 my-4 backdrop-blur-sm">
+                        <p className="text-sm font-medium text-white mb-2">
+                            Análise comparativa
+                        </p>
+                        <p className="text-sm text-gray-300">
+                            {getAnalysisMessage(card.cardType, typeof card.value === 'number' ? card.value : 0)}
+                        </p>
                     </div>
 
                     {/* Status/Situação */}
