@@ -27,7 +27,7 @@ import { IHospital, INetworkData } from '@/types/hospital-network-types';
 import { IntegrationsPreviewPressable } from '@/components/ui/organisms/IntegrationsPreviewPressable';
 import { ConfigurationAndUserModalMenus } from '@/components/ui/templates/modals/ConfigurationAndUserModalMenus';
 import { DashboardModeModalOptions } from '@/components/ui/templates/modals/DashboardModeModalOptions';
-import { FullscreenModeModal } from '@/components/ui/templates/modals/FullscreenModeModal';
+import { FullscreenModeModalForOverviewPage } from '@/components/ui/templates/modals/FullscreenModeModalForOverviewPage';
 import { MainHospitalAlertMetrics } from './MainHospitalAlertMetrics';
 
 interface IHospitalMetrics {
@@ -234,7 +234,7 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
         onSelectMode={handleModeSelection}
       />
 
-      <FullscreenModeModal
+      <FullscreenModeModalForOverviewPage
         isOpen={isFullscreenMode}
         onClose={() => setIsFullscreenMode(false)}
 

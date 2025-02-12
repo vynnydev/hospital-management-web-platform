@@ -13,7 +13,7 @@ interface ICurrentMetrics {
 }
   
 
-interface FullscreenModeModalProps {
+interface FullscreenModeModalForOverviewPageProps {
     isOpen: boolean;
     onClose: () => void;
 
@@ -38,7 +38,7 @@ interface FullscreenModeModalProps {
     setSelectedHospital: React.Dispatch<React.SetStateAction<string | null>>
 }
 
-export const FullscreenModeModal: React.FC<FullscreenModeModalProps> = ({
+export const FullscreenModeModalForOverviewPage: React.FC<FullscreenModeModalForOverviewPageProps> = ({
   isOpen,
   onClose,
 
