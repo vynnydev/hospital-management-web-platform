@@ -3,14 +3,14 @@
 import React, { useState } from 'react';
 import { MediMindAIAssistant } from '@/components/ui/medimind-ai-assistant/MediMindAIAssistant';
 
-const SettingsPage: React.FC = () => {
+const HealthDigitalSupportPage: React.FC = () => {
   return (
     <div className="px-4 mb-8">
-      <div>Configurações</div>
+      <div>Atendimento digital de Saúde</div>
 
       <MediMindAIAssistant />
     </div>
   );
 };
 
-export default SettingsPage;
+export default HealthDigitalSupportPage;

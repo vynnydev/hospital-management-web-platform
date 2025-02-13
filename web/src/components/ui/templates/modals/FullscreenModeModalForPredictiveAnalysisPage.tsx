@@ -14,7 +14,7 @@ import { StaffPredictiveAnalysis } from '@/app/(administrator)/predictive-analys
 import { TeamAnalyticsBoard } from '@/app/(administrator)/predictive-analysis/components/TeamAnalyticsBoard';
 import { AnalysisChartStaffPredictive } from '@/app/(administrator)/predictive-analysis/components/AnalysisChartStaffPredictive';
 import { RepositionActionsBar } from '../RepositionActionsBar';
-import { Button } from '../../organisms/button';
+import { Button } from '@/components/ui/organisms/button';
 import { ReorderableSectionsInPredictiveAnalysisPage } from '../ReorderableSectionsInPredictiveAnalysisPage';
 
 interface IDepartmentMetric {
@@ -191,62 +191,24 @@ export const FullscreenModeModalInPredictiveAnalysisPage: React.FC<FullscreenMod
                   />
                 ) : (
                   <>
-                    {/* Departamentos */}
-                    <div className="w-full bg-gray-50/50 dark:bg-gray-900/50 rounded-xl shadow-lg overflow-hidden">
-                      <div className="p-6">
-                        <DepartmentAreaCardsWithDifferentUI
-                          departments={departments}
-                          onClick={onDepartmentSelect}
-                          selectedArea={selectedDepartment}
-                          loading={loading}
-                          error={error}
-                        />
-                      </div>
-                    </div>
-    
-                    {/* Análise Preditiva */}
-                    {staffData && selectedHospital && (
-                      <StaffPredictiveAnalysis 
-                        hospitalId={selectedHospital}
-                        selectedDepartment={selectedDepartment}
-                        staffTeams={staffData.staffTeams}
-                      />
-                    )}
-    
-                    {/* Hospital Network */}
-                    {networkData?.hospitals && (
-                      <HospitalNetworkComponentWithDifferenteUI
-                        networkInfo={networkData?.networkInfo}
-                        hospitals={networkData?.hospitals}
+                    <div className='p-4'>                      
+                      <ReorderableSectionsInPredictiveAnalysisPage
+                        networkData={networkData}
                         currentUser={currentUser}
-                        onHospitalSelect={onHospitalSelect}
-                        onDepartmentSelect={setSelectedDepartment}
-                        selectedHospital={selectedHospital}
+                        staffData={staffData}
                         selectedDepartment={selectedDepartment}
+                        selectedHospital={selectedHospital}
+                        departments={departments}
+                        currentHospitalTeams={currentHospitalTeams}
+                        onDepartmentSelect={onDepartmentSelect}
+                        onHospitalSelect={onHospitalSelect}
+                        setSelectedDepartment={setSelectedDepartment}
                         loading={loading}
                         error={error}
+                        isReorderMode={isReorderMode}
+                        onSectionsOrderChange={setCurrentSectionsOrder}
                       />
-                    )}
-    
-                    {/* Team Analytics */}
-                    {currentHospitalTeams && currentHospitalTeams.length > 0 && (
-                      <div className='pt-8'>
-                        <TeamAnalyticsBoard 
-                          teams={currentHospitalTeams}
-                          department={selectedDepartment}
-                          onTeamSelect={() => {}} // Simplificado para modo TV
-                        />
-                      </div>
-                    )}
-    
-                    {/* Analysis Chart */}
-                    <div className='pt-8'>
-                      <AnalysisChartStaffPredictive 
-                        hospitalId={selectedHospital || ''}
-                        hospitalName={networkData?.hospitals?.find(h => h.id === selectedHospital)?.name || 'Hospital'}
-                        staffTeams={staffData?.staffTeams || {}}
-                      />
-                    </div>
+                    </div>                  
                   </>
                 )}
               </div>

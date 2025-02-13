@@ -26,8 +26,6 @@ import { AdditionalHospitalMetrics } from './AdditionalHospitalMetrics';
 import { IHospital, INetworkData } from '@/types/hospital-network-types';
 import { IntegrationsPreviewPressable } from '@/components/ui/organisms/IntegrationsPreviewPressable';
 import { ConfigurationAndUserModalMenus } from '@/components/ui/templates/modals/ConfigurationAndUserModalMenus';
-import { DashboardModeModalOptions } from '@/components/ui/templates/modals/DashboardModeModalOptions';
-import { FullscreenModeModalForOverviewPage } from '@/components/ui/templates/modals/FullscreenModeModalForOverviewPage';
 import { MainHospitalAlertMetrics } from './MainHospitalAlertMetrics';
 
 interface IHospitalMetrics {
@@ -92,12 +90,9 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
   isReorderMode,
   setIsReorderMode
 }) => {
-  const [isIntegrationsOpen, setIsIntegrationsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [defaultSection, setDefaultSection] = useState<string>('integrations');
-  const [isDashboardModeModalOpen, setIsDashboardModeModalOpen] = useState(false);
-  const [isFullscreenMode, setIsFullscreenMode] = useState(false);
   
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -114,18 +109,6 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
       return acc;
     }, [] as string[]);
   }, [networkData?.hospitals]);
-
-  const handleModeSelection = (mode: 'fullscreen' | 'reposition') => {
-    setIsDashboardModeModalOpen(false);
-    
-    if (mode === 'fullscreen') {
-      setIsFullscreenMode(true);
-      setDisplayMode('tv');
-    } else if (mode === 'reposition') {
-      // Ativa o modo de reposicionamento
-      setIsReorderMode?.(true);
-    }
-  };
 
   return (
     <>    
@@ -156,27 +139,6 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
               </div>
               
               <div className="flex items-center space-x-4">
-                {/* Display Mode Toggle Button */}
-                <Button
-                    onClick={() => setIsDashboardModeModalOpen(true)}
-                    variant="outline"
-                    size="default"
-                    className={`
-                      flex items-center space-x-2 
-                      ${isReorderMode 
-                        ? 'bg-blue-50 hover:bg-blue-100 border-blue-200 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 dark:border-blue-800' 
-                        : 'bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 border-gray-200 dark:border-gray-600'}
-                      transition-all duration-200
-                    `}
-                  >
-                    <LayoutGrid 
-                      size={18} 
-                      className={isReorderMode ? "text-blue-500" : "text-gray-500 dark:text-gray-400"} 
-                    />
-                    <span className={isReorderMode ? "text-blue-600" : ""}>
-                      {isReorderMode ? 'Modo Reposição' : 'Modo Dashboard'}
-                    </span>
-                  </Button>
 
                   {canChangeRegion && (
                     <div className="relative">
@@ -227,36 +189,6 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
           </div>
         </CardContent>
       </Card>
-
-      <DashboardModeModalOptions
-        isOpen={isDashboardModeModalOpen}
-        onClose={() => setIsDashboardModeModalOpen(false)}
-        onSelectMode={handleModeSelection}
-      />
-
-      <FullscreenModeModalForOverviewPage
-        isOpen={isFullscreenMode}
-        onClose={() => setIsFullscreenMode(false)}
-
-        // IManagementNetworkMetricsProps
-        networkData={networkData}
-        filteredHospitals={filteredHospitals}
-        selectedRegion={selectedRegion}
-        setSelectedRegion={setSelectedRegion}
-        setDisplayMode={setDisplayMode}
-        displayMode={displayMode}
-        currentMetrics={currentMetrics}
-        canChangeRegion={canChangeRegion}
-
-        // DepartmentStatus
-        selectedHospital={selectedHospital}
-        getStatusColor={getStatusColor}
-
-        // Analitics
-        getFilteredHospitals={getFilteredHospitals}
-
-        setSelectedHospital={setSelectedHospital}
-      />
     </>
   );
 };

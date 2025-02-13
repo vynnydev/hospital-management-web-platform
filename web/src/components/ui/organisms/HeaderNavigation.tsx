@@ -20,7 +20,7 @@ const routes = [
         label: 'Visão geral',
     },
     {
-        href: '/digital-patient-support',
+        href: '/health-digital-support',
         label: 'Atendimento Digital',
     },
     {

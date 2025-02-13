@@ -223,26 +223,28 @@ export const MainPredictiveAnalysisContent: React.FC<MainPredictiveAnalysisConte
                 </div>
 
                 {/* Display Mode Toggle Button */}
-                <Button
-                    onClick={() => setIsDashboardModeModalOpen(true)}
-                    variant="outline"
-                    size="default"
-                    className={`
-                      flex items-center space-x-2 
-                      ${isReorderMode 
-                        ? 'bg-blue-50 hover:bg-blue-100 border-blue-200 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 dark:border-blue-800' 
-                        : 'bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 border-gray-200 dark:border-gray-600'}
-                      transition-all duration-200
-                    `}
-                  >
-                    <LayoutGrid 
-                      size={18} 
-                      className={isReorderMode ? "text-blue-500" : "text-gray-500 dark:text-gray-400"} 
-                    />
-                    <span className={isReorderMode ? "text-blue-600" : ""}>
-                      {isReorderMode ? 'Modo Reposição' : 'Modo Dashboard'}
-                    </span>
-                </Button>
+                <div className='p-1 bg-gradient-to-r from-blue-700/90 to-cyan-700/90 rounded-xl'>
+                  <Button
+                      onClick={() => setIsDashboardModeModalOpen(true)}
+                      variant="outline"
+                      size="default"
+                      className={`
+                        flex items-center space-x-2 
+                        ${isReorderMode 
+                          ? 'bg-blue-50 hover:bg-blue-100 border-blue-200 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 dark:border-blue-800' 
+                          : 'bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 border-gray-200 dark:border-gray-600'}
+                        transition-all duration-200
+                      `}
+                    >
+                      <LayoutGrid 
+                        size={18} 
+                        className={isReorderMode ? "text-blue-500" : "text-gray-500 dark:text-gray-400"} 
+                      />
+                      <span className={isReorderMode ? "text-blue-600" : ""}>
+                        {isReorderMode ? 'Modo Reposição' : 'Modo Dashboard'}
+                      </span>
+                  </Button>
+                </div>
               </div>
         
               {/* Conteúdo reordenável ou normal */}

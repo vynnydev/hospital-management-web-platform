@@ -18,24 +18,43 @@ import { MessageCenter } from './components/MessageCenter';
 import { FlowEditor } from './components/workflow/FlowEditor';
 import { RepositionActionsBar } from '@/components/ui/templates/RepositionActionsBar';
 import { IAppUser } from '@/types/auth-types';
+import { Button } from '@/components/ui/organisms/button';
+import { LayoutGrid } from 'lucide-react';
+import { DashboardModeModalOptions } from '@/components/ui/templates/modals/DashboardModeModalOptions';
+import { FullscreenModeModalForOverviewPage } from '@/components/ui/templates/modals/FullscreenModeModalForOverviewPage';
 
 const Overview: React.FC = () => {
   const { networkData, currentUser, setNetworkData, loading, error } = useNetworkData();
   const [selectedHospital, setSelectedHospital] = useState<string | null>(null);
   const [selectedRegion, setSelectedRegion] = useState<string>('all');
   const [displayMode, setDisplayMode] = useState<'dashboard' | 'tv'>('dashboard');
-  const [isReorderMode, setIsReorderMode] = useState<boolean>(false);
-
-
+  
   // Props para o MessageCenter
   const [selectedMessageUsers, setSelectedMessageUsers] = useState<IAppUser[]>([]);
   const [showMessageUserDropdown, setShowMessageUserDropdown] = useState(false);
   const [messageUserSearchQuery, setMessageUserSearchQuery] = useState('');
   const [filteredMessageUsers, setFilteredMessageUsers] = useState<IAppUser[]>([]);
-
+  
   // Para salvar o estado da funcionalidade de reposicionamento dos componentes
   const [initialSectionsOrder, setInitialSectionsOrder] = useState<string[]>(['metrics', 'departments', 'flow']);
   const [currentSectionsOrder, setCurrentSectionsOrder] = useState<string[]>(['metrics', 'departments', 'flow']);
+    
+  // Estado para controlar o modal de funcionalidade de reorganização de componentes e do modo tv
+  const [isDashboardModeModalOpen, setIsDashboardModeModalOpen] = useState(false);
+  const [isFullscreenMode, setIsFullscreenMode] = useState(false);
+  const [isReorderMode, setIsReorderMode] = useState<boolean>(false);
+  
+  const handleModeSelection = (mode: 'fullscreen' | 'reposition') => {
+    setIsDashboardModeModalOpen(false);
+    
+    if (mode === 'fullscreen') {
+      setIsFullscreenMode(true);
+      setDisplayMode('tv');
+    } else if (mode === 'reposition') {
+      // Ativa o modo de reposicionamento
+      setIsReorderMode?.(true);
+    }
+  };
 
   const handleSaveLayout = () => {
     // Salva a ordem atual como a nova ordem inicial
@@ -193,6 +212,7 @@ const Overview: React.FC = () => {
         currentSectionsOrder={currentSectionsOrder}
       />
 
+
       {isReorderMode ? (
         <ReorderableSectionsInOverviewPage
           networkData={networkData}
@@ -213,81 +233,139 @@ const Overview: React.FC = () => {
           onSectionsOrderChange={setCurrentSectionsOrder}
         />
       ) : (
-        <div className="space-y-20 p-6 -mt-20 rounded-md">
-          <div className='pt-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md'>
-            <div className='p-4 bg-gray-800 rounded-md'>
-              <ManagementNetworkMetrics 
-                networkData={networkData}
-                filteredHospitals={filteredHospitals}
-                selectedRegion={selectedRegion}
-                setSelectedRegion={setSelectedRegion}
-                setDisplayMode={setDisplayMode}
-                displayMode={displayMode}
-                currentMetrics={currentMetrics}
-                canChangeRegion={canChangeRegion}
-                selectedHospital={selectedHospital}
-                getStatusColor={getStatusColor}
-                getFilteredHospitals={getFilteredHospitals}
-                setSelectedHospital={setSelectedHospital}
-                isReorderMode={isReorderMode}
-                setIsReorderMode={setIsReorderMode}
+        <>
+          {/* Display Mode Toggle Button */}
+          <div className='flex justify-center justify-self-end px-16 mr-16 -mt-32 p-1 bg-gradient-to-r from-blue-700/90 to-cyan-700/90 rounded-xl w-48'>
+            <Button
+              onClick={() => setIsDashboardModeModalOpen(true)}
+              variant="outline"
+              size="default"
+              className={`
+                flex items-center space-x-2 
+                ${isReorderMode 
+                  ? 'bg-blue-50 hover:bg-blue-100 border-blue-200 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 dark:border-blue-800' 
+                  : 'bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 border-gray-200 dark:border-gray-600'}
+                transition-all duration-200
+              `}
+            >
+              <LayoutGrid 
+                size={18} 
+                className={isReorderMode ? "text-blue-500" : "text-gray-500 dark:text-gray-400"} 
               />
-            </div>
+              <span className={isReorderMode ? "text-blue-600" : ""}>
+                {isReorderMode ? 'Modo Reposição' : 'Modo Dashboard'}
+              </span>
+            </Button>
           </div>
 
-          <div className='pt-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md'>
-            <div className='p-4 bg-gray-800'>
-              <DepartmentStatus 
-                networkData={networkData}
-                selectedHospital={selectedHospital}
-                getStatusColor={getStatusColor}
-              />
+          <div className="space-y-20 p-6 rounded-md">
 
-              <ModernTabs>
-                {{
-                  overview: (
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                      <NetworkListHospital 
-                        filteredHospitals={filteredHospitals}
-                        setSelectedHospital={setSelectedHospital}
+            <div className='pt-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md'>
+              <div className='p-4 bg-gray-800 rounded-md'>
+                <ManagementNetworkMetrics 
+                  networkData={networkData}
+                  filteredHospitals={filteredHospitals}
+                  selectedRegion={selectedRegion}
+                  setSelectedRegion={setSelectedRegion}
+                  setDisplayMode={setDisplayMode}
+                  displayMode={displayMode}
+                  currentMetrics={currentMetrics}
+                  canChangeRegion={canChangeRegion}
+                  selectedHospital={selectedHospital}
+                  getStatusColor={getStatusColor}
+                  getFilteredHospitals={getFilteredHospitals}
+                  setSelectedHospital={setSelectedHospital}
+                  isReorderMode={isReorderMode}
+                  setIsReorderMode={setIsReorderMode}
+                />
+              </div>
+            </div>
+
+            <div className='pt-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md'>
+              <div className='p-4 bg-gray-800'>
+                <DepartmentStatus 
+                  networkData={networkData}
+                  selectedHospital={selectedHospital}
+                  getStatusColor={getStatusColor}
+                />
+
+                <ModernTabs>
+                  {{
+                    overview: (
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        <NetworkListHospital 
+                          filteredHospitals={filteredHospitals}
+                          setSelectedHospital={setSelectedHospital}
+                          currentUser={currentUser}
+                        />
+                        <OccupancyRateCharts 
+                          filteredHospitals={filteredHospitals}
+                        />
+                      </div>
+                    ),
+                    hospitalsLocations: (
+                      <HospitalsLocations
+                        hospitals={networkData?.hospitals}
+                        currentUser={currentUser} 
+                        selectedHospital={selectedHospital} 
+                        setSelectedHospital={setSelectedHospital}          
+                      />
+                    ),
+                    analytics: (
+                      <AIAnalyticsMetrics
+                        filteredHospitals={getFilteredHospitals() || []}
                         currentUser={currentUser}
                       />
-                      <OccupancyRateCharts 
-                        filteredHospitals={filteredHospitals}
-                      />
-                    </div>
-                  ),
-                  hospitalsLocations: (
-                    <HospitalsLocations
-                      hospitals={networkData?.hospitals}
-                      currentUser={currentUser} 
-                      selectedHospital={selectedHospital} 
-                      setSelectedHospital={setSelectedHospital}          
-                    />
-                  ),
-                  analytics: (
-                    <AIAnalyticsMetrics
-                      filteredHospitals={getFilteredHospitals() || []}
-                      currentUser={currentUser}
-                    />
-                  ),
-                  messageCenter: (
-                    <MessageCenter 
-                      networkData={networkData}
-                      currentUser={currentUser}
-                      loading={loading}
-                      hospitals={networkData.hospitals}
-                      onHospitalSelect={onHospitalSelect} 
-                      onRemoveUser={onRemoveUser}                  />
-                  )
-                }}
-              </ModernTabs>
+                    ),
+                    messageCenter: (
+                      <MessageCenter 
+                        networkData={networkData}
+                        currentUser={currentUser}
+                        loading={loading}
+                        hospitals={networkData.hospitals}
+                        onHospitalSelect={onHospitalSelect} 
+                        onRemoveUser={onRemoveUser}                  />
+                    )
+                  }}
+                </ModernTabs>
+              </div>
             </div>
-          </div>
 
-          <FlowEditor networkData={networkData}/>
-        </div>
+            <FlowEditor networkData={networkData}/>
+          </div>
+        </>
       )}
+
+      <DashboardModeModalOptions
+        isOpen={isDashboardModeModalOpen}
+        onClose={() => setIsDashboardModeModalOpen(false)}
+        onSelectMode={handleModeSelection}
+      />
+
+      <FullscreenModeModalForOverviewPage
+        isOpen={isFullscreenMode}
+        onClose={() => setIsFullscreenMode(false)}
+
+        // IManagementNetworkMetricsProps
+        networkData={networkData}
+        filteredHospitals={filteredHospitals}
+        selectedRegion={selectedRegion}
+        setSelectedRegion={setSelectedRegion}
+        setDisplayMode={setDisplayMode}
+        displayMode={displayMode}
+        currentMetrics={currentMetrics}
+        canChangeRegion={canChangeRegion}
+
+        // DepartmentStatus
+        selectedHospital={selectedHospital}
+        getStatusColor={getStatusColor}
+
+        // Analitics
+        getFilteredHospitals={getFilteredHospitals}
+
+        setSelectedHospital={setSelectedHospital}
+      />
+
       <MediMindAIAssistant />
     </>
   );

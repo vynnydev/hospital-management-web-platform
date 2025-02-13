@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronUp, ChevronDown, Move } from 'lucide-react';
@@ -133,6 +134,43 @@ export const ReorderableSectionsInOverviewPage: React.FC<ReorderableOverviewProp
   onSectionsOrderChange
 }) => {
     const [sections, setSections] = useState<Section[]>([]);
+    const [selectedMessageUsers, setSelectedMessageUsers] = useState<IAppUser[]>([]);
+
+    // Função para selecionar um hospital no Message Center
+    const onHospitalSelect = (hospitalId: string | null) => {
+      // Se o usuário tiver permissão para ver todos os hospitais, permite a seleção
+      if (canChangeRegion) {
+        // Se o hospitalId for null, limpa a seleção
+        if (hospitalId === null) {
+          setSelectedHospital(null);
+          return;
+        }
+
+        // Verifica se o hospital existe nos dados da rede
+        const selectedHospital = networkData?.hospitals?.find(h => h.id === hospitalId);
+        
+        if (selectedHospital) {
+          // Define o hospital selecionado
+          setSelectedHospital(hospitalId);
+          
+          // Atualiza a região para o estado do hospital selecionado
+          setSelectedRegion(selectedHospital.unit.state);
+        }
+      } else {
+        // Se o usuário não tem permissão para ver todos os hospitais, 
+        // só permite selecionar o hospital associado ao seu usuário
+        if (hospitalId === currentUser?.hospitalId) {
+          setSelectedHospital(hospitalId);
+        }
+      }
+    };
+
+    const onRemoveUser = (userId: string) => {
+      // Filtra os usuários selecionados, removendo o usuário com o ID especificado
+      setSelectedMessageUsers(prevUsers => 
+        prevUsers.filter(user => user.id !== userId)
+      );
+    };
 
     const initialSections: Section[] = [
         {
@@ -203,8 +241,10 @@ export const ReorderableSectionsInOverviewPage: React.FC<ReorderableOverviewProp
                         <MessageCenter 
                         networkData={networkData}
                         currentUser={currentUser}
-                        loading={loading}
-                        />
+                        loading={loading} 
+                        hospitals={networkData?.hospitals} 
+                        onHospitalSelect={onHospitalSelect} 
+                        onRemoveUser={onRemoveUser}                        />
                     )
                     }}
                 </ModernTabs>
