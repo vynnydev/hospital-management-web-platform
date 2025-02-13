@@ -20,6 +20,10 @@ const routes = [
         label: 'Visão geral',
     },
     {
+        href: '/digital-patient-support',
+        label: 'Atendimento Digital',
+    },
+    {
         href: '/bed-management',
         label: 'Gestão de Leitos',
     },

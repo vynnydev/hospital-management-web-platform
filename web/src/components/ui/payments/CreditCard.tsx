@@ -1,9 +1,10 @@
 // CreditCard.tsx
 import React from 'react';
-import visa from '@/assets/card-brands/visa.png';
-import mastercard from '@/assets/card-brands/mastercard.png';
-import amex from '@/assets/card-brands/amex.png';
-import discover from '@/assets/card-brands/discover.png';
+import visa from '@/assets/cards-brands/visa.png';
+import mastercard from '@/assets/cards-brands/mastercard.png';
+import amex from '@/assets/cards-brands/amex.png';
+import discover from '@/assets/cards-brands/discover.png';
+import Image from 'next/image'
 import { StaticImageData } from 'next/image';
 
 interface CreditCardProps {
@@ -31,9 +32,11 @@ const CreditCard: React.FC<CreditCardProps> = ({ cardNumber, cardBrand, expiry, 
     <div className="bg-gradient-to-r from-gray-700 to-gray-900 p-6 rounded-xl shadow-lg w-96 h-56 relative overflow-hidden">
       <div className="absolute top-4 right-4">
         {cardBrandImage && (
-          <img 
+          <Image 
             src={cardBrandImage.src} 
             alt={`${cardBrand} logo`} 
+            height={32}
+            width={32}
             className="h-12" 
           />
         )}
