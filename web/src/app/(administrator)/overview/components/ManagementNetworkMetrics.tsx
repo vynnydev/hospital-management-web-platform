@@ -78,17 +78,6 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
 
   // FOR FullscreenModeModal TO DepartmentStatus
   selectedHospital,
-  getStatusColor,
-
-  // FOR Analitics TO DepartmentStatus
-  getFilteredHospitals,
-
-  // NetworkListHospital and HospitalsLocations
-  setSelectedHospital,
-  
-  // Reposicionamento dos componentes
-  isReorderMode,
-  setIsReorderMode
 }) => {
   const [activeSection, setActiveSection] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -117,26 +106,29 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
           <div className="flex flex-col space-y-6">
             {/* Network Info Section */}
             <div className="flex justify-between items-start">
-              <div className="space-y-1">
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {networkData?.networkInfo?.name || 'Rede Hospitalar'}
-                </h1>
-                <p className="text-gray-500 dark:text-gray-400 text-sm">
-                  {filteredHospitals?.length || 0} Hospitais • {currentMetrics?.totalBeds || 0} Leitos
-                </p>
+              <div className="flex flex-row space-x-4">
+                <div className='space-y-2'>
+                  <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                    {networkData?.networkInfo?.name || 'Rede Hospitalar'}
+                  </h1>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm">
+                    {filteredHospitals?.length || 0} Hospitais • {currentMetrics?.totalBeds || 0} Leitos
+                  </p>
+                </div>
+
+                {/* Deixar mostrando no maximo 5 com o plus */}
+                <div>
+                  <IntegrationsPreviewPressable onSelectIntegration={handleOpenModal} hgt='10' wth='10' />
+
+                  <ConfigurationAndUserModalMenus 
+                      isOpen={isModalOpen}
+                      onClose={() => setIsModalOpen(false)}
+                      defaultSection={defaultSection}
+                      user={null}
+                  />
+                </div>
               </div>
 
-              {/* Deixar mostrando no maximo 5 com o plus */}
-              <div className='mr-[630px]'>
-                <IntegrationsPreviewPressable onSelectIntegration={handleOpenModal} hgt='10' wth='10' />
-
-                <ConfigurationAndUserModalMenus 
-                    isOpen={isModalOpen}
-                    onClose={() => setIsModalOpen(false)}
-                    defaultSection={defaultSection}
-                    user={null}
-                />
-              </div>
               
               <div className="flex items-center space-x-4">
 
