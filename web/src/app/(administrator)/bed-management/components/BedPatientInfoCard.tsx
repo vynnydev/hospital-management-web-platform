@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useRef } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
-import html2canvas from 'html2canvas';
 import { 
   AlertCircle, Calendar, Clock, User, Activity, 
   HeartPulse, Droplets, MapPin, Phone, 
@@ -12,13 +11,11 @@ import {
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/organisms/card';
 import type { IBed, IPatient } from '@/types/hospital-network-types';
 import { Button } from '@/components/ui/organisms/button';
+import { handlePrint } from './PrintContent';
+import { getMaintenanceRecommendations, getMaintenanceSchedule } from '@/utils/AI/getMaintenanceRecommendations';
 
 interface PatientInfoCardProps {
   selectedBed: IBed | null;
-}
-
-interface MaintenanceRecommendation {
-  [key: string]: string[];
 }
 
 export const BedPatientInfoCard: React.FC<PatientInfoCardProps> = ({ selectedBed }) => {
@@ -26,142 +23,34 @@ export const BedPatientInfoCard: React.FC<PatientInfoCardProps> = ({ selectedBed
   
     const patient: IPatient = selectedBed.patient;
 
-    const qrCodeRef = useRef<HTMLDivElement>(null);
-  
-    const generatePrintContent = () => {
-        return `
-          <html>
-            <head>
-              <title>Relatório do Paciente - ${patient.name}</title>
-              <style>
-                body { 
-                  font-family: Arial, sans-serif; 
-                  padding: 20px; 
-                  max-width: 800px; 
-                  margin: 0 auto; 
-                }
-                .header { 
-                  text-align: center; 
-                  margin-bottom: 30px; 
-                  border-bottom: 2px solid #e2e8f0; 
-                  padding-bottom: 20px; 
-                }
-                .section { 
-                  margin-bottom: 25px; 
-                  padding: 15px; 
-                  border: 1px solid #e2e8f0; 
-                  border-radius: 8px; 
-                }
-                .title { 
-                  font-size: 18px; 
-                  font-weight: bold; 
-                  margin-bottom: 15px; 
-                  color: #2b6cb0; 
-                }
-                .info-item {
-                  margin-bottom: 10px;
-                }
-                .info-label {
-                  font-weight: bold;
-                  color: #4a5568;
-                }
-                @media print {
-                  .section { break-inside: avoid; }
-                }
-              </style>
-            </head>
-            <body>
-              <div class="header">
-                <h1>Relatório do Paciente</h1>
-                <p>Gerado em: ${new Date().toLocaleDateString('pt-BR')}</p>
-              </div>
-    
-              <div class="section">
-                <div class="title">Informações do Paciente</div>
-                <div class="info-item">
-                  <div class="info-label">Nome:</div>
-                  ${patient.name}
-                </div>
-                <div class="info-item">
-                  <div class="info-label">Diagnóstico:</div>
-                  ${patient.diagnosis}
-                </div>
-                <div class="info-item">
-                  <div class="info-label">Data de Admissão:</div>
-                  ${patient.admissionDate}
-                </div>
-                <div class="info-item">
-                  <div class="info-label">Alta Prevista:</div>
-                  ${patient.expectedDischarge}
-                </div>
-              </div>
-    
-              <div class="section">
-                <div class="title">Contato</div>
-                <div class="info-item">
-                  <div class="info-label">Endereço:</div>
-                  ${patient.contactInfo.address}
-                </div>
-                <div class="info-item">
-                  <div class="info-label">Telefone:</div>
-                  ${patient.contactInfo.phone}
-                </div>
-                <div class="info-item">
-                  <div class="info-label">Emergência:</div>
-                  ${patient.contactInfo.emergency}
-                </div>
-              </div>
-    
-              <div class="section">
-                <div class="title">Análise Inteligente do Leito</div>
-                <div class="info-item">
-                  <div class="info-label">Recomendações de Manutenção:</div>
-                  <ul>
-                    ${getMaintenanceRecommendations(patient.diagnosis)
-                      .map(rec => `<li>${rec}</li>`)
-                      .join('')}
-                  </ul>
-                </div>
-                <div class="info-item">
-                  <div class="info-label">Previsão de Manutenção:</div>
-                  <ul>
-                    ${getMaintenanceSchedule(patient.diagnosis, patient.admissionDate)
-                      .map(schedule => `<li>${schedule}</li>`)
-                      .join('')}
-                  </ul>
-                </div>
-              </div>
-            </body>
-          </html>
-        `;
+    const calculateInternmentDays = (admissionDate: string): number => {
+      const admission = new Date(admissionDate);
+      const today = new Date();
+      const diffTime = Math.abs(today.getTime() - admission.getTime());
+      return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     };
-    
-    const handlePrint = () => {
-        try {
-          const printWindow = window.open('', '_blank');
-          if (!printWindow) {
-            alert('Por favor, permita popups para imprimir o relatório.');
-            return;
-          }
-    
-          printWindow.document.write(generatePrintContent());
-          printWindow.document.close();
-          
-          printWindow.onload = () => {
-            printWindow.focus();
-            printWindow.print();
-          };
-        } catch (error) {
-          console.error('Erro ao imprimir:', error);
-          alert('Ocorreu um erro ao gerar o relatório. Por favor, tente novamente.');
-        }
+
+    // Função para formatar a data e hora
+    const formatDateTime = (dateTimeString: string) => {
+      const date = new Date(dateTimeString);
+      
+      // Formatando a data como YYYY-MM-DD
+      const dateFormatted = date.toISOString().split('T')[0];
+      
+      // Formatando a hora como HH:mm
+      const timeFormatted = date.toLocaleTimeString('pt-BR', {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+
+      return { date: dateFormatted, time: timeFormatted };
     };
     
     return (
       <div className="h-full overflow-y-auto space-y-6 pr-2 pb-6">
         {/* Botão de Impressão */}
         <Button 
-          onClick={handlePrint}
+          onClick={handlePrint(patient)}
           className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center gap-2"
         >
           <Printer className="h-5 w-5" />
@@ -171,11 +60,35 @@ export const BedPatientInfoCard: React.FC<PatientInfoCardProps> = ({ selectedBed
         <div className="relative">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl" />
           <Card className="bg-gray-800/90 border-0 relative space-y-6">
-            <CardHeader className="pb-2">
+            <CardHeader className="pb-2 flex-col">
               <CardTitle className="text-xl font-bold text-gray-100 flex items-center gap-2">
                 <User className="h-6 w-6 text-blue-400" />
                 {patient.name}
               </CardTitle>
+              {/* Badge de dias de internação */}
+              <div className="flex items-start pt-2">
+                <div className="flex items-center bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-full px-3 py-1.5 border border-indigo-500/20">
+                  <Clock className="h-4 w-4 text-indigo-400 mr-2" />
+                  <div className="flex flex-row">
+                    
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-lg font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                        {calculateInternmentDays(patient.admissionDate)}
+                      </span>
+                      <span className="text-sm text-gray-400">dias internado</span>
+                    </div>
+                  </div>
+                </div>
+                {/* Badge de alerta se internação > 30 dias */}
+                {calculateInternmentDays(patient.admissionDate) > 30 && (
+                  <div className="animate-pulse bg-red-500/10 rounded-full px-3 py-1.5 border border-red-500/20">
+                    <div className="flex items-center">
+                      <AlertCircle className="h-4 w-4 text-red-400 mr-2" />
+                      <span className="text-xs text-red-400">Internação prolongada</span>
+                    </div>
+                  </div>
+                )}
+              </div>
             </CardHeader>
             <CardContent className="grid grid-cols-2 gap-6 space-y-4">
               <div className="col-span-2 bg-gray-900/30 p-4 rounded-xl border border-gradient-to-r from-blue-500/20 to-cyan-500/20">
@@ -191,7 +104,14 @@ export const BedPatientInfoCard: React.FC<PatientInfoCardProps> = ({ selectedBed
                   <Calendar className="h-4 w-4 text-blue-400" />
                   <div>
                     <p className="text-sm text-gray-400">Data de admissão</p>
-                    <p className="text-gray-100">{patient.admissionDate}</p>
+                    <div className="flex flex-col gap-1">
+                      <p className="text-gray-100">{formatDateTime(patient.admissionDate).date}</p>
+                      <div className="inline-flex bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-full px-2 py-0.5 border border-indigo-500/20">
+                        <span className="text-sm bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent font-medium">
+                          Desde {formatDateTime(patient.admissionDate).time}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -203,7 +123,7 @@ export const BedPatientInfoCard: React.FC<PatientInfoCardProps> = ({ selectedBed
                 </div>
               </div>
   
-              <div className="space-y-6">
+              <div className="space-y-20">
                 <div className="flex items-center gap-2">
                   <Clock className="h-4 w-4 text-blue-400" />
                   <div>
@@ -295,43 +215,4 @@ export const BedPatientInfoCard: React.FC<PatientInfoCardProps> = ({ selectedBed
         </div>
       </div>
     );
-};
-
-// Função auxiliar para gerar recomendações baseadas no diagnóstico
-const getMaintenanceRecommendations = (diagnosis: string): string[] => {
-  const recommendations: MaintenanceRecommendation = {
-    'Post-cardiac surgery': [
-      'Verificar regularmente a calibração dos monitores cardíacos',
-      'Manter sistema de gases medicinais em condições ideais',
-      'Garantir backup de energia para equipamentos vitais',
-      'Verificar funcionamento do sistema de chamada de emergência'
-    ],
-    'Hip replacement recovery': [
-      'Verificar integridade das barras de apoio do leito',
-      'Garantir funcionamento suave dos controles de elevação',
-      'Manter colchão em condições adequadas para prevenção de úlceras',
-      'Verificar sistema de trava das rodas do leito'
-    ]
-  };
-
-  return recommendations[diagnosis] || [
-    'Realizar checagem padrão dos equipamentos',
-    'Verificar condições gerais do leito',
-    'Manter higienização conforme protocolo'
-  ];
-};
-
-// Função auxiliar para gerar cronograma de manutenção
-const getMaintenanceSchedule = (diagnosis: string, admissionDate: string): string[] => {
-  const baseSchedule: string[] = [
-    'Próxima higienização completa: Em 3 dias',
-    'Verificação de equipamentos: Diariamente',
-    'Manutenção preventiva: Em 7 dias'
-  ];
-
-  if (diagnosis.toLowerCase().includes('cardiac')) {
-    baseSchedule.push('Calibração de monitores cardíacos: Em 48 horas');
-  }
-
-  return baseSchedule;
 };

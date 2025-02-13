@@ -198,8 +198,8 @@ export const MainHospitalAlertMetrics: React.FC<MainHospitalAlertMetricsProps> =
             severity: alertMetrics.hospitalsBelowStaffingNorms > 1 ? "high" : "low",
         },
         {
-            title: "Manutenção de Equipamentos",
-            subtitle: "Manutenção Geral",
+            title: "Higienização de Equipamentos",
+            subtitle: "Higienização Geral",
             icon: Settings,
             value: alertMetrics.equipmentMaintenanceAlerts,
             description: "UTIs com alto risco de indisponibilidade",

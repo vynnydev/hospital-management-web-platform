@@ -209,11 +209,11 @@ export const BedsManagement: React.FC<IBedsManagementProps> = ({ className }) =>
                   <div className="flex items-center gap-4">
                     <span className="text-gray-400 flex items-center gap-2">
                       <BedDouble className="h-5 w-5" />
-                      {selectedHospital.metrics.overall.totalBeds} beds
+                      {selectedHospital.metrics.overall.totalBeds} leitos
                     </span>
                     <span className="text-gray-400 flex items-center gap-2">
                       <Users className="h-5 w-5" />
-                      {selectedHospital.metrics.overall.totalPatients} patients
+                      {selectedHospital.metrics.overall.totalPatients} pacientes
                     </span>
                   </div>
                 </div>

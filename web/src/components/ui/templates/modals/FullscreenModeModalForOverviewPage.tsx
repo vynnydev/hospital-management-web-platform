@@ -152,43 +152,47 @@ export const FullscreenModeModalForOverviewPage: React.FC<FullscreenModeModalFor
               {/* Container de conteúdo */}
               <div className="min-h-screen w-full p-8 space-y-8">
                 {isReorderMode ? (
-                  <ReorderableSectionsInOverviewPage
-                    networkData={networkData}
-                    filteredHospitals={filteredHospitals}
-                    selectedHospital={selectedHospital}
-                    setSelectedHospital={setSelectedHospital}
-                    currentUser={currentUser}
-                    selectedRegion={selectedRegion}
-                    setSelectedRegion={setSelectedRegion}
-                    displayMode={displayMode}
-                    setDisplayMode={setDisplayMode}
-                    currentMetrics={currentMetrics}
-                    canChangeRegion={canChangeRegion}
-                    getStatusColor={getStatusColor}
-                    getFilteredHospitals={getFilteredHospitals}
-                    loading={false}
-                    isReorderMode={isReorderMode}
-                    onSectionsOrderChange={setCurrentSectionsOrder}
-                  />
+                  <>
+                    <ReorderableSectionsInOverviewPage
+                      networkData={networkData}
+                      filteredHospitals={filteredHospitals}
+                      selectedHospital={selectedHospital}
+                      setSelectedHospital={setSelectedHospital}
+                      currentUser={currentUser}
+                      selectedRegion={selectedRegion}
+                      setSelectedRegion={setSelectedRegion}
+                      displayMode={displayMode}
+                      setDisplayMode={setDisplayMode}
+                      currentMetrics={currentMetrics}
+                      canChangeRegion={canChangeRegion}
+                      getStatusColor={getStatusColor}
+                      getFilteredHospitals={getFilteredHospitals}
+                      loading={false}
+                      isReorderMode={isReorderMode}
+                      onSectionsOrderChange={setCurrentSectionsOrder}
+                    />
+                  </>
                 ) : (
-                  <ReorderableSectionsInOverviewPage
-                    networkData={networkData}
-                    filteredHospitals={filteredHospitals}
-                    selectedHospital={selectedHospital}
-                    setSelectedHospital={setSelectedHospital}
-                    currentUser={currentUser}
-                    selectedRegion={selectedRegion}
-                    setSelectedRegion={setSelectedRegion}
-                    displayMode={displayMode}
-                    setDisplayMode={setDisplayMode}
-                    currentMetrics={currentMetrics}
-                    canChangeRegion={canChangeRegion}
-                    getStatusColor={getStatusColor}
-                    getFilteredHospitals={getFilteredHospitals}
-                    loading={false}
-                    isReorderMode={false}
-                    onSectionsOrderChange={setCurrentSectionsOrder}
-                  />
+                  <>
+                    <ReorderableSectionsInOverviewPage
+                      networkData={networkData}
+                      filteredHospitals={filteredHospitals}
+                      selectedHospital={selectedHospital}
+                      setSelectedHospital={setSelectedHospital}
+                      currentUser={currentUser}
+                      selectedRegion={selectedRegion}
+                      setSelectedRegion={setSelectedRegion}
+                      displayMode={displayMode}
+                      setDisplayMode={setDisplayMode}
+                      currentMetrics={currentMetrics}
+                      canChangeRegion={canChangeRegion}
+                      getStatusColor={getStatusColor}
+                      getFilteredHospitals={getFilteredHospitals}
+                      loading={false}
+                      isReorderMode={false}
+                      onSectionsOrderChange={setCurrentSectionsOrder}
+                    />
+                  </>
                 )}
               </div>
             </motion.div>
