@@ -6,23 +6,35 @@ import { AlertCircle, AlertTriangle, Clock, LucideIcon, Settings, Users } from "
 type TCardType = 'critical-hospital' | 'staff' | 'maintenance' | 'waiting';
 type TSituation = 'normal' | 'attention' | 'critical';
 
+const pulseAnimation = {
+    normal: "animate-pulse-green",
+    attention: "animate-pulse-yellow",
+    critical: "animate-pulse-red"
+};
+
 // Função para determinar a cor da situação
 const getSituationColors = (situation: TSituation) => {
     const colors = {
       normal: {
-        bg: "bg-green-500/20 dark:bg-green-500/30",
+        bg: "bg-emerald-500", // Verde mais claro e vibrante
         text: "text-white",
-        icon: "text-green-100"
+        icon: "text-white",
+        border: "border-green-500/50",
+        gradient: "from-green-950/50 to-emerald-900/50"
       },
       attention: {
-        bg: "bg-yellow-500/20 dark:bg-yellow-500/30",
+        bg: "bg-yellow-500", // Amarelo vibrante
         text: "text-white",
-        icon: "text-yellow-100"
+        icon: "text-white",
+        border: "border-yellow-500/50",
+        gradient: "from-yellow-950/50 to-amber-900/50"
       },
       critical: {
-        bg: "bg-red-500/20 dark:bg-red-500/30",
+        bg: "bg-red-500", // Vermelho vibrante
         text: "text-white",
-        icon: "text-red-100"
+        icon: "text-white",
+        border: "border-red-500/50",
+        gradient: "from-red-950/50 to-rose-900/50"
       }
     };
     return colors[situation];
@@ -37,9 +49,9 @@ const getStatusMessage = (card: TCardType, value: number): string => {
         case 'maintenance':
             return value > 1 ? 'Requer Atenção Imediata' : 'Situação Normal';
         case 'waiting':
-            return value > 4 ? 'Atenção' : 'Tempo Dentro do Esperado';
+            return value > 4 ? 'Atenção' : 'Situação Normal';
         default:
-            return 'Status não disponível';
+            return 'Situação Normal';
     }
 };
   
@@ -211,78 +223,80 @@ export const MainHospitalAlertMetrics: React.FC<MainHospitalAlertMetricsProps> =
   
     return (
         <div className="grid grid-cols-4 gap-6">
-            {alertCards.map((card, index) => (
-                <div key={index} className={`
-                    relative overflow-hidden
-                    flex flex-col min-h-[280px]
-                    bg-gradient-to-br ${card.gradient}
-                    rounded-3xl p-6 shadow-lg backdrop-blur-sm
-                    ${card.severity === "high" ? "border border-red-100/20 dark:border-red-800/20" : ""}
-                    hover:shadow-xl transition-all duration-300
-                `}>
-                    {/* Header do Card */}
-                    <div className="flex justify-between items-start mb-4">
-                        <div className="flex items-center space-x-3">
-                            <div className={`p-2 rounded-xl bg-${card.iconColor.split('-')[1]}-100/30 
-                                dark:bg-${card.iconColor.split('-')[1]}-900/30 backdrop-blur-sm`}>
-                                <card.icon className={card.iconColor} size={20} />
+            {alertCards.map((card, index) => {
+                const situation = getSituationType(card.cardType, typeof card.value === 'number' ? card.value : 0);
+                const colors = getSituationColors(situation);
+                
+                return (
+                    <div key={index} className={`
+                        relative overflow-hidden
+                        flex flex-col min-h-[280px]
+                        bg-gradient-to-br ${card.gradient}
+                        rounded-3xl p-6 shadow-lg backdrop-blur-sm
+                        border-4 ${colors.border}
+                        ${pulseAnimation[situation]}
+                        hover:shadow-xl transition-all duration-300
+                        before:absolute before:inset-0 before:bg-gradient-to-br ${colors.gradient} before:opacity-40 before:z-0
+                    `}>
+                        {/* Header do Card */}
+                        <div className="flex z-10 justify-between items-start mb-4">
+                            <div className="flex items-center space-x-3">
+                                <div className={`p-2 rounded-xl ${colors.bg}`}>
+                                    <card.icon className={colors.icon} size={20} />
+                                </div>
+                                <h3 className="text-lg font-semibold text-gray-200">
+                                    {card.title}
+                                </h3>
                             </div>
-                            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-                                {card.title}
-                            </h3>
+                            <div className="px-2 py-1 rounded-lg bg-gray-800/40 backdrop-blur-sm">
+                                <span className="text-xs font-medium text-gray-300">
+                                    {getFormattedHospitalName(selectedHospital, selectedRegion)}
+                                </span>
+                            </div>
                         </div>
-                        <div className="px-2 py-1 rounded-lg bg-white/10 dark:bg-gray-800/40 backdrop-blur-sm">
-                            <span className="text-xs font-medium text-gray-600 dark:text-gray-300">
-                                {getFormattedHospitalName(selectedHospital, selectedRegion)}
-                            </span>
+    
+                        {/* Conteúdo Principal */}
+                        <div className="space-y-2 z-10 mb-6 bg-gray-800/60 rounded-2xl p-4 backdrop-blur-sm">
+                            <div className="flex flex-col">
+                                <p className="text-sm text-gray-400">
+                                    {card.subtitle}
+                                </p>
+                                <h2 className={`${card.valueSize === 'small' ? 'text-xl' : 'text-3xl'} 
+                                    font-bold text-white mt-1`}>
+                                    {card.value}
+                                </h2>
+                                <p className="text-sm text-gray-400 mt-2">
+                                    {card.description}
+                                </p>
+                            </div>
                         </div>
-                    </div>
-
-                    {/* Conteúdo Principal */}
-                    <div className="space-y-2 mb-6 bg-white/60 dark:bg-gray-800/60 rounded-2xl p-4 backdrop-blur-sm">
-                        <div className="flex flex-col">
-                            <p className="text-sm text-gray-500 dark:text-gray-400">
-                                {card.subtitle}
+    
+                        {/* Análise Comparativa */}
+                        <div className="mt-auto z-10 bg-gray-800/60 rounded-2xl p-4 my-4 backdrop-blur-sm">
+                            <p className="text-sm font-medium text-white mb-2">
+                                Análise comparativa
                             </p>
-                            <h2 className={`${card.valueSize === 'small' ? 'text-xl' : 'text-3xl'} 
-                                font-bold text-gray-900 dark:text-white mt-1`}>
-                                {card.value}
-                            </h2>
-                            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-                                {card.description}
+                            <p className="text-sm text-gray-300">
+                                {getAnalysisMessage(card.cardType, typeof card.value === 'number' ? card.value : 0)}
                             </p>
                         </div>
-                    </div>
-
-                    {/* Análise Comparativa */}
-                    <div className="mt-auto bg-black/20 dark:bg-gray-800/60 rounded-2xl p-4 my-4 backdrop-blur-sm">
-                        <p className="text-sm font-medium text-white mb-2">
-                            Análise comparativa
-                        </p>
-                        <p className="text-sm text-gray-300">
-                            {getAnalysisMessage(card.cardType, typeof card.value === 'number' ? card.value : 0)}
-                        </p>
-                    </div>
-
-                    {/* Status/Situação */}
-                    <div className={`
-                        ${getSituationColors(getSituationType(card.cardType, typeof card.value === 'number' ? card.value : 0)).bg}
-                        rounded-2xl p-4 backdrop-blur-sm
-                        transition-colors duration-200
+    
+                        {/* Status/Situação */}
+                        <div className={`
+                            ${colors.bg}
+                            rounded-2xl p-4 backdrop-blur-sm
+                            transition-colors duration-200 z-10
                         `}>
                             <div className="flex items-center">
-                                <AlertCircle className={`w-4 h-4 mr-2 ${
-                                    getSituationColors(getSituationType(card.cardType, typeof card.value === 'number' ? card.value : 0)).icon
-                                }`} />
-                                    <span className={`text-sm font-medium ${
-                                        getSituationColors(getSituationType(card.cardType, typeof card.value === 'number' ? card.value : 0)).text
-                                    }`}>
-                                        {getStatusMessage(card.cardType, typeof card.value === 'number' ? card.value : 0)}
-                                    </span>
+                                <AlertCircle className={`w-4 h-4 mr-2 ${colors.icon}`} />
+                                <span className={`text-sm font-medium ${colors.text}`}>
+                                    {getStatusMessage(card.cardType, typeof card.value === 'number' ? card.value : 0)}
+                                </span>
                             </div>
                         </div>
-                </div>
-            ))}
+                    </div>
+                );
+            })}
         </div>
     );
 };

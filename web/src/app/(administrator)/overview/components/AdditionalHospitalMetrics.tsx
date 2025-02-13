@@ -60,6 +60,42 @@ interface ICalculatedMetrics {
   departmentPatientVariation: number;
 }
 
+const pulseAnimation = {
+  normal: "animate-pulse-green",
+  attention: "animate-pulse-yellow",
+  critical: "animate-pulse-red"
+};
+
+type TSituation = 'normal' | 'attention' | 'critical';
+
+// Ajustar as cores para serem mais precisas com a imagem
+const getSituationColors = (situation: TSituation) => {
+  const colors = {
+    normal: {
+      bg: "bg-emerald-500", // Verde mais claro e vibrante
+      text: "text-white",
+      icon: "text-white",
+      border: "border-green-500/30",
+      gradient: "from-green-950/50 to-emerald-900/50"
+    },
+    attention: {
+      bg: "bg-yellow-500", // Amarelo vibrante
+      text: "text-white",
+      icon: "text-white",
+      border: "border-yellow-500/30",
+      gradient: "from-yellow-950/50 to-amber-900/50"
+    },
+    critical: {
+      bg: "bg-red-500", // Vermelho vibrante
+      text: "text-white",
+      icon: "text-white",
+      border: "border-red-500/30",
+      gradient: "from-red-950/50 to-rose-900/50"
+    }
+  };
+  return colors[situation];
+};
+
 // Funções auxiliares para status e cores
 const getStatusColor = (cardType: TCardType) => {
   const colors = {
@@ -76,18 +112,22 @@ const getStatusColor = (cardType: TCardType) => {
 };
 
 const getStatusMessage = (cardType: TCardType) => {
-  // Adapte com base nas regras de negócio específicas
-  const messages = {
-    'hospital-critico': 'Situação Normal',
-    'burnout': 'Situação Normal',
-    'manutencao': 'Requer Atenção Imediata',
-    'taxa-giro': 'Tempo Dentro do Esperado',
-    'eficiencia': 'Situação Normal',
-    'ocupacao': 'Situação Normal',
-    'variacao': 'Situação Normal',
-    'treinamento': 'Situação Normal'
-  };
-  return messages[cardType];
+  switch(cardType) {
+      case 'hospital-critico':
+          return 'Requer Atenção Imediata';
+      case 'burnout':
+      case 'variacao':
+          return 'Atenção';
+      default:
+          return 'Situação Normal';
+  }
+};
+
+const getSituationType = (cardType: TCardType): TSituation => {
+  const status = getStatusMessage(cardType);
+  if (status === 'Situação Normal') return 'normal';
+  if (status === 'Requer Atenção Imediata') return 'critical';
+  return 'attention';
 };
 
 const getAnalysisMessage = (cardType: TCardType) => {
@@ -129,82 +169,91 @@ const MetricCard: React.FC<IMetricCardProps> = ({
   selectedHospital,
   valueSize = 'normal',
   cardType
-}) => (
-  <div className={`
-    relative overflow-hidden
-    bg-gradient-to-br ${getCardGradient(cardType)}
-    rounded-3xl p-6
-    flex flex-col min-h-[280px]
-  `}>
-    {/* Header */}
-    <div className="flex justify-between items-start mb-6">
-      <div className="flex items-center space-x-3">
-        <div className="p-2 rounded-xl bg-black/10">
-          <Icon className="text-white" size={20} />
+}) => {
+  const situation = getSituationType(cardType);
+  const colors = getSituationColors(situation);
+
+  return (
+    <div className={`
+      relative overflow-hidden
+      bg-gradient-to-br ${getCardGradient(cardType)}
+      rounded-3xl p-6
+      flex flex-col min-h-[280px]
+      border-2 ${colors.border}
+      ${pulseAnimation[situation]}
+    `}>
+      {/* Header */}
+      <div className="flex justify-between items-start mb-6">
+        <div className="flex items-center space-x-3">
+          <div className="p-2 rounded-xl bg-black/10">
+            <Icon className="text-white" size={20} />
+          </div>
+          <h3 className="text-lg font-semibold text-white">
+            {title}
+          </h3>
         </div>
-        <h3 className="text-lg font-semibold text-white">
-          {title}
-        </h3>
+        <div className="px-2 py-1 rounded-lg bg-black/10">
+          <span className="text-xs font-medium text-white/80">
+            {selectedHospital || 'Todos'}
+          </span>
+        </div>
       </div>
-      <div className="px-2 py-1 rounded-lg bg-black/10">
-        <span className="text-xs font-medium text-white/80">
-          {selectedHospital || 'Todos'}
+  
+      {/* Conteúdo Principal */}
+      <div className="space-y-2 mb-6 bg-white/60 dark:bg-gray-800/40 rounded-2xl p-4 backdrop-blur-md">
+        <p className="text-sm text-gray-300">
+          {subtitle}
+        </p>
+        <div className="flex items-baseline gap-2">
+          <h2 className={`
+            font-bold text-white
+            ${valueSize === 'small' ? 'text-xl' : 'text-3xl'}
+          `}>
+            {value}
+          </h2>
+          {trend && (
+            <div className={`
+              flex items-center text-sm font-medium
+              ${trend > 0 ? 'text-green-400' : 'text-red-400'}
+            `}>
+              {trend > 0 ? <ArrowUp size={16} /> : <ArrowDown size={16} />}
+              <span>{Math.abs(trend)}%</span>
+            </div>
+          )}
+        </div>
+        {additionalInfo && (
+          <p className="text-sm text-gray-300">
+            {additionalInfo.label}: {additionalInfo.value}
+          </p>
+        )}
+      </div>
+  
+      {/* Análise Comparativa */}
+      <div className="mt-auto mb-6 bg-white/60 dark:bg-gray-800/40 rounded-2xl p-4 backdrop-blur-md">
+        <p className="text-sm font-medium text-white mb-2">
+          Análise comparativa
+        </p>
+        <p className="text-sm text-gray-300">
+          {getAnalysisMessage(cardType)}
+        </p>
+      </div>
+  
+      {/* Status */}
+      <div className={`
+          ${colors.bg}
+          rounded-2xl p-4 backdrop-blur-sm
+          transition-colors duration-200 z-10
+          py-2 px-4 flex items-center
+      `}>
+        <AlertCircle className="w-4 h-4 mr-2 text-white" />
+        <span className="text-sm font-medium text-white">
+          {getStatusMessage(cardType)}
         </span>
       </div>
     </div>
+  )
+}
 
-    {/* Conteúdo Principal */}
-    <div className="space-y-2 mb-6 bg-white/60 dark:bg-gray-800/40 rounded-2xl p-4 backdrop-blur-md">
-      <p className="text-sm text-gray-300">
-        {subtitle}
-      </p>
-      <div className="flex items-baseline gap-2">
-        <h2 className={`
-          font-bold text-white
-          ${valueSize === 'small' ? 'text-xl' : 'text-3xl'}
-        `}>
-          {value}
-        </h2>
-        {trend && (
-          <div className={`
-            flex items-center text-sm font-medium
-            ${trend > 0 ? 'text-green-400' : 'text-red-400'}
-          `}>
-            {trend > 0 ? <ArrowUp size={16} /> : <ArrowDown size={16} />}
-            <span>{Math.abs(trend)}%</span>
-          </div>
-        )}
-      </div>
-      {additionalInfo && (
-        <p className="text-sm text-gray-300">
-          {additionalInfo.label}: {additionalInfo.value}
-        </p>
-      )}
-    </div>
-
-    {/* Análise Comparativa */}
-    <div className="mt-auto mb-6 bg-white/60 dark:bg-gray-800/40 rounded-2xl p-4 backdrop-blur-md">
-      <p className="text-sm font-medium text-white mb-2">
-        Análise comparativa
-      </p>
-      <p className="text-sm text-gray-300">
-        {getAnalysisMessage(cardType)}
-      </p>
-    </div>
-
-    {/* Status */}
-    <div className={`
-      ${getStatusColor(cardType)}
-      rounded-xl py-2 px-4
-      flex items-center
-    `}>
-      <AlertCircle className="w-4 h-4 mr-2 text-white" />
-      <span className="text-sm font-medium text-white">
-        {getStatusMessage(cardType)}
-      </span>
-    </div>
-  </div>
-);
 
 export const AdditionalHospitalMetrics: React.FC<IMetricsProps> = ({ 
   networkData, 
