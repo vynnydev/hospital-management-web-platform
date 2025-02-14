@@ -36,6 +36,8 @@ export const BedsManagement: React.FC<IBedsManagementProps> = ({ className }) =>
   const [defaultSection, setDefaultSection] = useState<string>('integrations');
   const [isBedsOverviewActive, setIsBedsOverviewActive] = useState<boolean>(false);
 
+  const [selectedRoom, setSelectedRoom] = useState<string>('');
+
   // Reset selections when hospital changes
   useEffect(() => {
     if (selectedHospital) {
@@ -87,10 +89,10 @@ export const BedsManagement: React.FC<IBedsManagementProps> = ({ className }) =>
     return allBeds;
   };
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-    setDefaultSection('integrations');
-  };
+  // Reset do selectedRoom quando mudar departamento ou andar
+  useEffect(() => {
+    setSelectedRoom('');
+  }, [selectedDepartment, selectedFloor]);
 
   // Loading and error states
   if (loading) return (
@@ -222,30 +224,61 @@ export const BedsManagement: React.FC<IBedsManagementProps> = ({ className }) =>
                 <div className="flex items-center gap-4">
                   <div className="flex-1 flex gap-3">
                     {selectedHospital.departments.map((dept) => (
-                      <button
-                        key={dept.name}
-                        onClick={() => setSelectedDepartment(dept.name)}
-                        className={`px-6 py-3 rounded-xl transition-all flex items-center gap-2
-                          ${selectedDepartment === dept.name
-                          ? 'bg-blue-600 text-white shadow-lg'
-                          : 'bg-gray-800/50 text-gray-100 hover:bg-gray-700'
-                          }`}
-                      >
-                        <Users className="h-4 w-4" />
-                        {dept.name}
-                      </button>
-                    ))}
-                  </div>
+                      <div key={dept.name} className="flex items-center gap-2">
+                        <button
+                          onClick={() => setSelectedDepartment(dept.name)}
+                          className={`px-6 py-3 rounded-l-xl transition-all flex items-center gap-2
+                            ${selectedDepartment === dept.name
+                              ? 'bg-blue-600 text-white shadow-lg'
+                              : 'bg-gray-800/50 text-gray-100 hover:bg-gray-700'
+                            }`}
+                        >
+                          <Users className="h-4 w-4" />
+                          {dept.name}
+                        </button>
 
-                  <div className=''>
-                    <IntegrationsPreviewPressable onSelectIntegration={handleOpenModal} hgt='10' wth='10'/>
-      
-                    <ConfigurationAndUserModalMenus 
-                        isOpen={isModalOpen}
-                        onClose={() => setIsModalOpen(false)}
-                        defaultSection={defaultSection}
-                        user={null}
-                    />
+                        {selectedDepartment === dept.name && (
+                          <Select 
+                            value={selectedRoom} 
+                            onValueChange={setSelectedRoom}
+                          >
+                            <SelectTrigger 
+                              className="w-40 bg-blue-600 text-white border-0 rounded-r-xl h-[46px]"
+                            >
+                              <div className="flex items-center gap-2">
+                                <SelectValue placeholder="Selecionar..." />
+                                {selectedRoom && (
+                                  <span className="text-xs bg-blue-500/30 px-2 py-1 rounded">
+                                    {dept.rooms.find(r => r.roomNumber === selectedRoom)?.type === 'single' ? 'Único' : 
+                                    dept.rooms.find(r => r.roomNumber === selectedRoom)?.type === 'double' ? 'Duplo' : 'Enfermaria'}
+                                  </span>
+                                )}
+                              </div>
+                              <ChevronsUpDown className="h-4 w-4" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-gray-800 divide-y divide-gray-700">
+                              {dept.rooms
+                                .filter(room => room.floor === selectedFloor)
+                                .map((room) => (
+                                  <SelectItem 
+                                    key={room.roomNumber} 
+                                    value={room.roomNumber}
+                                    className="hover:bg-gray-700"
+                                  >
+                                    <div className="flex items-center justify-between w-full">
+                                      <span className="font-medium">{room.roomNumber}</span>
+                                      <span className="text-xs text-gray-400 ml-2">
+                                        {room.type === 'single' ? 'Único' : 
+                                        room.type === 'double' ? 'Duplo' : 'Enfermaria'}
+                                      </span>
+                                    </div>
+                                  </SelectItem>
+                                ))}
+                            </SelectContent>
+                          </Select>
+                        )}
+                      </div>
+                    ))}
                   </div>
                 </div>
 
@@ -296,10 +329,20 @@ export const BedsManagement: React.FC<IBedsManagementProps> = ({ className }) =>
                     <div key={dept.name} 
                       className="bg-gray-800/50 p-4 rounded-2xl shadow-lg backdrop-blur-sm border border-gray-700"
                     >
-                      <h3 className="text-lg font-medium text-gray-200 mb-6 flex items-center gap-2">
-                        <Grid className="h-5 w-5 text-blue-400" />
-                        {dept.name}
-                      </h3>
+                      <div className="flex items-center justify-between mb-6">
+                        <h3 className="text-lg font-medium text-gray-200 flex items-center gap-2">
+                          <Grid className="h-5 w-5 text-blue-400" />
+                          {dept.name}
+                        </h3>
+                        
+                        {selectedRoom && (
+                          <div className="flex items-center gap-2">
+                            <span className="px-3 py-1 rounded-lg bg-blue-500/20 text-blue-300 text-sm font-medium">
+                              Quarto {selectedRoom}
+                            </span>
+                          </div>
+                        )}
+                      </div>
 
                       <CorridorView
                         beds={getBedsForDepartment(dept.name)}

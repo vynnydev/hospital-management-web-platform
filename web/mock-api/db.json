@@ -82,6 +82,10 @@
           "name": "UTI",
           "rooms": [
             {
+              "roomNumber": "101A",
+              "floor": "1",
+              "type": "double",
+              "specialty": "Cardiologia",
               "beds": [
                 {
                   "id": "UTI-101",
@@ -221,6 +225,10 @@
           "name": "Enfermaria",
           "rooms": [
             {
+              "roomNumber": "201B",
+              "floor": "2",
+              "type": "double",
+              "specialty": "Neurologia",
               "beds": [
                 {
                   "id": "ENF-201",
@@ -489,6 +497,9 @@
           "name": "UTI",
           "rooms": [
             {
+              "roomNumber": "101A",
+              "floor": "1",
+              "type": "single",
               "beds": [
                 {
                   "id": "UTI-101",
@@ -714,6 +725,9 @@
           "name": "UTI",
           "rooms": [
             {
+              "roomNumber": "202A",
+              "floor": "2",
+              "type": "double",
               "beds": [
                 {
                   "id": "UTI-202-COPA",
