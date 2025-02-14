@@ -77,33 +77,34 @@ export const MainPatientManagement: React.FC = () => {
         id: selectedHospital,
         nome: hospital?.name,
         departamentos: hospital?.departments.map(d => d.name),
-        totalLeitos: hospital?.departments.reduce((acc, dept) => acc + dept.beds.length, 0)
+        totalLeitos: hospital?.departments.reduce((acc, dept) => 
+          acc + dept.rooms.reduce((roomAcc, room) => 
+            roomAcc + room.beds.length, 0
+          ), 0
+        )
       });
     }
   }, [selectedHospital, networkData]);
 
+  // Effect para monitorar área selecionada
   useEffect(() => {
     if (selectedArea) {
       const hospital = networkData?.hospitals.find(h => h.id === selectedHospital);
       const departamento = hospital?.departments.find(d => d.name.toLowerCase() === selectedArea.toLowerCase());
+      
+      // Obtém todos os leitos de todos os quartos do departamento
+      const allBedsInDepartment = departamento?.rooms.flatMap(room => room.beds) || [];
+      
       console.log('🏥 Departamento selecionado:', {
         nome: selectedArea,
-        totalLeitos: departamento?.beds.length,
-        pacientesInternados: departamento?.beds.filter(b => b.status === 'occupied').length,
-        leitosDisponíveis: departamento?.beds.filter(b => b.status === 'available').length
+        totalLeitos: allBedsInDepartment.length,
+        pacientesInternados: allBedsInDepartment.filter(b => b.status === 'occupied').length,
+        leitosDisponíveis: allBedsInDepartment.filter(b => b.status === 'available').length
       });
     }
   }, [selectedArea, selectedHospital, networkData]);
 
-  useEffect(() => {
-    console.log('👤 Paciente selecionado:', selectedPatient ? {
-      id: selectedPatient.id,
-      nome: selectedPatient.name,
-      dataAdmissao: selectedPatient.admissionDate,
-      diagnóstico: selectedPatient.diagnosis
-    } : 'Nenhum paciente selecionado');
-  }, [selectedPatient]);
-
+  // Função para filtrar pacientes
   const getFilteredPatients = () => {
     if (!selectedHospital || !networkData) return [];
     
@@ -114,17 +115,20 @@ export const MainPatientManagement: React.FC = () => {
     return hospital.departments
       .filter(dept => !selectedDepartment || dept.name.toLowerCase() === selectedDepartment.toLowerCase())
       .flatMap(dept => 
-        dept.beds
-          .filter(bed => bed.patient)
-          .map(bed => {
-            const patient = bed.patient!;
-            return {
-              ...patient,
-              department: dept.name,
-              bedNumber: bed.number,
-              specialty: bed.specialty
-            };
-          })
+        dept.rooms.flatMap(room =>
+          room.beds
+            .filter(bed => bed.patient)
+            .map(bed => {
+              const patient = bed.patient!;
+              return {
+                ...patient,
+                department: dept.name,
+                roomNumber: room.roomNumber,
+                bedNumber: bed.number,
+                specialty: bed.specialty
+              };
+            })
+        )
       );
   };
 

@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Building2, Calendar } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/organisms/select';
 import { useNetworkData } from '@/services/hooks/useNetworkData';
 import { IHospital } from '@/types/hospital-network-types';
+import { countBedsByStatus } from '@/utils/countBeds';
 
 interface MaintenanceStatusCardsProps {
   className?: string;
@@ -35,33 +36,23 @@ export const MaintenanceStatusCards: React.FC<MaintenanceStatusCardsProps> = ({
   const [maintenanceHospital, setMaintenanceHospital] = React.useState('all');
   const [pendingHospital, setPendingHospital] = React.useState('all');
 
+  // Main functions using the utility function
   const getMaintenanceBedsCount = () => {
-    if (!networkData?.hospitals) return 0;
-    
-    let maintenanceBeds = 0;
-    networkData.hospitals.forEach(hospital => {
-      if (maintenanceHospital === 'all' || hospital.id === maintenanceHospital) {
-        hospital.departments?.forEach(dept => {
-          maintenanceBeds += dept.beds?.filter(bed => bed.status === 'maintenance').length || 0;
-        });
-      }
-    });
-    return maintenanceBeds;
+    return countBedsByStatus(networkData, 'maintenance', maintenanceHospital);
   };
- 
+
   const getPendingMaintenanceBedsCount = () => {
-    if (!networkData?.hospitals) return 0;
-    
-    let availableBeds = 0;
-    networkData.hospitals.forEach(hospital => {
-      if (pendingHospital === 'all' || hospital.id === pendingHospital) {
-        hospital.departments?.forEach(dept => {
-          availableBeds += dept.beds?.filter(bed => bed.status === 'available').length || 0;
-        });
-      }
-    });
-    return availableBeds;
+    return countBedsByStatus(networkData, 'available', pendingHospital);
   };
+
+  // Memoized versions for better performance
+  const getMemoizedMaintenanceBedsCount = useMemo(() => {
+    return countBedsByStatus(networkData, 'maintenance', maintenanceHospital);
+  }, [networkData, maintenanceHospital]);
+
+  const getMemoizedPendingMaintenanceBedsCount = useMemo(() => {
+    return countBedsByStatus(networkData, 'available', pendingHospital);
+  }, [networkData, pendingHospital]);
 
   const MaintenanceCard: React.FC<MaintenanceCardProps> = ({
     title,

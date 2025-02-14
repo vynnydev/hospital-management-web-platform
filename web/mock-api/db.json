@@ -80,263 +80,271 @@
       "departments": [
         {
           "name": "UTI",
-          "beds": [
+          "rooms": [
             {
-              "id": "UTI-101",
-              "number": "101",
-              "floor": "1",
-              "status": "occupied",
-              "department": "UTI",
-              "specialty": "Cardiologia",
-              "patient": {
-                "id": "P001",
-                "name": "João Silva",
-                "admissionDate": "2025-01-20T09:00:00",
-                "diagnosis": "Post-cardiac surgery",
-                "expectedDischarge": "2025-02-27",
-                "age": 25,
-                "gender": "M",
-                "bloodType": "O+",
-                "photo": "",
-                "contactInfo": {
-                    "phone": "11987654321",
-                    "emergency": "11987654322",
-                    "address": "Rua dos Ipês, 123 - Jardim Paulista"
+              "beds": [
+                {
+                  "id": "UTI-101",
+                  "number": "101",
+                  "floor": "1",
+                  "status": "occupied",
+                  "department": "UTI",
+                  "specialty": "Cardiologia",
+                  "patient": {
+                    "id": "P001",
+                    "name": "João Silva",
+                    "admissionDate": "2025-01-20T09:00:00",
+                    "diagnosis": "Post-cardiac surgery",
+                    "expectedDischarge": "2025-02-27",
+                    "age": 25,
+                    "gender": "M",
+                    "bloodType": "O+",
+                    "photo": "",
+                    "contactInfo": {
+                        "phone": "11987654321",
+                        "emergency": "11987654322",
+                        "address": "Rua dos Ipês, 123 - Jardim Paulista"
+                    },
+                    "careHistory": {
+                      "admissionId": "ADM-001",
+                      "startDate": "2025-02-20",
+                      "primaryDiagnosis": "Post-cardiac surgery",
+                      "status": "active",
+                      "totalLOS": 7,
+                      "statusHistory": [
+                        {
+                          "department": "UTI",
+                          "status": "Aguardando Atendimento",
+                          "timestamp": "2025-02-20T08:00:00",
+                          "specialty": "Cardiologia",
+                          "updatedBy": {
+                            "id": "D001",
+                            "name": "Dra. Ana Santos",
+                            "role": "Cardiologista"
+                          }
+                        },
+                        {
+                          "department": "Centro Cirúrgico",
+                          "status": "Em Procedimento",
+                          "timestamp": "2025-02-20T10:00:00",
+                          "specialty": "Cardiologia",
+                          "updatedBy": {
+                            "id": "D002",
+                            "name": "Dr. Carlos Silveira",
+                            "role": "Cirurgião Cardíaco"
+                          }
+                        },
+                        {
+                          "department": "UTI",
+                          "status": "Em Recuperação",
+                          "timestamp": "2025-02-20T15:00:00",
+                          "specialty": "Cardiologia",
+                          "updatedBy": {
+                            "id": "D001",
+                            "name": "Dra. Ana Santos",
+                            "role": "Cardiologista"
+                          }
+                        }
+                      ],
+                      "events": [
+                        {
+                          "id": "EVT-001",
+                          "timestamp": "2025-02-20T08:00:00",
+                          "type": "admission",
+                          "description": "Admissão na UTI Cardíaca",
+                          "department": "UTI",
+                          "responsibleStaff": {
+                            "id": "D001",
+                            "name": "Dra. Ana Santos",
+                            "role": "Cardiologista"
+                          },
+                          "details": {
+                            "toDepartment": "UTI"
+                          }
+                        },
+                        {
+                          "id": "EVT-002",
+                          "timestamp": "2025-02-20T10:00:00",
+                          "type": "procedure",
+                          "description": "Cirurgia Cardíaca Realizada",
+                          "department": "Centro Cirúrgico",
+                          "responsibleStaff": {
+                            "id": "D002",
+                            "name": "Dr. Carlos Silveira",
+                            "role": "Cirurgião Cardíaco"
+                          },
+                          "details": {
+                            "procedureType": "Revascularização do Miocárdio"
+                          }
+                        },
+                        {
+                          "id": "EVT-003",
+                          "timestamp": "2025-02-20T15:00:00",
+                          "type": "transfer",
+                          "description": "Transferência para UTI",
+                          "department": "UTI",
+                          "responsibleStaff": {
+                            "id": "D001",
+                            "name": "Dra. Ana Santos",
+                            "role": "Cardiologista"
+                          },
+                          "details": {
+                            "fromDepartment": "Centro Cirúrgico",
+                            "toDepartment": "UTI"
+                          }
+                        }
+                      ]
+                    }
+                  }
                 },
-                "careHistory": {
-                  "admissionId": "ADM-001",
-                  "startDate": "2025-02-20",
-                  "primaryDiagnosis": "Post-cardiac surgery",
-                  "status": "active",
-                  "totalLOS": 7,
-                  "statusHistory": [
-                    {
-                      "department": "UTI",
-                      "status": "Aguardando Atendimento",
-                      "timestamp": "2025-02-20T08:00:00",
-                      "specialty": "Cardiologia",
-                      "updatedBy": {
-                        "id": "D001",
-                        "name": "Dra. Ana Santos",
-                        "role": "Cardiologista"
-                      }
-                    },
-                    {
-                      "department": "Centro Cirúrgico",
-                      "status": "Em Procedimento",
-                      "timestamp": "2025-02-20T10:00:00",
-                      "specialty": "Cardiologia",
-                      "updatedBy": {
-                        "id": "D002",
-                        "name": "Dr. Carlos Silveira",
-                        "role": "Cirurgião Cardíaco"
-                      }
-                    },
-                    {
-                      "department": "UTI",
-                      "status": "Em Recuperação",
-                      "timestamp": "2025-02-20T15:00:00",
-                      "specialty": "Cardiologia",
-                      "updatedBy": {
-                        "id": "D001",
-                        "name": "Dra. Ana Santos",
-                        "role": "Cardiologista"
-                      }
-                    }
-                  ],
-                  "events": [
-                    {
-                      "id": "EVT-001",
-                      "timestamp": "2025-02-20T08:00:00",
-                      "type": "admission",
-                      "description": "Admissão na UTI Cardíaca",
-                      "department": "UTI",
-                      "responsibleStaff": {
-                        "id": "D001",
-                        "name": "Dra. Ana Santos",
-                        "role": "Cardiologista"
-                      },
-                      "details": {
-                        "toDepartment": "UTI"
-                      }
-                    },
-                    {
-                      "id": "EVT-002",
-                      "timestamp": "2025-02-20T10:00:00",
-                      "type": "procedure",
-                      "description": "Cirurgia Cardíaca Realizada",
-                      "department": "Centro Cirúrgico",
-                      "responsibleStaff": {
-                        "id": "D002",
-                        "name": "Dr. Carlos Silveira",
-                        "role": "Cirurgião Cardíaco"
-                      },
-                      "details": {
-                        "procedureType": "Revascularização do Miocárdio"
-                      }
-                    },
-                    {
-                      "id": "EVT-003",
-                      "timestamp": "2025-02-20T15:00:00",
-                      "type": "transfer",
-                      "description": "Transferência para UTI",
-                      "department": "UTI",
-                      "responsibleStaff": {
-                        "id": "D001",
-                        "name": "Dra. Ana Santos",
-                        "role": "Cardiologista"
-                      },
-                      "details": {
-                        "fromDepartment": "Centro Cirúrgico",
-                        "toDepartment": "UTI"
-                      }
-                    }
-                  ]
+                {
+                  "id": "UTI-102",
+                  "number": "102",
+                  "floor": "1",
+                  "status": "available",
+                  "department": "UTI",
+                  "specialty": "Cardiologia"
+                },
+                {
+                  "id": "UTI-103",
+                  "number": "103",
+                  "floor": "1",
+                  "status": "maintenance",
+                  "department": "UTI",
+                  "specialty": "Neurologia"
                 }
-              }
-            },
-            {
-              "id": "UTI-102",
-              "number": "102",
-              "floor": "1",
-              "status": "available",
-              "department": "UTI",
-              "specialty": "Cardiologia"
-            },
-            {
-              "id": "UTI-103",
-              "number": "103",
-              "floor": "1",
-              "status": "maintenance",
-              "department": "UTI",
-              "specialty": "Neurologia"
+              ]
             }
           ]
         },
         {
           "name": "Enfermaria",
-          "beds": [
+          "rooms": [
             {
-              "id": "ENF-201",
-              "number": "201",
-              "floor": "2",
-              "status": "occupied",
-              "department": "Enfermaria",
-              "specialty": "Ortopedia",
-              "patient": {
-                "id": "P002",
-                "name": "Maria Santos",
-                "admissionDate": "2025-01-19T14:00:00",
-                "diagnosis": "Hip replacement recovery",
-                "expectedDischarge": "2025-02-25",
-                "age": 32,
-                "gender": "F",
-                "bloodType": "A-",
-                "photo": "",
-                "contactInfo": {
-                    "phone": "11998765432",
-                    "emergency": "11998765433",
-                    "address": "Avenida Paulista, 1578 - Bela Vista"
+              "beds": [
+                {
+                  "id": "ENF-201",
+                  "number": "201",
+                  "floor": "2",
+                  "status": "occupied",
+                  "department": "Enfermaria",
+                  "specialty": "Ortopedia",
+                  "patient": {
+                    "id": "P002",
+                    "name": "Maria Santos",
+                    "admissionDate": "2025-01-19T14:00:00",
+                    "diagnosis": "Hip replacement recovery",
+                    "expectedDischarge": "2025-02-25",
+                    "age": 32,
+                    "gender": "F",
+                    "bloodType": "A-",
+                    "photo": "",
+                    "contactInfo": {
+                        "phone": "11998765432",
+                        "emergency": "11998765433",
+                        "address": "Avenida Paulista, 1578 - Bela Vista"
+                    },
+                    "careHistory": {
+                      "admissionId": "ADM-002",
+                      "startDate": "2025-02-19",
+                      "primaryDiagnosis": "Hip replacement recovery",
+                      "status": "active",
+                      "totalLOS": 6,
+                      "statusHistory": [
+                        {
+                          "department": "Enfermaria",
+                          "status": "Aguardando Atendimento",
+                          "timestamp": "2025-02-19T09:00:00",
+                          "specialty": "Ortopedia",
+                          "updatedBy": {
+                            "id": "D003",
+                            "name": "Dr. Ricardo Ortiz",
+                            "role": "Ortopedista"
+                          }
+                        },
+                        {
+                          "department": "Centro Cirúrgico",
+                          "status": "Em Procedimento",
+                          "timestamp": "2025-02-19T11:00:00",
+                          "specialty": "Ortopedia",
+                          "updatedBy": {
+                            "id": "D003",
+                            "name": "Dr. Ricardo Ortiz",
+                            "role": "Ortopedista"
+                          }
+                        },
+                        {
+                          "department": "Enfermaria",
+                          "status": "Em Observação",
+                          "timestamp": "2025-02-19T14:30:00",
+                          "specialty": "Ortopedia",
+                          "updatedBy": {
+                            "id": "D003",
+                            "name": "Dr. Ricardo Ortiz",
+                            "role": "Ortopedista"
+                          }
+                        }
+                      ],
+                      "events": [
+                        {
+                          "id": "EVT-004",
+                          "timestamp": "2025-02-19T09:00:00",
+                          "type": "admission",
+                          "description": "Admissão para Cirurgia Ortopédica",
+                          "department": "Enfermaria",
+                          "responsibleStaff": {
+                            "id": "D003",
+                            "name": "Dr. Ricardo Ortiz",
+                            "role": "Ortopedista"
+                          },
+                          "details": {
+                            "toDepartment": "Enfermaria"
+                          }
+                        },
+                        {
+                          "id": "EVT-005",
+                          "timestamp": "2025-02-19T11:00:00",
+                          "type": "procedure",
+                          "description": "Artroplastia Total do Quadril",
+                          "department": "Centro Cirúrgico",
+                          "responsibleStaff": {
+                            "id": "D003",
+                            "name": "Dr. Ricardo Ortiz",
+                            "role": "Ortopedista"
+                          },
+                          "details": {
+                            "procedureType": "Artroplastia Total do Quadril"
+                          }
+                        },
+                        {
+                          "id": "EVT-006",
+                          "timestamp": "2025-02-19T14:30:00",
+                          "type": "transfer",
+                          "description": "Transferência para Enfermaria",
+                          "department": "Enfermaria",
+                          "responsibleStaff": {
+                            "id": "D003",
+                            "name": "Dr. Ricardo Ortiz",
+                            "role": "Ortopedista"
+                          },
+                          "details": {
+                            "fromDepartment": "Centro Cirúrgico",
+                            "toDepartment": "Enfermaria"
+                          }
+                        }
+                      ]
+                    }
+                  }
                 },
-                "careHistory": {
-                  "admissionId": "ADM-002",
-                  "startDate": "2025-02-19",
-                  "primaryDiagnosis": "Hip replacement recovery",
-                  "status": "active",
-                  "totalLOS": 6,
-                  "statusHistory": [
-                    {
-                      "department": "Enfermaria",
-                      "status": "Aguardando Atendimento",
-                      "timestamp": "2025-02-19T09:00:00",
-                      "specialty": "Ortopedia",
-                      "updatedBy": {
-                        "id": "D003",
-                        "name": "Dr. Ricardo Ortiz",
-                        "role": "Ortopedista"
-                      }
-                    },
-                    {
-                      "department": "Centro Cirúrgico",
-                      "status": "Em Procedimento",
-                      "timestamp": "2025-02-19T11:00:00",
-                      "specialty": "Ortopedia",
-                      "updatedBy": {
-                        "id": "D003",
-                        "name": "Dr. Ricardo Ortiz",
-                        "role": "Ortopedista"
-                      }
-                    },
-                    {
-                      "department": "Enfermaria",
-                      "status": "Em Observação",
-                      "timestamp": "2025-02-19T14:30:00",
-                      "specialty": "Ortopedia",
-                      "updatedBy": {
-                        "id": "D003",
-                        "name": "Dr. Ricardo Ortiz",
-                        "role": "Ortopedista"
-                      }
-                    }
-                  ],
-                  "events": [
-                    {
-                      "id": "EVT-004",
-                      "timestamp": "2025-02-19T09:00:00",
-                      "type": "admission",
-                      "description": "Admissão para Cirurgia Ortopédica",
-                      "department": "Enfermaria",
-                      "responsibleStaff": {
-                        "id": "D003",
-                        "name": "Dr. Ricardo Ortiz",
-                        "role": "Ortopedista"
-                      },
-                      "details": {
-                        "toDepartment": "Enfermaria"
-                      }
-                    },
-                    {
-                      "id": "EVT-005",
-                      "timestamp": "2025-02-19T11:00:00",
-                      "type": "procedure",
-                      "description": "Artroplastia Total do Quadril",
-                      "department": "Centro Cirúrgico",
-                      "responsibleStaff": {
-                        "id": "D003",
-                        "name": "Dr. Ricardo Ortiz",
-                        "role": "Ortopedista"
-                      },
-                      "details": {
-                        "procedureType": "Artroplastia Total do Quadril"
-                      }
-                    },
-                    {
-                      "id": "EVT-006",
-                      "timestamp": "2025-02-19T14:30:00",
-                      "type": "transfer",
-                      "description": "Transferência para Enfermaria",
-                      "department": "Enfermaria",
-                      "responsibleStaff": {
-                        "id": "D003",
-                        "name": "Dr. Ricardo Ortiz",
-                        "role": "Ortopedista"
-                      },
-                      "details": {
-                        "fromDepartment": "Centro Cirúrgico",
-                        "toDepartment": "Enfermaria"
-                      }
-                    }
-                  ]
+                {
+                  "id": "ENF-202",
+                  "number": "202",
+                  "floor": "2",
+                  "status": "available",
+                  "department": "Enfermaria",
+                  "specialty": "Ortopedia"
                 }
-              }
-            },
-            {
-              "id": "ENF-202",
-              "number": "202",
-              "floor": "2",
-              "status": "available",
-              "department": "Enfermaria",
-              "specialty": "Ortopedia"
+              ]
             }
           ]
         }
@@ -479,134 +487,138 @@
       "departments": [
         {
           "name": "UTI",
-          "beds": [
+          "rooms": [
             {
-              "id": "UTI-101",
-              "number": "101",
-              "floor": "1",
-              "status": "occupied",
-              "department": "UTI",
-              "specialty": "Oncologia",
-              "patient": {
-                "id": "P003",
-                "name": "Pedro Oliveira",
-                "admissionDate": "2025-01-18T07:00:00",
-                "diagnosis": "Post-chemotherapy monitoring",
-                "expectedDischarge": "2025-02-24",
-                "age": 58,
-                "gender": "M",
-                "bloodType": "B+",
-                "photo": "",
-                "contactInfo": {
-                    "phone": "11976543210",
-                    "emergency": "11976543211",
-                    "address": "Rua Augusta, 789 - Consolação"
-                },
-                "careHistory": {
-                  "admissionId": "ADM-003",
-                  "startDate": "2025-02-18",
-                  "primaryDiagnosis": "Post-chemotherapy monitoring - Linfoma não-Hodgkin",
-                  "status": "active",
-                  "totalLOS": 6,
-                  "statusHistory": [
-                    {
-                      "department": "UTI",
-                      "status": "Aguardando Atendimento",
-                      "timestamp": "2025-02-18T08:30:00",
-                      "specialty": "Oncologia",
-                      "updatedBy": {
-                        "id": "D004",
-                        "name": "Dra. Carla Mendes",
-                        "role": "Oncologista"
-                      }
+              "beds": [
+                {
+                  "id": "UTI-101",
+                  "number": "101",
+                  "floor": "1",
+                  "status": "occupied",
+                  "department": "UTI",
+                  "specialty": "Oncologia",
+                  "patient": {
+                    "id": "P003",
+                    "name": "Pedro Oliveira",
+                    "admissionDate": "2025-01-18T07:00:00",
+                    "diagnosis": "Post-chemotherapy monitoring",
+                    "expectedDischarge": "2025-02-24",
+                    "age": 58,
+                    "gender": "M",
+                    "bloodType": "B+",
+                    "photo": "",
+                    "contactInfo": {
+                        "phone": "11976543210",
+                        "emergency": "11976543211",
+                        "address": "Rua Augusta, 789 - Consolação"
                     },
-                    {
-                      "department": "UTI",
-                      "status": "Em Procedimento",
-                      "timestamp": "2025-02-18T10:15:00",
-                      "specialty": "Oncologia",
-                      "updatedBy": {
-                        "id": "D004",
-                        "name": "Dra. Carla Mendes",
-                        "role": "Oncologista"
-                      }
-                    },
-                    {
-                      "department": "UTI",
-                      "status": "Em Recuperação",
-                      "timestamp": "2025-02-19T09:00:00",
-                      "specialty": "Oncologia",
-                      "updatedBy": {
-                        "id": "D004",
-                        "name": "Dra. Carla Mendes",
-                        "role": "Oncologista"
-                      }
+                    "careHistory": {
+                      "admissionId": "ADM-003",
+                      "startDate": "2025-02-18",
+                      "primaryDiagnosis": "Post-chemotherapy monitoring - Linfoma não-Hodgkin",
+                      "status": "active",
+                      "totalLOS": 6,
+                      "statusHistory": [
+                        {
+                          "department": "UTI",
+                          "status": "Aguardando Atendimento",
+                          "timestamp": "2025-02-18T08:30:00",
+                          "specialty": "Oncologia",
+                          "updatedBy": {
+                            "id": "D004",
+                            "name": "Dra. Carla Mendes",
+                            "role": "Oncologista"
+                          }
+                        },
+                        {
+                          "department": "UTI",
+                          "status": "Em Procedimento",
+                          "timestamp": "2025-02-18T10:15:00",
+                          "specialty": "Oncologia",
+                          "updatedBy": {
+                            "id": "D004",
+                            "name": "Dra. Carla Mendes",
+                            "role": "Oncologista"
+                          }
+                        },
+                        {
+                          "department": "UTI",
+                          "status": "Em Recuperação",
+                          "timestamp": "2025-02-19T09:00:00",
+                          "specialty": "Oncologia",
+                          "updatedBy": {
+                            "id": "D004",
+                            "name": "Dra. Carla Mendes",
+                            "role": "Oncologista"
+                          }
+                        }
+                      ],
+                      "events": [
+                        {
+                          "id": "EVT-007",
+                          "timestamp": "2025-02-18T08:30:00",
+                          "type": "admission",
+                          "description": "Admissão para monitoramento pós-quimioterapia",
+                          "department": "UTI",
+                          "responsibleStaff": {
+                            "id": "D004",
+                            "name": "Dra. Carla Mendes",
+                            "role": "Oncologista"
+                          },
+                          "details": {
+                            "toDepartment": "UTI"
+                          }
+                        },
+                        {
+                          "id": "EVT-008",
+                          "timestamp": "2025-02-18T10:15:00",
+                          "type": "exam",
+                          "description": "Coleta de exames laboratoriais completos",
+                          "department": "UTI",
+                          "responsibleStaff": {
+                            "id": "N002",
+                            "name": "Enfermeira Paula Silva",
+                            "role": "Enfermeira"
+                          },
+                          "details": {
+                            "examType": "Hemograma completo, função renal e hepática"
+                          }
+                        },
+                        {
+                          "id": "EVT-009",
+                          "timestamp": "2025-02-18T14:00:00",
+                          "type": "medication",
+                          "description": "Início de antibioticoterapia profilática",
+                          "department": "UTI",
+                          "responsibleStaff": {
+                            "id": "D004",
+                            "name": "Dra. Carla Mendes",
+                            "role": "Oncologista"
+                          },
+                          "details": {
+                            "medicationName": "Levofloxacino 750mg IV"
+                          }
+                        },
+                        {
+                          "id": "EVT-010",
+                          "timestamp": "2025-02-19T09:00:00",
+                          "type": "exam",
+                          "description": "Avaliação cardíaca de acompanhamento",
+                          "department": "UTI",
+                          "responsibleStaff": {
+                            "id": "D005",
+                            "name": "Dr. Roberto Cardoso",
+                            "role": "Cardiologista"
+                          },
+                          "details": {
+                            "examType": "Ecocardiograma"
+                          }
+                        }
+                      ]
                     }
-                  ],
-                  "events": [
-                    {
-                      "id": "EVT-007",
-                      "timestamp": "2025-02-18T08:30:00",
-                      "type": "admission",
-                      "description": "Admissão para monitoramento pós-quimioterapia",
-                      "department": "UTI",
-                      "responsibleStaff": {
-                        "id": "D004",
-                        "name": "Dra. Carla Mendes",
-                        "role": "Oncologista"
-                      },
-                      "details": {
-                        "toDepartment": "UTI"
-                      }
-                    },
-                    {
-                      "id": "EVT-008",
-                      "timestamp": "2025-02-18T10:15:00",
-                      "type": "exam",
-                      "description": "Coleta de exames laboratoriais completos",
-                      "department": "UTI",
-                      "responsibleStaff": {
-                        "id": "N002",
-                        "name": "Enfermeira Paula Silva",
-                        "role": "Enfermeira"
-                      },
-                      "details": {
-                        "examType": "Hemograma completo, função renal e hepática"
-                      }
-                    },
-                    {
-                      "id": "EVT-009",
-                      "timestamp": "2025-02-18T14:00:00",
-                      "type": "medication",
-                      "description": "Início de antibioticoterapia profilática",
-                      "department": "UTI",
-                      "responsibleStaff": {
-                        "id": "D004",
-                        "name": "Dra. Carla Mendes",
-                        "role": "Oncologista"
-                      },
-                      "details": {
-                        "medicationName": "Levofloxacino 750mg IV"
-                      }
-                    },
-                    {
-                      "id": "EVT-010",
-                      "timestamp": "2025-02-19T09:00:00",
-                      "type": "exam",
-                      "description": "Avaliação cardíaca de acompanhamento",
-                      "department": "UTI",
-                      "responsibleStaff": {
-                        "id": "D005",
-                        "name": "Dr. Roberto Cardoso",
-                        "role": "Cardiologista"
-                      },
-                      "details": {
-                        "examType": "Ecocardiograma"
-                      }
-                    }
-                  ]
+                  }
                 }
-              }
+              ]
             }
           ]
         }
@@ -700,178 +712,182 @@
       "departments": [
         {
           "name": "UTI",
-          "beds": [
+          "rooms": [
             {
-              "id": "UTI-202-COPA",
-              "number": "202",
-              "floor": "2",
-              "status": "occupied",
-              "department": "UTI",
-              "specialty": "Oncologia",
-              "patient": {
-                "id": "P004",
-                "name": "Maria do Céu",
-                "admissionDate": "2025-02-18T16:00:00",
-                "diagnosis": "Post-chemotherapy monitoring",
-                "expectedDischarge": "2025-01-24",
-                "careHistory": {
-                  "admissionId": "ADM-004",
-                  "startDate": "2025-02-18",
-                  "primaryDiagnosis": "Post-chemotherapy monitoring - Câncer de mama metastático",
-                  "status": "active",
-                  "totalLOS": 6,
-                  "name": "Maria do Céu",
-                  "age": 27,
-                  "gender": "F",
-                  "bloodType": "AB+",
-                  "photo": "",
-                  "contactInfo": {
-                      "phone": "11965432109",
-                      "emergency": "11965432110",
-                      "address": "Rua Oscar Freire, 456 - Jardins"
-                  },
-                  "statusHistory": [
-                    {
-                      "department": "UTI",
-                      "status": "Aguardando Atendimento",
-                      "timestamp": "2025-02-18T07:45:00",
-                      "specialty": "Oncologia",
-                      "updatedBy": {
-                        "id": "D006",
-                        "name": "Dra. Beatriz Santos",
-                        "role": "Oncologista"
-                      }
-                    },
-                    {
-                      "department": "UTI",
-                      "status": "Em Procedimento",
-                      "timestamp": "2025-02-18T09:30:00",
-                      "specialty": "Oncologia",
-                      "updatedBy": {
-                        "id": "D006",
-                        "name": "Dra. Beatriz Santos",
-                        "role": "Oncologista"
-                      }
-                    },
-                    {
-                      "department": "UTI",
-                      "status": "Em Procedimento",
-                      "timestamp": "2025-02-18T16:00:00",
-                      "specialty": "Oncologia",
-                      "updatedBy": {
-                        "id": "D007",
-                        "name": "Dr. Marcos Lima",
-                        "role": "Intensivista"
-                      }
-                    },
-                    {
-                      "department": "UTI",
-                      "status": "Em Recuperação",
-                      "timestamp": "2025-02-19T08:00:00",
-                      "specialty": "Oncologia",
-                      "updatedBy": {
-                        "id": "D007",
-                        "name": "Dr. Marcos Lima",
-                        "role": "Intensivista"
-                      }
+              "beds": [
+                {
+                  "id": "UTI-202-COPA",
+                  "number": "202",
+                  "floor": "2",
+                  "status": "occupied",
+                  "department": "UTI",
+                  "specialty": "Oncologia",
+                  "patient": {
+                    "id": "P004",
+                    "name": "Maria do Céu",
+                    "admissionDate": "2025-02-18T16:00:00",
+                    "diagnosis": "Post-chemotherapy monitoring",
+                    "expectedDischarge": "2025-01-24",
+                    "careHistory": {
+                      "admissionId": "ADM-004",
+                      "startDate": "2025-02-18",
+                      "primaryDiagnosis": "Post-chemotherapy monitoring - Câncer de mama metastático",
+                      "status": "active",
+                      "totalLOS": 6,
+                      "name": "Maria do Céu",
+                      "age": 27,
+                      "gender": "F",
+                      "bloodType": "AB+",
+                      "photo": "",
+                      "contactInfo": {
+                          "phone": "11965432109",
+                          "emergency": "11965432110",
+                          "address": "Rua Oscar Freire, 456 - Jardins"
+                      },
+                      "statusHistory": [
+                        {
+                          "department": "UTI",
+                          "status": "Aguardando Atendimento",
+                          "timestamp": "2025-02-18T07:45:00",
+                          "specialty": "Oncologia",
+                          "updatedBy": {
+                            "id": "D006",
+                            "name": "Dra. Beatriz Santos",
+                            "role": "Oncologista"
+                          }
+                        },
+                        {
+                          "department": "UTI",
+                          "status": "Em Procedimento",
+                          "timestamp": "2025-02-18T09:30:00",
+                          "specialty": "Oncologia",
+                          "updatedBy": {
+                            "id": "D006",
+                            "name": "Dra. Beatriz Santos",
+                            "role": "Oncologista"
+                          }
+                        },
+                        {
+                          "department": "UTI",
+                          "status": "Em Procedimento",
+                          "timestamp": "2025-02-18T16:00:00",
+                          "specialty": "Oncologia",
+                          "updatedBy": {
+                            "id": "D007",
+                            "name": "Dr. Marcos Lima",
+                            "role": "Intensivista"
+                          }
+                        },
+                        {
+                          "department": "UTI",
+                          "status": "Em Recuperação",
+                          "timestamp": "2025-02-19T08:00:00",
+                          "specialty": "Oncologia",
+                          "updatedBy": {
+                            "id": "D007",
+                            "name": "Dr. Marcos Lima",
+                            "role": "Intensivista"
+                          }
+                        }
+                      ],
+                      "events": [
+                        {
+                          "id": "EVT-011",
+                          "timestamp": "2025-02-18T07:45:00",
+                          "type": "admission",
+                          "description": "Admissão para manejo de efeitos pós-quimioterapia",
+                          "department": "UTI",
+                          "responsibleStaff": {
+                            "id": "D006",
+                            "name": "Dra. Beatriz Santos",
+                            "role": "Oncologista"
+                          },
+                          "details": {
+                            "toDepartment": "UTI"
+                          }
+                        },
+                        {
+                          "id": "EVT-012",
+                          "timestamp": "2025-02-18T09:30:00",
+                          "type": "exam",
+                          "description": "Coleta de exames de urgência",
+                          "department": "UTI",
+                          "responsibleStaff": {
+                            "id": "N003",
+                            "name": "Enfermeiro João Costa",
+                            "role": "Enfermeiro"
+                          },
+                          "details": {
+                            "examType": "Hemograma, eletrólitos e função renal"
+                          }
+                        },
+                        {
+                          "id": "EVT-013",
+                          "timestamp": "2025-02-18T11:00:00",
+                          "type": "medication",
+                          "description": "Administração de antieméticos e hidratação",
+                          "department": "UTI",
+                          "responsibleStaff": {
+                            "id": "D006",
+                            "name": "Dra. Beatriz Santos",
+                            "role": "Oncologista"
+                          },
+                          "details": {
+                            "medicationName": "Ondansetrona 8mg IV + Hidratação 1000ml"
+                          }
+                        },
+                        {
+                          "id": "EVT-014",
+                          "timestamp": "2025-02-18T16:00:00",
+                          "type": "procedure",
+                          "description": "Instalação de cateter central",
+                          "department": "UTI",
+                          "responsibleStaff": {
+                            "id": "D007",
+                            "name": "Dr. Marcos Lima",
+                            "role": "Intensivista"
+                          },
+                          "details": {
+                            "procedureType": "Implantação de PICC"
+                          }
+                        },
+                        {
+                          "id": "EVT-015",
+                          "timestamp": "2025-02-19T08:00:00",
+                          "type": "exam",
+                          "description": "Raio-X de tórax para confirmação de PICC",
+                          "department": "UTI",
+                          "responsibleStaff": {
+                            "id": "D007",
+                            "name": "Dr. Marcos Lima",
+                            "role": "Intensivista"
+                          },
+                          "details": {
+                            "examType": "Raio-X de tórax",
+                            "result": "Posicionamento adequado do cateter"
+                          }
+                        }
+                      ]
                     }
-                  ],
-                  "events": [
-                    {
-                      "id": "EVT-011",
-                      "timestamp": "2025-02-18T07:45:00",
-                      "type": "admission",
-                      "description": "Admissão para manejo de efeitos pós-quimioterapia",
-                      "department": "UTI",
-                      "responsibleStaff": {
-                        "id": "D006",
-                        "name": "Dra. Beatriz Santos",
-                        "role": "Oncologista"
-                      },
-                      "details": {
-                        "toDepartment": "UTI"
-                      }
-                    },
-                    {
-                      "id": "EVT-012",
-                      "timestamp": "2025-02-18T09:30:00",
-                      "type": "exam",
-                      "description": "Coleta de exames de urgência",
-                      "department": "UTI",
-                      "responsibleStaff": {
-                        "id": "N003",
-                        "name": "Enfermeiro João Costa",
-                        "role": "Enfermeiro"
-                      },
-                      "details": {
-                        "examType": "Hemograma, eletrólitos e função renal"
-                      }
-                    },
-                    {
-                      "id": "EVT-013",
-                      "timestamp": "2025-02-18T11:00:00",
-                      "type": "medication",
-                      "description": "Administração de antieméticos e hidratação",
-                      "department": "UTI",
-                      "responsibleStaff": {
-                        "id": "D006",
-                        "name": "Dra. Beatriz Santos",
-                        "role": "Oncologista"
-                      },
-                      "details": {
-                        "medicationName": "Ondansetrona 8mg IV + Hidratação 1000ml"
-                      }
-                    },
-                    {
-                      "id": "EVT-014",
-                      "timestamp": "2025-02-18T16:00:00",
-                      "type": "procedure",
-                      "description": "Instalação de cateter central",
-                      "department": "UTI",
-                      "responsibleStaff": {
-                        "id": "D007",
-                        "name": "Dr. Marcos Lima",
-                        "role": "Intensivista"
-                      },
-                      "details": {
-                        "procedureType": "Implantação de PICC"
-                      }
-                    },
-                    {
-                      "id": "EVT-015",
-                      "timestamp": "2025-02-19T08:00:00",
-                      "type": "exam",
-                      "description": "Raio-X de tórax para confirmação de PICC",
-                      "department": "UTI",
-                      "responsibleStaff": {
-                        "id": "D007",
-                        "name": "Dr. Marcos Lima",
-                        "role": "Intensivista"
-                      },
-                      "details": {
-                        "examType": "Raio-X de tórax",
-                        "result": "Posicionamento adequado do cateter"
-                      }
-                    }
-                  ]
+                  }
+                },
+                {
+                  "id": "UTI-102",
+                  "number": "102",
+                  "floor": "1",
+                  "status": "available",
+                  "department": "UTI",
+                  "specialty": "Cardiologia"
+                },
+                {
+                  "id": "UTI-103",
+                  "number": "103",
+                  "floor": "1",
+                  "status": "maintenance",
+                  "department": "UTI",
+                  "specialty": "Neurologia"
                 }
-              }
-            },
-            {
-              "id": "UTI-102",
-              "number": "102",
-              "floor": "1",
-              "status": "available",
-              "department": "UTI",
-              "specialty": "Cardiologia"
-            },
-            {
-              "id": "UTI-103",
-              "number": "103",
-              "floor": "1",
-              "status": "maintenance",
-              "department": "UTI",
-              "specialty": "Neurologia"
+              ]
             }
           ]
         }

@@ -57,21 +57,37 @@ export interface IPatient {
   careHistory?: IPatientCareHistory;
 }
 
+// Interface atualizada para IBed
 export interface IBed {
   id: string;
   number: string;
   floor: string;
   status: 'occupied' | 'available' | 'maintenance';
-  patient?: IPatient;
   department: string;
   specialty: string;
   hospital: string;
+  patient?: IPatient;
 }
 
-interface IDepartment {
-  name: string;
+export interface IRoom {
+  roomNumber: string;
+  floor: string;
+  type: 'single' | 'double' | 'ward';
+  specialty: string;
   beds: IBed[];
-  capacity: IDepartmentalCapacity;
+}
+
+export interface IDepartment {
+  name: string;
+  rooms: IRoom[];
+  capacity?: IDepartmentalCapacity;
+}
+
+export interface IDepartmentMetric {
+  area: string;
+  count: number;
+  capacity: number;
+  occupancy: number;
 }
 
 interface ICoordinates {
@@ -94,19 +110,25 @@ export interface IDepartmentalCapacity {
   recommendedMaxOccupancy: number;
 }
 
-interface IHospital {
+// Interface para departamento com capacidade calculada
+export interface IDepartmentWithCapacity extends Omit<IDepartment, 'capacity'> {
+  capacity: number; // Agora sobrescrevemos após omitir a capacity original
+}
+
+// Interface atualizada para Hospital
+export interface IHospital {
   id: string;
   name: string;
   unit: IUnit;
   type: string;
   specialties: string[];
+  departments: IDepartment[];
   metrics: IHospitalMetrics;
   networkRank?: {
     occupancy: number;
     efficiency: number;
     quality: number;
   };
-  departments: IDepartment[];
 }
 
 interface INetworkData {
@@ -125,7 +147,7 @@ export interface IUseNetworkDataReturn {
   getBedsForFloor: (floorNumber: string) => IBed[];
 }
 
-export type { INetworkInfo, IHospital, INetworkData, IDepartment };
+export type { INetworkInfo, INetworkData };
 
 export interface ICareEventDetails {
   fromDepartment?: string;
@@ -238,9 +260,10 @@ export interface IOverallMetrics {
   };
 }
 
-// Interface para métricas departamentais
+// Interface atualizada para departmental metrics
 export interface IDepartmentMetrics {
   occupancy: TOccupancy;
+  rooms: number;
   beds: number;
   patients: number;
   validStatuses: string[];
@@ -290,7 +313,7 @@ export interface IHospitalMetrics {
   departmental: Record<string, IDepartmentMetrics>;
 }
 
-// Estado inicial das métricas com a estrutura correta
+// Estado inicial atualizado para métricas
 export const initialMetrics: IHospitalMetrics = {
   capacity: {
     total: {
@@ -327,12 +350,14 @@ export const initialMetrics: IHospitalMetrics = {
   departmental: {
     uti: {
       occupancy: 0,
+      rooms: 0,
       beds: 0,
       patients: 0,
       validStatuses: []
     },
     enfermaria: {
       occupancy: 0,
+      rooms: 0,
       beds: 0,
       patients: 0,
       validStatuses: []
@@ -341,7 +366,7 @@ export const initialMetrics: IHospitalMetrics = {
   networkEfficiency: {
     avgWaitTime: 0,
     bedTurnover: 0,
-    resourceUtilization: 0,
+    resourceUtilization: 0
   }
 };
 
@@ -384,7 +409,8 @@ export interface IVitalSign {
   consciousness: string;
   painScale: number;
   respiratoryRate: number;
-  mobility: string;}
+  mobility: string;
+}
   
 export interface IPatient {
     id: string;

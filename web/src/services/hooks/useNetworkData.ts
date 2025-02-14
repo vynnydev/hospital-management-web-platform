@@ -110,22 +110,26 @@ export const useNetworkData = () => {
     
     hospitals.forEach(hospital => {
       if (!hospital?.departments) return;
-
+  
       hospital.departments.forEach(dept => {
-        if (!dept?.beds) return;
-
-        dept.beds.forEach(bed => {
-          if (!bed?.floor) return;
-          
-          allBeds.push({
-            ...bed,
-            hospital: hospital.name,
-            department: dept.name
+        if (!dept?.rooms) return;
+  
+        dept.rooms.forEach(room => {
+          if (!room?.beds) return;
+  
+          room.beds.forEach(bed => {
+            if (!bed?.floor) return;
+            
+            allBeds.push({
+              ...bed,
+              hospital: hospital.name,
+              department: dept.name
+            });
           });
         });
       });
     });
-
+  
     return allBeds;
   };
 
@@ -134,15 +138,17 @@ export const useNetworkData = () => {
   
     for (const hospital of networkData.hospitals) {
       for (const department of hospital.departments) {
-        for (const bed of department.beds) {
-          if (bed.patient?.id === patientId && bed.patient.careHistory) {
-            const validationResult = isValidCareHistory(bed.patient.careHistory);
-            console.log('Validation details:', {
-              basicFields: typeof bed.patient.careHistory === 'object',
-              hasEvents: Array.isArray(bed.patient.careHistory.events),
-              hasStatusHistory: Array.isArray(bed.patient.careHistory.statusHistory)
-            });
-            return validationResult ? bed.patient.careHistory : null;
+        for (const room of department.rooms) {
+          for (const bed of room.beds) {
+            if (bed.patient?.id === patientId && bed.patient.careHistory) {
+              const validationResult = isValidCareHistory(bed.patient.careHistory);
+              console.log('Validation details:', {
+                basicFields: typeof bed.patient.careHistory === 'object',
+                hasEvents: Array.isArray(bed.patient.careHistory.events),
+                hasStatusHistory: Array.isArray(bed.patient.careHistory.statusHistory)
+              });
+              return validationResult ? bed.patient.careHistory : null;
+            }
           }
         }
       }

@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { HospitalMetrics, Capacity } from '@/types/hospital-metrics-types';
+
+import { IHospitalMetrics } from '@/types/hospital-metrics-types';
 import { TrendDirection } from '@/types/trends';
 
-export const useMetricsCalculations = (metrics: HospitalMetrics) => {
+export const useMetricsCalculations = (metrics: IHospitalMetrics) => {
   
   // Calcula a taxa de rotatividade dos leitos com limite de capacidade
   const calculateTurnoverRate = () => {

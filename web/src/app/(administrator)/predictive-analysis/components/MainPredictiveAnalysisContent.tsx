@@ -160,18 +160,18 @@ export const MainPredictiveAnalysisContent: React.FC<MainPredictiveAnalysisConte
 
         // Efeito para atualizar departamentos quando um hospital é selecionado
         useEffect(() => {
-            if (selectedHospital && networkData?.hospitals) {
-                const hospital = networkData?.hospitals.find(h => h.id === selectedHospital);
-                if (hospital?.departments) {
-                const deptMetrics: IDepartmentMetric[] = hospital.departments.map(dept => ({
-                    area: dept.name,
-                    count: countDepartmentPatients(dept),
-                    capacity: dept.beds.length,
-                    occupancy: calculateDepartmentOccupancy(dept)
-                }));
-                setDepartments(deptMetrics);
-                }
+          if (selectedHospital && networkData?.hospitals) {
+            const hospital = networkData?.hospitals.find(h => h.id === selectedHospital);
+            if (hospital?.departments) {
+              const deptMetrics: IDepartmentMetric[] = hospital.departments.map(dept => ({
+                area: dept.name,
+                count: countDepartmentPatients(dept),
+                capacity: dept.rooms.reduce((total, room) => total + room.beds.length, 0),
+                occupancy: calculateDepartmentOccupancy(dept)
+              }));
+              setDepartments(deptMetrics);
             }
+          }
         }, [selectedHospital, networkData?.hospitals]);
 
         const selectedTeamMember = useMemo(() => {

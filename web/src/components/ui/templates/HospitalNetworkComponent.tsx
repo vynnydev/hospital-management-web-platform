@@ -7,22 +7,12 @@ import type {
   IHospital,
   IBed,
   IDepartmentalCapacity,
+  IDepartmentMetric,
+  IDepartmentWithCapacity,
 } from '@/types/hospital-network-types';
 import type { IAppUser } from '@/types/auth-types';
 import { HospitalNetworkListSlider } from '@/components/ui/templates/HospitalNetworkListSlider';
-
-interface IDepartment {
-  name: string;
-  beds: IBed[];
-  capacity: IDepartmentalCapacity;
-}
-
-interface IDepartmentMetric {
-  area: string;
-  count: number;
-  capacity: number;
-  occupancy: number;
-}
+import { calculateDepartmentOccupancy, countDepartmentPatients } from '@/utils/calculateDepartment';
 
 interface HospitalNetworkComponentProps {
   networkInfo: INetworkInfo | undefined;
@@ -50,18 +40,6 @@ export const HospitalNetworkComponent: React.FC<HospitalNetworkComponentProps> =
   const [authorizedHospitals, setAuthorizedHospitals] = useState<IHospital[]>([]);
   const [departments, setDepartments] = useState<IDepartmentMetric[]>([]);
 
-  // Função para calcular a ocupação do departamento
-  const calculateDepartmentOccupancy = (department: IDepartment): number => {
-    const occupiedBeds = department.beds.filter(bed => bed.status === 'occupied').length;
-    const totalBeds = department.beds.length;
-    return totalBeds > 0 ? (occupiedBeds / totalBeds) * 100 : 0;
-  };
-
-  // Função para contar pacientes no departamento
-  const countDepartmentPatients = (department: IDepartment): number => {
-    return department.beds.filter(bed => bed.status === 'occupied' && bed.patient).length;
-  };
-
   // Efeito para filtrar hospitais baseado nas permissões do usuário
   useEffect(() => {
     if (!hospitals || !currentUser) return;
@@ -78,16 +56,22 @@ export const HospitalNetworkComponent: React.FC<HospitalNetworkComponentProps> =
     if (selectedHospital && hospitals) {
       const hospital = hospitals.find(h => h.id === selectedHospital);
       if (hospital?.departments) {
-        const deptMetrics: IDepartmentMetric[] = hospital.departments.map(dept => ({
-          area: dept.name,
-          count: countDepartmentPatients(dept),
-          capacity: dept.beds.length,
-          occupancy: calculateDepartmentOccupancy(dept)
-        }));
+        const deptMetrics: IDepartmentMetric[] = hospital.departments.map((dept) => {
+          const calculatedCapacity = dept.rooms.reduce((total, room) => 
+            total + room.beds.length, 0
+          );
+  
+          return {
+            area: dept.name,
+            count: countDepartmentPatients(dept),
+            capacity: calculatedCapacity,
+            occupancy: calculateDepartmentOccupancy(dept)
+          };
+        });
         setDepartments(deptMetrics);
       }
     }
-  }, [selectedHospital, hospitals]);
+  }, [selectedHospital, hospitals, countDepartmentPatients, calculateDepartmentOccupancy]);
 
   if (loading) {
     return (

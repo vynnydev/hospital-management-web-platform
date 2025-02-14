@@ -11,7 +11,7 @@ import type {
 } from '@/types/hospital-network-types';
 import type { IAppUser } from '@/types/auth-types';
 import { HospitalNetworkListSlider } from '@/components/ui/templates/HospitalNetworkListSlider';
-import { calculateDepartmentOccupancy, countDepartmentPatients } from '@/utils/calculateDepartment';
+import { calculateDepartmentCapacity, calculateDepartmentOccupancy, countDepartmentPatients } from '@/utils/calculateDepartment';
 
 interface IDepartment {
   name: string;
@@ -71,13 +71,13 @@ export const HospitalNetworkComponentWithDifferenteUI: React.FC<HospitalNetworkC
         const deptMetrics: IDepartmentMetric[] = hospital.departments.map(dept => ({
           area: dept.name,
           count: countDepartmentPatients(dept),
-          capacity: dept.beds.length,
+          capacity: calculateDepartmentCapacity(dept),
           occupancy: calculateDepartmentOccupancy(dept)
         }));
         setDepartments(deptMetrics);
       }
     }
-  }, [selectedHospital, hospitals]);
+  }, [selectedHospital, hospitals, countDepartmentPatients, calculateDepartmentOccupancy]);
 
   if (loading) {
     return (
