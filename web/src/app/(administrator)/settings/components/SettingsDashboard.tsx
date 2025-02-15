@@ -9,7 +9,7 @@ import { Brain, Settings2, Users, Bell, Calendar, Activity, Workflow, Hospital }
 import { HospitalWorkflowEditor } from './HospitalWorkflowEditor';
 
 export const SettingsDashboard = () => {
-    const [activeTab, setActiveTab] = useState('workflow');
+    const [activeTab, setActiveTab] = useState('service-flow');
     const [aiPrompt, setAiPrompt] = useState('');
     
     const navigationItems = [
@@ -65,8 +65,8 @@ export const SettingsDashboard = () => {
                         </TabsList>
 
                         <TabsContent value="service-flow">
-                            <Card className="h-[calc(100vh-200px)]"> {/* ou altura fixa que preferir */}
-                                <CardContent className="p-0"> {/* removido padding para maximizar espaço */}
+                            <Card className="h-[calc(100vh-100px)]"> {/* Aumentei a altura disponível */}
+                                <CardContent className="p-0 h-full"> {/* Adicionado h-full para garantir altura total */}
                                     <HospitalWorkflowEditor />
                                 </CardContent>
                             </Card>

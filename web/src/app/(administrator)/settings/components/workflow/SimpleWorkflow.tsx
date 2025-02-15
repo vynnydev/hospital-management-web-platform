@@ -1,27 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/organisms/card';
-
-// Tipos de departamentos
-interface Department {
-  id: string;
-  label: string;
-  icon: (props: { className?: string }) => React.ReactElement;
-  subtitle?: string;
-}
-
-// Interface para nó no workflow
-interface WorkflowNode extends Department {
-  x: number;
-  y: number;
-}
+import { IWorkflowDepartment, IWorkflowNode } from '../types/workflow-types';
 
 export const SimpleWorkflow: React.FC = () => {
-  const [nodes, setNodes] = useState<WorkflowNode[]>([]);
-  const [selectedNode, setSelectedNode] = useState<WorkflowNode | null>(null);
+  const [nodes, setNodes] = useState<IWorkflowNode[]>([]);
+  const [selectedNode, setSelectedNode] = useState<IWorkflowNode | null>(null);
 
-  const handleAddNode = (dept: Department) => {
-    const newNode: WorkflowNode = {
+  const handleAddNode = (dept: IWorkflowDepartment) => {
+    const newNode: IWorkflowNode = {
       ...dept,
       x: Math.random() * 600, // Posicionamento aleatório
       y: Math.random() * 400
@@ -89,8 +76,8 @@ export const SimpleWorkflow: React.FC = () => {
 
 // Componente para selecionar departamentos
 export const DepartmentSelector: React.FC<{ 
-  departmentTypes: Department[];
-  onAddNode: (dept: Department) => void;
+  departmentTypes: IWorkflowDepartment[];
+  onAddNode: (dept: IWorkflowDepartment) => void;
 }> = ({ departmentTypes, onAddNode }) => {
   return (
     <div className="space-y-2">

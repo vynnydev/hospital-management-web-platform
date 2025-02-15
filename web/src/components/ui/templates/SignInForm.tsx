@@ -32,7 +32,7 @@ export function SignInForm() {
       title: "Login bem-sucedido!",
       description: message,
       variant: "default",
-      duration: 3000, // Reduzido para 3s para melhor UX
+      duration: 1500, // Reduzido para 3s para melhor UX
     });
   };
 
@@ -41,7 +41,7 @@ export function SignInForm() {
       title,
       description,
       variant: "destructive",
-      duration: 5000,
+      duration: 3000,
     });
   };
 
