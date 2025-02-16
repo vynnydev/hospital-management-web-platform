@@ -45,7 +45,7 @@ const routes = [
     },
     {
         href: '/settings',
-        label: 'Configurações',
+        label: 'Studio de Processos',
     },
 ]
 
@@ -104,7 +104,7 @@ export const HeaderNavigation = () => {
     }
 
     return (
-        <nav className="hidden lg:flex items-center gap-x-2 overflow-x-auto">
+        <nav className="hidden lg:flex items-center gap-x-1 overflow-x-auto">
             {routes.map((route) => (
                 <NavButton 
                     key={route.href}

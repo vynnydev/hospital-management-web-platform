@@ -36,7 +36,7 @@ export const Brand = ({
                 <h1 className='text-slate-100 dark:text-slate-100 text-sm'>H24</h1>
                 {type ? <span className="text-xs text-gray-600 dark:text-gray-400">{type}</span> : null}
               </div>
-              <h1 className="text-xs text-slate-100 dark:text-gray-500">VMB</h1>
+              <h1 className="text-xs text-slate-100 dark:text-gray-500">H24 Studio</h1>
             </div>
           </div>
         ) : (
@@ -47,7 +47,7 @@ export const Brand = ({
                 <h1 className='text-slate-100 dark:text-slate-100'>H24</h1>
                 {type ? <span className="text-xs text-gray-600 dark:text-gray-400">{type}</span> : null}
               </div>
-              <h1 className="text-xs text-slate-100 dark:text-gray-500">VMB</h1>
+              <h1 className="text-xs text-slate-100 dark:text-gray-500">H24 Studio</h1>
             </div>
           </div>
         )}
