@@ -44,9 +44,9 @@ export const HospitalWorkflowEditor: React.FC = () => {
   const [authorizationModalOpen, setAuthorizationModalOpen] = useState<boolean>(false);
   const [selectedWorkflow, setSelectedWorkflow] = useState<ISavedWorkflow | null>(null);
   const [selectedNode, setSelectedNode] = useState<IWorkflowNode | null>(null);
+  const [saveModalOpen, setSaveModalOpen] = useState(false);
   const [deleteWorkflowModalOpen, setDeleteWorkflowModalOpen] = useState(false);
   const [workflowToDelete, setWorkflowToDelete] = useState<ISavedWorkflow | null>(null);
-  const [saveModalOpen, setSaveModalOpen] = useState(false);
 
   // Estados e hooks globais
   const {
@@ -75,7 +75,14 @@ export const HospitalWorkflowEditor: React.FC = () => {
     confirmDeleteWorkflowProcess,
     joinCollaborativeWorkflow,
     afterSaveWorkflow
-  } = useWorkflowActions(setWorkflow, setSavedWorkflows, savedWorkflows);
+  } = useWorkflowActions(
+      setWorkflow,
+      setSavedWorkflows,
+      setWorkflowToDelete,
+      setDeleteWorkflowModalOpen,
+      workflowToDelete,
+      savedWorkflows
+  );
 
   const {
     exportFormat,

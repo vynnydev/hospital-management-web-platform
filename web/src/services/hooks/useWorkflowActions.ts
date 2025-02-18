@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // src/hooks/useWorkflowActions.ts
-import { useState } from 'react';
+import { SetStateAction, useState } from 'react';
 import { IWorkflowNode, IWorkflowDepartment, IWorkflowCollaboration, ISavedWorkflow } from '@/types/workflow/customize-process-by-workflow-types';
 import { workflowCustomizeProcessToasts } from '@/services/toasts/workflowCustomizeProcessToasts';
 import { toast } from '@/components/ui/hooks/use-toast';
@@ -8,6 +8,9 @@ import { toast } from '@/components/ui/hooks/use-toast';
 export const useWorkflowActions = (
   setWorkflow: React.Dispatch<React.SetStateAction<IWorkflowNode[]>>,
   setSavedWorkflows: React.Dispatch<React.SetStateAction<ISavedWorkflow[]>>,
+  setWorkflowToDelete: (value: SetStateAction<ISavedWorkflow | null>) => void,
+  setDeleteWorkflowModalOpen: (value: SetStateAction<boolean>) => void,
+  workflowToDelete: ISavedWorkflow | null,
   savedWorkflows: ISavedWorkflow[]
 ) => {
   const [workflowInProgress, setWorkflowInProgress] = useState(false);
@@ -19,8 +22,6 @@ export const useWorkflowActions = (
   } | null>(null);
   const [cancelWorkflowModalOpen, setCancelWorkflowModalOpen] = useState(false);
   const [collaboration, setCollaboration] = useState<IWorkflowCollaboration | null>(null);
-  const [workflowToDelete, setWorkflowToDelete] = useState<ISavedWorkflow | null>(null);
-  const [deleteWorkflowModalOpen, setDeleteWorkflowModalOpen] = useState(false);
 
   const startDragging = (e: React.MouseEvent<HTMLDivElement>, node: IWorkflowNode) => {
     const rect = e.currentTarget.getBoundingClientRect();
