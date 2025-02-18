@@ -27,7 +27,7 @@ import {
   IDragEvent,
   TOnConnect,
   TNodeType
-} from "../../types/types";
+} from "../../../../../types/workflow/overview-workflow-types";
 import { IntegrationsPreviewPressable } from "@/components/ui/organisms/IntegrationsPreviewPressable";
 import { ConfigurationAndUserModalMenus } from "@/components/ui/templates/modals/ConfigurationAndUserModalMenus";
 import { FlowMenu } from "./FlowMenu";

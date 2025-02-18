@@ -96,21 +96,6 @@ const getSituationColors = (situation: TSituation) => {
   return colors[situation];
 };
 
-// Funções auxiliares para status e cores
-const getStatusColor = (cardType: TCardType) => {
-  const colors = {
-    'hospital-critico': 'bg-[#4A5043]',  // Verde oliva escuro para normal
-    'burnout': 'bg-[#4A5043]',
-    'manutencao': 'bg-[#564343]',        // Marrom avermelhado para atenção
-    'taxa-giro': 'bg-[#4A5043]',
-    'eficiencia': 'bg-[#4A5043]',
-    'ocupacao': 'bg-[#4A5043]',
-    'variacao': 'bg-[#4A5043]',
-    'treinamento': 'bg-[#4A5043]'
-  };
-  return colors[cardType] || 'bg-[#4A5043]';
-};
-
 const getStatusMessage = (cardType: TCardType) => {
   switch(cardType) {
       case 'hospital-critico':
@@ -162,7 +147,6 @@ const MetricCard: React.FC<IMetricCardProps> = ({
   title, 
   value, 
   subtitle, 
-  color, 
   icon: Icon,
   trend, 
   additionalInfo,

@@ -1,4 +1,4 @@
-import { ISavedWorkflow, IWorkflowNode } from "@/app/(administrator)/settings/components/types/workflow-types";
+import { ISavedWorkflow, IWorkflowNode } from "@/types/workflow/customize-process-by-workflow-types";
 import { useState } from "react";
 import { toast } from "react-toastify";
 

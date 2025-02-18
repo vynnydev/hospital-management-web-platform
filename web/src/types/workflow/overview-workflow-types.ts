@@ -94,7 +94,14 @@ export interface IFlowEditorProps {
   networkData: INetworkData;
 }
 
-export interface IWorkflowNode {
+export interface IWorkflowDepartment {
+    id: string;
+    label: string;
+    icon: (props: { className?: string }) => React.ReactElement;
+    subtitle?: string;
+}
+
+export interface IWorkflowNode extends IWorkflowDepartment {
   id: string;
   type: string;
   position: {
@@ -102,6 +109,7 @@ export interface IWorkflowNode {
     y: number;
   };
   data: IAppNodeData;
+  parentId?: string;
 }
 
 export interface IFlowEditorState {
