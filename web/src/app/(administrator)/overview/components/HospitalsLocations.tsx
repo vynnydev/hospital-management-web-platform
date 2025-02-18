@@ -1,6 +1,6 @@
 import React from 'react';
 import { NetworkListHospital } from './NetworkListHospital';
-import { MapboxHospital } from './map/MapboxHospital';
+import { MapboxHospital } from '../../../../components/ui/templates/map/MapboxHospital';
 import { IHospital } from "@/types/hospital-network-types";
 import { IAppUser } from "@/types/auth-types";
 

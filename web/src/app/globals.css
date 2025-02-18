@@ -238,3 +238,15 @@
 .animate-pulse-red {
   animation: pulse-red 5s ease-in-out infinite;
 }
+
+/* Estilos do mapa */
+/* Adicione isto ao seu arquivo CSS */
+.mapboxgl-ctrl-top-right {
+  margin-top: 80px; /* Ajuste para não sobrepor os filtros */
+  margin-right: 20px;
+}
+
+.mapboxgl-ctrl-bottom-right {
+  margin-bottom: 20px;
+  margin-right: 20px;
+}

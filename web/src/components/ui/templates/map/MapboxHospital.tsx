@@ -41,7 +41,22 @@ export const MapboxHospital: React.FC<IMapboxHospitalProps> = ({
       setMapLoaded(true);
     });
 
-    map.current.addControl(new mapboxgl.NavigationControl());
+    // Adiciona controles de navegação no canto superior direito (dentro do mapa)
+    map.current.addControl(
+      new mapboxgl.NavigationControl(),
+      'top-right'
+    );
+
+    // Adiciona controle de zoom no canto inferior direito (dentro do mapa)
+    map.current.addControl(
+      new mapboxgl.GeolocateControl({
+        positionOptions: {
+          enableHighAccuracy: true
+        },
+        trackUserLocation: true
+      }),
+      'bottom-right'
+    );
 
     return () => {
       if (map.current) {
@@ -120,21 +135,21 @@ export const MapboxHospital: React.FC<IMapboxHospitalProps> = ({
 
   // Handle selected hospital
   useEffect(() => {
-    if (!mapLoaded || !map.current || !selectedHospital) return;
-
-    const hospital = hospitals.find(h => h.id === selectedHospital);
-    if (hospital) {
-      map.current.flyTo({
-        center: [hospital.unit.coordinates.lng, hospital.unit.coordinates.lat],
-        zoom: 15,
-        duration: 1500
+    if (mapLoaded && map.current) {
+      // Aplica estilos aos controles após o mapa ser carregado
+      const rightControls = document.querySelectorAll('.mapboxgl-ctrl-top-right');
+      rightControls.forEach(control => {
+        if (control instanceof HTMLElement) {
+          control.style.marginTop = '80px';
+          control.style.marginRight = '20px';
+        }
       });
     }
-  }, [selectedHospital, hospitals, mapLoaded]);
+  }, [mapLoaded]);
 
   return (
-    <div className="relative">
-      <div ref={mapContainer} className="w-full h-[600px] rounded-lg overflow-hidden shadow-lg" />
+    <div className="relative w-full h-full">
+      <div ref={mapContainer} className="w-full h-full rounded-lg overflow-hidden shadow-lg" />
       {!mapLoaded && (
         <div className="absolute inset-0 bg-gray-100 animate-pulse rounded-lg flex items-center justify-center">
           <span className="text-gray-500">Carregando mapa...</span>
