@@ -65,6 +65,7 @@ export interface IWorkflowSliderProps {
   onNext: () => void;
   onPrevious: () => void;
   onSelect: (workflow: ISavedWorkflow) => void;
+  onDelete: (workflowId: string) => void;
 }
 
 export interface IWorkflowCanvasProps {

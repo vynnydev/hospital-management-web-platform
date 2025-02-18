@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // src/hooks/useWorkflowActions.ts
 import { useState } from 'react';
-import { IWorkflowNode, IWorkflowDepartment, IWorkflowCollaboration } from '@/types/workflow/customize-process-by-workflow-types';
+import { IWorkflowNode, IWorkflowDepartment, IWorkflowCollaboration, ISavedWorkflow } from '@/types/workflow/customize-process-by-workflow-types';
 import { workflowCustomizeProcessToasts } from '@/services/toasts/workflowCustomizeProcessToasts';
+import { toast } from '@/components/ui/hooks/use-toast';
 
 export const useWorkflowActions = (
-  setWorkflow: React.Dispatch<React.SetStateAction<IWorkflowNode[]>>
+  setWorkflow: React.Dispatch<React.SetStateAction<IWorkflowNode[]>>,
+  setSavedWorkflows: React.Dispatch<React.SetStateAction<ISavedWorkflow[]>>,
+  savedWorkflows: ISavedWorkflow[]
 ) => {
-
   const [workflowInProgress, setWorkflowInProgress] = useState(false);
   const [currentWorkflowName, setCurrentWorkflowName] = useState('');
   const [draggingNode, setDraggingNode] = useState<{
@@ -17,6 +19,8 @@ export const useWorkflowActions = (
   } | null>(null);
   const [cancelWorkflowModalOpen, setCancelWorkflowModalOpen] = useState(false);
   const [collaboration, setCollaboration] = useState<IWorkflowCollaboration | null>(null);
+  const [workflowToDelete, setWorkflowToDelete] = useState<ISavedWorkflow | null>(null);
+  const [deleteWorkflowModalOpen, setDeleteWorkflowModalOpen] = useState(false);
 
   const startDragging = (e: React.MouseEvent<HTMLDivElement>, node: IWorkflowNode) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -53,11 +57,51 @@ export const useWorkflowActions = (
     }
   };
 
+  // Função para resetar o estado do workflow
+  const resetWorkflowState = () => {
+    setWorkflowInProgress(false);
+    setCurrentWorkflowName('');
+    setWorkflow([]); // Limpa os nós
+  };
+
   const cancelWorkflow = () => {
     setWorkflow([]); // Limpa todos os nós do workflow
     setWorkflowInProgress(false);
     setCurrentWorkflowName('');
     setCancelWorkflowModalOpen(false);
+  };
+
+  // Função que será chamada após salvar
+  const afterSaveWorkflow = () => {
+    resetWorkflowState();
+  };
+
+  // Handler para iniciar o processo de deleção
+  const handleDeleteWorkflowProcess = (workflowId: string): void => {
+    const workflow = savedWorkflows.find((w) => w.id === workflowId);
+    if (workflow) {
+      setWorkflowToDelete(workflow);
+      setDeleteWorkflowModalOpen(true);
+    }
+  };
+
+  // Handler para confirmar a deleção
+  const confirmDeleteWorkflowProcess = (): void => {
+    if (workflowToDelete) {
+      setSavedWorkflows((prev) => 
+        prev.filter((w) => w.id !== workflowToDelete.id)
+      );
+      
+      toast({
+        title: "Workflow removido",
+        description: `O workflow "${workflowToDelete.name}" foi removido com sucesso.`,
+        variant: "default",
+        duration: 3000,
+      });
+
+      setDeleteWorkflowModalOpen(false);
+      setWorkflowToDelete(null);
+    }
   };
 
   const createCollaboration = (workflow: IWorkflowNode[]) => {
@@ -103,6 +147,9 @@ export const useWorkflowActions = (
     draggingNode,
     collaboration,
     cancelWorkflowModalOpen,
+    afterSaveWorkflow,
+    handleDeleteWorkflowProcess,
+    confirmDeleteWorkflowProcess,
     setCancelWorkflowModalOpen,
     startDragging,
     handleMouseMove,

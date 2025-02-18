@@ -26,17 +26,25 @@ export const useWorkflowManager = () => {
       return true;
     };
   
-    const saveWorkflow = () => {
+    const handleSaveProcessWorkflow = (name: string, description: string) => {
       if (!validateWorkflow(workflow)) return;
-  
+    
       const newWorkflow: ISavedWorkflow = {
         id: `workflow-${Date.now()}`,
-        name: `Workflow ${savedWorkflows.length + 1}`,
+        name,
+        description,
         nodes: workflow,
         createdAt: new Date()
       };
-  
+    
       setSavedWorkflows(prev => [...prev, newWorkflow]);
+      
+      // Limpa o workflow atual
+      setWorkflow([]);
+      
+      // Reset dos estados de controle
+      // afterSaveWorkflow();
+      
       toast.success('Workflow salvo com sucesso!');
     };
   
@@ -47,7 +55,7 @@ export const useWorkflowManager = () => {
       setSavedWorkflows,
       currentWorkflowSlide,
       setCurrentWorkflowSlide,
-      saveWorkflow,
+      handleSaveProcessWorkflow,
       errors
     };
 }

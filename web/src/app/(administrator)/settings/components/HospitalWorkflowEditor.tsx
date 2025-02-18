@@ -31,9 +31,23 @@ import {
 } from '@/types/workflow/customize-workflow-handlers';
 import { ISavedWorkflow, IWorkflowNode } from '@/types/workflow/customize-process-by-workflow-types';
 import { departmentTypes } from './workflow/constants/departmentTypes';
+import { DeleteWorkflowModal } from './workflow/modals/DeleteWorkflowModal';
+import { SaveWorkflowModal } from './workflow/modals/SaveWorkflowModal';
 
 
 export const HospitalWorkflowEditor: React.FC = () => {
+  // Estados locais
+  const [editingNode, setEditingNode] = useState<IWorkflowNode | null>(null);
+  const [nodeToDelete, setNodeToDelete] = useState<IWorkflowNode | null>(null);
+  const [inviteModalOpen, setInviteModalOpen] = useState<boolean>(false);
+  const [cancelWorkflowModalOpen, setCancelWorkflowModalOpen] = useState<boolean>(false);
+  const [authorizationModalOpen, setAuthorizationModalOpen] = useState<boolean>(false);
+  const [selectedWorkflow, setSelectedWorkflow] = useState<ISavedWorkflow | null>(null);
+  const [selectedNode, setSelectedNode] = useState<IWorkflowNode | null>(null);
+  const [deleteWorkflowModalOpen, setDeleteWorkflowModalOpen] = useState(false);
+  const [workflowToDelete, setWorkflowToDelete] = useState<ISavedWorkflow | null>(null);
+  const [saveModalOpen, setSaveModalOpen] = useState(false);
+
   // Estados e hooks globais
   const {
     workflow,
@@ -42,7 +56,7 @@ export const HospitalWorkflowEditor: React.FC = () => {
     setSavedWorkflows,
     currentWorkflowSlide,
     setCurrentWorkflowSlide,
-    saveWorkflow,
+    handleSaveProcessWorkflow,
     errors
   } = useWorkflowManager();
 
@@ -57,8 +71,11 @@ export const HospitalWorkflowEditor: React.FC = () => {
     startWorkflow,
     cancelWorkflow,
     createCollaboration,
-    joinCollaborativeWorkflow
-  } = useWorkflowActions(setWorkflow);
+    handleDeleteWorkflowProcess,
+    confirmDeleteWorkflowProcess,
+    joinCollaborativeWorkflow,
+    afterSaveWorkflow
+  } = useWorkflowActions(setWorkflow, setSavedWorkflows, savedWorkflows);
 
   const {
     exportFormat,
@@ -67,14 +84,6 @@ export const HospitalWorkflowEditor: React.FC = () => {
     importWorkflow
   } = useWorkflowImportExport();
 
-  // Estados locais
-  const [editingNode, setEditingNode] = useState<IWorkflowNode | null>(null);
-  const [nodeToDelete, setNodeToDelete] = useState<IWorkflowNode | null>(null);
-  const [inviteModalOpen, setInviteModalOpen] = useState<boolean>(false);
-  const [cancelWorkflowModalOpen, setCancelWorkflowModalOpen] = useState<boolean>(false);
-  const [authorizationModalOpen, setAuthorizationModalOpen] = useState<boolean>(false);
-  const [selectedWorkflow, setSelectedWorkflow] = useState<ISavedWorkflow | null>(null);
-  const [selectedNode, setSelectedNode] = useState<IWorkflowNode | null>(null);
 
   // Usando o hook de handlers
   const {
@@ -100,7 +109,7 @@ export const HospitalWorkflowEditor: React.FC = () => {
         onCreateCollaboration={() => createCollaboration(workflow)}
         onJoinCollaboration={() => setInviteModalOpen(true)}
         onAIAnalysis={() => {/* Implementar análise de IA */}}
-        onSaveWorkflow={saveWorkflow}
+        onSaveClick={() => setSaveModalOpen(true)}
         onExport={() => exportWorkflow(workflow)}
         onImport={(e) => importWorkflow(e, setWorkflow)}
         exportFormat={exportFormat}
@@ -113,6 +122,7 @@ export const HospitalWorkflowEditor: React.FC = () => {
         onNext={() => setCurrentWorkflowSlide(prev => prev + 1)}
         onPrevious={() => setCurrentWorkflowSlide(prev => prev - 1)}
         onSelect={handleWorkflowSelect}
+        onDelete={handleDeleteWorkflowProcess}
       />
 
       <div className="flex-1 flex relative min-h-0">
@@ -201,6 +211,20 @@ export const HospitalWorkflowEditor: React.FC = () => {
         node={selectedNode}
         onClose={() => setSelectedNode(null)}
         onSave={handleNodeConfigSave}
+      />
+
+      <SaveWorkflowModal 
+        isOpen={saveModalOpen}
+        onClose={() => setSaveModalOpen(false)}
+        onSave={handleSaveProcessWorkflow}
+        afterSaveWorkflow={afterSaveWorkflow}
+      />
+
+      <DeleteWorkflowModal 
+        isOpen={deleteWorkflowModalOpen}
+        onClose={() => setDeleteWorkflowModalOpen(false)}
+        onConfirm={confirmDeleteWorkflowProcess}
+        workflow={workflowToDelete}
       />
     </div>
   );

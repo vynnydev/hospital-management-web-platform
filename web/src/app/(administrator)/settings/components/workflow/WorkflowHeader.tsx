@@ -9,10 +9,10 @@ import {
 } from '@/components/ui/organisms/dropdown-menu';
 
 interface WorkflowHeaderProps {
+  onSaveClick: () => void;
   onCreateCollaboration: () => void;
   onJoinCollaboration: () => void;
   onAIAnalysis: () => void;
-  onSaveWorkflow: () => void;
   onExport: () => void;
   onImport: (event: React.ChangeEvent<HTMLInputElement>) => void;
   exportFormat: 'json' | 'csv';
@@ -20,10 +20,10 @@ interface WorkflowHeaderProps {
 }
 
 export const WorkflowHeader: React.FC<WorkflowHeaderProps> = ({
+  onSaveClick,
   onCreateCollaboration,
   onJoinCollaboration,
   onAIAnalysis,
-  onSaveWorkflow,
   onExport,
   onImport,
   exportFormat,
@@ -94,7 +94,7 @@ export const WorkflowHeader: React.FC<WorkflowHeaderProps> = ({
           </label>
           
           <button 
-            onClick={onSaveWorkflow}
+            onClick={onSaveClick}
             className="bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-4 py-2 rounded-lg 
                      shadow-lg hover:from-blue-700 hover:to-cyan-600 transition-colors flex items-center"
           >
