@@ -15,52 +15,46 @@ export const WorkflowCanvas: React.FC<IWorkflowCanvasProps> = ({
   onAddSubNode,
   onNodeConfig
 }) => {
-    const renderConnections = () => {
-        return (
-          <svg 
-            className="absolute inset-0 pointer-events-none w-full h-full"
-            style={{ 
-              overflow: 'visible'
-            }}
-          >
-            {workflow
-              .filter(node => node.parentId)
-              .map(childNode => {
-                const parentNode = workflow.find(node => node.id === childNode.parentId);
-                if (!parentNode) return null;
-      
-                // Calcula os pontos centrais dos cards para conexão
-                const startX = parentNode.x + 180; // Largura do card (min-w-[180px])
-                const startY = parentNode.y + 32;  // Metade da altura do card (~64px)
-                const endX = childNode.x;
-                const endY = childNode.y + 32;
-      
-                return (
-                  <g key={`${parentNode.id}-${childNode.id}`}>
-                    {/* Linha tracejada */}
-                    <line
-                      x1={startX}
-                      y1={startY}
-                      x2={endX}
-                      y2={endY}
-                      stroke="#3b82f6"
-                      strokeWidth="2"
-                      strokeDasharray="5,5"
-                    />
-                    
-                    {/* Círculo opcional no ponto de conexão */}
-                    <circle
-                      cx={endX}
-                      cy={endY}
-                      r="3"
-                      fill="#3b82f6"
-                    />
-                  </g>
-                );
-            })}
-          </svg>
-        );
-    };
+  const renderConnections = () => {
+    return (
+      <svg 
+        className="absolute inset-0 pointer-events-none w-full h-full"
+        style={{ 
+          overflow: 'visible',
+          zIndex: 0  // Garante que as linhas fiquem atrás dos cards
+        }}
+      >
+        {workflow
+          .filter(node => node.parentId)
+          .map(childNode => {
+            const parentNode = workflow.find(node => node.id === childNode.parentId);
+            if (!parentNode) return null;
+  
+            // Calcula o ponto de início (centro direito do card pai)
+            const startX = parentNode.x + 180; // Largura do card
+            const startY = parentNode.y + 40;  // Metade da altura aproximada
+  
+            // Calcula o ponto final (centro esquerdo do card filho)
+            const endX = childNode.x;
+            const endY = childNode.y + 40;
+  
+            return (
+              <g key={`${parentNode.id}-${childNode.id}`}>
+                <line
+                  x1={startX}
+                  y1={startY}
+                  x2={endX}
+                  y2={endY}
+                  stroke="#3b82f6"
+                  strokeWidth="2"
+                  strokeDasharray="5,5"
+                />
+              </g>
+            );
+          })}
+      </svg>
+    );
+  };
 
   return (
     <div 
@@ -93,11 +87,11 @@ export const WorkflowCanvas: React.FC<IWorkflowCanvasProps> = ({
                 {/* Botão de configuração */}
                 <button
                   onClick={(e) => {
-                    e.stopPropagation();
-                    onNodeConfig(node);
+                    e.stopPropagation();  // Previne propagação
+                    onNodeConfig(node);   // Abre o modal de configuração
                   }}
                   className="absolute -top-2 -left-2 bg-blue-500 text-white rounded-full w-6 h-6 
-                           flex items-center justify-center z-10 hover:bg-blue-600"
+                            flex items-center justify-center z-10 hover:bg-blue-600"
                 >
                   <Settings size={14} />
                 </button>
@@ -133,6 +127,7 @@ export const WorkflowCanvas: React.FC<IWorkflowCanvasProps> = ({
                 </div>
               </Card>
               
+              {/* Botão circular de adicionar sub-nó */}
               <button 
                 onClick={() => onAddSubNode(node)}
                 className="ml-2 bg-blue-500 text-white rounded-full w-8 h-8 

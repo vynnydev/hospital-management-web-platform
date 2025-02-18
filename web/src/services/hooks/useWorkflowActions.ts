@@ -4,15 +4,18 @@ import { useState } from 'react';
 import { IWorkflowNode, IWorkflowDepartment, IWorkflowCollaboration } from '@/types/workflow/customize-process-by-workflow-types';
 import { workflowCustomizeProcessToasts } from '@/services/toasts/workflowCustomizeProcessToasts';
 
-export const useWorkflowActions = () => {
+export const useWorkflowActions = (
+  setWorkflow: React.Dispatch<React.SetStateAction<IWorkflowNode[]>>
+) => {
+
+  const [workflowInProgress, setWorkflowInProgress] = useState(false);
+  const [currentWorkflowName, setCurrentWorkflowName] = useState('');
   const [draggingNode, setDraggingNode] = useState<{
     node: IWorkflowNode;
     offsetX: number;
     offsetY: number;
   } | null>(null);
-
-  const [workflowInProgress, setWorkflowInProgress] = useState(false);
-  const [currentWorkflowName, setCurrentWorkflowName] = useState('');
+  const [cancelWorkflowModalOpen, setCancelWorkflowModalOpen] = useState(false);
   const [collaboration, setCollaboration] = useState<IWorkflowCollaboration | null>(null);
 
   const startDragging = (e: React.MouseEvent<HTMLDivElement>, node: IWorkflowNode) => {
@@ -51,9 +54,10 @@ export const useWorkflowActions = () => {
   };
 
   const cancelWorkflow = () => {
+    setWorkflow([]); // Limpa todos os nós do workflow
     setWorkflowInProgress(false);
     setCurrentWorkflowName('');
-    workflowCustomizeProcessToasts.workflowCanceled();
+    setCancelWorkflowModalOpen(false);
   };
 
   const createCollaboration = (workflow: IWorkflowNode[]) => {
@@ -94,10 +98,12 @@ export const useWorkflowActions = () => {
   };
 
   return {
-    draggingNode,
     workflowInProgress,
     currentWorkflowName,
+    draggingNode,
     collaboration,
+    cancelWorkflowModalOpen,
+    setCancelWorkflowModalOpen,
     startDragging,
     handleMouseMove,
     stopDragging,

@@ -58,7 +58,7 @@ export const HospitalWorkflowEditor: React.FC = () => {
     cancelWorkflow,
     createCollaboration,
     joinCollaborativeWorkflow
-  } = useWorkflowActions();
+  } = useWorkflowActions(setWorkflow);
 
   const {
     exportFormat,
@@ -81,6 +81,7 @@ export const HospitalWorkflowEditor: React.FC = () => {
     handleNodeEdit,
     handleNodeDelete,
     handleAddNode,
+    handleAddSubNode,
     handleWorkflowSelect,
     handleNodeConfigOpen,
     handleNodeConfigSave
@@ -120,7 +121,9 @@ export const HospitalWorkflowEditor: React.FC = () => {
           workflowInProgress={workflowInProgress}
           currentWorkflowName={currentWorkflowName}
           onStartWorkflow={(dept) => startWorkflow(dept, handleAddNode)}
-          onCancelWorkflow={() => setCancelWorkflowModalOpen(true)}
+          onCancelWorkflow={() => {
+            setCancelWorkflowModalOpen(true);
+          }}
         />
 
         <WorkflowCanvas 
@@ -131,7 +134,7 @@ export const HospitalWorkflowEditor: React.FC = () => {
           onMouseLeave={stopDragging}
           onNodeEdit={handleNodeEdit}
           onNodeDelete={handleNodeDelete}
-          onAddSubNode={handleAddNode}
+          onAddSubNode={handleAddSubNode}
           onNodeConfig={handleNodeConfigOpen}
         />
       </div>
@@ -153,7 +156,10 @@ export const HospitalWorkflowEditor: React.FC = () => {
       <CancelWorkflowModal 
         isOpen={cancelWorkflowModalOpen}
         onClose={() => setCancelWorkflowModalOpen(false)}
-        onConfirm={cancelWorkflow}
+        onConfirm={() => {
+          cancelWorkflow();
+          setCancelWorkflowModalOpen(false);
+        }}
         workflowName={currentWorkflowName}
       />
 

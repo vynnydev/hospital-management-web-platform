@@ -16,6 +16,7 @@ export const useWorkflowHandlers = (
     setNodeToDelete(node);
   };
 
+  // Para departamentos
   const handleAddNode = (dept: IWorkflowDepartment) => {
     const newNode: IWorkflowNode = {
       ...dept,
@@ -25,6 +26,23 @@ export const useWorkflowHandlers = (
       priority: 'high'
     };
     setWorkflow(prev => [...prev, newNode]);
+  };
+
+  // Para sub-nós
+  const handleAddSubNode = (parentNode: IWorkflowNode) => {
+    const subNode: IWorkflowNode = {
+      id: `sub-${Math.random().toString(36).substr(2, 9)}`,
+      label: 'Novo Processo',
+      subtitle: 'Defina suas informações',
+      icon: parentNode.icon,
+      x: parentNode.x + 200,
+      y: parentNode.y + 100,
+      parentId: parentNode.id,
+      priority: 'high'
+    };
+  
+    setWorkflow(prev => [...prev, subNode]);
+    setSelectedNode(subNode);
   };
 
   const handleWorkflowSelect = (workflow: ISavedWorkflow) => {
@@ -47,6 +65,7 @@ export const useWorkflowHandlers = (
     handleNodeEdit,
     handleNodeDelete,
     handleAddNode,
+    handleAddSubNode, // Adicionado ao retorno
     handleWorkflowSelect,
     handleNodeConfigOpen,
     handleNodeConfigSave

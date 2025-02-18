@@ -1,4 +1,7 @@
-// src/components/workflow/WorkflowModals/index.tsx
+import React, { useEffect, useState } from 'react';
+import { IWorkflowNode } from '@/types/workflow/customize-process-by-workflow-types';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/organisms/dialog';
+
 export * from '@/services/toasts/workflowCustomizeProcessToasts';
 export * from '@/services/toasts/workflowCustomizeProcessToasts';
 export * from '@/services/toasts/workflowCustomizeProcessToasts';
@@ -7,13 +10,11 @@ export * from '@/services/toasts/workflowCustomizeProcessToasts';
 export * from './EditNodeModal';
 
 // src/components/workflow/WorkflowModals/EditNodeModal.tsx
-import React from 'react';
-import { IWorkflowNode } from '@/types/workflow/customize-process-by-workflow-types';
 
 interface EditNodeModalProps {
   node: IWorkflowNode | null;
   onClose: () => void;
-  onSave: (node: IWorkflowNode) => void;
+  onSave: (updatedNode: IWorkflowNode) => void;
 }
 
 export const EditNodeModal: React.FC<EditNodeModalProps> = ({
@@ -21,47 +22,84 @@ export const EditNodeModal: React.FC<EditNodeModalProps> = ({
   onClose,
   onSave
 }) => {
-  if (!node) return null;
+  // Estados locais para controlar os valores dos campos
+  const [editedNode, setEditedNode] = useState<IWorkflowNode | null>(null);
+
+  // Atualiza o estado local quando o nó muda
+  useEffect(() => {
+    if (node) {
+      setEditedNode({ ...node });
+    }
+  }, [node]);
+
+  if (!node || !editedNode) return null;
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.stopPropagation(); // Previne a propagação do evento
+    const { name, value } = e.target;
+    setEditedNode(prev => prev ? { ...prev, [name]: value } : null);
+  };
+
+  const handleSave = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Previne a propagação do evento
+    if (editedNode) {
+      onSave(editedNode);
+    }
+  };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-gray-800 p-6 rounded-lg w-96 space-y-4">
-        <h2 className="text-xl font-semibold text-white">
-          Editar Processo
-        </h2>
-        <div>
-          <label className="block text-sm text-gray-400 mb-2">Título</label>
-          <input 
-            type="text"
-            value={node.label}
-            onChange={(e) => onSave({ ...node, label: e.target.value })}
-            className="w-full p-2 bg-gray-700 rounded text-white"
-          />
+    <Dialog open={!!node} onOpenChange={onClose}>
+      <DialogContent 
+        className="bg-gray-800 text-white"
+        onClick={(e) => e.stopPropagation()} // Previne propagação no container
+      >
+        <DialogHeader>
+          <DialogTitle>Editar Processo</DialogTitle>
+        </DialogHeader>
+
+        <div className="space-y-4 py-4">
+          <div>
+            <label className="block text-sm text-gray-400 mb-2">Título</label>
+            <input 
+              type="text"
+              name="label"
+              value={editedNode.label}
+              onChange={handleInputChange}
+              onClick={(e) => e.stopPropagation()} // Previne propagação no input
+              className="w-full p-2 bg-gray-700 rounded text-white"
+            />
+          </div>
+          <div>
+            <label className="block text-sm text-gray-400 mb-2">Subtítulo</label>
+            <input 
+              type="text"
+              name="subtitle"
+              value={editedNode.subtitle || ''}
+              onChange={handleInputChange}
+              onClick={(e) => e.stopPropagation()} // Previne propagação no input
+              className="w-full p-2 bg-gray-700 rounded text-white"
+            />
+          </div>
         </div>
-        <div>
-          <label className="block text-sm text-gray-400 mb-2">Subtítulo</label>
-          <input 
-            type="text"
-            value={node.subtitle}
-            onChange={(e) => onSave({ ...node, subtitle: e.target.value })}
-            className="w-full p-2 bg-gray-700 rounded text-white"
-          />
-        </div>
-        <div className="flex justify-end space-x-2">
+
+        <DialogFooter className="flex space-x-2">
           <button 
-            onClick={onClose}
-            className="bg-gray-600 text-white px-4 py-2 rounded"
+            onClick={(e) => {
+              e.stopPropagation();
+              onClose();
+            }}
+            className="px-4 py-2 rounded bg-gray-700 hover:bg-gray-600 text-white"
           >
             Cancelar
           </button>
           <button 
-            onClick={() => onSave(node)}
-            className="bg-blue-600 text-white px-4 py-2 rounded"
+            onClick={handleSave}
+            className="px-4 py-2 rounded bg-blue-600 hover:bg-blue-500 text-white"
           >
             Salvar
           </button>
-        </div>
-      </div>
-    </div>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };

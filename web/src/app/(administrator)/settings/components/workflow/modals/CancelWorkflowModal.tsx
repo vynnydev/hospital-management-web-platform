@@ -8,18 +8,23 @@ import {
 } from "@/components/ui/organisms/dialog";
 
 interface CancelWorkflowModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    onConfirm: () => void;
-    workflowName: string;
-  }
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  workflowName: string;
+}
   
-  export const CancelWorkflowModal: React.FC<CancelWorkflowModalProps> = ({
+export const CancelWorkflowModal: React.FC<CancelWorkflowModalProps> = ({
     isOpen,
     onClose,
     onConfirm,
     workflowName
-  }) => {
+}) => {
+    const handleConfirm = () => {
+      onConfirm();
+      onClose(); // Fecha o modal após confirmar
+    };
+  
     if (!isOpen) return null;
   
     return (
@@ -40,7 +45,7 @@ interface CancelWorkflowModalProps {
               Manter
             </button>
             <button 
-              onClick={onConfirm}
+              onClick={handleConfirm} // Usa o novo handler
               className="px-4 py-2 rounded bg-red-600 hover:bg-red-500 text-white"
             >
               Cancelar Processo
@@ -49,5 +54,5 @@ interface CancelWorkflowModalProps {
         </DialogContent>
       </Dialog>
     );
-  };
+};
   
