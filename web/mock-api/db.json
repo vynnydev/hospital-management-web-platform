@@ -1268,5 +1268,181 @@
         }
       ]
     }
+  },
+  "resources": {
+    "RD4H-SP-ITAIM": {
+      "equipmentStatus": {
+        "respirators": {"total": 65, "available": 24, "maintenance": 5},
+        "monitors": {"total": 120, "available": 42, "maintenance": 8},
+        "defibrillators": {"total": 30, "available": 18, "maintenance": 2},
+        "imagingDevices": {"total": 12, "available": 5, "maintenance": 1}
+      },
+      "bedStatus": {
+        "icu": {"total": 50, "available": 12},
+        "emergency": {"total": 35, "available": 8},
+        "general": {"total": 150, "available": 45},
+        "surgery": {"total": 25, "available": 7},
+        "pediatric": {"total": 30, "available": 14}
+      },
+      "suppliesStatus": {
+        "medications": {"criticalLow": 3, "lowStock": 7, "normal": 42},
+        "bloodBank": {"criticalLow": 1, "lowStock": 2, "normal": 5},
+        "ppe": {"criticalLow": 0, "lowStock": 3, "normal": 8}
+      },
+      "transferRequests": [
+        {"patientId": "P1001", "severity": "high", "requiredSpecialty": "cardiology", "requestTime": "2025-02-19T10:30:00Z"},
+        {"patientId": "P1042", "severity": "medium", "requiredSpecialty": "neurology", "requestTime": "2025-02-19T11:15:00Z"}
+      ]
+    },
+    "RD4H-SP-MORUMBI": {
+      "equipmentStatus": {
+        "respirators": {"total": 45, "available": 15, "maintenance": 3},
+        "monitors": {"total": 90, "available": 32, "maintenance": 5},
+        "defibrillators": {"total": 25, "available": 16, "maintenance": 1},
+        "imagingDevices": {"total": 8, "available": 3, "maintenance": 2}
+      },
+      "bedStatus": {
+        "icu": {"total": 40, "available": 8},
+        "emergency": {"total": 30, "available": 5},
+        "general": {"total": 120, "available": 38},
+        "surgery": {"total": 20, "available": 4},
+        "pediatric": {"total": 25, "available": 11}
+      },
+      "suppliesStatus": {
+        "medications": {"criticalLow": 5, "lowStock": 9, "normal": 38},
+        "bloodBank": {"criticalLow": 2, "lowStock": 1, "normal": 5},
+        "ppe": {"criticalLow": 1, "lowStock": 4, "normal": 7}
+      },
+      "transferRequests": [
+        {"patientId": "P2076", "severity": "high", "requiredSpecialty": "pulmonology", "requestTime": "2025-02-19T09:45:00Z"}
+      ]
+    },
+    "RD4H-RJ-COPA": {
+      "equipmentStatus": {
+        "respirators": {"total": 55, "available": 20, "maintenance": 4},
+        "monitors": {"total": 100, "available": 36, "maintenance": 6},
+        "defibrillators": {"total": 28, "available": 14, "maintenance": 3},
+        "imagingDevices": {"total": 10, "available": 4, "maintenance": 1}
+      },
+      "bedStatus": {
+        "icu": {"total": 45, "available": 10},
+        "emergency": {"total": 32, "available": 7},
+        "general": {"total": 135, "available": 42},
+        "surgery": {"total": 22, "available": 6},
+        "pediatric": {"total": 28, "available": 13}
+      },
+      "suppliesStatus": {
+        "medications": {"criticalLow": 2, "lowStock": 8, "normal": 45},
+        "bloodBank": {"criticalLow": 0, "lowStock": 2, "normal": 6},
+        "ppe": {"criticalLow": 0, "lowStock": 2, "normal": 9}
+      },
+      "transferRequests": []
+    }
+  },
+  "alerts": [
+    {
+      "id": "alert-001",
+      "type": "mass_casualty",
+      "severity": "high",
+      "location": {
+        "lat": -23.5558,
+        "lng": -46.6396,
+        "address": "Av. Paulista, São Paulo, SP"
+      },
+      "estimatedVictims": 15,
+      "timestamp": "2025-02-19T14:30:00Z",
+      "status": "active",
+      "respondingUnits": ["ambulance-3", "ambulance-7", "helicopter-1"]
+    },
+    {
+      "id": "alert-002",
+      "type": "natural_disaster",
+      "severity": "medium",
+      "location": {
+        "lat": -22.9129,
+        "lng": -43.2003,
+        "address": "Tijuca, Rio de Janeiro, RJ"
+      },
+      "estimatedVictims": 8,
+      "timestamp": "2025-02-19T15:15:00Z",
+      "status": "pending",
+      "respondingUnits": ["ambulance-12"]
+    }
+  ],
+  "resourceDeployment": {
+    "availableAmbulances": 14,
+    "availableHelicopters": 2,
+    "responderTeams": 8,
+    "estimatedResponseTimes": {
+      "RD4H-SP-ITAIM": 18,
+      "RD4H-SP-MORUMBI": 25,
+      "RD4H-RJ-COPA": 12
+    }
+  },
+  "predictions": {
+    "RD4H-SP-ITAIM": {
+      "expectedPatientInflow": {
+        "next24h": 87,
+        "next48h": 142,
+        "next7d": 612
+      },
+      "resourceNeeds": {
+        "icu": {"current": 38, "predicted": 45, "trend": "increasing"},
+        "emergency": {"current": 27, "predicted": 32, "trend": "stable"},
+        "general": {"current": 105, "predicted": 118, "trend": "increasing"}
+      },
+      "seasonalFactors": [
+        {"factor": "flu_season", "impact": "high", "probability": 0.85},
+        {"factor": "holiday_weekend", "impact": "medium", "probability": 0.72}
+      ]
+    },
+    "RD4H-SP-MORUMBI": {
+      "expectedPatientInflow": {
+        "next24h": 64,
+        "next48h": 108,
+        "next7d": 485
+      },
+      "resourceNeeds": {
+        "icu": {"current": 32, "predicted": 36, "trend": "stable"},
+        "emergency": {"current": 25, "predicted": 28, "trend": "stable"},
+        "general": {"current": 82, "predicted": 95, "trend": "increasing"}
+      },
+      "seasonalFactors": [
+        {"factor": "flu_season", "impact": "medium", "probability": 0.76},
+        {"factor": "local_event", "impact": "low", "probability": 0.45}
+      ]
+    },
+    "RD4H-RJ-COPA": {
+      "expectedPatientInflow": {
+        "next24h": 72,
+        "next48h": 125,
+        "next7d": 530
+      },
+      "resourceNeeds": {
+        "icu": {"current": 35, "predicted": 40, "trend": "increasing"},
+        "emergency": {"current": 25, "predicted": 30, "trend": "increasing"},
+        "general": {"current": 93, "predicted": 102, "trend": "stable"}
+      },
+      "seasonalFactors": [
+        {"factor": "flu_season", "impact": "high", "probability": 0.82},
+        {"factor": "weather_event", "impact": "medium", "probability": 0.68}
+      ]
+    }
+  },
+  "networkAnalysis": {
+    "optimalResourceDistribution": {
+      "staffReallocation": [
+        {"from": "RD4H-SP-ITAIM", "to": "RD4H-RJ-COPA", "specialty": "emergency", "count": 3},
+        {"from": "RD4H-SP-MORUMBI", "to": "RD4H-SP-ITAIM", "specialty": "icu", "count": 2}
+      ],
+      "equipmentReallocation": [
+        {"from": "RD4H-SP-ITAIM", "to": "RD4H-SP-MORUMBI", "equipment": "respirators", "count": 5},
+        {"from": "RD4H-RJ-COPA", "to": "RD4H-SP-ITAIM", "equipment": "monitors", "count": 8}
+      ]
+    },
+    "bottlenecks": [
+      {"hospital": "RD4H-SP-ITAIM", "department": "emergency", "issue": "staff_shortage", "severity": "medium"},
+      {"hospital": "RD4H-SP-MORUMBI", "department": "icu", "issue": "equipment_shortage", "severity": "high"}
+    ]
   }
 }
