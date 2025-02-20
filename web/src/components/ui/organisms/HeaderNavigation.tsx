@@ -44,7 +44,7 @@ const routes = [
         label: 'Recursos & Inventário',
     },
     {
-        href: '/settings',
+        href: '/process-studio-settings',
         label: 'Studio de Processos',
     },
 ]

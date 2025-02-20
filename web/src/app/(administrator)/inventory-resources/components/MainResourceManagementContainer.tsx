@@ -1,22 +1,18 @@
-import { Alert, AlertDescription } from '@/components/ui/organisms/alert';
+// components/resources/MainResourceManagementContainer.tsx
+import React, { useState } from 'react';
 import { useNetworkData } from '@/services/hooks/useNetworkData';
 import { useStaffData } from '@/services/hooks/useStaffData';
-import { Loader2 } from 'lucide-react';
-import React from 'react';
 import { ResourceManagementMap } from './ResourceManagementMap';
+import { Alert, AlertDescription } from '@/components/ui/organisms/alert';
+import { Loader2 } from 'lucide-react';
 
-
-interface IResourceManagementContainerProps {
-  selectedHospitalId?: string;
-}
-
-export const MainResourceManagementContainer: React.FC<IResourceManagementContainerProps> = ({
-  selectedHospitalId
-}) => {
+export const MainResourceManagementContainer: React.FC = () => {
+  // Estado interno para o hospital selecionado
+  const [selectedHospitalId, setSelectedHospitalId] = useState<string | null>(null);
+  
   // Hooks principais
   const { 
     networkData, 
-    currentUser, 
     loading: networkLoading, 
     error: networkError 
   } = useNetworkData();
@@ -25,7 +21,7 @@ export const MainResourceManagementContainer: React.FC<IResourceManagementContai
     staffData,
     loading: staffLoading,
     error: staffError
-  } = useStaffData(selectedHospitalId);
+  } = useStaffData();
 
   // Estado de carregamento combinado
   const isLoading = networkLoading || staffLoading;
@@ -39,10 +35,10 @@ export const MainResourceManagementContainer: React.FC<IResourceManagementContai
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px] bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+      <div className="flex items-center justify-center min-h-[400px] bg-gray-800 dark:bg-gray-900 rounded-xl shadow-lg">
         <div className="text-center">
           <Loader2 className="h-8 w-8 animate-spin text-blue-500 mx-auto" />
-          <p className="mt-2 text-gray-600 dark:text-gray-300">Carregando recursos...</p>
+          <p className="mt-2 text-gray-300 dark:text-gray-400">Carregando recursos...</p>
         </div>
       </div>
     );
@@ -69,23 +65,20 @@ export const MainResourceManagementContainer: React.FC<IResourceManagementContai
   }
 
   return (
-    <div className="space-y-4">
-      {/* Aqui você pode adicionar componentes de header, navegação ou outros elementos comuns */}
-      
-      {/* Componente principal do mapa de recursos */}
+    <div className="h-full">
       <ResourceManagementMap
         networkData={networkData}
         staffData={staffData}
+        selectedHospitalId={selectedHospitalId}
+        setSelectedHospitalId={setSelectedHospitalId}
       />
-
-      {/* Aqui você pode adicionar componentes adicionais que dependam dos mesmos dados */}
     </div>
   );
 };
 
 // HOC para garantir que o dark mode e outros contextos estejam disponíveis
-export const ResourceManagementContainerWithProviders: React.FC<IResourceManagementContainerProps> = (props) => {
+export const ResourceManagementContainerWithProviders: React.FC = () => {
   return (
-    <MainResourceManagementContainer {...props} />
+    <MainResourceManagementContainer />
   );
 };
