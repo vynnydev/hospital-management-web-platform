@@ -1,6 +1,5 @@
-// hooks/useHospitalAdvancedData.tsx
-import { IEmergencyData, IPredictiveData, IResourcesData } from '@/types/hospital-advanced-data-types';
 import { useState, useEffect } from 'react';
+import { IResourcesData, IEmergencyData, IPredictiveData } from '@/types/hospital-advanced-data-types';
 
 export const useHospitalAdvancedData = () => {
   const [loading, setLoading] = useState(true);
@@ -41,11 +40,27 @@ export const useHospitalAdvancedData = () => {
     fetchData();
   }, []);
 
+  // Helpers para facilitar o acesso aos dados
+  const getHospitalResources = (hospitalId: string) => {
+    return resourcesData?.resources[hospitalId] || null;
+  };
+
+  const getHospitalPredictions = (hospitalId: string) => {
+    return predictiveData?.predictions[hospitalId] || null;
+  };
+
+  const getEmergencyResponseTime = (hospitalId: string) => {
+    return emergencyData?.resourceDeployment.estimatedResponseTimes[hospitalId] || null;
+  };
+
   return {
     resourcesData,
     emergencyData,
     predictiveData,
     loading,
-    error
+    error,
+    getHospitalResources,
+    getHospitalPredictions,
+    getEmergencyResponseTime
   };
 };
