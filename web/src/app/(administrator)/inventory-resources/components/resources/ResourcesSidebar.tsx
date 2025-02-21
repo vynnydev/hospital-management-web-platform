@@ -9,6 +9,7 @@ import {
 } from '@/types/resources-types';
 import { HospitalResourcesCard } from './HospitalResourcesCard';
 import { HospitalResourceDetails } from './HospitalResourceDetails';
+import { IResourceRouteAnalysis } from '@/types/resource-route-analysis-types';
 
 interface IResourcesSidebarProps {
   hospitals: IHospital[];
@@ -19,12 +20,9 @@ interface IResourcesSidebarProps {
   selectedHospital: string | null;
   selectedCategory: TResourceCategory;
   selectedDepartment: TDepartment;
+  resourceRouteAnalysis: IResourceRouteAnalysis;  // Adicionado
   onHospitalSelect: (id: string) => void;
-  onTransferResourceClick: (
-    resourceType: string, 
-    category: 'equipment' | 'supplies', 
-    hospitalId: string
-  ) => void;
+  onTransferResourceClick: (resourceType: string, category: 'equipment' | 'supplies', hospitalId: string) => void;
 }
 
 export const ResourcesSidebar: React.FC<IResourcesSidebarProps> = ({

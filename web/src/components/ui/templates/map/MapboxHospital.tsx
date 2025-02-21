@@ -7,17 +7,16 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import { IHospital } from "@/types/hospital-network-types";
 import { IAppUser } from "@/types/auth-types";
 import { Building2 } from 'lucide-react';
+import { IResourceRouteAnalysis } from '@/types/resource-route-analysis-types';
 
 // Atualizando a interface para usar sourceId/targetId
-export interface IMapboxHospitalProps {
+interface IMapboxHospitalProps {
   hospitals: IHospital[];
   selectedHospital: string | null;
   setSelectedHospital: (id: string | null) => void;
-  currentUser: IAppUser | null;
-  activeRoute?: {
-    sourceId: string;
-    targetId: string;
-  } | null;
+  currentUser: null;
+  activeRoute: { sourceId: string; targetId: string; } | null;
+  resourceRouteAnalysis: IResourceRouteAnalysis;  // Adicionado
 }
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';

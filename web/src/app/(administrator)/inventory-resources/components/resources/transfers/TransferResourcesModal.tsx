@@ -3,22 +3,24 @@ import React, { useState, useEffect } from 'react';
 import { X, TrendingUp, Truck, Clock, DollarSign, AlertCircle } from 'lucide-react';
 import { IHospital } from "@/types/hospital-network-types";
 import { IHospitalResources } from "@/types/resources-types";
+import { IResourceRouteAnalysis } from '@/types/resource-route-analysis-types';
 
 interface ITransferResourcesModalProps {
-    sourceHospital: IHospital;
-    targetHospitals: IHospital[];
-    sourceResources: IHospitalResources | null;
-    resourcesData: Record<string, IHospitalResources | undefined>;
-    preselectedResource?: {
-      resourceType: string;
-      category: 'equipment' | 'supplies';
-    } | null;
-    onClose: () => void;
-    onTransfer: (data: ITransferRequest) => void;
+  sourceHospital: IHospital | undefined;
+  targetHospitals: IHospital[];
+  sourceResources: IHospitalResources | null;
+  resourcesData: Record<string, IHospitalResources>;
+  preselectedResource?: {
+    resourceType: string;
+    category: 'equipment' | 'supplies';
+  } | null;
+  resourceRouteAnalysis: IResourceRouteAnalysis;  // Adicionado
+  onClose: () => void;
+  onTransfer: (data: ITransferRequest) => void;
 }
 
 export interface ITransferRequest {
-  sourceId: string;
+  sourceId: string | undefined;
   targetId: string;
   resourceType: string;
   resourceCategory: 'equipment' | 'supplies';
@@ -27,7 +29,8 @@ export interface ITransferRequest {
   estimatedTime: number;
 }
 
-const calculateRouteInfo = (source: IHospital, target: IHospital) => {
+const calculateRouteInfo = (source: IHospital | undefined, target: IHospital) => {
+  if (!source) return null
   // Cálculo de distância usando a fórmula de Haversine
   const R = 6371; // Raio da Terra em km
   const dLat = (target.unit.coordinates.lat - source.unit.coordinates.lat) * Math.PI / 180;
@@ -127,7 +130,7 @@ export const TransferResourcesModal: React.FC<ITransferResourcesModalProps> = ({
     if (!targetHospital || !routeInfo) return;
     
     onTransfer({
-      sourceId: sourceHospital.id,
+      sourceId: sourceHospital?.id,
       targetId: targetHospital.id,
       resourceType,
       resourceCategory,
@@ -195,7 +198,7 @@ export const TransferResourcesModal: React.FC<ITransferResourcesModalProps> = ({
             </div>
             <div>
               <p className="text-gray-300 text-sm">De</p>
-              <p className="text-white font-medium">{sourceHospital.name}</p>
+              <p className="text-white font-medium">{sourceHospital?.name}</p>
             </div>
             <TrendingUp className="h-5 w-5 text-gray-500 mx-2" />
             <div>
