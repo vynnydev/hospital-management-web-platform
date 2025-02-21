@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { IResourcesData } from "@/types/resources-types";
+import api from "../api";
+import { AxiosError } from "axios";
 
 export const useResourcesData = () => {
     const [loading, setLoading] = useState(true);
@@ -11,17 +13,30 @@ export const useResourcesData = () => {
         try {
           setLoading(true);
           
-          const response = await fetch('/api/hospital-resources');
+          const response = await api.get('/resources');
+          console.log('API Response:', response.data);
           
-          if (!response.ok) {
-            throw new Error('Falha ao buscar dados de recursos');
+          // Verificar se os dados têm a estrutura esperada
+          if (response.data && typeof response.data === 'object') {
+            setResourcesData({
+              resources: response.data
+            });
+          } else {
+            throw new Error('Formato de dados inválido');
           }
           
-          const data = await response.json();
-          setResourcesData(data);
           setError(null);
         } catch (err) {
-          setError(err instanceof Error ? err.message : 'Erro ao carregar dados de recursos');
+          console.error('Error fetching resources:', err);
+          
+          if (err instanceof AxiosError) {
+            setError(
+              err.response?.data?.message || 
+              'Falha na comunicação com o servidor'
+            );
+          } else {
+            setError('Erro ao carregar dados de recursos');
+          }
         } finally {
           setLoading(false);
         }
@@ -29,11 +44,17 @@ export const useResourcesData = () => {
       
       fetchData();
     }, []);
-  
+
+    // Debug hook state
+    useEffect(() => {
+      console.log('ResourcesData State:', resourcesData);
+    }, [resourcesData]);
+
     return {
       resourcesData,
       loading,
       error,
-      getHospitalResources: (hospitalId: string) => resourcesData?.resources[hospitalId] || null
+      getHospitalResources: (hospitalId: string) => 
+        resourcesData?.resources?.[hospitalId] || null
     };
 };

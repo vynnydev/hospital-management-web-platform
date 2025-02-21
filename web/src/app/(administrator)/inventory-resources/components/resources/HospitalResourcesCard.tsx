@@ -1,14 +1,13 @@
 import React from 'react';
 import { IHospital } from '@/types/hospital-network-types';
 import { IHospitalStaffMetrics } from '@/types/staff-types';
-import { TResourceCategory } from '../ResourceManagementMap';
 import { Building2, AlertCircle, TrendingUp, MapPin } from 'lucide-react';
-import { IHospitalResources } from '@/types/resources-types';
+import { IHospitalResources, TResourceCategory } from '@/types/resources-types';
 
 interface IHospitalResourcesCardProps {
   hospital: IHospital;
   staffData?: IHospitalStaffMetrics;
-  resources?: IHospitalResources;
+  resources?: IHospitalResources | null;
   category: TResourceCategory;
   isSelected: boolean;
   onSelect: (id: string) => void;

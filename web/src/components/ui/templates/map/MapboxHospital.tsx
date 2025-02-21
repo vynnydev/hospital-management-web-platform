@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+// Modificação em MapboxHospital.tsx - adicionando suporte a rotas
 import React, { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -6,11 +8,16 @@ import { IHospital } from "@/types/hospital-network-types";
 import { IAppUser } from "@/types/auth-types";
 import { Building2 } from 'lucide-react';
 
-interface IMapboxHospitalProps {
+// Atualizando a interface para usar sourceId/targetId
+export interface IMapboxHospitalProps {
   hospitals: IHospital[];
   selectedHospital: string | null;
   setSelectedHospital: (id: string | null) => void;
   currentUser: IAppUser | null;
+  activeRoute?: {
+    sourceId: string;
+    targetId: string;
+  } | null;
 }
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
@@ -19,11 +26,13 @@ export const MapboxHospital: React.FC<IMapboxHospitalProps> = ({
   hospitals,
   selectedHospital,
   setSelectedHospital,
-  currentUser
+  currentUser,
+  activeRoute
 }) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const markers = useRef<mapboxgl.Marker[]>([]);
+  const routeLine = useRef<mapboxgl.GeoJSONSource | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
 
   // Initialize map
@@ -33,30 +42,45 @@ export const MapboxHospital: React.FC<IMapboxHospitalProps> = ({
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/vynnydev/cm635y92t005b01s63twr70pl',
-      center: [-46.6388, -23.5489], // São Paulo coordinates as default
+      center: [-46.6388, -23.5489],
       zoom: 10
     });
 
     map.current.on('load', () => {
       setMapLoaded(true);
+      
+      map.current?.addSource('route', {
+        type: 'geojson',
+        data: {
+          type: 'Feature',
+          properties: {},
+          geometry: {
+            type: 'LineString',
+            coordinates: []
+          }
+        }
+      });
+      
+      map.current?.addLayer({
+        id: 'route',
+        type: 'line',
+        source: 'route',
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round'
+        },
+        paint: {
+          'line-color': '#3182CE',
+          'line-width': 4,
+          'line-opacity': 0.8,
+          'line-dasharray': [1, 2]
+        }
+      });
+      
+      routeLine.current = map.current?.getSource('route') as mapboxgl.GeoJSONSource;
     });
 
-    // Adiciona controles de navegação no canto superior direito (dentro do mapa)
-    map.current.addControl(
-      new mapboxgl.NavigationControl(),
-      'top-right'
-    );
-
-    // Adiciona controle de zoom no canto inferior direito (dentro do mapa)
-    map.current.addControl(
-      new mapboxgl.GeolocateControl({
-        positionOptions: {
-          enableHighAccuracy: true
-        },
-        trackUserLocation: true
-      }),
-      'bottom-right'
-    );
+    map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
     return () => {
       if (map.current) {
@@ -66,15 +90,13 @@ export const MapboxHospital: React.FC<IMapboxHospitalProps> = ({
     };
   }, []);
 
-  // Add markers after map is loaded
+  // Add markers
   useEffect(() => {
     if (!mapLoaded || !map.current) return;
 
-    // Clear existing markers
     markers.current.forEach(marker => marker.remove());
     markers.current = [];
 
-    // Add markers for each hospital
     hospitals.forEach(hospital => {
       const el = document.createElement('div');
       el.className = 'hospital-marker';
@@ -116,7 +138,6 @@ export const MapboxHospital: React.FC<IMapboxHospitalProps> = ({
       }
     });
 
-    // Fit map to show all markers
     if (hospitals.length > 0) {
       const bounds = new mapboxgl.LngLatBounds();
       hospitals.forEach(hospital => {
@@ -137,27 +158,85 @@ export const MapboxHospital: React.FC<IMapboxHospitalProps> = ({
   useEffect(() => {
     if (!mapLoaded || !map.current || !selectedHospital) return;
 
-    if (mapLoaded && map.current && selectedHospital) {
-      // Aplica estilos aos controles após o mapa ser carregado
-      const rightControls = document.querySelectorAll('.mapboxgl-ctrl-top-right');
-      rightControls.forEach(control => {
-        if (control instanceof HTMLElement) {
-          control.style.marginTop = '80px';
-          control.style.marginRight = '20px';
-        }
+    const hospital = hospitals.find(h => h.id === selectedHospital);
+    if (hospital) {
+      map.current.flyTo({
+        center: [hospital.unit.coordinates.lng, hospital.unit.coordinates.lat],
+        zoom: 15,
+        duration: 1500
       });
-
-      
-      const hospital = hospitals.find(h => h.id === selectedHospital);
-      if (hospital) {
-        map.current.flyTo({
-          center: [hospital.unit.coordinates.lng, hospital.unit.coordinates.lat],
-          zoom: 15,
-          duration: 1500
-        });
-      }
     }
   }, [selectedHospital, hospitals, mapLoaded]);
+  
+  // Update route
+  useEffect(() => {
+    if (!mapLoaded || !map.current || !routeLine.current || !activeRoute) {
+      // Limpar a rota quando não houver rota ativa
+      if (routeLine.current) {
+        routeLine.current.setData({
+          type: 'Feature',
+          properties: {},
+          geometry: {
+            type: 'LineString',
+            coordinates: []
+          }
+        });
+      }
+      return;
+    }
+    
+    const sourceHospital = hospitals.find(h => h.id === activeRoute.sourceId);
+    const targetHospital = hospitals.find(h => h.id === activeRoute.targetId);
+    
+    if (!sourceHospital || !targetHospital) return;
+    
+    const getDirections = async () => {
+      try {
+        const response = await fetch(
+          `https://api.mapbox.com/directions/v5/mapbox/driving/` +
+          `${sourceHospital.unit.coordinates.lng},${sourceHospital.unit.coordinates.lat};` +
+          `${targetHospital.unit.coordinates.lng},${targetHospital.unit.coordinates.lat}` +
+          `?geometries=geojson&access_token=${mapboxgl.accessToken}`
+        );
+        
+        const data = await response.json();
+        
+        if (data.routes && data.routes.length > 0) {
+          routeLine.current?.setData({
+            type: 'Feature',
+            properties: {},
+            geometry: data.routes[0].geometry
+          });
+          
+          const bounds = new mapboxgl.LngLatBounds();
+          data.routes[0].geometry.coordinates.forEach((coord: [number, number]) => {
+            bounds.extend(coord);
+          });
+          
+          map.current?.fitBounds(bounds, {
+            padding: 80,
+            maxZoom: 14
+          });
+        }
+      } catch (error) {
+        console.error('Erro ao buscar direções:', error);
+        
+        routeLine.current?.setData({
+          type: 'Feature',
+          properties: {},
+          geometry: {
+            type: 'LineString',
+            coordinates: [
+              [sourceHospital.unit.coordinates.lng, sourceHospital.unit.coordinates.lat],
+              [targetHospital.unit.coordinates.lng, targetHospital.unit.coordinates.lat]
+            ]
+          }
+        });
+      }
+    };
+    
+    getDirections();
+  }, [activeRoute, hospitals, mapLoaded]);
 
   return (
     <div className="relative w-full h-full">

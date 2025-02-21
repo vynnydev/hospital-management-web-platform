@@ -1,9 +1,10 @@
 import React from 'react';
 import { Calendar, Building2, Package2, Users, ChevronDown } from 'lucide-react';
 import { IHospital } from '@/types/hospital-network-types';
-import { TResourceCategory, TDepartment } from '../ResourceManagementMap';
+import { TDepartment, TResourceCategory } from '@/types/resources-types';
 
-interface IResourceFilterBarProps {
+
+export interface IResourceFilterBarProps {
   hospitals: IHospital[];
   selectedHospital: string | null;
   setSelectedHospital: (id: string | null) => void;

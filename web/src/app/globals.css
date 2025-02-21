@@ -250,3 +250,30 @@
   margin-bottom: 20px;
   margin-right: 20px;
 }
+
+/* Rolagem do menu de listagem dos hospitais e dos recursos na tela de recursos e invetários */
+
+.smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+/* Esconde a scrollbar no Firefox */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(75 85 99) rgb(31 41 55);
+}
+
+/* Esconde a scrollbar no Chrome/Safari */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: rgb(31 41 55);
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: rgb(75 85 99);
+  border-radius: 20px;
+  border: transparent;
+}
