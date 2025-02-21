@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertCircle, TrendingUp, Truck, Clock } from 'lucide-react';
+import { AlertCircle, TrendingUp, Truck, Clock, Building } from 'lucide-react';
 import { 
   ICriticalShortage,
   IResourceRouteRecommendation, 
@@ -8,9 +8,10 @@ import {
 } from '@/types/resource-route-analysis-types';
 import { IHospital } from '@/types/hospital-network-types';
 
+
 interface IResourceRoutesRecommendationsProps {
   hospitalId: string;
-  hospitals: IHospital[]; // Adicionada esta prop
+  hospitals: IHospital[];
   recommendations: {
     transferRecommendations: IResourceRouteRecommendation[];
     supplierRecommendations: ISupplierRecommendation[];
@@ -36,103 +37,25 @@ export const ResourceRoutesRecommendations: React.FC<IResourceRoutesRecommendati
   recommendations,
   onTransferSelect
 }) => {
-  const hospitalShortages = recommendations.criticalShortages
+  const hospital = hospitals.find(h => h.id === hospitalId);
+  if (!hospital) return null;
+
+  const criticalShortages = recommendations.criticalShortages
     .filter(shortage => shortage.hospitalId === hospitalId);
   
-  const hospitalTransfers = recommendations.transferRecommendations
-    .filter(rec => rec.sourceHospitalId === hospitalId || rec.targetHospitalId === hospitalId);
+  const transferRecommendations = recommendations.transferRecommendations
+    .filter(rec => rec.targetHospitalId === hospitalId || rec.sourceHospitalId === hospitalId);
 
-  // Função para buscar nome do hospital
-  const getHospitalName = (id: string) => {
-    const hospital = hospitals.find(h => h.id === id);
-    return hospital?.name || id;
-  };
+  const needsAttention = criticalShortages.length > 0 || transferRecommendations.length > 0;
 
   return (
     <div className="bg-gray-800/90 rounded-lg p-4 space-y-4">
-      {/* Alertas de Escassez */}
-      {hospitalShortages.length > 0 && (
-        <div className="space-y-2">
-          <h3 className="text-white font-medium flex items-center">
-            <AlertCircle className="h-5 w-5 text-red-400 mr-2" />
-            Recursos Críticos em {getHospitalName(hospitalId)}
-          </h3>
-          <div className="space-y-2">
-            {hospitalShortages.map((shortage, idx) => (
-              <div 
-                key={idx}
-                className={`p-3 rounded-lg ${
-                  shortage.severity === 'critical' 
-                    ? 'bg-red-900/20 border border-red-900/50' 
-                    : 'bg-yellow-900/20 border border-yellow-900/50'
-                }`}
-              >
-                <p className={`text-sm ${
-                  shortage.severity === 'critical' ? 'text-red-300' : 'text-yellow-300'
-                }`}>
-                  {getResourceRoutesName(shortage.resourceRouteType)}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      <div className="flex items-center justify-between">
+        <h3 className="text-white font-medium">Status de Recursos</h3>
+        <div className={`h-2 w-2 rounded-full ${needsAttention ? 'bg-red-500' : 'bg-green-500'}`} />
+      </div>
 
-      {/* Recomendações de Transferência */}
-      {hospitalTransfers.length > 0 && (
-        <div className="space-y-2">
-          <h3 className="text-white font-medium flex items-center">
-            <Truck className="h-5 w-5 text-blue-400 mr-2" />
-            Transferências Recomendadas
-          </h3>
-          <div className="space-y-2">
-            {hospitalTransfers.map((transfer, idx) => (
-              <div 
-                key={idx}
-                className="bg-blue-900/20 border border-blue-900/50 p-3 rounded-lg cursor-pointer hover:bg-blue-900/30"
-                onClick={() => onTransferSelect(transfer.sourceHospitalId, transfer.targetHospitalId)}
-              >
-                <div className="flex justify-between items-start">
-                  <div>
-                    <p className="text-blue-300 text-sm font-medium">
-                      {getResourceRoutesName(transfer.resourceRouteType as TEquipmentType)}
-                    </p>
-                    <p className="text-gray-400 text-xs mt-1">
-                      {transfer.quantity} unidades
-                    </p>
-                  </div>
-                  <div className="text-right text-xs">
-                    <p className="text-gray-400">
-                      {Math.round(transfer.distance)} km
-                    </p>
-                    <p className="text-gray-400 mt-1">
-                      ~{transfer.estimatedTime} min
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex items-center mt-2 pt-2 border-t border-blue-900/30">
-                  <div className="flex items-center text-xs text-gray-400">
-                    <Clock className="h-3 w-3 mr-1" />
-                    Prioridade: 
-                    <span className={`ml-1 ${
-                      transfer.priority === 'high' ? 'text-red-400' :
-                      transfer.priority === 'medium' ? 'text-yellow-400' :
-                      'text-green-400'
-                    }`}>
-                      {transfer.priority === 'high' ? 'Alta' :
-                       transfer.priority === 'medium' ? 'Média' : 'Baixa'}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Status Normal */}
-      {hospitalShortages.length === 0 && hospitalTransfers.length === 0 && (
+      {!needsAttention ? (
         <div className="text-center py-4">
           <TrendingUp className="h-8 w-8 text-green-400 mx-auto mb-2" />
           <p className="text-green-400">Níveis de recursos adequados</p>
@@ -140,6 +63,77 @@ export const ResourceRoutesRecommendations: React.FC<IResourceRoutesRecommendati
             Nenhuma ação necessária no momento
           </p>
         </div>
+      ) : (
+        <>
+          {/* Recursos Críticos */}
+          {criticalShortages.length > 0 && (
+            <div className="space-y-2">
+              <h4 className="text-red-400 text-sm font-medium flex items-center">
+                <AlertCircle className="h-4 w-4 mr-1" />
+                Recursos Críticos
+              </h4>
+              {criticalShortages.map((shortage, idx) => (
+                <div key={idx} className="bg-red-900/20 border border-red-900/50 p-2 rounded-lg">
+                  <p className="text-red-300 text-sm">
+                    {getResourceRoutesName(shortage.resourceRouteType)}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Transferências Recomendadas */}
+          {transferRecommendations.length > 0 && (
+            <div className="space-y-2">
+              <h4 className="text-blue-400 text-sm font-medium flex items-center">
+                <Truck className="h-4 w-4 mr-1" />
+                Transferências Recomendadas
+              </h4>
+              {transferRecommendations.map((transfer, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => onTransferSelect(transfer.sourceHospitalId, transfer.targetHospitalId)}
+                  className="w-full bg-blue-900/20 border border-blue-900/50 p-2 rounded-lg hover:bg-blue-900/30"
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="text-blue-300 text-sm">
+                      {getResourceRoutesName(transfer.resourceRouteType)}
+                    </span>
+                    <span className="text-gray-400 text-xs">
+                      {Math.round(transfer.distance)}km
+                    </span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Fornecedores Próximos */}
+          {recommendations.supplierRecommendations.length > 0 && (
+            <div className="space-y-2">
+              <h4 className="text-green-400 text-sm font-medium flex items-center">
+                <Building className="h-4 w-4 mr-1" />
+                Fornecedores Disponíveis
+              </h4>
+              {recommendations.supplierRecommendations.map((supplier, idx) => (
+                <div key={idx} className="bg-green-900/20 border border-green-900/50 p-2 rounded-lg">
+                  <div className="flex justify-between items-center">
+                    <span className="text-green-300 text-sm">{supplier.name}</span>
+                    <span className="text-gray-400 text-xs">{supplier.availability}</span>
+                  </div>
+                  <div className="flex justify-between items-center mt-1">
+                    <span className="text-gray-400 text-xs">
+                      {getResourceRoutesName(supplier.resourceType)}
+                    </span>
+                    <span className="text-gray-400 text-xs">
+                      R$ {supplier.estimatedPrice.toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
       )}
     </div>
   );

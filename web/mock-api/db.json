@@ -1272,8 +1272,8 @@
   "resources": {
     "RD4H-SP-ITAIM": {
       "equipmentStatus": {
-        "respirators": {"total": 65, "available": 24, "maintenance": 5},
-        "monitors": {"total": 120, "available": 42, "maintenance": 8},
+        "respirators": {"total": 65, "available": 10, "maintenance": 5},  
+        "monitors": {"total": 120, "available": 25, "maintenance": 8},
         "defibrillators": {"total": 30, "available": 18, "maintenance": 2},
         "imagingDevices": {"total": 12, "available": 5, "maintenance": 1}
       },
@@ -1285,8 +1285,8 @@
         "pediatric": {"total": 30, "available": 14}
       },
       "suppliesStatus": {
-        "medications": {"criticalLow": 3, "lowStock": 7, "normal": 42},
-        "bloodBank": {"criticalLow": 1, "lowStock": 2, "normal": 5},
+        "medications": {"criticalLow": 5, "lowStock": 7, "normal": 20},
+        "bloodBank": {"criticalLow": 3, "lowStock": 2, "normal": 3},   
         "ppe": {"criticalLow": 0, "lowStock": 3, "normal": 8}
       },
       "transferRequests": [
@@ -1296,9 +1296,9 @@
     },
     "RD4H-SP-MORUMBI": {
       "equipmentStatus": {
-        "respirators": {"total": 45, "available": 15, "maintenance": 3},
-        "monitors": {"total": 90, "available": 32, "maintenance": 5},
-        "defibrillators": {"total": 25, "available": 16, "maintenance": 1},
+        "respirators": {"total": 45, "available": 35, "maintenance": 3},
+        "monitors": {"total": 90, "available": 72, "maintenance": 5},
+        "defibrillators": {"total": 25, "available": 20, "maintenance": 1},
         "imagingDevices": {"total": 8, "available": 3, "maintenance": 2}
       },
       "bedStatus": {
@@ -1309,9 +1309,9 @@
         "pediatric": {"total": 25, "available": 11}
       },
       "suppliesStatus": {
-        "medications": {"criticalLow": 5, "lowStock": 9, "normal": 38},
-        "bloodBank": {"criticalLow": 2, "lowStock": 1, "normal": 5},
-        "ppe": {"criticalLow": 1, "lowStock": 4, "normal": 7}
+        "medications": {"criticalLow": 0, "lowStock": 2, "normal": 45},
+        "bloodBank": {"criticalLow": 0, "lowStock": 1, "normal": 12},  
+        "ppe": {"criticalLow": 0, "lowStock": 1, "normal": 15}
       },
       "transferRequests": [
         {"patientId": "P2076", "severity": "high", "requiredSpecialty": "pulmonology", "requestTime": "2025-02-19T09:45:00Z"}

@@ -12,6 +12,7 @@ import { INetworkData } from "@/types/hospital-network-types";
 import { IStaffData } from "@/types/staff-types";
 import { TResourceCategory, TDepartment } from '@/types/resources-types';
 import { MapboxHospital } from '@/components/ui/templates/map/MapboxHospital';
+import { TransferResourcesButton } from './resources/transfers/TransferResourcesButton';
 
 interface IResourceManagementMapProps {
   networkData: INetworkData;
@@ -142,16 +143,29 @@ export const ResourceManagementMap: React.FC<IResourceManagementMapProps> = ({
         resourceRouteAnalysis={resourceRouteAnalysis}
       />
 
+      {/* Botão de Transferência */}
+      {selectedHospitalId && targetHospitals.length > 0 && (
+        <TransferResourcesButton 
+          onClick={() => {
+            setPreselectedResource(null);
+            setShowTransferModal(true);
+          }}
+          position="top-right"
+          className="shadow-lg"
+        />
+      )}
+
       {/* Painel de Recomendações */}
       {selectedHospitalId && (
-        <div className="absolute right-4 top-[650px] w-80 z-20">
+        <div className="absolute right-4 top-[580px] w-80 z-20">
           <ResourceRoutesRecommendations
             hospitalId={selectedHospitalId}
             recommendations={resourceRouteAnalysis}
             onTransferSelect={(sourceId, targetId) => {
               setSelectedTransfer({ sourceId, targetId });
               setShowTransferModal(true);
-            }}
+            }} 
+            hospitals={networkData?.hospitals || []}         
           />
         </div>
       )}
