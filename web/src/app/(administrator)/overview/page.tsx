@@ -15,7 +15,6 @@ import { OccupancyRateCharts } from './components/OccupancyRateCharts';
 import { HospitalsLocations } from './components/HospitalsLocations';
 import { AIAnalyticsMetrics } from './components/AIAnalyticsMetrics';
 import { MessageCenter } from './components/MessageCenter';
-import { FlowEditor } from './components/workflow/FlowEditor';
 import { RepositionActionsBar } from '@/components/ui/templates/RepositionActionsBar';
 import { IAppUser } from '@/types/auth-types';
 import { Button } from '@/components/ui/organisms/button';
@@ -324,14 +323,13 @@ const Overview: React.FC = () => {
                         loading={loading}
                         hospitals={networkData.hospitals}
                         onHospitalSelect={onHospitalSelect} 
-                        onRemoveUser={onRemoveUser}                  />
+                        onRemoveUser={onRemoveUser}                  
+                      />
                     )
                   }}
                 </ModernTabs>
               </div>
             </div>
-
-            <FlowEditor networkData={networkData}/>
           </div>
         </>
       )}

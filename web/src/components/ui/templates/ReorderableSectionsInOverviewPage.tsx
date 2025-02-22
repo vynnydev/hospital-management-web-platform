@@ -14,7 +14,6 @@ import { HospitalsLocations } from '@/app/(administrator)/overview/components/Ho
 import { AIAnalyticsMetrics } from '@/app/(administrator)/overview/components/AIAnalyticsMetrics';
 import { MessageCenter } from '@/app/(administrator)/overview/components/MessageCenter';
 import { ModernTabs } from '@/app/(administrator)/overview/components/ModernTabs';
-import { FlowEditor } from '@/app/(administrator)/overview/components/workflow/FlowEditor';
 import { IAppUser } from '@/types/auth-types';
 
 interface ReorderableSectionProps {
@@ -252,13 +251,6 @@ export const ReorderableSectionsInOverviewPage: React.FC<ReorderableOverviewProp
             </div>
             )
         },
-        {
-            id: 'flow-editor',
-            title: 'Editor de Fluxo',
-            component: (
-            <FlowEditor networkData={networkData}/>
-            )
-        }
     ];
 
     // Notificar mudanças na ordem apenas quando necessário

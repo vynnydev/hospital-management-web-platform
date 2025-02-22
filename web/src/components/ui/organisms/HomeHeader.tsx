@@ -22,19 +22,19 @@ export const HomeHeader = ({ type, menuItems }: IHeaderProps) => {
             <Brand type={type} shortForm className="block sm:hidden" />
           </Link>
           <div className="flex items-center gap-2">
-            <div className="flex gap-6 items-center">
-              <div className="text-sm mr-6 flex gap-3">
+            <div className="flex items-center">
+              <div className="text-sm flex gap-2">
                 <Menus menuItems={menuItems} />
               </div>
               <NavSidebar menuItems={menuItems} />
             </div>
-            <Link href="/sign-up">
+            {/* <Link href="/sign-up">
               <Button variant="outlined" className="hidden md:block border-cyan-600">
                 Registre-se
               </Button>
-            </Link>
+            </Link> */}
             <Link href="/sign-in">
-              <Button className='border-cyan-600'>Log in</Button>
+              <Button className='w-32 border-cyan-600'>Log in</Button>
             </Link>
           </div>
         </Container>

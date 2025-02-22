@@ -2,181 +2,166 @@
 import { useState, useEffect, useCallback } from 'react';
 import { IHospital } from '@/types/hospital-network-types';
 import { IHospitalResources } from '@/types/resources-types';
-import { 
-  ICriticalShortage, 
-  IResourceRouteRecommendation, 
-  IResourceRouteAnalysis, 
+import { calculateDistance } from '@/utils/calculateDistance';
+import {
+  ICriticalShortage,
+  IResourceRouteRecommendation,
+  IResourceRouteAnalysis,
   ISupplierRecommendation,
-  TEquipmentType, 
-  IResourceRouteAnalysisState,
-  IMinimumLevels,
+  TEquipmentType,
   TSupplyType
 } from '@/types/resource-route-analysis-types';
-import { calculateDistance } from '@/utils/calculateDistance';
 
-const MINIMUM_LEVELS: IMinimumLevels = {
+const MINIMUM_LEVELS = {
   equipment: {
-    respirators: 0.3,      // 30% disponível
-    monitors: 0.25,        // 25% disponível
-    defibrillators: 0.2,   // 20% disponível
-    imagingDevices: 0.15   // 15% disponível
-  },
+    respirators: 0.3,
+    monitors: 0.25,
+    defibrillators: 0.2,
+    imagingDevices: 0.15
+  } as const,
   supplies: {
-    medications: 10,     // Mínimo de 10 unidades normais
-    bloodBank: 5,        // Mínimo de 5 unidades normais
-    ppe: 15             // Mínimo de 15 unidades normais
-  }
+    medications: 10,
+    bloodBank: 5,
+    ppe: 15
+  } as const
 };
+
+const MOCK_SUPPLIERS: ISupplierRecommendation[] = [
+  {
+    id: 'sup-1',
+    name: 'Medical Supplies Co.',
+    coordinates: [-46.6338, -23.5479],
+    resourceType: 'respirators',
+    estimatedPrice: 45000,
+    availability: 'immediate'
+  },
+  {
+    id: 'sup-2',
+    name: 'Healthcare Equipment Ltd',
+    coordinates: [-46.6288, -23.5589],
+    resourceType: 'monitors',
+    estimatedPrice: 28000,
+    availability: '24h'
+  }
+];
 
 export const useResourceRouteAnalysis = (
   hospitals: IHospital[],
   resources: Record<string, IHospitalResources>,
-  maxTransferDistance: number = 50 // km
+  maxTransferDistance: number = 50
 ): IResourceRouteAnalysis => {
-  const [analysisState, setAnalysisState] = useState<IResourceRouteAnalysisState>({
-    transferRecommendations: [],
-    supplierRecommendations: [],
-    criticalShortages: []
-  });
+  const [transferRecommendations, setTransferRecommendations] = useState<IResourceRouteRecommendation[]>([]);
+  const [supplierRecommendations, setSupplierRecommendations] = useState<ISupplierRecommendation[]>([]);
+  const [criticalShortages, setCriticalShortages] = useState<ICriticalShortage[]>([]);
 
-  // Lista de tipos de equipamentos
-  const equipTypes: TEquipmentType[] = ['respirators', 'monitors', 'defibrillators', 'imagingDevices'];
-
-  // Avalia nível de prioridade baseado nos recursos
-  // Funções de retorno que serão memoizadas para evitar recriações desnecessárias
-  const getPriorityLevel = useCallback((hospitalId: string): 'critical' | 'warning' | 'normal' => {
+  const checkResourceLevels = useCallback((hospitalId: string): ICriticalShortage[] => {
     const hospitalResources = resources[hospitalId];
-    if (!hospitalResources) return 'normal';
+    if (!hospitalResources) return [];
 
-    let hasCritical = false;
-    let hasWarning = false;
+    const shortages: ICriticalShortage[] = [];
 
-    for (const equipType of equipTypes) {
-      const equipment = hospitalResources.equipmentStatus[equipType];
-      const availabilityRate = equipment.available / equipment.total;
+    // Verifica equipamentos
+    Object.entries(hospitalResources.equipmentStatus).forEach(([type, status]) => {
+      const equipType = type as TEquipmentType;
+      const availabilityRate = status.available / status.total;
+      const minimumLevel = MINIMUM_LEVELS.equipment[equipType];
 
-      if (availabilityRate < 0.2) {
-        hasCritical = true;
-        break;
-      } else if (availabilityRate < 0.4) {
-        hasWarning = true;
+      if (availabilityRate < minimumLevel) {
+        shortages.push({
+          hospitalId,
+          type: equipType,
+          category: 'equipment',
+          severity: availabilityRate < minimumLevel / 2 ? 'critical' : 'warning'
+        });
       }
-    }
+    });
 
-    if (hasCritical) return 'critical';
-    if (hasWarning) return 'warning';
-    return 'normal';
+    // Verifica suprimentos
+    Object.entries(hospitalResources.suppliesStatus).forEach(([type, status]) => {
+      const supplyType = type as TSupplyType;
+      const minimumLevel = MINIMUM_LEVELS.supplies[supplyType];
+
+      if (status.normal < minimumLevel) {
+        shortages.push({
+          hospitalId,
+          type: supplyType,
+          category: 'supplies',
+          severity: status.criticalLow > 0 ? 'critical' : 'warning'
+        });
+      }
+    });
+
+    return shortages;
   }, [resources]);
 
-  const getHospitalResources = useCallback((hospitalId: string): IHospitalResources | null => {
-    return resources[hospitalId] || null;
-  }, [resources]);
+  const findNearbyHospitals = useCallback((
+    sourceHospital: IHospital,
+    resourceType: TEquipmentType
+  ) => {
+    return hospitals
+      .filter(h => h.id !== sourceHospital.id)
+      .map(h => {
+        const hospitalResources = resources[h.id];
+        if (!hospitalResources) return null;
 
-  // Análise principal dos recursos
-  const analyzeResourceRoutes = async () => {
-    const transferRecs: IResourceRouteRecommendation[] = [];
-    const criticalShorts: ICriticalShortage[] = [];
-    const supplierRecs: ISupplierRecommendation[] = [];
+        const equipStatus = hospitalResources.equipmentStatus[resourceType];
+        if (!equipStatus) return null;
 
-    const checkResourceLevels = (resources: IHospitalResources) => {
-      const criticalResources: Array<{
-        type: TEquipmentType | TSupplyType;
-        category: 'equipment' | 'supplies';
-        severity: 'critical' | 'warning';
-      }> = [];
-    
-      // Verifica equipamentos
-      (Object.entries(resources.equipmentStatus) as [TEquipmentType, typeof resources.equipmentStatus[TEquipmentType]][]).forEach(([type, status]) => {
-        const minimumLevel = MINIMUM_LEVELS.equipment[type];
-        if (minimumLevel) { // Verifica se existe nível mínimo definido
-          const availabilityRate = status.available / status.total;
-          if (availabilityRate < minimumLevel) {
-            criticalResources.push({
-              type,
-              category: 'equipment',
-              severity: availabilityRate < minimumLevel / 2 ? 'critical' : 'warning'
-            });
-          }
-        }
-      });
-    
-      // Verifica suprimentos
-      (Object.entries(resources.suppliesStatus) as [TSupplyType, typeof resources.suppliesStatus[TSupplyType]][]).forEach(([type, status]) => {
-        const minimumLevel = MINIMUM_LEVELS.supplies[type];
-        if (minimumLevel) { // Verifica se existe nível mínimo definido
-          if (status.normal < minimumLevel) {
-            criticalResources.push({
-              type,
-              category: 'supplies',
-              severity: status.criticalLow > 0 ? 'critical' : 'warning'
-            });
-          }
-        }
-      });
-    
-      return criticalResources;
-    };
+        const availabilityRate = equipStatus.available / equipStatus.total;
+        if (availabilityRate < 0.3) return null;
 
-    for (const hospital of hospitals) {
-      const hospitalResources = resources[hospital.id];
-      if (!hospitalResources) continue;
+        const distance = calculateDistance(
+          sourceHospital.unit.coordinates.lat,
+          sourceHospital.unit.coordinates.lng,
+          h.unit.coordinates.lat,
+          h.unit.coordinates.lng
+        );
 
-      for (const equipType of equipTypes) {
-        const equipment = hospitalResources.equipmentStatus[equipType];
-        const availabilityRate = equipment.available / equipment.total;
+        return distance <= maxTransferDistance ? {
+          hospital: h,
+          distance,
+          estimatedTime: Math.round((distance / 50) * 60)
+        } : null;
+      })
+      .filter((item): item is NonNullable<typeof item> => item !== null)
+      .sort((a, b) => a.distance - b.distance);
+  }, [hospitals, resources, maxTransferDistance]);
 
-        if (availabilityRate < 0.2) {
-          // Adiciona escassez crítica
-          criticalShorts.push({
-            hospitalId: hospital.id,
-            resourceRouteType: equipType,
-            severity: availabilityRate < 0.1 ? 'critical' : 'warning'
-          });
+  const analyzeResourceRoutes = useCallback(() => {
+    const newCriticalShortages: ICriticalShortage[] = [];
+    const newTransferRecommendations: IResourceRouteRecommendation[] = [];
+    const newSupplierRecommendations: ISupplierRecommendation[] = [];
 
-          // Encontra hospitais próximos com recursos disponíveis
-          const nearbyHospitals = hospitals
-            .filter(h => h.id !== hospital.id)
-            .map(h => {
-              const distance = calculateDistance(
-                hospital.unit.coordinates.lat,
-                hospital.unit.coordinates.lng,
-                h.unit.coordinates.lat,
-                h.unit.coordinates.lng
-              );
+    hospitals.forEach(hospital => {
+      const shortages = checkResourceLevels(hospital.id);
+      newCriticalShortages.push(...shortages);
 
-              const trafficFactor = getTrafficFactor();
-              return {
-                hospital: h,
-                resources: resources[h.id],
-                distance,
-                estimatedTime: Math.round((distance / 50) * 60 * trafficFactor)
-              };
-            })
-            .filter(({ distance, resources }) => 
-              distance <= maxTransferDistance &&
-              resources?.equipmentStatus[equipType].available > 
-              resources?.equipmentStatus[equipType].total * 0.3
-            )
-            .sort((a, b) => a.distance - b.distance);
+      shortages
+        .filter(shortage => shortage.severity === 'critical' && shortage.category === 'equipment')
+        .forEach(shortage => {
+          const nearbyHospitals = findNearbyHospitals(
+            hospital,
+            shortage.type as TEquipmentType
+          );
 
           if (nearbyHospitals.length > 0) {
-            const bestMatch = nearbyHospitals[0];
-            transferRecs.push({
-              sourceHospitalId: bestMatch.hospital.id,
+            const nearest = nearbyHospitals[0];
+            
+            newTransferRecommendations.push({
+              sourceHospitalId: nearest.hospital.id,
               targetHospitalId: hospital.id,
-              resourceRouteType: equipType,
-              quantity: Math.floor(
-                bestMatch.resources.equipmentStatus[equipType].available * 0.2
-              ),
-              priority: availabilityRate < 0.1 ? 'high' : 'medium',
-              distance: bestMatch.distance,
-              estimatedTime: bestMatch.estimatedTime,
+              resourceType: shortage.type as TEquipmentType,
+              resourceRouteType: shortage.type as TEquipmentType,
+              quantity: Math.floor(resources[nearest.hospital.id]?.equipmentStatus[shortage.type as TEquipmentType].available * 0.2 || 0),
+              priority: 'high',
+              distance: nearest.distance,
+              estimatedTime: nearest.estimatedTime,
               routeDetails: {
                 coordinates: [
-                  [bestMatch.hospital.unit.coordinates.lng, bestMatch.hospital.unit.coordinates.lat],
+                  [nearest.hospital.unit.coordinates.lng, nearest.hospital.unit.coordinates.lat],
                   [hospital.unit.coordinates.lng, hospital.unit.coordinates.lat]
                 ],
-                trafficLevel: getTrafficLevel(bestMatch.estimatedTime, bestMatch.distance),
+                trafficLevel: nearest.estimatedTime > nearest.distance * 2 ? 'high' : 'low',
                 alternativeRoutes: nearbyHospitals.slice(1, 3).map(alt => ({
                   hospitalId: alt.hospital.id,
                   distance: alt.distance,
@@ -188,100 +173,57 @@ export const useResourceRouteAnalysis = (
                 }))
               }
             });
+          } else {
+            const nearbySuppliers = MOCK_SUPPLIERS
+              .filter(s => s.resourceType === shortage.type)
+              .map(s => ({
+                ...s,
+                distance: calculateDistance(
+                  hospital.unit.coordinates.lat,
+                  hospital.unit.coordinates.lng,
+                  s.coordinates[1],
+                  s.coordinates[0]
+                )
+              }))
+              .filter(s => s.distance <= maxTransferDistance);
+
+            newSupplierRecommendations.push(...nearbySuppliers);
           }
-        }
-      }
-    }
-
-    setAnalysisState({
-      transferRecommendations: transferRecs,
-      supplierRecommendations: supplierRecs,
-      criticalShortages: criticalShorts
+        });
     });
-  };
 
-  // Helpers para cálculos de tráfego
-  const getTrafficFactor = (): number => {
-    const hour = new Date().getHours();
-    if (hour >= 7 && hour <= 9) return 1.5;  // Rush da manhã
-    if (hour >= 17 && hour <= 19) return 1.8;  // Rush da tarde
-    return 1.2;  // Normal
-  };
-
-  const getTrafficLevel = (time: number, distance: number): 'low' | 'medium' | 'high' => {
-    const baseTime = (distance / 50) * 60; // Tempo base em minutos
-    const ratio = time / baseTime;
-    
-    if (ratio > 1.5) return 'high';
-    if (ratio > 1.2) return 'medium';
-    return 'low';
-  };
+    setCriticalShortages(newCriticalShortages);
+    setTransferRecommendations(newTransferRecommendations);
+    setSupplierRecommendations(newSupplierRecommendations);
+  }, [hospitals, resources, checkResourceLevels, findNearbyHospitals]);
 
   useEffect(() => {
     analyzeResourceRoutes();
-  }, [hospitals, resources]);
-
-  const getRecommendedTransfers = useCallback((hospitalId: string): IResourceRouteRecommendation[] => {
-    return analysisState.transferRecommendations.filter(rec => 
-      rec.sourceHospitalId === hospitalId || rec.targetHospitalId === hospitalId
-    );
-  }, [analysisState.transferRecommendations]);
-
-  const getHospitalShortages = useCallback((hospitalId: string): ICriticalShortage[] => {
-    return analysisState.criticalShortages.filter(shortage => 
-      shortage.hospitalId === hospitalId
-    );
-  }, [analysisState.criticalShortages]);
-
-  const getSupplierRecommendations = useCallback((hospitalId: string): ISupplierRecommendation[] => {
-    // Mock de fornecedores (você pode substituir por dados reais)
-    const mockSuppliers = [
-      {
-        id: 'supplier-1',
-        name: 'Medical Equipment Co.',
-        coordinates: [-46.6338, -23.5479] as [number, number],
-        availability: 'immediate' as const,
-        resourceType: 'respirators' as TEquipmentType,
-        estimatedPrice: 50000,
-        distance: 5.2
-      },
-      {
-        id: 'supplier-2',
-        name: 'Healthcare Supplies Ltd',
-        coordinates: [-46.6288, -23.5589] as [number, number],
-        availability: '24h' as const,
-        resourceType: 'monitors' as TEquipmentType,
-        estimatedPrice: 30000,
-        distance: 7.8
-      }
-    ];
-  
-    const hospital = hospitals.find(h => h.id === hospitalId);
-    if (!hospital) return [];
-  
-    // Filtrar fornecedores baseado nas necessidades do hospital
-    const shortages = getHospitalShortages(hospitalId);
-    const criticalEquipment = shortages
-      .filter(s => s.severity === 'critical')
-      .map(s => s.resourceRouteType);
-  
-    return mockSuppliers.filter(supplier => 
-      criticalEquipment.includes(supplier.resourceType) &&
-      calculateDistance(
-        hospital.unit.coordinates.lat,
-        hospital.unit.coordinates.lng,
-        supplier.coordinates[1],
-        supplier.coordinates[0]
-      ) <= maxTransferDistance
-    );
-  }, [hospitals, getHospitalShortages, maxTransferDistance, calculateDistance]);
+  }, [analyzeResourceRoutes]);
 
   return {
-    ...analysisState,
-    getPriorityLevel,
-    getRecommendedTransfers,
-    getHospitalShortages,
-    getSupplierRecommendations,
-    getHospitalResources
+    transferRecommendations,
+    supplierRecommendations,
+    criticalShortages,
+    getPriorityLevel: useCallback((hospitalId: string) => {
+      const shortages = checkResourceLevels(hospitalId);
+      if (shortages.some(s => s.severity === 'critical')) return 'critical';
+      if (shortages.some(s => s.severity === 'warning')) return 'warning';
+      return 'normal';
+    }, [checkResourceLevels]),
+    getRecommendedTransfers: useCallback((hospitalId: string) => 
+      transferRecommendations.filter(rec => 
+        rec.sourceHospitalId === hospitalId || rec.targetHospitalId === hospitalId
+      ), [transferRecommendations]),
+    getHospitalShortages: useCallback((hospitalId: string) => 
+      criticalShortages.filter(shortage => shortage.hospitalId === hospitalId),
+      [criticalShortages]),
+    getHospitalResources: useCallback((hospitalId: string) => 
+      resources[hospitalId] || null, [resources]),
+    getSupplierRecommendations: useCallback((hospitalId: string) =>
+      supplierRecommendations.filter(s => 
+        checkResourceLevels(hospitalId)
+          .some(shortage => shortage.type === s.resourceType)
+      ), [supplierRecommendations, checkResourceLevels])
   };
 };

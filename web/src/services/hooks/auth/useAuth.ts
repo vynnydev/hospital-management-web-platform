@@ -1,10 +1,10 @@
 // hooks/useAuth.ts
 import { useState, useEffect } from 'react';
 import { authService } from '@/services/auth/AuthService';
-import type { AppUser } from '@/types/auth-types';
+import type { IAppUser } from '@/types/auth-types';
 
 export function useAuth() {
-  const [user, setUser] = useState<AppUser | null>(null);
+  const [user, setUser] = useState<IAppUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

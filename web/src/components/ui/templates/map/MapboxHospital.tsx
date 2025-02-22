@@ -6,7 +6,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import { Building2 } from 'lucide-react';
 import { IHospital } from "@/types/hospital-network-types";
 import { IAppUser } from "@/types/auth-types";
-import { IResourceRouteAnalysis, IResourceRouteRecommendation, IRouteDetails } from '@/types/resource-route-analysis-types';
+import { IResourceRouteAnalysis, IResourceRouteRecommendation, IRouteDetails, TEquipmentType } from '@/types/resource-route-analysis-types';
 import { calculateDistance } from '@/utils/calculateDistance';
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
@@ -35,258 +35,167 @@ export const MapboxHospital: React.FC<IMapboxHospitalProps> = ({
   const alternativeRoutes = useRef<{[key: string]: mapboxgl.GeoJSONSource}>({});
   const [mapLoaded, setMapLoaded] = useState(false);
 
-  // Função para buscar e renderizar rotas no mapa
-  const getDirections = useCallback(async (
-    source: IHospital,
-    target: IHospital,
-    primaryRoute: IResourceRouteRecommendation
-  ) => {
-    if (!map.current || !routeSource.current) return;
 
+  const clearRoutes = useCallback(() => {
+    if (!map.current?.isStyleLoaded()) return;
+  
     try {
-      const response = await fetch(
-        `https://api.mapbox.com/directions/v5/mapbox/driving/` +
-        `${source.unit.coordinates.lng},${source.unit.coordinates.lat};` +
-        `${target.unit.coordinates.lng},${target.unit.coordinates.lat}` +
-        `?geometries=geojson&access_token=${mapboxgl.accessToken}`
-      );
-      
-      const data = await response.json();
-      
-      if (data.routes && data.routes.length > 0) {
-        // Atualiza rota principal
-        routeSource.current.setData({
-          type: 'Feature',
-          properties: {
-            routeType: 'hospital',
-            priority: primaryRoute.priority,
-            trafficLevel: primaryRoute.routeDetails.trafficLevel
-          },
-          geometry: data.routes[0].geometry
-        });
-
-        // Renderiza rotas alternativas se existirem
-        if (primaryRoute.routeDetails.alternativeRoutes.length > 0) {
-          renderAlternativeRoutes(primaryRoute.routeDetails.alternativeRoutes);
-        }
-
-        // Ajusta a visualização do mapa
-        const bounds = new mapboxgl.LngLatBounds();
-        data.routes[0].geometry.coordinates.forEach((coord: [number, number]) => {
-          bounds.extend(coord);
-        });
-        
-        map.current.fitBounds(bounds, {
-          padding: 80,
-          maxZoom: 14
-        });
-      }
-    } catch (error) {
-      console.error('Erro ao buscar direções:', error);
-      
-      // Fallback: renderiza linha reta entre os pontos
-      routeSource.current.setData({
-        type: 'Feature',
-        properties: {
-          routeType: 'hospital',
-          priority: primaryRoute.priority,
-          trafficLevel: primaryRoute.routeDetails.trafficLevel
-        },
-        geometry: {
-          type: 'LineString',
-          coordinates: [
-            [source.unit.coordinates.lng, source.unit.coordinates.lat],
-            [target.unit.coordinates.lng, target.unit.coordinates.lat]
-          ]
+      // Remove layers primeiro
+      const layers = map.current.getStyle()?.layers || [];
+      layers.forEach(layer => {
+        if (layer.id.startsWith('route-line-')) {
+          map.current?.removeLayer(layer.id);
         }
       });
-
-      // Mesmo com o erro, ainda renderiza rotas alternativas
-      if (primaryRoute.routeDetails.alternativeRoutes.length > 0) {
-        renderAlternativeRoutes(primaryRoute.routeDetails.alternativeRoutes);
-      }
+  
+      // Depois remove sources
+      const sources = Object.keys(map.current.getStyle()?.sources || {});
+      sources.forEach(sourceId => {
+        if (sourceId.startsWith('route-')) {
+          map.current?.removeSource(sourceId);
+        }
+      });
+    } catch (error) {
+      console.warn('Erro ao limpar rotas:', error);
     }
   }, []);
 
   // Lógca motor principal que renderiza as rotas entre os hospitais
-  const renderRoutes = useCallback(async () => {
+  const renderHospitalRoutes = useCallback(async () => {
     if (!map.current || !selectedHospital) return;
   
     const selectedHospitalData = hospitals.find(h => h.id === selectedHospital);
     if (!selectedHospitalData) return;
   
-    // 1. Primeiro verifica recursos críticos do hospital selecionado
-    const hospitalStatus = resourceRouteAnalysis.getPriorityLevel(selectedHospital);
-    const criticalShortages = resourceRouteAnalysis.getHospitalShortages(selectedHospital)
-      .filter(shortage => shortage.severity === 'critical');
+    // Limpa rotas existentes
+    clearRoutes();
   
-    if (criticalShortages.length > 0) {
-      // 2. Para cada recurso crítico, encontra o hospital mais próximo com disponibilidade
-      for (const shortage of criticalShortages) {
-        // Encontra hospitais com recursos disponíveis
-        const availableHospitals = hospitals.filter(h => {
-          if (h.id === selectedHospital) return false;
+    // Verifica os recursos do hospital selecionado
+    const selectedHospitalResources = resourceRouteAnalysis.getHospitalResources(selectedHospital);
+    if (!selectedHospitalResources) return;
   
-          const resources = resourceRouteAnalysis.getHospitalResources?.(h.id);
-          if (!resources) return false;
-  
-          // Verifica se tem disponibilidade do recurso necessário
-          const equipmentStatus = resources.equipmentStatus[shortage.resourceRouteType];
-          return equipmentStatus && (equipmentStatus.available / equipmentStatus.total) > 0.3;
+    // Verifica equipamentos críticos
+    const criticalResources: Array<{type: TEquipmentType; available: number; total: number}> = [];
+    
+    Object.entries(selectedHospitalResources.equipmentStatus).forEach(([type, status]) => {
+      const availabilityRate = status.available / status.total;
+      if (availabilityRate < 0.3) { // Menos de 30% disponível é considerado crítico
+        criticalResources.push({
+          type: type as TEquipmentType,
+          available: status.available,
+          total: status.total
         });
+      }
+    });
   
-        // Ordena por distância
-        const sortedHospitals = availableHospitals.sort((a, b) => {
-          const distA = calculateDistance(
-            selectedHospitalData.unit.coordinates.lat,
-            selectedHospitalData.unit.coordinates.lng,
-            a.unit.coordinates.lat,
-            a.unit.coordinates.lng
+    // Para cada recurso crítico, busca o hospital mais próximo com disponibilidade
+    for (const resource of criticalResources) {
+      // Encontra hospitais com disponibilidade do recurso
+      const availableHospitals = hospitals.filter(h => {
+        if (h.id === selectedHospital) return false;
+  
+        const hospitalResources = resourceRouteAnalysis.getHospitalResources(h.id);
+        if (!hospitalResources) return false;
+  
+        const equipStatus = hospitalResources.equipmentStatus[resource.type];
+        const availabilityRate = equipStatus.available / equipStatus.total;
+        
+        return availabilityRate > 0.5; // Hospital deve ter mais de 50% disponível para transferir
+      });
+  
+      // Ordena por distância
+      const sortedHospitals = availableHospitals.sort((a, b) => {
+        const distA = calculateDistance(
+          selectedHospitalData.unit.coordinates.lat,
+          selectedHospitalData.unit.coordinates.lng,
+          a.unit.coordinates.lat,
+          a.unit.coordinates.lng
+        );
+        const distB = calculateDistance(
+          selectedHospitalData.unit.coordinates.lat,
+          selectedHospitalData.unit.coordinates.lng,
+          b.unit.coordinates.lat,
+          b.unit.coordinates.lng
+        );
+        return distA - distB;
+      });
+  
+      if (sortedHospitals.length > 0) {
+        const nearestHospital = sortedHospitals[0];
+        const routeId = `route-${resource.type}-${nearestHospital.id}-${selectedHospital}`;
+  
+        try {
+          // Busca a rota do Mapbox
+          const response = await fetch(
+            `https://api.mapbox.com/directions/v5/mapbox/driving/` +
+            `${nearestHospital.unit.coordinates.lng},${nearestHospital.unit.coordinates.lat};` +
+            `${selectedHospitalData.unit.coordinates.lng},${selectedHospitalData.unit.coordinates.lat}` +
+            `?geometries=geojson&access_token=${mapboxgl.accessToken}`
           );
-          const distB = calculateDistance(
-            selectedHospitalData.unit.coordinates.lat,
-            selectedHospitalData.unit.coordinates.lng,
-            b.unit.coordinates.lat,
-            b.unit.coordinates.lng
-          );
-          return distA - distB;
-        });
   
-        // Renderiza rota para o hospital mais próximo com recursos
-        if (sortedHospitals.length > 0) {
-          const nearestHospital = sortedHospitals[0];
-          
-          try {
-            const response = await fetch(
-              `https://api.mapbox.com/directions/v5/mapbox/driving/` +
-              `${nearestHospital.unit.coordinates.lng},${nearestHospital.unit.coordinates.lat};` +
-              `${selectedHospitalData.unit.coordinates.lng},${selectedHospitalData.unit.coordinates.lat}` +
-              `?geometries=geojson&access_token=${mapboxgl.accessToken}`
-            );
-            
-            const data = await response.json();
-            
-            if (data.routes?.[0]?.geometry?.coordinates) {
-              const routeId = `route-${selectedHospital}-${nearestHospital.id}-${shortage.resourceRouteType}`;
-              
-              // Adiciona a fonte da rota
-              if (!map.current?.getSource(routeId)) {
-                map.current?.addSource(routeId, {
-                  type: 'geojson',
-                  data: {
-                    type: 'Feature',
-                    properties: {
-                      type: 'hospital',
-                      priority: 'high',
-                      resourceType: shortage.resourceRouteType
-                    },
-                    geometry: data.routes[0].geometry
-                  }
-                });
+          const data = await response.json();
   
-                // Adiciona a camada da rota
-                map.current?.addLayer({
-                  id: `route-line-${routeId}`,
-                  type: 'line',
-                  source: routeId,
-                  layout: {
-                    'line-join': 'round',
-                    'line-cap': 'round'
-                  },
-                  paint: {
-                    'line-color': [
-                      'match',
-                      ['get', 'resourceType'],
-                      'respirators', '#EF4444', // Vermelho para respiradores
-                      'monitors', '#F59E0B',    // Amarelo para monitores
-                      'defibrillators', '#3B82F6', // Azul para desfibriladores
-                      '#10B981' // Verde para outros
-                    ],
-                    'line-width': 4,
-                    'line-opacity': 0.8,
-                    'line-dasharray': [1, 1]
-                  }
-                });
-  
-                // Ajusta a visualização para mostrar a rota completa
-                const bounds = new mapboxgl.LngLatBounds();
-                data.routes[0].geometry.coordinates.forEach((coord: [number, number]) => {
-                  bounds.extend(coord);
-                });
-  
-                map.current?.fitBounds(bounds, {
-                  padding: 100,
-                  maxZoom: 12
-                });
+          if (data.routes?.[0]?.geometry) {
+            // Adiciona a fonte
+            map.current.addSource(routeId, {
+              type: 'geojson',
+              data: {
+                type: 'Feature',
+                properties: {
+                  resourceType: resource.type,
+                  severity: 'critical'
+                },
+                geometry: data.routes[0].geometry
               }
-            }
-          } catch (error) {
-            console.error('Erro ao buscar rota:', error);
+            });
+  
+            // Adiciona a camada com estilo mais visível
+            map.current.addLayer({
+              id: `route-line-${routeId}`,
+              type: 'line',
+              source: routeId,
+              layout: {
+                'line-join': 'round',
+                'line-cap': 'round',
+                'visibility': 'visible'
+              },
+              paint: {
+                'line-color': '#EF4444', // Vermelho para rotas críticas
+                'line-width': 5,
+                'line-opacity': 0.8,
+                'line-dasharray': [2, 1]
+              }
+            });
+  
+            // Ajusta a visualização para mostrar a rota completa
+            const bounds = new mapboxgl.LngLatBounds();
+            data.routes[0].geometry.coordinates.forEach((coord: [number, number]) => {
+              bounds.extend(coord);
+            });
+  
+            map.current.fitBounds(bounds, {
+              padding: 100,
+              maxZoom: 12,
+              duration: 1000
+            });
           }
+        } catch (error) {
+          console.error('Erro ao buscar rota:', error);
         }
       }
     }
-  }, [selectedHospital, hospitals, resourceRouteAnalysis]);
+  }, [selectedHospital, hospitals, resourceRouteAnalysis, clearRoutes]);
 
-  // Função para renderizar rotas alternativas
-  const renderAlternativeRoutes = useCallback((routes: Array<{
-    hospitalId: string;
-    coordinates: [number, number][];
-    distance: number;
-    estimatedTime: number;
-  }>) => {
-    if (!map.current) return;
-
-    // Remove rotas alternativas antigas
-    Object.keys(alternativeRoutes.current).forEach(key => {
-      if (map.current?.getLayer(`route-alt-${key}`)) {
-        map.current.removeLayer(`route-alt-${key}`);
-      }
-      if (map.current?.getSource(`route-alt-${key}`)) {
-        map.current.removeSource(`route-alt-${key}`);
-      }
-    });
-    alternativeRoutes.current = {};
-
-    // Adiciona novas rotas alternativas
-    routes.forEach((route, index) => {
-      const sourceId = `route-alt-${index}`;
-
-      // Adiciona fonte
-      map.current?.addSource(sourceId, {
-        type: 'geojson',
-        data: {
-          type: 'Feature',
-          properties: {},
-          geometry: {
-            type: 'LineString',
-            coordinates: route.coordinates
-          }
-        }
-      });
-
-      // Adiciona camada
-      map.current?.addLayer({
-        id: `route-alt-${index}`,
-        type: 'line',
-        source: sourceId,
-        layout: {
-          'line-join': 'round',
-          'line-cap': 'round'
-        },
-        paint: {
-          'line-color': '#718096',
-          'line-width': 2,
-          'line-opacity': 0.5,
-          'line-dasharray': [2, 2]
-        }
-      });
-
-      // Armazena referência da fonte
-      alternativeRoutes.current[index] = map.current?.getSource(sourceId) as mapboxgl.GeoJSONSource;
-    });
-  }, []);
-
+  useEffect(() => {
+    if (!mapLoaded || !map.current || !selectedHospital) return;
+  
+    // Pequeno delay para garantir que o mapa está pronto
+    setTimeout(() => {
+      renderHospitalRoutes();
+    }, 500);
+    
+  }, [selectedHospital, mapLoaded, renderHospitalRoutes]);
+  
   useEffect(() => {
     const style = document.createElement('style');
     style.textContent = globalStyles;
@@ -297,95 +206,116 @@ export const MapboxHospital: React.FC<IMapboxHospitalProps> = ({
     };
   }, []);
 
-  // Inicializa o mapa
+  // Modifique o useEffect que inicializa o mapa
   useEffect(() => {
     if (!mapContainer.current || map.current) return;
 
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/dark-v11',
-      center: [-46.6388, -23.5489], // São Paulo
-      zoom: 10
-    });
+    const initializeMap = () => {
+      map.current = new mapboxgl.Map({
+        container: mapContainer.current!,
+        style: 'mapbox://styles/mapbox/dark-v11',
+        center: [-46.6388, -23.5489],
+        zoom: 10,
+        dragPan: true,
+        scrollZoom: true,
+        dragRotate: true,
+        interactive: true,
+        doubleClickZoom: true
+      });
 
-    map.current.on('load', () => {
-      setMapLoaded(true);
-      
-      // Adiciona fonte e camada para rota principal
-      map.current?.addSource('route', {
-        type: 'geojson',
-        data: {
-          type: 'Feature',
-          properties: {},
-          geometry: {
-            type: 'LineString',
-            coordinates: []
+      // Aguarda o estilo carregar antes de adicionar sources e layers
+      map.current.on('style.load', () => {
+        setMapLoaded(true);
+
+        // Adiciona a fonte da rota principal
+        map.current?.addSource('route', {
+          type: 'geojson',
+          data: {
+            type: 'Feature',
+            properties: {},
+            geometry: {
+              type: 'LineString',
+              coordinates: []
+            }
           }
-        }
-      });
-      
-      map.current?.addLayer({
-        id: 'route',
-        type: 'line',
-        source: 'route',
-        layout: {
-          'line-join': 'round',
-          'line-cap': 'round'
-        },
-        paint: {
-          'line-color': [
-            'match',
-            ['get', 'routeType'],
-            'hospital', '#3182CE',  // Azul para rotas entre hospitais
-            'supplier', '#48BB78',  // Verde para rotas de fornecedores
-            '#3182CE'  // Cor padrão
-          ],
-          'line-width': 4,
-          'line-opacity': [
-            'match',
-            ['get', 'priority'],
-            'high', 1,
-            'medium', 0.7,
-            0.5
-          ]
-        }
-      });
+        });
 
-      // Adiciona camada para área de alcance
-      map.current?.addSource('range', {
-        type: 'geojson',
-        data: {
-          type: 'Feature',
-          properties: {},
-          geometry: {
-            type: 'Point',
-            coordinates: [-46.6388, -23.5489]
+        // Adiciona a camada da rota
+        map.current?.addLayer({
+          id: 'route',
+          type: 'line',
+          source: 'route',
+          layout: {
+            'line-join': 'round',
+            'line-cap': 'round'
+          },
+          paint: {
+            'line-color': [
+              'match',
+              ['get', 'routeType'],
+              'hospital', '#3182CE',
+              'supplier', '#48BB78',
+              '#3182CE'
+            ],
+            'line-width': 4,
+            'line-opacity': [
+              'match',
+              ['get', 'priority'],
+              'high', 1,
+              'medium', 0.7,
+              0.5
+            ]
           }
-        }
+        });
+
+        // Adiciona a fonte de range
+        map.current?.addSource('range', {
+          type: 'geojson',
+          data: {
+            type: 'Feature',
+            properties: {},
+            geometry: {
+              type: 'Point',
+              coordinates: [-46.6388, -23.5489]
+            }
+          }
+        });
+
+        // Adiciona a camada de range
+        map.current?.addLayer({
+          id: 'range',
+          type: 'circle',
+          source: 'range',
+          paint: {
+            'circle-radius': 50,
+            'circle-color': '#3182CE',
+            'circle-opacity': 0.1,
+            'circle-stroke-width': 1,
+            'circle-stroke-color': '#3182CE'
+          }
+        });
+
+        routeSource.current = map.current?.getSource('route') as mapboxgl.GeoJSONSource;
       });
 
-      map.current?.addLayer({
-        id: 'range',
-        type: 'circle',
-        source: 'range',
-        paint: {
-          'circle-radius': 50,
-          'circle-color': '#3182CE',
-          'circle-opacity': 0.1,
-          'circle-stroke-width': 1,
-          'circle-stroke-color': '#3182CE'
-        }
-      });
+      map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
+    };
 
-      routeSource.current = map.current?.getSource('route') as mapboxgl.GeoJSONSource;
-    });
-
-    map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
+    // Inicializa o mapa com tratamento de erro
+    try {
+      initializeMap();
+    } catch (error) {
+      console.error('Erro ao inicializar mapa:', error);
+    }
 
     return () => {
-      markers.current.forEach(marker => marker.remove());
-      map.current?.remove();
-      map.current = null;
+      try {
+        markers.current.forEach(marker => marker.remove());
+        map.current?.remove();
+        map.current = null;
+      } catch (error) {
+        console.error('Erro ao limpar mapa:', error);
+      }
     };
   }, []);
 
@@ -436,39 +366,6 @@ export const MapboxHospital: React.FC<IMapboxHospitalProps> = ({
     return el;
   }, [resourceRouteAnalysis]);
 
-  const clearRoutes = useCallback(() => {
-    if (!map.current) return;
-  
-    // Primeiro, obter todas as layers
-    const layers = map.current.getStyle()?.layers;
-    if (!layers) return;
-  
-    // Remover layers de rota
-    layers.forEach(layer => {
-      if (layer.id.startsWith('route-line-')) {
-        try {
-          map.current?.removeLayer(layer.id);
-        } catch (error) {
-          console.warn(`Failed to remove layer ${layer.id}:`, error);
-        }
-      }
-    });
-  
-    // Remover sources de rota
-    const sources = map.current.getStyle()?.sources;
-    if (!sources) return;
-  
-    Object.keys(sources).forEach(sourceId => {
-      if (sourceId.startsWith('route-')) {
-        try {
-          map.current?.removeSource(sourceId);
-        } catch (error) {
-          console.warn(`Failed to remove source ${sourceId}:`, error);
-        }
-      }
-    });
-  }, []);
-
   // Adiciona marcadores dos hospitais
   useEffect(() => {
     if (!mapLoaded || !map.current) return;
@@ -507,203 +404,33 @@ export const MapboxHospital: React.FC<IMapboxHospitalProps> = ({
     }
   }, [hospitals, mapLoaded, setSelectedHospital, createHospitalMarker]);
 
-  // Atualiza visualização quando um hospital é selecionado
+  // Atualiza visualização e rotas quando um hospital é selecionado
   useEffect(() => {
-    if (!mapLoaded || !map.current || !selectedHospital) return;
-
-    clearRoutes();
-  
-    const selectedHospitalData = hospitals.find(h => h.id === selectedHospital);
-    if (!selectedHospitalData) return;
-  
-    // Primeiro centraliza no hospital selecionado
-    map.current.easeTo({
-      center: [
-        selectedHospitalData.unit.coordinates.lng, 
-        selectedHospitalData.unit.coordinates.lat
-      ],
-      zoom: 14,
-      duration: 1500
-    });
-  
-    // Verifica se o hospital tem recursos críticos
-    const hospitalStatus = resourceRouteAnalysis.getPriorityLevel(selectedHospital);
-    
-    if (hospitalStatus === 'critical') {
-      // Busca recomendações de transferência
-      const recommendations = resourceRouteAnalysis.getRecommendedTransfers(selectedHospital);
-      
-      // Renderiza rotas para hospitais e fornecedores após a animação de zoom
-      setTimeout(async () => {
-        // Array para armazenar todas as coordenadas das rotas
-        const allRouteCoords: [number, number][] = [];
-  
-        // Renderiza rotas para hospitais próximos com recursos
-        if (recommendations.length > 0) {
-          for (const route of recommendations) {
-            const source = hospitals.find(h => h.id === route.sourceHospitalId);
-            const target = hospitals.find(h => h.id === route.targetHospitalId);
-            
-            if (source && target) {
-              try {
-                // Busca rota do Mapbox
-                const response = await fetch(
-                  `https://api.mapbox.com/directions/v5/mapbox/driving/` +
-                  `${source.unit.coordinates.lng},${source.unit.coordinates.lat};` +
-                  `${target.unit.coordinates.lng},${target.unit.coordinates.lat}` +
-                  `?geometries=geojson&access_token=${mapboxgl.accessToken}`
-                );
-                
-                const data = await response.json();
-                
-                if (data.routes?.[0]?.geometry?.coordinates) {
-                  // Adiciona coordenadas da rota
-                  allRouteCoords.push(...data.routes[0].geometry.coordinates);
-                  
-                  // Adiciona fonte e camada para esta rota
-                  const routeId = `route-${source.id}-${target.id}`;
-                  
-                  if (!map.current?.getSource(routeId)) {
-                    map.current?.addSource(routeId, {
-                      type: 'geojson',
-                      data: {
-                        type: 'Feature',
-                        properties: {
-                          type: 'hospital',
-                          priority: route.priority,
-                          trafficLevel: route.routeDetails.trafficLevel
-                        },
-                        geometry: data.routes[0].geometry
-                      }
-                    });
-  
-                    map.current?.addLayer({
-                      id: `route-line-${routeId}`,
-                      type: 'line',
-                      source: routeId,
-                      layout: {
-                        'line-join': 'round',
-                        'line-cap': 'round'
-                      },
-                      paint: {
-                        'line-color': route.priority === 'high' ? '#EF4444' : '#3B82F6',
-                        'line-width': 3,
-                        'line-opacity': 0.8
-                      }
-                    });
-                  }
-                }
-              } catch (error) {
-                console.error('Erro ao buscar rota:', error);
-              }
-            }
-          }
-        }
-  
-        // Adiciona rotas para fornecedores próximos
-        const supplierRecommendations = resourceRouteAnalysis.getSupplierRecommendations?.(selectedHospital);
-        
-        if (supplierRecommendations?.length > 0) {
-          for (const supplier of supplierRecommendations) {
-            try {
-              const response = await fetch(
-                `https://api.mapbox.com/directions/v5/mapbox/driving/` +
-                `${supplier.coordinates[0]},${supplier.coordinates[1]};` +
-                `${selectedHospitalData.unit.coordinates.lng},${selectedHospitalData.unit.coordinates.lat}` +
-                `?geometries=geojson&access_token=${mapboxgl.accessToken}`
-              );
-              
-              const data = await response.json();
-              
-              if (data.routes?.[0]?.geometry?.coordinates) {
-                allRouteCoords.push(...data.routes[0].geometry.coordinates);
-                
-                const routeId = `route-supplier-${supplier.id}`;
-                
-                if (!map.current?.getSource(routeId)) {
-                  map.current?.addSource(routeId, {
-                    type: 'geojson',
-                    data: {
-                      type: 'Feature',
-                      properties: {
-                        type: 'supplier',
-                        availability: supplier.availability
-                      },
-                      geometry: data.routes[0].geometry
-                    }
-                  });
-  
-                  map.current?.addLayer({
-                    id: `route-line-${routeId}`,
-                    type: 'line',
-                    source: routeId,
-                    layout: {
-                      'line-join': 'round',
-                      'line-cap': 'round'
-                    },
-                    paint: {
-                      'line-color': '#10B981', // Verde para fornecedores
-                      'line-width': 3,
-                      'line-opacity': 0.8,
-                      'line-dasharray': [2, 1] // Linha tracejada
-                    }
-                  });
-                }
-              }
-            } catch (error) {
-              console.error('Erro ao buscar rota do fornecedor:', error);
-            }
-          }
-        }
-  
-        // Ajusta a visualização para mostrar todas as rotas
-        if (allRouteCoords.length > 0) {
-          const bounds = new mapboxgl.LngLatBounds();
-          allRouteCoords.forEach(coord => bounds.extend(coord));
-          
-          map.current?.fitBounds(bounds, {
-            padding: 100,
-            maxZoom: 13
-          });
-        }
-      }, 1500); // Aguarda a animação inicial
+    if (!mapLoaded || !map.current || !selectedHospital) {
+      clearRoutes();
+      return;
     }
-  }, [selectedHospital, hospitals, mapLoaded, resourceRouteAnalysis]);
 
-  useEffect(() => {
-    if (!mapLoaded || !map.current || !selectedHospital) return;
-  
-    clearRoutes();
-  
     const selectedHospitalData = hospitals.find(h => h.id === selectedHospital);
     if (!selectedHospitalData) return;
-  
-    // Primeiro centraliza no hospital selecionado
+
+    // Centraliza no hospital selecionado primeiro
     map.current.easeTo({
       center: [
         selectedHospitalData.unit.coordinates.lng, 
         selectedHospitalData.unit.coordinates.lat
       ],
-      zoom: 14,
-      duration: 1500
+      zoom: 13,
+      duration: 800
     });
-  
-    // Aguarda a animação e então renderiza as rotas
+
+    // Aguarda a animação terminar antes de renderizar as rotas
     setTimeout(() => {
-      if (map.current?.isStyleLoaded()) {
-        renderRoutes();
-      } else {
-        // Se o estilo ainda não estiver carregado, aguarda
-        const checkStyle = setInterval(() => {
-          if (map.current?.isStyleLoaded()) {
-            clearInterval(checkStyle);
-            renderRoutes();
-          }
-        }, 100);
-      }
-    }, 1500);
-  
-  }, [selectedHospital, hospitals, mapLoaded, resourceRouteAnalysis, renderRoutes, clearRoutes]);
+      renderHospitalRoutes();
+    }, 800);
+
+  }, [selectedHospital, hospitals, mapLoaded, renderHospitalRoutes, clearRoutes]);
+
 
   return (
     <div className="relative w-full h-full">

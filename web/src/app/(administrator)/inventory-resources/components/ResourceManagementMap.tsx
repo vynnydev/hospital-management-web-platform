@@ -13,6 +13,7 @@ import { IStaffData } from "@/types/staff-types";
 import { TResourceCategory, TDepartment } from '@/types/resources-types';
 import { MapboxHospital } from '@/components/ui/templates/map/MapboxHospital';
 import { TransferResourcesButton } from './resources/transfers/TransferResourcesButton';
+import { useNetworkData } from '@/services/hooks/useNetworkData';
 
 interface IResourceManagementMapProps {
   networkData: INetworkData;
@@ -28,6 +29,7 @@ export const ResourceManagementMap: React.FC<IResourceManagementMapProps> = ({
   setSelectedHospitalId
 }) => {
   // Estados
+  const { currentUser } = useNetworkData(); 
   const [selectedCategory, setSelectedCategory] = useState<TResourceCategory>('all');
   const [selectedDepartment, setSelectedDepartment] = useState<TDepartment>('all');
   const [selectedYear, setSelectedYear] = useState('2024');
@@ -157,7 +159,7 @@ export const ResourceManagementMap: React.FC<IResourceManagementMapProps> = ({
 
       {/* Painel de Recomendações */}
       {selectedHospitalId && (
-        <div className="absolute right-4 top-[580px] w-80 z-20">
+        <div className="absolute right-4 top-[510px] w-80 z-20">
           <ResourceRoutesRecommendations
             hospitalId={selectedHospitalId}
             recommendations={resourceRouteAnalysis}
@@ -202,7 +204,7 @@ export const ResourceManagementMap: React.FC<IResourceManagementMapProps> = ({
           hospitals={networkData?.hospitals || []}
           selectedHospital={selectedHospitalId}
           setSelectedHospital={setSelectedHospitalId}
-          currentUser={null}
+          currentUser={currentUser}
           activeRoute={selectedTransfer}
           resourceRouteAnalysis={resourceRouteAnalysis}
         />

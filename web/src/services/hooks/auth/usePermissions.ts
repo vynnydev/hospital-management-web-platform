@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Permission } from '@/types/auth-types';
+import { TPermission } from '@/types/auth-types';
 import { authService } from '@/services/auth/AuthService';
 
 export function usePermissions() {
-  const [permissions, setPermissions] = useState<Permission[]>([]);
+  const [permissions, setPermissions] = useState<TPermission[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export function usePermissions() {
   }, []);
 
   const checkPermission = useCallback((
-    permission: Permission,
+    permission: TPermission,
     hospitalId?: string
   ) => authService.checkPermission(permission, hospitalId), []);
 
@@ -38,7 +38,7 @@ export function usePermissions() {
   );
 
   const hasAnyPermission = useCallback(
-    (requiredPermissions: Permission[]) => 
+    (requiredPermissions: TPermission[]) => 
       requiredPermissions.some(permission => permissions.includes(permission)),
     [permissions]
   );
