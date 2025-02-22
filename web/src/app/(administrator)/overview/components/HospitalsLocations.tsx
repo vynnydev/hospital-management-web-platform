@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { IHospital } from "@/types/hospital-network-types";
 import { IAppUser } from "@/types/auth-types";
-import { MapboxHospital } from '@/components/ui/templates/map/MapboxHospital';
+import { MapboxHospitalOverview } from '@/components/ui/templates/map/overview/MapboxHospitalOverview';
 import { useHospitalAdvancedData } from '@/services/hooks/useHospitalAdvancedData';
-import { HospitalSidebar } from './locations-resources-map/HospitalSidebar';
-import { ViewModeSelector } from './locations-resources-map/ViewModeSelector';
+import { HospitalSidebar } from './resources/HospitalSidebar';
+import { ViewModeSelector } from './resources/ViewModeSelector';
 
 
 export type TViewMode = 'overview' | 'resources' | 'transfers' | 'emergency' | 'predictions' | 'staffing';
@@ -56,7 +56,7 @@ export const HospitalsLocations: React.FC<IHospitalsLocationsProps> = ({
 
       {/* Mapa */}
       <div className="absolute inset-0 w-full h-full z-10">
-        <MapboxHospital
+        <MapboxHospitalOverview
           hospitals={filteredHospitals}
           selectedHospital={selectedHospital}
           setSelectedHospital={setSelectedHospital}

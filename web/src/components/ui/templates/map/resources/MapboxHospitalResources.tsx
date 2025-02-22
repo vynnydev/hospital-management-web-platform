@@ -11,7 +11,7 @@ import { calculateDistance } from '@/utils/calculateDistance';
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
 
-interface IMapboxHospitalProps {
+interface IMapboxHospitalResoucesProps {
   hospitals: IHospital[];
   selectedHospital: string | null;
   setSelectedHospital: (id: string | null) => void;
@@ -20,7 +20,7 @@ interface IMapboxHospitalProps {
   resourceRouteAnalysis: IResourceRouteAnalysis;
 }
 
-export const MapboxHospital: React.FC<IMapboxHospitalProps> = ({
+export const MapboxHospitalResouces: React.FC<IMapboxHospitalResoucesProps> = ({
   hospitals,
   selectedHospital,
   setSelectedHospital,

@@ -11,7 +11,7 @@ import { TransferStatusPanel } from './resources/transfers/TransferStatusPanel';
 import { INetworkData } from "@/types/hospital-network-types";
 import { IStaffData } from "@/types/staff-types";
 import { TResourceCategory, TDepartment } from '@/types/resources-types';
-import { MapboxHospital } from '@/components/ui/templates/map/MapboxHospital';
+import { MapboxHospitalResouces } from '@/components/ui/templates/map/resources/MapboxHospitalResources';
 import { TransferResourcesButton } from './resources/transfers/TransferResourcesButton';
 import { useNetworkData } from '@/services/hooks/useNetworkData';
 
@@ -200,7 +200,7 @@ export const ResourceManagementMap: React.FC<IResourceManagementMapProps> = ({
 
       {/* Mapa Principal */}
       <div className="absolute inset-0 z-10">
-        <MapboxHospital 
+        <MapboxHospitalResouces 
           hospitals={networkData?.hospitals || []}
           selectedHospital={selectedHospitalId}
           setSelectedHospital={setSelectedHospitalId}
