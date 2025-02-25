@@ -19,7 +19,7 @@ export const WorkflowSlider: React.FC<IWorkflowSliderProps> = ({
   const hasPrevious = currentIndex > 0;
 
   return (
-    <div className="w-full bg-gray-900/50 rounded-lg p-4 mb-2">
+    <div className="w-full bg-gray-700/50 p-4">
       {/* Header mantido igual */}
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-medium text-gray-300">

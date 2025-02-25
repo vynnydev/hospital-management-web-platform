@@ -1,16 +1,19 @@
 // Tipos de departamentos
 
-import { LucideIcon } from "lucide-react";
+import { LucideProps } from "lucide-react";
 
 type TPriority = 'low' | 'medium' | 'high' | 'critical'
 type TWorkflowSelectHandler = (workflow: ISavedWorkflow) => void;
 
 export type { TPriority, TWorkflowSelectHandler }
 
+// Tipo específico para ícones do Lucide
+export type LucideIconType = React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>;
+
 export interface IWorkflowDepartment {
   id: string;
   label: string;
-  icon: LucideIcon;
+  icon: LucideIconType;
   subtitle?: string;
   description?: string;
   color?: string;
@@ -68,14 +71,50 @@ export interface IWorkflowSliderProps {
   onDelete: (workflowId: string) => void;
 }
 
+export interface ITemplateWorkflowIntegration {
+  selectedTemplate: IWorkflowTemplate | null;
+  workflow: IWorkflowNode[];
+  slaSettings: ISLASettings[];
+  exceptionFlows: IExceptionFlow[];
+  selectTemplate: (template: IWorkflowTemplate | null) => void; // Aceita null agora
+  selectTemplateById: (templateId: string) => void;
+  setWorkflow: React.Dispatch<React.SetStateAction<IWorkflowNode[]>>;
+  setSlaSettings: React.Dispatch<React.SetStateAction<ISLASettings[]>>;
+  setExceptionFlows: React.Dispatch<React.SetStateAction<IExceptionFlow[]>>;
+}
+
 export interface IWorkflowCanvasProps {
   workflow: IWorkflowNode[];
-  onNodeDrag: (e: React.MouseEvent<HTMLDivElement>, node: IWorkflowNode) => void;
-  onMouseMove: (e: React.MouseEvent<HTMLDivElement>) => void;
-  onMouseUp: () => void;
-  onMouseLeave: () => void;
-  onNodeEdit: (node: IWorkflowNode) => void;
-  onNodeDelete: (node: IWorkflowNode) => void;
-  onAddSubNode: (node: IWorkflowNode) => void;
-  onNodeConfig: (node: IWorkflowNode) => void;
+  onNodeDrag?: (e: React.MouseEvent<HTMLDivElement>, node: IWorkflowNode) => void;
+  onMouseMove?: (e: React.MouseEvent<HTMLDivElement>) => void;
+  onMouseUp?: () => void;
+  onMouseLeave?: () => void;
+  onNodeEdit?: (node: IWorkflowNode) => void;
+  onNodeDelete?: (node: IWorkflowNode) => void;
+  onAddSubNode?: (node: IWorkflowNode) => void;
+  onNodeConfig?: (node: IWorkflowNode) => void;
+}
+
+// Interfaces para os templates com propriedades específicas
+export interface ISLASettings {
+  departmentId: string;
+  maxTime: number;
+  timeUnit: 'minute' | 'hour' | 'day';
+  alertAt: number;
+}
+
+export interface IExceptionFlow {
+  condition: string;
+  targetDepartment: string;
+  priority: TPriority;
+}
+
+export interface IWorkflowTemplate {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  baseNodes: IWorkflowNode[];
+  slaSettings?: ISLASettings[];
+  exceptionFlows?: IExceptionFlow[];
 }
