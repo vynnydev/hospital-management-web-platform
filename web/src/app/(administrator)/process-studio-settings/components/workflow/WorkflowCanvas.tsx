@@ -1,7 +1,23 @@
 import React from 'react';
 import { IWorkflowCanvasProps, IWorkflowNode } from '@/types/workflow/customize-process-by-workflow-types';
 import { Card } from '@/components/ui/organisms/card';
-import { Plus, Settings, X } from 'lucide-react';
+import { Plus, Settings, X, Clipboard, FileCheck, UserCheck, BookOpen, Stethoscope, 
+  Hospital, Pill, ClipboardCheck, FileText, CalendarCheck } from 'lucide-react';
+
+// Mapa de ícones para usar quando o ícone original não estiver disponível
+const iconMap: Record<string, React.FC> = {
+  'Clipboard': Clipboard,
+  'FileCheck': FileCheck,
+  'UserCheck': UserCheck,
+  'BookOpen': BookOpen,
+  'Stethoscope': Stethoscope,
+  'Hospital': Hospital,
+  'Pill': Pill,
+  'ClipboardCheck': ClipboardCheck,
+  'FileText': FileText,
+  'CalendarCheck': CalendarCheck,
+  // Adicione mais ícones conforme necessário
+};
 
 export const WorkflowCanvas: React.FC<IWorkflowCanvasProps> = ({
   workflow,
@@ -53,6 +69,23 @@ export const WorkflowCanvas: React.FC<IWorkflowCanvasProps> = ({
           })}
       </svg>
     );
+  };
+
+  // Função para determinar qual ícone usar
+  const getIconComponent = (node: IWorkflowNode) => {
+    // Se o node.icon for uma função válida, usá-la diretamente
+    if (typeof node.icon === 'function') {
+      return node.icon;
+    }
+    
+    // Se tivermos um nome de ícone como string, tentar encontrar no mapa
+    if (typeof node.icon === 'string' && iconMap[node.icon]) {
+      return iconMap[node.icon];
+    }
+
+    // Caso não consiga determinar, usar um ícone padrão
+    console.warn(`Ícone não encontrado para o nó: ${node.label}. Usando ícone padrão.`);
+    return Clipboard;
   };
 
   // Handlers seguros que verificam se a função existe antes de chamar
@@ -141,7 +174,9 @@ export const WorkflowCanvas: React.FC<IWorkflowCanvasProps> = ({
           {renderConnections()}
           
           {workflow.map((node) => {
-            const Icon = node.icon;
+            // Determina o componente de ícone correto para este nó
+            const IconComponent = getIconComponent(node);
+            
             return (
               <div 
                 key={node.id}
@@ -187,7 +222,7 @@ export const WorkflowCanvas: React.FC<IWorkflowCanvasProps> = ({
                       }}
                     >
                       <div className={`p-2 rounded-lg ${node.color ? `bg-${node.color}-500/10` : 'bg-blue-500/10'}`}>
-                        <Icon className={`h-5 w-5 ${node.color ? `text-${node.color}-400` : 'text-blue-400'}`} />
+                        <IconComponent className={`h-5 w-5 ${node.color ? `text-${node.color}-400` : 'text-blue-400'}`} />
                       </div>
                       <div>
                         <h4 className="font-medium text-white">{node.label}</h4>

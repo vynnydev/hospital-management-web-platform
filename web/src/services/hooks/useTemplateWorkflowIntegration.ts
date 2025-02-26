@@ -1,56 +1,154 @@
-import { useEffect, useState } from "react";
+import { useRef, useState, useEffect } from 'react';
 import { 
-    IExceptionFlow, 
-    ISLASettings, 
-    IWorkflowNode, 
-    IWorkflowTemplate 
-} from "@/types/workflow/customize-process-by-workflow-types";
-import { workflowTemplates } from "@/utils/workflowTemplates";
+  IExceptionFlow, 
+  ISavedWorkflow, 
+  ISLASettings, 
+  IWorkflowNode, 
+  IWorkflowTemplate 
+} from '@/types/workflow/customize-process-by-workflow-types';
+import { workflowTemplates } from '@/utils/workflowTemplates';
+import { 
+  Clipboard, FileCheck, UserCheck, BookOpen, Stethoscope, 
+  Hospital, Pill, ClipboardCheck, FileText, CalendarCheck,
+  LucideIcon
+} from 'lucide-react';
 
-// Hook para gerenciar a integração dos templates com o workflow
+// Mapa de nomes de ícones para componentes Lucide reais
+const iconNameToComponent: Record<string, LucideIcon> = {
+  'Clipboard': Clipboard,
+  'FileCheck': FileCheck,
+  'UserCheck': UserCheck,
+  'BookOpen': BookOpen,
+  'Stethoscope': Stethoscope,
+  'Hospital': Hospital,
+  'Pill': Pill,
+  'ClipboardCheck': ClipboardCheck,
+  'FileText': FileText,
+  'CalendarCheck': CalendarCheck,
+};
+
+// Hook modificado para garantir a propagação correta dos templates para o workflow
 export const useTemplateWorkflowIntegration = () => {
-    const [selectedTemplate, setSelectedTemplate] = useState<IWorkflowTemplate | null>(null);
-    const [workflow, setWorkflow] = useState<IWorkflowNode[]>([]);
-    const [slaSettings, setSlaSettings] = useState<ISLASettings[]>([]);
-    const [exceptionFlows, setExceptionFlows] = useState<IExceptionFlow[]>([]);
+  const [selectedTemplate, setSelectedTemplate] = useState<IWorkflowTemplate | null>(null);
+  const [workflow, setWorkflow] = useState<IWorkflowNode[]>([]);
+  const [slaSettings, setSlaSettings] = useState<ISLASettings[]>([]);
+  const [exceptionFlows, setExceptionFlows] = useState<IExceptionFlow[]>([]);
   
-    // Quando um template é selecionado, carrega seu fluxo de trabalho
-    useEffect(() => {
-      if (selectedTemplate) {
-        setWorkflow(selectedTemplate.baseNodes);
-        setSlaSettings(selectedTemplate.slaSettings || []);
-        setExceptionFlows(selectedTemplate.exceptionFlows || []);
+  // Referência para rastrear se a atualização do workflow já foi feita
+  const workflowUpdatedRef = useRef<boolean>(false);
+
+  // Função para garantir que os ícones são componentes React válidos
+  const processNodeIcons = (nodes: IWorkflowNode[]): IWorkflowNode[] => {
+    return nodes.map(node => {
+      let iconComponent;
+      
+      // Se o ícone for uma string, tente encontrar o componente correspondente
+      if (typeof node.icon === 'string') {
+        const iconName = node.icon;
+        iconComponent = iconNameToComponent[iconName] || Clipboard; // Fallback para Clipboard
+      } else {
+        // Se já for um componente, mantenha-o
+        iconComponent = node.icon;
       }
-    }, [selectedTemplate]);
-  
-    // Função para selecionar um template (modificada para aceitar null)
-    const selectTemplate = (template: IWorkflowTemplate | null) => {
-      setSelectedTemplate(template);
-      if (!template) {
-        // Limpar estados se null for passado
-        setWorkflow([]);
-        setSlaSettings([]);
-        setExceptionFlows([]);
+      
+      return {
+        ...node,
+        icon: iconComponent
+      };
+    });
+  };
+
+  // Quando um template é selecionado, carrega seu fluxo de trabalho imediatamente
+  useEffect(() => {
+    if (selectedTemplate) {
+      console.log("Template selecionado para carregar:", selectedTemplate.name);
+      console.log("Nodes a serem carregados:", selectedTemplate.baseNodes.length);
+      
+      try {
+        // Importante: Precisamos garantir que os nós tenham IDs únicos
+        // Cria uma cópia profunda dos nós para evitar problemas de referência
+        const baseNodesCopy = JSON.parse(JSON.stringify(selectedTemplate.baseNodes)).map(
+          (node: IWorkflowNode, index: number) => ({
+            ...node,
+            // Adiciona um timestamp ao ID para garantir unicidade se necessário
+            id: node.id.includes('-') ? node.id : `${node.id}-${Date.now()}-${index}`
+          })
+        );
+        
+        // Processa os ícones para garantir que são componentes React válidos
+        const processedNodes = processNodeIcons(baseNodesCopy);
+        
+        console.log("Nós preparados para renderização:", processedNodes);
+        
+        // Atualiza o workflow com os nós do template
+        setWorkflow(processedNodes);
+        
+        // Carrega as configurações de SLA e exceções, se existirem
+        const templateSlaSettings = selectedTemplate.slaSettings || [];
+        const templateExceptionFlows = selectedTemplate.exceptionFlows || [];
+        
+        setSlaSettings([...templateSlaSettings]);
+        setExceptionFlows([...templateExceptionFlows]);
+        
+        workflowUpdatedRef.current = true;
+        console.log("Workflow atualizado com sucesso:", processedNodes.length, "nós");
+      } catch (error) {
+        console.error("Erro ao processar template:", error);
       }
-    };
-  
-    // Função para selecionar um template por ID
-    const selectTemplateById = (templateId: string) => {
-      const template = workflowTemplates.find(t => t.id === templateId);
-      if (template) {
-        setSelectedTemplate(template);
-      }
-    };
-  
+    } else {
+      // Limpa o workflow quando nenhum template está selecionado
+      setWorkflow([]);
+      setSlaSettings([]);
+      setExceptionFlows([]);
+      workflowUpdatedRef.current = false;
+    }
+  }, [selectedTemplate]); // Importante: Só depende do selectedTemplate
+
+  // Função para selecionar um template
+  const selectTemplate = (template: IWorkflowTemplate | null) => {
+    console.log("Selecionando template:", template?.name || "nenhum");
+    
+    // Reseta o controle de atualização quando um novo template é selecionado
+    workflowUpdatedRef.current = false;
+    
+    // Limpa o workflow existente antes de selecionar um novo template
+    setWorkflow([]);
+    
+    // Agora define o novo template
+    setSelectedTemplate(template);
+  };
+
+  // Função para selecionar um template por ID
+  const selectTemplateById = (templateId: string) => {
+    const template = workflowTemplates.find(t => t.id === templateId);
+    if (template) {
+      selectTemplate(template);
+    }
+  };
+
+  // Função para gerar um SavedWorkflow a partir do template atual
+  const generateSavedWorkflow = (): ISavedWorkflow | null => {
+    if (!selectedTemplate) return null;
+    
     return {
-      selectedTemplate,
-      workflow,
-      slaSettings,
-      exceptionFlows,
-      selectTemplate,
-      selectTemplateById,
-      setWorkflow,
-      setSlaSettings,
-      setExceptionFlows
+      id: selectedTemplate.id,
+      name: selectedTemplate.name,
+      nodes: workflow,
+      createdAt: new Date(),
+      description: selectedTemplate.description
     };
+  };
+
+  return {
+    selectedTemplate,
+    workflow,
+    slaSettings,
+    exceptionFlows,
+    selectTemplate,
+    selectTemplateById,
+    setWorkflow,
+    setSlaSettings,
+    setExceptionFlows,
+    generateSavedWorkflow
+  };
 };

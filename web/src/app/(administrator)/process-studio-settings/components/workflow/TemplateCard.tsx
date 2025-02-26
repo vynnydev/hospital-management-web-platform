@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React from 'react';
 import { Button } from '@/components/ui/organisms/button';
 import { ITemplate } from '@/types/settings-types';
 

@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/organisms/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/organisms/select';
 import { ISLASettings, IWorkflowTemplate } from '@/types/workflow/customize-process-by-workflow-types';
 
+// Definição explícita das props para o componente
 interface SLAEditorProps {
   template: IWorkflowTemplate | null;
   onUpdateSLA?: (slaSettings: ISLASettings[]) => void;
@@ -42,7 +43,9 @@ export const SLAEditor: React.FC<SLAEditorProps> = ({ template, onUpdateSLA }) =
       
       const updatedSettings = [...slaSettings, newSLA];
       setSlaSettings(updatedSettings);
-      if (onUpdateSLA) onUpdateSLA(updatedSettings);
+      if (onUpdateSLA) {
+        onUpdateSLA(updatedSettings);
+      }
     }
   };
   
@@ -51,14 +54,18 @@ export const SLAEditor: React.FC<SLAEditorProps> = ({ template, onUpdateSLA }) =
     const updatedSettings = [...slaSettings];
     updatedSettings[index] = { ...updatedSettings[index], [field]: value };
     setSlaSettings(updatedSettings);
-    if (onUpdateSLA) onUpdateSLA(updatedSettings);
+    if (onUpdateSLA) {
+      onUpdateSLA(updatedSettings);
+    }
   };
   
   // Remove um SLA
   const removeSLA = (index: number) => {
     const updatedSettings = slaSettings.filter((_, i) => i !== index);
     setSlaSettings(updatedSettings);
-    if (onUpdateSLA) onUpdateSLA(updatedSettings);
+    if (onUpdateSLA) {
+      onUpdateSLA(updatedSettings);
+    }
   };
   
   // Encontra o nome do departamento a partir do ID

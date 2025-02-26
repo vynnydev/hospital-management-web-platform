@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/organisms/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/organisms/select';
 import { IExceptionFlow, IWorkflowTemplate, TPriority } from '@/types/workflow/customize-process-by-workflow-types';
 
+// Definição explícita das props para o componente
 interface ExceptionFlowsEditorProps {
   template: IWorkflowTemplate | null;
   onUpdateExceptions?: (exceptions: IExceptionFlow[]) => void;
@@ -48,7 +49,9 @@ export const ExceptionFlowsEditor: React.FC<ExceptionFlowsEditorProps> = ({
     
     const updatedExceptions = [...exceptionFlows, newException];
     setExceptionFlows(updatedExceptions);
-    if (onUpdateExceptions) onUpdateExceptions(updatedExceptions);
+    if (onUpdateExceptions) {
+      onUpdateExceptions(updatedExceptions);
+    }
   };
   
   // Atualiza uma exceção existente
@@ -56,14 +59,18 @@ export const ExceptionFlowsEditor: React.FC<ExceptionFlowsEditorProps> = ({
     const updatedExceptions = [...exceptionFlows];
     updatedExceptions[index] = { ...updatedExceptions[index], [field]: value };
     setExceptionFlows(updatedExceptions);
-    if (onUpdateExceptions) onUpdateExceptions(updatedExceptions);
+    if (onUpdateExceptions) {
+      onUpdateExceptions(updatedExceptions);
+    }
   };
   
   // Remove uma exceção
   const removeException = (index: number) => {
     const updatedExceptions = exceptionFlows.filter((_, i) => i !== index);
     setExceptionFlows(updatedExceptions);
-    if (onUpdateExceptions) onUpdateExceptions(updatedExceptions);
+    if (onUpdateExceptions) {
+      onUpdateExceptions(updatedExceptions);
+    }
   };
   
   // Encontra o rótulo do departamento a partir do ID

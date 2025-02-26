@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/prefer-as-const */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // src/components/workflow/HospitalWorkflowEditor/index.tsx
 import React, { useState, useEffect } from 'react';
@@ -11,7 +12,13 @@ import { useWorkflowImportExport } from '@/services/hooks/workflows/useWorkflowI
 import { WorkflowHeader } from './workflow/WorkflowHeader';
 import { WorkflowSlider } from './workflow/WorkflowSlider';
 import { DepartmentsList } from './workflow/DepartmentsList';
+
+// IMPORTANTE: Corrigir a importação do WorkflowCanvas
+// Use a importação padrão (export default)
 import { WorkflowCanvas } from './workflow/WorkflowCanvas';
+// OU use a importação nomeada (export const)
+// import { WorkflowCanvas } from './workflow/WorkflowCanvas';
+
 import { EditNodeModal } from './workflow/modals/EditNodeModal';
 import { AuthorizationModal } from './workflow/modals/AuthorizationModal';
 import { CancelWorkflowModal } from './workflow/modals/CancelWorkflowModal';
@@ -21,15 +28,11 @@ import { NodeConfigModal } from './workflow/modals/NodeConfigModal';
 
 // Hook dos handlers
 import { useWorkflowHandlers } from '@/services/hooks/workflows/useWorkflowHandlers';
-
-// Tipos das funções handlers
-import { 
-  ISavedWorkflow, 
-  IWorkflowNode 
-} from '@/types/workflow/customize-process-by-workflow-types';
+import { ISavedWorkflow, IWorkflowNode } from '@/types/workflow/customize-process-by-workflow-types';
 import { departmentTypes } from './workflow/constants/departmentTypes';
-import { DeleteWorkflowModal } from './workflow/modals/DeleteWorkflowModal';
 import { SaveWorkflowModal } from './workflow/modals/SaveWorkflowModal';
+import { DeleteWorkflowModal } from './workflow/modals/DeleteWorkflowModal';
+import { WorkflowCanvasWrapper } from './workflow/WorkflowCanvasWrapper';
 
 // Novas props para o componente
 interface HospitalWorkflowEditorProps {
@@ -136,24 +139,12 @@ export const HospitalWorkflowEditor: React.FC<HospitalWorkflowEditorProps> = ({
     setSelectedNode
   );
 
-  // Defina as tipagens corretas para evitar erros
-  const onNodeDrag: ((e: React.MouseEvent<HTMLDivElement>, node: IWorkflowNode) => void) | undefined = 
-    readOnly ? undefined : startDragging;
-
-  const onMouseMove: ((e: React.MouseEvent<HTMLDivElement>) => void) | undefined = 
-    readOnly ? undefined : (e) => handleMouseMove(e, setWorkflow);
-
-  const onNodeEdit: ((node: IWorkflowNode) => void) | undefined = 
-    readOnly ? undefined : handleNodeEdit;
-
-  const onNodeDelete: ((node: IWorkflowNode) => void) | undefined = 
-    readOnly ? undefined : handleNodeDelete;
-
-  const onAddSubNode: ((node: IWorkflowNode) => void) | undefined = 
-    readOnly ? undefined : handleAddSubNode;
-
-  const onNodeConfig: ((node: IWorkflowNode) => void) | undefined = 
-    readOnly ? undefined : handleNodeConfigOpen;
+  const onNodeDrag = readOnly ? undefined : startDragging;
+  const onMouseMove = readOnly ? undefined : (e: React.MouseEvent<HTMLDivElement>) => handleMouseMove(e, setWorkflow);
+  const onNodeEdit = readOnly ? undefined : handleNodeEdit;
+  const onNodeDelete = readOnly ? undefined : handleNodeDelete;
+  const onAddSubNode = readOnly ? undefined : handleAddSubNode;
+  const onNodeConfig = readOnly ? undefined : handleNodeConfigOpen;
 
   // Função para cancelar o processo atual e limpar o workflow
   const handleProcessCancel = () => {
@@ -186,8 +177,12 @@ export const HospitalWorkflowEditor: React.FC<HospitalWorkflowEditorProps> = ({
     flexDirection: 'column' as 'column'
   };
 
+  // Debug para verificar se o WorkflowCanvas está sendo renderizado corretamente
+  console.log("HospitalWorkflowEditor render - Workflow length:", workflow.length);
+  // console.log("HospitalWorkflowEditor render - WorkflowCanvas component:", WorkflowCanvas);
+
   return (
-    <div className="h-full flex flex-col bg-gray-800 text-white rounded-xl" style={containerStyle}>
+    <div className="h-full flex flex-col bg-gray-800 text-white rounded-xl">
       {!readOnly && (
         <>
           <WorkflowHeader 
@@ -212,20 +207,12 @@ export const HospitalWorkflowEditor: React.FC<HospitalWorkflowEditorProps> = ({
         </>
       )}
 
-      {/* Container principal com flex e altura total */}
-      <div 
-        className="flex flex-1 relative mb-4" 
-        style={{ 
-          minHeight: hasActiveWorkflow ? '800px' : '600px',
-          height: '100%'
-        }}
-      >
-        {/* Departamentos (com largura fixa) */}
+      <div className="flex-1 flex relative min-h-0 mb-4">
         <div className={initialWorkflow && initialWorkflow.length > 0 ? "opacity-50 pointer-events-none" : ""}>
           <DepartmentsList 
             departments={departmentTypes}
             workflowInProgress={isWorkflowInProgress}
-            currentWorkflowName={displayWorkflowName}
+            currentWorkflowName={processName || currentWorkflowName}
             onStartWorkflow={(dept) => startWorkflow(dept, handleAddNode)}
             onCancelWorkflow={() => {
               if (initialWorkflow && initialWorkflow.length > 0) {
@@ -237,20 +224,22 @@ export const HospitalWorkflowEditor: React.FC<HospitalWorkflowEditorProps> = ({
           />
         </div>
 
-        {/* Canvas (com flex-grow para ocupar o espaço disponível) */}
-        <div className="flex-1 h-full">
-          <WorkflowCanvas 
-            workflow={workflow}
-            onNodeDrag={onNodeDrag}
-            onMouseMove={onMouseMove}
-            onMouseUp={stopDragging}
-            onMouseLeave={stopDragging}
-            onNodeEdit={onNodeEdit}
-            onNodeDelete={onNodeDelete}
-            onAddSubNode={onAddSubNode}
-            onNodeConfig={onNodeConfig}
-          />
+        {/* Debug: Informações sobre o workflow */}
+        <div className="absolute top-2 left-2 bg-black/50 text-white text-xs p-1 z-50 rounded">
+          Workflow: {workflow.length} nós
         </div>
+
+        <WorkflowCanvas 
+          workflow={workflow}
+          onNodeDrag={onNodeDrag}
+          onMouseMove={onMouseMove}
+          onMouseUp={stopDragging}
+          onMouseLeave={stopDragging}
+          onNodeEdit={onNodeEdit}
+          onNodeDelete={onNodeDelete}
+          onAddSubNode={onAddSubNode}
+          onNodeConfig={onNodeConfig}
+        />
       </div>
 
       {/* Modais - só mostrar se não estiver em modo somente leitura */}
@@ -276,7 +265,7 @@ export const HospitalWorkflowEditor: React.FC<HospitalWorkflowEditorProps> = ({
               cancelWorkflow();
               setCancelWorkflowModalOpen(false);
             }}
-            workflowName={displayWorkflowName}
+            workflowName={processName || currentWorkflowName}
           />
 
           <EditNodeModal 
@@ -337,3 +326,5 @@ export const HospitalWorkflowEditor: React.FC<HospitalWorkflowEditorProps> = ({
     </div>
   );
 };
+
+export default HospitalWorkflowEditor;
