@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useRef, useState, useEffect } from 'react';
 import { 
   IExceptionFlow, 
@@ -28,14 +29,44 @@ const iconNameToComponent: Record<string, LucideIcon> = {
 };
 
 // Hook modificado para garantir a propagação correta dos templates para o workflow
+// e integração com useWorkflowActions
 export const useTemplateWorkflowIntegration = () => {
   const [selectedTemplate, setSelectedTemplate] = useState<IWorkflowTemplate | null>(null);
   const [workflow, setWorkflow] = useState<IWorkflowNode[]>([]);
   const [slaSettings, setSlaSettings] = useState<ISLASettings[]>([]);
   const [exceptionFlows, setExceptionFlows] = useState<IExceptionFlow[]>([]);
+  const [processoEmAndamento, setProcessoEmAndamento] = useState<boolean>(false);
   
   // Referência para rastrear se a atualização do workflow já foi feita
   const workflowUpdatedRef = useRef<boolean>(false);
+
+  // Ouvir eventos de workflow para sincronização
+  useEffect(() => {
+    const handleProcessCanceled = () => {
+      console.log("useTemplateWorkflowIntegration: Processo cancelado detectado");
+      // Limpar o template e o workflow
+      setSelectedTemplate(null);
+      setWorkflow([]);
+      setSlaSettings([]);
+      setExceptionFlows([]);
+      setProcessoEmAndamento(false);
+      workflowUpdatedRef.current = false;
+    };
+    
+    const handleProcessStarted = (e: Event) => {
+      // Se o processo foi iniciado manualmente pelo DepartmentsList,
+      // precisamos manter o estado de processo em andamento
+      setProcessoEmAndamento(true);
+    };
+    
+    window.addEventListener('workflow-process-canceled', handleProcessCanceled);
+    window.addEventListener('workflow-process-started', handleProcessStarted);
+    
+    return () => {
+      window.removeEventListener('workflow-process-canceled', handleProcessCanceled);
+      window.removeEventListener('workflow-process-started', handleProcessStarted);
+    };
+  }, []);
 
   // Função para garantir que os ícones são componentes React válidos
   const processNodeIcons = (nodes: IWorkflowNode[]): IWorkflowNode[] => {
@@ -90,6 +121,15 @@ export const useTemplateWorkflowIntegration = () => {
         setSlaSettings([...templateSlaSettings]);
         setExceptionFlows([...templateExceptionFlows]);
         
+        // Marca que o processo está em andamento
+        setProcessoEmAndamento(true);
+        
+        // Dispara evento para sincronizar com outros componentes
+        const processStartedEvent = new CustomEvent('workflow-process-started', {
+          detail: { name: selectedTemplate.name }
+        });
+        window.dispatchEvent(processStartedEvent);
+        
         workflowUpdatedRef.current = true;
         console.log("Workflow atualizado com sucesso:", processedNodes.length, "nós");
       } catch (error) {
@@ -97,10 +137,13 @@ export const useTemplateWorkflowIntegration = () => {
       }
     } else {
       // Limpa o workflow quando nenhum template está selecionado
-      setWorkflow([]);
-      setSlaSettings([]);
-      setExceptionFlows([]);
-      workflowUpdatedRef.current = false;
+      // (mas somente se não estiver sendo manipulado por cancelWorkflow)
+      if (!workflowUpdatedRef.current) {
+        setWorkflow([]);
+        setSlaSettings([]);
+        setExceptionFlows([]);
+        setProcessoEmAndamento(false);
+      }
     }
   }, [selectedTemplate]); // Importante: Só depende do selectedTemplate
 
@@ -112,7 +155,9 @@ export const useTemplateWorkflowIntegration = () => {
     workflowUpdatedRef.current = false;
     
     // Limpa o workflow existente antes de selecionar um novo template
-    setWorkflow([]);
+    if (template) {
+      setWorkflow([]);
+    }
     
     // Agora define o novo template
     setSelectedTemplate(template);
@@ -139,16 +184,38 @@ export const useTemplateWorkflowIntegration = () => {
     };
   };
 
+  // Função para cancelar o processo atual
+  const cancelProcess = () => {
+    console.log("useTemplateWorkflowIntegration: Cancelando processo");
+    
+    // Limpar o template
+    setSelectedTemplate(null);
+    
+    // Limpar o workflow
+    setWorkflow([]);
+    
+    // Limpar outras configurações
+    setSlaSettings([]);
+    setExceptionFlows([]);
+    setProcessoEmAndamento(false);
+    
+    // Disparar evento para comunicação entre componentes
+    const processCanceledEvent = new CustomEvent('workflow-process-canceled');
+    window.dispatchEvent(processCanceledEvent);
+  };
+
   return {
     selectedTemplate,
     workflow,
     slaSettings,
     exceptionFlows,
+    processoEmAndamento,
     selectTemplate,
     selectTemplateById,
     setWorkflow,
     setSlaSettings,
     setExceptionFlows,
-    generateSavedWorkflow
+    generateSavedWorkflow,
+    cancelProcess
   };
 };

@@ -153,9 +153,15 @@ export const HospitalWorkflowEditor: React.FC<HospitalWorkflowEditorProps> = ({
       onCancelProcess();
     } else {
       // Comportamento padrão de cancelamento
-      cancelWorkflow();
+      setWorkflow([]); // Limpa explicitamente o workflow
+      cancelWorkflow(); // Função existente para cancelar o fluxo de trabalho
       setCancelWorkflowModalOpen(false);
     }
+    
+    // Dispara um evento para notificar que o processo foi cancelado
+    // Isso pode ser capturado por outros componentes para atualizar seu estado
+    const processCancelEvent = new CustomEvent('workflow-process-canceled');
+    window.dispatchEvent(processCancelEvent);
   };
 
   // Calcula se um workflow está em progresso para o DepartmentsList

@@ -28,28 +28,25 @@ export const WorkflowTab = () => {
     workflow,
     slaSettings,
     exceptionFlows,
+    processoEmAndamento,
     selectTemplate,
     selectTemplateById,
     setWorkflow,
     setSlaSettings,
     setExceptionFlows,
-    generateSavedWorkflow
+    generateSavedWorkflow,
+    cancelProcess
   } = useTemplateWorkflowIntegration();
 
   // Estado para armazenar a referência do HospitalWorkflowEditor
   const [workflowEditorKey, setWorkflowEditorKey] = useState<number>(0);
-  
-  // Estado para controlar se um processo está em andamento
-  const [processoEmAndamento, setProcessoEmAndamento] = useState<boolean>(false);
 
   // Verifica se há um workflow ativo sempre que o workflow muda
   useEffect(() => {
-    const hasWorkflow = workflow && workflow.length > 0;
-    setProcessoEmAndamento(hasWorkflow);
     console.log("WorkflowTab - Workflow atualizado, nodes:", workflow.length);
     
     // Debug: Verifica o conteúdo do workflow
-    if (hasWorkflow) {
+    if (workflow && workflow.length > 0) {
       console.log("Primeiro nó:", workflow[0]);
     }
   }, [workflow]);
@@ -79,8 +76,8 @@ export const WorkflowTab = () => {
   const handleCancelProcess = () => {
     console.log("WorkflowTab - Cancelando processo/template");
     
-    // Limpar o template
-    selectTemplate(null as unknown as IWorkflowTemplate);
+    // Usa a função do hook para cancelar o processo
+    cancelProcess();
     
     // Forçar remontagem do HospitalWorkflowEditor
     setTimeout(forceEditorRemount, 100);
@@ -107,20 +104,22 @@ export const WorkflowTab = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-20"> {/* Aumentado o espaçamento vertical entre as seções */}
       {/* Título da seção */}
-      <div>
-        <h1 className="text-2xl font-bold mb-2">Templates de Processos</h1>
-        <p className="text-gray-500">Selecione um template para começar a editar o workflow</p>
-      </div>
-      
-      {/* Carousel de templates - limitado a 5 cards visíveis */}
-      <div className={processoEmAndamento ? 'opacity-50 pointer-events-none' : ''}>
-        <TemplateCarousel 
-          templates={workflowTemplates}
-          onSelectTemplate={handleTemplateSelect}
-          maxVisibleItems={5}
-        />
+      <div className='space-y-8'>        
+        <div>
+          <h1 className="text-2xl font-bold mb-2">Templates de Processos</h1>
+          <p className="text-gray-500">Selecione um template para começar a editar o workflow</p>
+        </div>
+        
+        {/* Carousel de templates - limitado a 5 cards visíveis */}
+        <div className={processoEmAndamento ? 'opacity-50 pointer-events-none' : ''}>
+          <TemplateCarousel 
+            templates={workflowTemplates}
+            onSelectTemplate={handleTemplateSelect}
+            maxVisibleItems={5}
+          />
+        </div>
       </div>
       
       {/* Seção Processo em Andamento */}
@@ -144,19 +143,11 @@ export const WorkflowTab = () => {
           </Button>
         </div>
       )}
-      
-      {/* Debug info (remover em produção) */}
-      {/* <div className="bg-gray-800 p-2 text-xs text-gray-400 rounded">
-        <div>Template: {selectedTemplate?.name || 'Nenhum'}</div>
-        <div>Workflow: {workflow.length} nós</div>
-        <div>Editor Key: {workflowEditorKey}</div>
-      </div>
-       */}
 
-      {/* Grid layout para SLAs, Exceções e Editor de Workflow */}
-      <div className="grid grid-cols-1 md:grid-cols-1 gap-6 p-4">
-        {/* Coluna da esquerda: SLAs */}
-        <div className="md:col-span-1">
+      {/* Layout aprimorado para SLAs, Exceções e Editor de Workflow */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 pt-8 border-t border-gray-700">
+        {/* Coluna da esquerda: SLAs e Exceções (agora ocupa 1/4 da largura) */}
+        <div className="lg:col-span-1 space-y-6">
           <h2 className="text-xl font-semibold mb-4">Editor de SLAs</h2>
           {selectedTemplate ? (
             <SLAEditor 
@@ -182,25 +173,30 @@ export const WorkflowTab = () => {
           )}
         </div>
         
-        {/* Coluna da direita: Editor de Workflow */}
-        <div className="md:col-span-2">
+        {/* Coluna da direita: Editor de Workflow (agora ocupa 3/4 da largura) */}
+        <div className="lg:col-span-3">
           <h2 className="text-xl font-semibold mb-4">Editor de Workflow</h2>
-          <Card className="p-4 h-[600px]">
-            <HospitalWorkflowEditor 
-              key={workflowEditorKey}
-              initialWorkflow={workflow}
-              onWorkflowUpdate={handleWorkflowUpdate}
-              readOnly={false}
-              savedWorkflow={generateSavedWorkflow()}
-              onCancelProcess={handleCancelProcess}
-              processName={selectedTemplate?.name}
-            />
+          <Card className="p-4 bg-gray-900">
+            {/* Aumentando a altura para 700px */}
+            <div className="h-[1200px] rounded-lg overflow-hidden">
+              <HospitalWorkflowEditor 
+                key={workflowEditorKey}
+                initialWorkflow={workflow}
+                onWorkflowUpdate={handleWorkflowUpdate}
+                readOnly={false}
+                savedWorkflow={generateSavedWorkflow()}
+                onCancelProcess={handleCancelProcess}
+                processName={selectedTemplate?.name}
+              />
+            </div>
           </Card>
         </div>
       </div>
       
-      {/* Protocolos Clínicos */}
-      <ClinicalProtocols />
+      {/* Protocoles Clínicos agora com espaçamento adequado */}
+      <div className="mt-12 pt-4 border-t border-gray-700">
+        <ClinicalProtocols />
+      </div>
     </div>
   );
 };

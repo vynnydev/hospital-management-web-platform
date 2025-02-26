@@ -2,11 +2,11 @@ import React from 'react';
 import { FolderPlus } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/organisms/card';
 import { Button } from '@/components/ui/organisms/button';
-import { ITemplate } from '@/types/settings-types';
 import { TemplateCarousel } from './TemplateCarousel';
+import { IWorkflowTemplate } from '@/types/workflow/customize-process-by-workflow-types';
 
 interface TemplatesSidebarProps {
-  templates: ITemplate[];
+  templates: IWorkflowTemplate[];
   currentCategory: string;
   setCurrentCategory: (category: string) => void;
   onTemplateSelect?: (templateId: string) => void;
@@ -71,8 +71,7 @@ export const TemplatesSidebar: React.FC<TemplatesSidebarProps> = ({
         <div className="w-full">
           <TemplateCarousel 
             templates={templates}
-            currentCategory={currentCategory}
-            onTemplateSelect={handleUseTemplate}
+            onSelectTemplate={handleUseTemplate}
           />
         </div>
       </CardContent>
