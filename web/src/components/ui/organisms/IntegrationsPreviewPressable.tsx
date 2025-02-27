@@ -47,12 +47,16 @@ export const IntegrationsPreviewPressable: React.FC<IntegrationPreviewProps> = (
       color: 'bg-white',
       alt: 'Email Integration'
     },
-
     {
         imageUrl: '/images/integrations/whatsapp.png',
         color: 'bg-green-500',
         alt: 'Whatsapp Integration'
     },
+    {
+      imageUrl: '/images/integrations/docsign.png',
+      color: 'bg-white',
+      alt: 'DocSign Integration'
+  },
     {
         imageUrl: '/images/integrations/plus.png',
         color: 'bg-white',

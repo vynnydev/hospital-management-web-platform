@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { 
   FileSpreadsheet, BarChart3, MessageCircle, 
-  Mail, FileText, Bell, Check
+  Mail, FileText, Bell, Check, FileSignature
 } from 'lucide-react';
+import { DocSignConfigurationDialog } from '../DocSignConfigurationDialog';
 
 interface Integration {
   id: string;
@@ -70,7 +71,19 @@ const IntegrationCard = ({ integration, onToggle }: {
 
 export const IntegrationsContent = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [isDocSignConfigOpen, setIsDocSignConfigOpen] = useState(false);
+  
   const [integrations, setIntegrations] = useState<Integration[]>([
+    // DocSign Integration (Added)
+    {
+      id: 'docsign',
+      name: 'DocSign',
+      icon: <FileSignature className="w-6 h-6 text-teal-600" />,
+      description: 'Assinatura digital de protocolos e documentos médicos',
+      isActive: true,
+      category: 'export',
+      gradientColors: 'bg-gradient-to-br from-teal-600 to-emerald-600'
+    },
     {
       id: 'word',
       name: 'Microsoft Word',
@@ -162,6 +175,12 @@ export const IntegrationsContent = () => {
   ];
 
   const toggleIntegration = (id: string) => {
+    // Para o DocSign, abre o modal de configuração em vez de apenas alternar
+    if (id === 'docsign' && integrations.find(i => i.id === id)?.isActive) {
+      setIsDocSignConfigOpen(true);
+      return;
+    }
+    
     setIntegrations(prev =>
       prev.map(integration =>
         integration.id === id
@@ -169,6 +188,11 @@ export const IntegrationsContent = () => {
           : integration
       )
     );
+    
+    // Se estiver ativando o DocSign, abra a tela de configuração
+    if (id === 'docsign' && !integrations.find(i => i.id === id)?.isActive) {
+      setTimeout(() => setIsDocSignConfigOpen(true), 300);
+    }
   };
 
   const filteredIntegrations = integrations.filter(
@@ -176,32 +200,40 @@ export const IntegrationsContent = () => {
   );
 
   return (
-    <div className="w-full">
-      <div className="flex gap-2 mb-6">
-        {categories.map(category => (
-          <button
-            key={category.id}
-            onClick={() => setSelectedCategory(category.id)}
-            className={`px-4 py-2 rounded-lg text-sm transition-colors
-              ${selectedCategory === category.id
-                ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white'
-                : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
-              }`}
-          >
-            {category.label}
-          </button>
-        ))}
-      </div>
+    <>
+      <div className="w-full">
+        <div className="flex gap-2 mb-6">
+          {categories.map(category => (
+            <button
+              key={category.id}
+              onClick={() => setSelectedCategory(category.id)}
+              className={`px-4 py-2 rounded-lg text-sm transition-colors
+                ${selectedCategory === category.id
+                  ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white'
+                  : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                }`}
+            >
+              {category.label}
+            </button>
+          ))}
+        </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredIntegrations.map(integration => (
-          <IntegrationCard
-            key={integration.id}
-            integration={integration}
-            onToggle={toggleIntegration}
-          />
-        ))}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filteredIntegrations.map(integration => (
+            <IntegrationCard
+              key={integration.id}
+              integration={integration}
+              onToggle={toggleIntegration}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+      
+      {/* Dialog de configuração do DocSign */}
+      <DocSignConfigurationDialog 
+        open={isDocSignConfigOpen} 
+        onOpenChange={setIsDocSignConfigOpen} 
+      />
+    </>
   );
 };
