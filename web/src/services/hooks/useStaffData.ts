@@ -12,14 +12,7 @@ import type {
 import { usePermissions } from './auth/usePermissions';
 import { authService } from '../auth/AuthService';
 import type { IAppUser } from '@/types/auth-types';
-
-const api = axios.create({
-  baseURL: 'http://localhost:3001',
-  timeout: 5000,
-  headers: {
-    'Content-Type': 'application/json'
-  }
-});
+import api from '../api';
 
 export const useStaffData = (selectedHospitalId?: string) => {
   const [loading, setLoading] = useState(true);
