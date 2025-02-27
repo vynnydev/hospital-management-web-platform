@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
-import { TabsContent } from '@/components/ui/organisms/tabs';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/organisms/card';
 import { Brain } from 'lucide-react';
 import { ChatInterface } from './ChatInterface';
@@ -13,7 +12,7 @@ interface Message {
   content: string | React.ReactNode;
 }
 
-export const AIAssistantTab: React.FC = () => {
+export const AIGenerativeTab: React.FC = () => {
   const [aiPrompt, setAiPrompt] = useState('');
   const [aiContentType, setAiContentType] = useState('metric');
   const [messages, setMessages] = useState<Message[]>([
@@ -125,17 +124,17 @@ export const AIAssistantTab: React.FC = () => {
   };
 
   return (
-    <TabsContent value="ai-assistant" className="space-y-4">
+    <div className="h-full w-full overflow-auto p-4 bg-gray-900">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Painel de Chat e Geração */}
         <div className="lg:col-span-2 space-y-4">
-          <Card>
+          <Card className="border-gray-800 bg-gray-900">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2 text-white">
                 <Brain className="h-5 w-5 text-purple-500" />
-                Assistente IA
+                Assistente IA Generativa
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="text-gray-400">
                 Gere configurações personalizadas através de diálogo interativo
               </CardDescription>
             </CardHeader>
@@ -170,6 +169,6 @@ export const AIAssistantTab: React.FC = () => {
           onShowAllPrompts={handleShowAllPrompts}
         />
       </div>
-    </TabsContent>
+    </div>
   );
 };
