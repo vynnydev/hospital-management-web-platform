@@ -16,7 +16,7 @@ import { generateAIContent } from '@/services/AI/aiGenerateRecommendationsAndIma
 import { PatientViewListMenuBar } from '@/components/ui/templates/PatientViewListMenuBar';
 import { ViewType } from '@/types/app-types';
 import { PatientListView } from './PatientListView';
-import { useNetworkData } from '@/services/hooks/useNetworkData';
+import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
 import { TFontSize } from '@/types/utils-types';
 import { IGeneratedData } from '@/types/ai-types';
 

@@ -4,7 +4,7 @@ import {
   Users, AlertTriangle, Activity, Clock, Brain,
   TrendingUp, Calendar, UserPlus, ArrowUpRight
 } from 'lucide-react';
-import { useStaffPredictiveAnalysis } from '@/services/hooks/useStaffPredictiveAnalysis';
+import { useStaffPredictiveAnalysis } from '@/services/hooks/staffs/useStaffPredictiveAnalysis';
 
 import type { IStaffTeam } from '@/types/staff-types';
 import { HospitalNetworkListSlider } from '@/components/ui/templates/HospitalNetworkListSlider';

@@ -9,7 +9,7 @@ import { AIGenerativeTab } from './ai-generative/AIGenerativeTab';
 import { NotificationsTab } from './notifications/NotificationsTab';
 import { CalendarTab } from './calendar/CalendarTab';
 import { ConnectionsTab } from './connections/ConnectionsTab';
-import { useNetworkData } from '@/services/hooks/useNetworkData';
+import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
 
 export const SettingsDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState('workflow');

@@ -9,7 +9,7 @@ import { TransfersView } from './TransfersView';
 import { PredictionsView } from './PredictionsView';
 import { EmergencyView } from './EmergencyView';
 import { StaffingView } from './StaffingView';
-import { useHospitalAdvancedData } from '@/services/hooks/useHospitalAdvancedData';
+import { useHospitalAdvancedData } from '@/services/hooks/network-hospital/useHospitalAdvancedData';
 
 interface IHospitalDetailsProps {
   hospital: IHospital;

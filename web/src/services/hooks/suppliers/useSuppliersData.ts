@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // services/hooks/useSuppliersData.ts
 import { useState, useEffect } from 'react';
 import type { ISupplier, ISupplierRecommendation, IHospitalResourceNeeds, TResourceCategory } from '@/types/supplier-types';
-import { useNetworkData } from './useNetworkData';
-import api from '../api';
+import { useNetworkData } from '../network-hospital/useNetworkData';
+import api from '../../api';
 
 export const useSuppliersData = (selectedHospitalId: string | null) => {
     const [loading, setLoading] = useState(true);

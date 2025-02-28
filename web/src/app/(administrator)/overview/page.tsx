@@ -2,7 +2,7 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/organisms/card';
-import { useNetworkData } from '@/services/hooks/useNetworkData';
+import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { MediMindAIAssistant } from '@/components/ui/medimind-ai-assistant/MediMindAIAssistant';

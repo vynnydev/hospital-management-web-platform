@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
-import { useStaffData } from '@/services/hooks/useStaffData';
-import { useNetworkData } from '@/services/hooks/useNetworkData';
+import { useStaffData } from '@/services/hooks/staffs/useStaffData';
+import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
 import { HospitalNetworkComponent } from '@/components/ui/templates/HospitalNetworkComponent';
 import { type IStaffTeam, type IDepartmentalStaffMetrics, initialStaffDepartmentMetrics } from '@/types/staff-types';
 import { StaffManagement } from './StaffManagement';

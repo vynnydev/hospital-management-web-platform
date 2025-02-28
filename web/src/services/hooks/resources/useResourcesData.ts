@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { IResourcesData } from "@/types/resources-types";
-import api from "../api";
+import api from "../../api";
 import { AxiosError } from "axios";
 
 export const useResourcesData = () => {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useResourcesData } from '@/services/hooks/useResourcesData';
-import { useResourceRouteAnalysis } from '@/services/hooks/useResourceRouteAnalysis';
+import { useResourcesData } from '@/services/hooks/resources/useResourcesData';
+import { useResourceRouteAnalysis } from '@/services/hooks/resources/useResourceRouteAnalysis';
 import { ResourceFilterBar } from './resources/ResourceFilterBar';
 import { ResourcesSidebar } from './resources/ResourcesSidebar';
 import { ResourceRoutesRecommendations } from './resources/routes/recommendations/ResourceRoutesRecommendations';
@@ -14,7 +14,7 @@ import { IStaffData } from "@/types/staff-types";
 import { TResourceCategory, TDepartment } from '@/types/resources-types';
 import { MapboxHospitalResouces } from '@/components/ui/templates/map/resources/MapboxHospitalResources';
 import { TransferResourcesButton } from './resources/transfers/TransferResourcesButton';
-import { useNetworkData } from '@/services/hooks/useNetworkData';
+import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
 import { ISupplierCoordinates } from '@/types/supplier-types';
 
 interface IResourceManagementMapProps {

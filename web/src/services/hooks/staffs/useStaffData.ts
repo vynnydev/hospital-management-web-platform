@@ -9,10 +9,10 @@ import type {
   IHospitalStaffMetrics,
   IDepartmentalStaffMetrics
 } from '@/types/staff-types';
-import { usePermissions } from './auth/usePermissions';
-import { authService } from '../auth/AuthService';
+import { usePermissions } from '../auth/usePermissions';
+import { authService } from '../../auth/AuthService';
 import type { IAppUser } from '@/types/auth-types';
-import api from '../api';
+import api from '../../api';
 
 export const useStaffData = (selectedHospitalId?: string) => {
   const [loading, setLoading] = useState(true);

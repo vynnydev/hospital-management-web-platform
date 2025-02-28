@@ -4,8 +4,8 @@
 import React, { useState, useEffect } from 'react';
 
 // Hooks e serviços
-import { useWorkflowActions } from '@/services/hooks/useWorkflowActions';
-import { useWorkflowManager } from '@/services/hooks/useWorkflowManager';
+import { useWorkflowActions } from '@/services/hooks/workflows/useWorkflowActions';
+import { useWorkflowManager } from '@/services/hooks/workflows/useWorkflowManager';
 import { useWorkflowImportExport } from '@/services/hooks/workflows/useWorkflowImportExport';
 
 // Componentes

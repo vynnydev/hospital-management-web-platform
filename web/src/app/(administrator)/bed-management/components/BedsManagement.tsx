@@ -6,7 +6,7 @@ import {
   Grid
 } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/organisms/select';
-import { useNetworkData } from '@/services/hooks/useNetworkData';
+import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
 import { CorridorView } from './beds-management-map/CorridorView';
 import type { 
   IUseNetworkDataReturn,

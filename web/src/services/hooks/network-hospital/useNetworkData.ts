@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect } from 'react';
-import type { INetworkData, INetworkInfo, IHospital, IBed, IPatientCareHistory, IStatusHistory } from '../../types/hospital-network-types';
-import type { IAppUser, TPermission } from '../../types/auth-types';
-import { authService } from '../auth/AuthService';
-import { usePermissions } from './auth/usePermissions';
-import { isValidCareHistory } from '../validators/careHistoryValidators';
+import type { INetworkData, INetworkInfo, IHospital, IBed, IPatientCareHistory, IStatusHistory } from '../../../types/hospital-network-types';
+import type { IAppUser, TPermission } from '../../../types/auth-types';
+import { authService } from '../../auth/AuthService';
+import { usePermissions } from '../auth/usePermissions';
+import { isValidCareHistory } from '../../validators/careHistoryValidators';
 
 export const useNetworkData = () => {
   const [loading, setLoading] = useState(true);

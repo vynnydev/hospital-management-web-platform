@@ -3,7 +3,7 @@ import { LayoutGrid, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { IHospital, INetworkData } from '@/types/hospital-network-types';
-import { useNetworkData } from '@/services/hooks/useNetworkData';
+import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
 import { ReorderableSectionsInOverviewPage } from '../ReorderableSectionsInOverviewPage';
 import { Button } from '@/components/ui/organisms/button';
 import { RepositionActionsBar } from '@/components/ui/templates/RepositionActionsBar';

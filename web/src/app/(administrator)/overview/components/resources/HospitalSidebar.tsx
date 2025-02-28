@@ -3,7 +3,7 @@ import React from 'react';
 import { IHospital } from "@/types/hospital-network-types";
 import { TViewMode } from '../HospitalsLocations';
 import { HospitalDetails } from './HospitalDetails';
-import { useHospitalAdvancedData } from '@/services/hooks/useHospitalAdvancedData';
+import { useHospitalAdvancedData } from '@/services/hooks/network-hospital/useHospitalAdvancedData';
 import { HospitalListItem } from './HospitalListItem';
 
 interface IHospitalSidebarProps {

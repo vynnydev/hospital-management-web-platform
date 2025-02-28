@@ -2,7 +2,7 @@
 import React, { useMemo } from 'react';
 import { Building2, Calendar } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/organisms/select';
-import { useNetworkData } from '@/services/hooks/useNetworkData';
+import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
 import { IHospital } from '@/types/hospital-network-types';
 import { countBedsByStatus } from '@/utils/countBeds';
 

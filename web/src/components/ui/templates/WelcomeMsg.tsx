@@ -1,6 +1,6 @@
 'use client'
 
-import { useNetworkData } from '@/services/hooks/useNetworkData'
+import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData'
 
 export const WelcomeMsg = () => {
     const { currentUser, loading } = useNetworkData()

@@ -16,7 +16,7 @@ import {
 import { Button } from '@/components/ui/organisms/button';
 import { X } from 'lucide-react';
 import { TemplateCarousel } from './TemplateCarousel';
-import { useTemplateWorkflowIntegration } from '@/services/hooks/useTemplateWorkflowIntegration';
+import { useTemplateWorkflowIntegration } from '@/services/hooks/workflow-templates/useTemplateWorkflowIntegration';
 import { findTemplateById } from '@/utils/findTemplateById';
 import { workflowTemplates } from '@/utils/workflowTemplates';
 
