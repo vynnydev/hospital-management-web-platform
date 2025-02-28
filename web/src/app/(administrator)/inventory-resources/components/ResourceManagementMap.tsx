@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useResourcesData } from '@/services/hooks/resources/useResourcesData';
 import { useResourceRouteAnalysis } from '@/services/hooks/resources/useResourceRouteAnalysis';
 import { ResourceFilterBar } from './resources/ResourceFilterBar';
-import { ResourcesSidebar } from './resources/ResourcesSidebar';
+import { ResourcesSidebar } from '../../../../components/ui/templates/resources/ResourcesSidebar';
 import { ResourceRoutesRecommendations } from './resources/routes/recommendations/ResourceRoutesRecommendations';
 import { TransferResourcesModal } from './resources/transfers/TransferResourcesModal';
 import { TransferStatusPanel } from './resources/transfers/TransferStatusPanel';

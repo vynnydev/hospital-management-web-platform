@@ -8,7 +8,7 @@ import {
   TDepartment 
 } from '@/types/resources-types';
 import { HospitalResourcesCard } from './HospitalResourcesCard';
-import { HospitalResourceDetails } from './HospitalResourceDetails';
+import { HospitalResourceDetails } from '../../../../app/(administrator)/inventory-resources/components/resources/HospitalResourceDetails';
 import { IResourceRouteAnalysis } from '@/types/resource-route-analysis-types';
 
 interface IResourcesSidebarProps {

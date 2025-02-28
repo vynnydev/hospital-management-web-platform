@@ -21,6 +21,7 @@ import { Button } from '@/components/ui/organisms/button';
 import { LayoutGrid } from 'lucide-react';
 import { DashboardModeModalOptions } from '@/components/ui/templates/modals/DashboardModeModalOptions';
 import { FullscreenModeModalForOverviewPage } from '@/components/ui/templates/modals/FullscreenModeModalForOverviewPage';
+import { AmbulanceManagement } from '@/components/ui/templates/AmbulanceManagement';
 
 const Overview: React.FC = () => {
   const { networkData, currentUser, setNetworkData, loading, error } = useNetworkData();
@@ -329,6 +330,10 @@ const Overview: React.FC = () => {
                   }}
                 </ModernTabs>
               </div>
+            </div>
+
+            <div>
+              <AmbulanceManagement />
             </div>
           </div>
         </>

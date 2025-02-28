@@ -33,7 +33,7 @@ export const MapboxHospitalOverview: React.FC<IMapboxHospitalOverviewProps> = ({
 
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: 'mapbox://styles/vynnydev/cm635y92t005b01s63twr70pl',
+      style: 'mapbox://styles/mapbox/dark-v11',
       center: [-46.6388, -23.5489], // São Paulo coordinates as default
       zoom: 10
     });
@@ -81,7 +81,7 @@ export const MapboxHospitalOverview: React.FC<IMapboxHospitalOverviewProps> = ({
       el.className = 'hospital-marker';
       
       el.innerHTML = `
-        <div class="bg-white dark:bg-gray-700 p-3 rounded-xl shadow-lg cursor-pointer transform transition-transform hover:scale-105 min-w-[250px]">
+        <div class="bg-white dark:bg-gray-700 p-3 rounded-xl shadow-lg cursor-pointer transform transition-transform hover:scale-105 max-w-[250px]">
           <div class="flex items-start space-x-3">
             <div class="flex-shrink-0">
               <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">

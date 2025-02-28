@@ -1444,5 +1444,340 @@
       {"hospital": "RD4H-SP-ITAIM", "department": "emergency", "issue": "staff_shortage", "severity": "medium"},
       {"hospital": "RD4H-SP-MORUMBI", "department": "icu", "issue": "equipment_shortage", "severity": "high"}
     ]
+  },
+  "ambulanceData": {
+    "ambulances": {
+      "RD4H-SP-ITAIM": [
+        {
+          "id": "amb-itaim-001",
+          "vehicleId": "AMB-1234",
+          "plateNumber": "ABC-1234",
+          "type": "basic",
+          "status": "available",
+          "capacity": 1,
+          "equipment": ["stretcher", "first_aid", "oxygen"],
+          "currentLocation": {
+            "lat": -23.5858,
+            "lng": -46.6796
+          },
+          "hospitalId": "RD4H-SP-ITAIM",
+          "lastMaintenance": "2025-02-01",
+          "nextMaintenanceDue": "2025-05-01"
+        },
+        {
+          "id": "amb-itaim-002",
+          "vehicleId": "AMB-5678",
+          "plateNumber": "DEF-5678",
+          "type": "advanced",
+          "status": "dispatched",
+          "capacity": 1,
+          "equipment": ["stretcher", "first_aid", "oxygen", "defibrillator", "monitor"],
+          "currentLocation": {
+            "lat": -23.5658,
+            "lng": -46.6696
+          },
+          "hospitalId": "RD4H-SP-ITAIM",
+          "crew": {
+            "driverId": "staff-001",
+            "paramedicId": "staff-002",
+            "nurseId": "staff-003"
+          },
+          "currentRoute": "route-itaim-001",
+          "lastMaintenance": "2025-01-15",
+          "nextMaintenanceDue": "2025-04-15"
+        },
+        {
+          "id": "amb-itaim-003",
+          "vehicleId": "AMB-9012",
+          "plateNumber": "GHI-9012",
+          "type": "intensive",
+          "status": "returning",
+          "capacity": 1,
+          "equipment": ["stretcher", "first_aid", "oxygen", "defibrillator", "ventilator", "monitor"],
+          "currentLocation": {
+            "lat": -23.5458,
+            "lng": -46.6596
+          },
+          "hospitalId": "RD4H-SP-ITAIM",
+          "crew": {
+            "driverId": "staff-004",
+            "paramedicId": "staff-005",
+            "nurseId": "staff-006",
+            "doctorId": "staff-007"
+          },
+          "currentRoute": "route-itaim-002",
+          "lastMaintenance": "2025-01-05",
+          "nextMaintenanceDue": "2025-04-05"
+        }
+      ],
+      "RD4H-SP-MORUMBI": [
+        {
+          "id": "amb-morumbi-001",
+          "vehicleId": "AMB-3456",
+          "plateNumber": "JKL-3456",
+          "type": "basic",
+          "status": "available",
+          "capacity": 1,
+          "equipment": ["stretcher", "first_aid", "oxygen"],
+          "currentLocation": {
+            "lat": -23.6058,
+            "lng": -46.7196
+          },
+          "hospitalId": "RD4H-SP-MORUMBI",
+          "lastMaintenance": "2025-01-20",
+          "nextMaintenanceDue": "2025-04-20"
+        },
+        {
+          "id": "amb-morumbi-002",
+          "vehicleId": "AMB-7890",
+          "plateNumber": "MNO-7890",
+          "type": "advanced",
+          "status": "available",
+          "capacity": 1,
+          "equipment": ["stretcher", "first_aid", "oxygen", "defibrillator", "monitor"],
+          "currentLocation": {
+            "lat": -23.6158,
+            "lng": -46.7296
+          },
+          "hospitalId": "RD4H-SP-MORUMBI",
+          "lastMaintenance": "2025-02-05",
+          "nextMaintenanceDue": "2025-05-05"
+        }
+      ],
+      "RD4H-RJ-COPA": [
+        {
+          "id": "amb-copa-001",
+          "vehicleId": "AMB-2468",
+          "plateNumber": "PQR-2468",
+          "type": "advanced",
+          "status": "available",
+          "capacity": 1,
+          "equipment": ["stretcher", "first_aid", "oxygen", "defibrillator", "monitor"],
+          "currentLocation": {
+            "lat": -22.9700,
+            "lng": -43.1836
+          },
+          "hospitalId": "RD4H-RJ-COPA",
+          "lastMaintenance": "2025-02-10",
+          "nextMaintenanceDue": "2025-05-10"
+        },
+        {
+          "id": "amb-copa-002",
+          "vehicleId": "AMB-1357",
+          "plateNumber": "STU-1357",
+          "type": "intensive",
+          "status": "maintenance",
+          "capacity": 1,
+          "equipment": ["stretcher", "first_aid", "oxygen", "defibrillator", "ventilator", "monitor"],
+          "currentLocation": {
+            "lat": -22.9750,
+            "lng": -43.1856
+          },
+          "hospitalId": "RD4H-RJ-COPA",
+          "lastMaintenance": "2025-02-20",
+          "nextMaintenanceDue": "2025-05-20"
+        }
+      ]
+    },
+    "routes": {
+      "RD4H-SP-ITAIM": [
+        {
+          "id": "route-itaim-001",
+          "ambulanceId": "amb-itaim-002",
+          "origin": {
+            "name": "Hospital 4Health - Itaim",
+            "address": "Rua Dr. Alceu de Campos Rodrigues, 95",
+            "coordinates": {
+              "lat": -23.5858,
+              "lng": -46.6796
+            },
+            "hospitalId": "RD4H-SP-ITAIM"
+          },
+          "destination": {
+            "name": "Acidente de trânsito",
+            "address": "Av. Paulista, 1000",
+            "coordinates": {
+              "lat": -23.5629,
+              "lng": -46.6544
+            }
+          },
+          "patient": {
+            "id": "pat-temp-001",
+            "name": "Vítima de acidente",
+            "age": 35,
+            "condition": "Trauma múltiplo",
+            "emergencyLevel": "critical"
+          },
+          "status": "in_progress",
+          "dispatchTime": "2025-02-28T09:30:00Z",
+          "estimatedArrivalTime": "2025-02-28T09:45:00Z",
+          "distance": 4.2,
+          "duration": 15,
+          "callOperatorId": "staff-008"
+        },
+        {
+          "id": "route-itaim-002",
+          "ambulanceId": "amb-itaim-003",
+          "origin": {
+            "name": "Hospital Santa Catarina",
+            "address": "Av. Paulista, 200",
+            "coordinates": {
+              "lat": -23.5700,
+              "lng": -46.6500
+            }
+          },
+          "destination": {
+            "name": "Hospital 4Health - Itaim",
+            "address": "Rua Dr. Alceu de Campos Rodrigues, 95",
+            "coordinates": {
+              "lat": -23.5858,
+              "lng": -46.6796
+            },
+            "hospitalId": "RD4H-SP-ITAIM"
+          },
+          "patient": {
+            "id": "P1056",
+            "name": "Maria da Silva",
+            "age": 72,
+            "condition": "Pós-cirúrgico cardíaco",
+            "emergencyLevel": "high"
+          },
+          "status": "in_progress",
+          "dispatchTime": "2025-02-28T10:15:00Z",
+          "estimatedArrivalTime": "2025-02-28T10:35:00Z",
+          "distance": 5.8,
+          "duration": 20,
+          "callOperatorId": "staff-009"
+        }
+      ],
+      "RD4H-SP-MORUMBI": [],
+      "RD4H-RJ-COPA": []
+    },
+    "requests": {
+      "RD4H-SP-ITAIM": [
+        {
+          "id": "req-itaim-001",
+          "timestamp": "2025-02-28T10:30:00Z",
+          "callerName": "João Silva",
+          "callerPhone": "(11) 91234-5678",
+          "location": {
+            "address": "Rua Augusta, 500",
+            "coordinates": {
+              "lat": -23.5529,
+              "lng": -46.6444
+            }
+          },
+          "patientInfo": {
+            "name": "Ana Silva",
+            "age": 68,
+            "gender": "F",
+            "symptoms": ["chest pain", "shortness of breath"],
+            "condition": "Possível infarto",
+            "emergencyLevel": "high"
+          },
+          "status": "pending",
+          "notes": "Paciente com histórico cardíaco"
+        },
+        {
+          "id": "req-itaim-002",
+          "timestamp": "2025-02-28T10:45:00Z",
+          "callerName": "Carlos Pereira",
+          "callerPhone": "(11) 98765-4321",
+          "location": {
+            "address": "Av. Brigadeiro Faria Lima, 1500",
+            "coordinates": {
+              "lat": -23.5768,
+              "lng": -46.6843
+            }
+          },
+          "patientInfo": {
+            "name": "Pedro Souza",
+            "age": 45,
+            "gender": "M",
+            "symptoms": ["severe headache", "dizziness", "nausea"],
+            "condition": "Possível AVC",
+            "emergencyLevel": "critical"
+          },
+          "status": "pending",
+          "notes": "Paciente consciente mas com paralisia facial"
+        }
+      ],
+      "RD4H-SP-MORUMBI": [
+        {
+          "id": "req-morumbi-001",
+          "timestamp": "2025-02-28T10:15:00Z",
+          "callerName": "Mariana Oliveira",
+          "callerPhone": "(11) 97654-3210",
+          "location": {
+            "address": "Av. Giovanni Gronchi, 500",
+            "coordinates": {
+              "lat": -23.6162,
+              "lng": -46.7368
+            }
+          },
+          "patientInfo": {
+            "name": "Idoso não identificado",
+            "age": 75,
+            "gender": "M",
+            "symptoms": ["unconscious", "fall"],
+            "condition": "Queda em via pública",
+            "emergencyLevel": "high"
+          },
+          "status": "pending",
+          "notes": "Sem documentos, aparenta ser morador de rua"
+        }
+      ],
+      "RD4H-RJ-COPA": []
+    },
+    "stats": {
+      "RD4H-SP-ITAIM": {
+        "totalDispatches": 345,
+        "averageResponseTime": 18,
+        "hospitalId": "RD4H-SP-ITAIM",
+        "byEmergencyLevel": {
+          "low": 82,
+          "medium": 143,
+          "high": 95,
+          "critical": 25
+        },
+        "byTime": {
+          "morning": 120,
+          "afternoon": 145,
+          "night": 80
+        }
+      },
+      "RD4H-SP-MORUMBI": {
+        "totalDispatches": 278,
+        "averageResponseTime": 22,
+        "hospitalId": "RD4H-SP-MORUMBI",
+        "byEmergencyLevel": {
+          "low": 65,
+          "medium": 120,
+          "high": 70,
+          "critical": 23
+        },
+        "byTime": {
+          "morning": 98,
+          "afternoon": 105,
+          "night": 75
+        }
+      },
+      "RD4H-RJ-COPA": {
+        "totalDispatches": 312,
+        "averageResponseTime": 25,
+        "hospitalId": "RD4H-RJ-COPA",
+        "byEmergencyLevel": {
+          "low": 75,
+          "medium": 132,
+          "high": 82,
+          "critical": 23
+        },
+        "byTime": {
+          "morning": 112,
+          "afternoon": 128,
+          "night": 72
+        }
+      }
+    }
   }
 }
