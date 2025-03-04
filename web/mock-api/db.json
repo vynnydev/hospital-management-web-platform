@@ -1619,7 +1619,7 @@
           "id": "route-itaim-002",
           "ambulanceId": "amb-itaim-003",
           "origin": {
-            "name": "Hospital Santa Catarina",
+            "name": "Hospital 4Saúde",
             "address": "Av. Paulista, 200",
             "coordinates": {
               "lat": -23.5700,

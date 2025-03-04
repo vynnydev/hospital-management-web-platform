@@ -8,6 +8,7 @@ import { IHospital } from "@/types/hospital-network-types";
 import { IAppUser } from "@/types/auth-types";
 import { IAmbulance, IAmbulanceRoute, IAmbulanceRequest, TRouteStatus, TEmergengyLevel } from '@/types/ambulance-types';
 import { calculateDistance } from '@/utils/calculateDistance';
+import { AmbulanceDetailsModal } from '../../ambulances/AmbulanceDetailsModal';
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
 
@@ -37,19 +38,25 @@ export interface IMapboxAmbulancesProps {
   pendingRequests: IAmbulanceRequest[];
   onUpdateRoute: (routeId: string, status: TRouteStatus) => void;
   onCreateRoute?: () => void;
+  // Adicione estas propriedades se necessário
+  allAmbulances?: IAmbulance[];
+  allRequests?: IAmbulanceRequest[];
+  allRoutes?: IAmbulanceRoute[];
 }
 
-export const MapboxAmbulances: React.FC<IMapboxAmbulancesProps> = ({
-  hospitals,
-  selectedHospital,
-  setSelectedHospital,
-  currentUser,
-  ambulances,
-  activeRoutes,
-  pendingRequests,
-  onUpdateRoute,
-  onCreateRoute
-}) => {
+export const MapboxAmbulances = (props: IMapboxAmbulancesProps) => {
+  const {
+    hospitals,
+    selectedHospital,
+    setSelectedHospital,
+    currentUser,
+    ambulances,
+    activeRoutes,
+    pendingRequests,
+    onUpdateRoute,
+    onCreateRoute
+  } = props;
+
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const hospitalMarkers = useRef<mapboxgl.Marker[]>([]);
@@ -61,6 +68,12 @@ export const MapboxAmbulances: React.FC<IMapboxAmbulancesProps> = ({
   const [visibleRequests, setVisibleRequests] = useState(true);
   const [visibleAmbulances, setVisibleAmbulances] = useState(true);
   const [visibleRoutes, setVisibleRoutes] = useState(true);
+  const [selectedAmbulanceId, setSelectedAmbulanceId] = useState<string | null>(null);
+
+  // Helper para encontrar uma rota ativa para uma ambulância
+  const findActiveRouteForAmbulance = useCallback((ambulanceId: string) => {
+    return activeRoutes.find(route => route.ambulanceId === ambulanceId);
+  }, [activeRoutes]);
 
   // Função para criar HTML do marcador de hospital
   const createHospitalMarker = useCallback((hospital: IHospital) => {
@@ -124,9 +137,14 @@ export const MapboxAmbulances: React.FC<IMapboxAmbulancesProps> = ({
         </div>
       </div>
     `;
-
+  
+    // Adicionar evento de clique para abrir o modal
+    el.addEventListener('click', () => {
+      setSelectedAmbulanceId(ambulance.id);
+    });
+  
     return el;
-  }, [activeRoutes]);
+  }, [activeRoutes, setSelectedAmbulanceId]);
 
   // Função para criar HTML do marcador de solicitação pendente
   const createRequestMarker = useCallback((request: IAmbulanceRequest) => {
@@ -527,6 +545,12 @@ export const MapboxAmbulances: React.FC<IMapboxAmbulancesProps> = ({
         // Limpar marcadores existentes
         Object.values(ambulanceMarkers.current).forEach(marker => marker.remove());
         ambulanceMarkers.current = {};
+
+        // Verificar se as ambulâncias existem antes de tentar renderizá-las
+        if (!ambulances || ambulances.length === 0) {
+          console.log("Nenhuma ambulância para renderizar");
+          return;
+        }
     
         // Buscar todas as ambulâncias do hospital selecionado, incluindo as em rota
         const hospitalAmbulances = ambulances;
@@ -840,8 +864,36 @@ export const MapboxAmbulances: React.FC<IMapboxAmbulancesProps> = ({
     
       // Componente para mostrar estatísticas
       const renderStats = () => {
-        const ambulancesDispatched = ambulances.filter(a => a.status === 'dispatched').length;
-        const ambulancesAvailable = ambulances.filter(a => a.status === 'available').length;
+        // Calcular os totais gerais se nenhum hospital estiver selecionado
+        let totalAmbulances = 0;
+        let ambulancesDispatched = 0;
+        let ambulancesAvailable = 0;
+        let totalPendingRequests = 0;
+        let totalActiveRoutes = 0;
+
+        if (selectedHospital) {
+          // Exibir estatísticas apenas do hospital selecionado
+          totalAmbulances = ambulances.length;
+          ambulancesDispatched = ambulances.filter(a => a.status === 'dispatched').length;
+          ambulancesAvailable = ambulances.filter(a => a.status === 'available').length;
+          totalPendingRequests = pendingRequests.length;
+          totalActiveRoutes = activeRoutes.length;
+        } else {
+          // Exibir estatísticas agregadas de todos os hospitais
+          hospitals.forEach(hospital => {
+            // Use diretamente as variáveis que já estão no escopo em vez de 'props'
+            const hospitalAmbulances = ambulances.filter(a => a.hospitalId === hospital.id);
+            totalAmbulances += hospitalAmbulances.length;
+            ambulancesDispatched += hospitalAmbulances.filter(a => a.status === 'dispatched').length;
+            ambulancesAvailable += hospitalAmbulances.filter(a => a.status === 'available').length;
+            
+            // Filtre as solicitações e rotas do array principal
+            totalPendingRequests += pendingRequests.filter(r => r.hospitalId === hospital.id).length;
+            totalActiveRoutes += activeRoutes.filter(r => 
+              r.origin.hospitalId === hospital.id || r.destination.hospitalId === hospital.id
+            ).length;
+          });
+        }
         
         return (
           <div className="absolute top-4 right-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-3 w-56 z-20">
@@ -850,7 +902,7 @@ export const MapboxAmbulances: React.FC<IMapboxAmbulancesProps> = ({
             <div className="space-y-2">
               <div className="flex justify-between items-center">
                 <span className="text-xs text-gray-600 dark:text-gray-400">Ambulâncias:</span>
-                <span className="text-sm font-medium">{ambulances.length}</span>
+                <span className="text-sm font-medium">{totalAmbulances}</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-xs text-gray-600 dark:text-gray-400">Em atendimento:</span>
@@ -862,11 +914,11 @@ export const MapboxAmbulances: React.FC<IMapboxAmbulancesProps> = ({
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-xs text-gray-600 dark:text-gray-400">Solicitações pendentes:</span>
-                <span className="text-sm font-medium">{pendingRequests.length}</span>
+                <span className="text-sm font-medium">{totalPendingRequests}</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-xs text-gray-600 dark:text-gray-400">Rotas ativas:</span>
-                <span className="text-sm font-medium">{activeRoutes.length}</span>
+                <span className="text-sm font-medium">{totalActiveRoutes}</span>
               </div>
             </div>
             
@@ -879,46 +931,65 @@ export const MapboxAmbulances: React.FC<IMapboxAmbulancesProps> = ({
             </button>
           </div>
         );
-      };
+    };
+
+    // Render do modal de detalhes da ambulância
+    const renderAmbulanceModal = () => {
+      if (!selectedAmbulanceId) return null;
+      
+      const selectedAmbulance = ambulances.find(amb => amb.id === selectedAmbulanceId);
+      if (!selectedAmbulance) return null;
+      
+      const activeRoute = findActiveRouteForAmbulance(selectedAmbulanceId);
+      
+      return (
+        <AmbulanceDetailsModal
+          ambulance={selectedAmbulance}
+          activeRoute={activeRoute}
+          onClose={() => setSelectedAmbulanceId(null)}
+        />
+      );
+    };
     
     return (
         <div className="relative w-full h-full p-1">
             {/* Borda gradiente */}
-            <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-700/90 to-cyan-700/90 shadow-lg">
-            {/* Esta div cria o efeito de borda */}
-            </div>
+            <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-700/90 to-cyan-700/90 shadow-lg" />
             
             {/* Título do componente posicionado no topo do mapa */}
             <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-20 bg-white/90 dark:bg-gray-800/90 px-4 py-2 rounded-full shadow-md backdrop-blur-sm">
-            <h1 className="font-semibold text-lg text-blue-700 dark:text-blue-400 flex items-center">
-                <Ambulance className="mr-2 h-5 w-5" />
-                Sistema de Gerenciamento de Ambulâncias
-            </h1>
+              <h1 className="font-semibold text-lg text-blue-700 dark:text-blue-400 flex items-center">
+                  <Ambulance className="mr-2 h-5 w-5" />
+                  Sistema de Gerenciamento de Ambulâncias
+              </h1>
             </div>
             
             {/* Contêiner do mapa com fundo branco para funcionar como "padding" interno */}
             <div className="absolute inset-0.5 rounded-xl overflow-hidden">
-            <div ref={mapContainer} className="w-full h-full" />
+              <div ref={mapContainer} className="w-full h-full" />
             </div>
           
-          {/* Controles de visualização */}
-          {renderViewControls()}
-          
-          {/* Status e legenda */}
-          {renderStatus()}
-          
-          {/* Estatísticas */}
-          {renderStats()}
-          
-          {/* Indicador de carregamento */}
-          {!mapLoaded && (
-            <div className="absolute inset-0 bg-gray-900 bg-opacity-75 z-10 flex items-center justify-center rounded-xl">
-              <div className="text-center p-4">
-                <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent mx-auto mb-4"></div>
-                <p className="text-white">Carregando mapa...</p>
+            {/* Controles de visualização */}
+            {renderViewControls()}
+            
+            {/* Status e legenda */}
+            {renderStatus()}
+            
+            {/* Estatísticas */}
+            {renderStats()}
+
+            {/* Modal de detalhes da ambulância */}
+            {renderAmbulanceModal()}
+            
+            {/* Indicador de carregamento */}
+            {!mapLoaded && (
+              <div className="absolute inset-0 bg-gray-900 bg-opacity-75 z-10 flex items-center justify-center rounded-xl">
+                <div className="text-center p-4">
+                  <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent mx-auto mb-4"></div>
+                  <p className="text-white">Carregando mapa...</p>
+                </div>
               </div>
-            </div>
-          )}
+            )}
       
           {/* Estilos globais para marcadores e animações */}
           <style jsx global>{`

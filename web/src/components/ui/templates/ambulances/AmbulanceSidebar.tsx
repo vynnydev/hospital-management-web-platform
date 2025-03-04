@@ -20,10 +20,10 @@ export const AmbulanceSidebar: React.FC<IAmbulanceSidebarProps> = ({
 }) => {
   // Função para obter estatísticas das ambulâncias de um hospital
   const getHospitalStats = (hospitalId: string) => {
-    if (!ambulanceData) {
+    if (!ambulanceData || !ambulanceData.ambulances || !ambulanceData.routes || !ambulanceData.requests) {
       return {
-        total: 0,
-        available: 0,
+        totalAmbulances: 0,
+        availableAmbulances: 0,
         activeRoutes: 0,
         pendingRequests: 0
       };

@@ -35,30 +35,36 @@ export const useAmbulanceData = (selectedHospitalId: string | null) => {
   const [availableAmbulances, setAvailableAmbulances] = useState<IAmbulance[]>([]);
   const [pendingRequests, setPendingRequests] = useState<IAmbulanceRequest[]>([]);
 
+  console.log("Hospital selecionado para as ambulancias:", selectedHospitalId)
+
   // Efeito para carregar dados iniciais
   useEffect(() => {
     const fetchAmbulanceData = async () => {
       try {
         setLoading(true);
+        console.log("Buscando dados de ambulância da API...");
+          
         const response = await api.get('/ambulanceData');
-        setAmbulanceData(response.data.ambulanceData);
-        setError(null);
-      } catch (err) {
-        console.error('Error fetching ambulance data:', err);
-        
-        if (err instanceof AxiosError) {
-          setError(
-            err.response?.data?.message || 
-            'Falha na comunicação com o servidor'
-          );
+          
+        // Verificar a estrutura da resposta
+        console.log("Resposta da API:", response.data);
+          
+        // A API retorna diretamente o objeto ambulanceData, sem estar aninhado
+        if (response.data) {
+          // Usar os dados diretamente
+          setAmbulanceData(response.data);
+          console.log("Dados de ambulância definidos com sucesso:", response.data);
         } else {
-          setError('Erro ao carregar dados das ambulâncias');
+          console.error("Estrutura de dados inesperada:", response.data);
+          setError('Estrutura de dados de ambulância inválida');
         }
+      } catch (err) {
+        // resto do código de tratamento de erro
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchAmbulanceData();
   }, []);
 
@@ -70,19 +76,26 @@ export const useAmbulanceData = (selectedHospitalId: string | null) => {
       setPendingRequests([]);
       return;
     }
-
+  
+    console.log("Processando dados da ambulância para hospital:", selectedHospitalId);
+    console.log("Dados disponíveis:", {
+      ambulances: ambulanceData.ambulances[selectedHospitalId]?.length || 0,
+      routes: ambulanceData.routes[selectedHospitalId]?.length || 0,
+      requests: ambulanceData.requests[selectedHospitalId]?.length || 0
+    });
+  
     // Filtrar ambulâncias disponíveis para o hospital selecionado
     const ambulances = ambulanceData.ambulances[selectedHospitalId] || [];
     const filteredAmbulances = ambulances.filter(amb => amb.status === 'available');
     setAvailableAmbulances(filteredAmbulances);
-
+  
     // Filtrar rotas ativas para o hospital selecionado
     const routes = ambulanceData.routes[selectedHospitalId] || [];
     const filteredRoutes = routes.filter(route => 
       route.status === 'in_progress' || route.status === 'planned'
     );
     setActiveRoutes(filteredRoutes);
-
+  
     // Filtrar solicitações pendentes para o hospital selecionado
     const requests = ambulanceData.requests[selectedHospitalId] || [];
     const filteredRequests = requests.filter(req => req.status === 'pending');

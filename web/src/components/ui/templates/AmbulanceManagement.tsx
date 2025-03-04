@@ -31,12 +31,33 @@ export const AmbulanceManagement: React.FC = () => {
   
     // Efeito para selecionar automaticamente o hospital do usuário atual
     useEffect(() => {
-      if (currentUser?.hospitalId && networkData?.hospitals?.length) {
-        setSelectedHospital(currentUser.hospitalId);
-      } else if (networkData?.hospitals?.length && !selectedHospital) {
-        setSelectedHospital(networkData.hospitals[0].id);
+      // Garantir que um hospital seja selecionado assim que os dados forem carregados
+      if(networkData?.hospitals) {
+        if (networkData?.hospitals?.length > 0) {
+          if (currentUser?.hospitalId && networkData?.hospitals.some(h => h.id === currentUser.hospitalId)) {
+            console.log(`Selecionando hospital do usuário: ${currentUser.hospitalId}`);
+            setSelectedHospital(currentUser.hospitalId);
+          } else {
+            console.log(`Selecionando primeiro hospital: ${networkData?.hospitals[0].id}`);
+            setSelectedHospital(networkData?.hospitals?.[0].id);
+          }
+        }
       }
-    }, [currentUser, networkData, selectedHospital]);
+    }, [currentUser?.hospitalId, networkData?.hospitals]);
+
+    console.log("Dados de ambulância carregados:", ambulanceData)
+
+    useEffect(() => {
+      // Log dos dados carregados
+      if (ambulanceData) {
+        console.log("Dados de ambulância carregados:", {
+          hospitais: Object.keys(ambulanceData.ambulances),
+          totalAmbulâncias: Object.values(ambulanceData.ambulances).reduce((acc, arr) => acc + arr.length, 0),
+          totalRotas: Object.values(ambulanceData.routes).reduce((acc, arr) => acc + arr.length, 0),
+          totalSolicitações: Object.values(ambulanceData.requests).reduce((acc, arr) => acc + arr.length, 0)
+        });
+      }
+    }, [ambulanceData]);
   
     // Manipulador para criar nova solicitação
     const handleCreateRequest = useCallback(async (
@@ -163,7 +184,11 @@ export const AmbulanceManagement: React.FC = () => {
             selectedHospital={selectedHospital}
             setSelectedHospital={setSelectedHospital}
             currentUser={currentUser}
-            ambulances={ambulanceData?.ambulances[selectedHospital || ''] || []}
+            // Antes: ambulances={ambulanceData?.ambulances[selectedHospital || ''] || []}
+            // Agora, com verificação mais segura:
+            ambulances={selectedHospital && ambulanceData?.ambulances && ambulanceData.ambulances[selectedHospital] 
+              ? ambulanceData.ambulances[selectedHospital] 
+              : []}
             activeRoutes={activeRoutes}
             pendingRequests={pendingRequests}
             onUpdateRoute={handleUpdateRouteStatus}
