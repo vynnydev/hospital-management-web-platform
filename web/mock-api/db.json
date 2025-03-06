@@ -981,6 +981,334 @@
       }
     }
   ],
+  "patients": [
+    {
+      "id": "PT001",
+      "personalInfo": {
+        "name": "João Silva",
+        "socialName": "",
+        "birthDate": "2000-01-20",
+        "gender": "M",
+        "cpf": "123.456.789-00",
+        "rg": "12.345.678-9",
+        "maritalStatus": "Solteiro(a)",
+        "nationality": "Brasileira",
+        "bloodType": "O+"
+      },
+      "contactInfo": {
+        "phone": "11987654321",
+        "cellphone": "11987654321",
+        "email": "joao.silva@email.com",
+        "address": {
+          "street": "Rua dos Ipês",
+          "number": "123",
+          "complement": "Apto 101",
+          "neighborhood": "Jardim Paulista",
+          "city": "São Paulo",
+          "state": "SP",
+          "zipCode": "01452-001"
+        },
+        "emergencyContact": {
+          "name": "Maria Silva",
+          "phone": "11987654322",
+          "relationship": "Mãe"
+        }
+      },
+      "medicalInfo": {
+        "allergies": ["Penicilina", "Dipirona"],
+        "chronicConditions": ["Hipertensão"],
+        "medications": ["Losartana 50mg - 1x ao dia"],
+        "previousSurgeries": ["Apendicectomia (2018)"],
+        "observations": "Paciente com histórico familiar de problemas cardíacos."
+      },
+      "insuranceInfo": {
+        "type": "Convênio",
+        "insuranceDetails": {
+          "id": "INS001",
+          "name": "Amil",
+          "planType": "Premium",
+          "cardNumber": "987654321",
+          "expirationDate": "2030-12-31"
+        }
+      },
+      "registrationDate": "2023-01-15T10:30:00",
+      "lastUpdate": "2023-02-10T14:25:00"
+    },
+    {
+      "id": "PT002",
+      "personalInfo": {
+        "name": "Maria Santos",
+        "socialName": "",
+        "birthDate": "1993-05-12",
+        "gender": "F",
+        "cpf": "987.654.321-00",
+        "rg": "98.765.432-1",
+        "maritalStatus": "Casado(a)",
+        "nationality": "Brasileira",
+        "bloodType": "A-"
+      },
+      "contactInfo": {
+        "phone": "11998765432",
+        "cellphone": "11998765432",
+        "email": "maria.santos@email.com",
+        "address": {
+          "street": "Avenida Paulista",
+          "number": "1578",
+          "complement": "Sala 304",
+          "neighborhood": "Bela Vista",
+          "city": "São Paulo",
+          "state": "SP",
+          "zipCode": "01310-200"
+        },
+        "emergencyContact": {
+          "name": "Carlos Santos",
+          "phone": "11998765433",
+          "relationship": "Cônjuge"
+        }
+      },
+      "medicalInfo": {
+        "allergies": [],
+        "chronicConditions": ["Diabetes Tipo 2"],
+        "medications": ["Metformina 850mg - 2x ao dia"],
+        "previousSurgeries": [],
+        "observations": ""
+      },
+      "insuranceInfo": {
+        "type": "SUS",
+        "susInfo": {
+          "cartaoSUS": "7891011121314",
+          "dataEmissao": "2018-01-10",
+          "municipioEmissao": "São Paulo",
+          "ufEmissao": "SP"
+        }
+      },
+      "registrationDate": "2023-02-05T08:45:00",
+      "lastUpdate": "2023-02-05T08:45:00"
+    }
+  ],
+  "admissions": [
+    {
+      "id": "ADM001",
+      "patientId": "PT001",
+      "admissionDate": "2023-02-20T09:00:00",
+      "admissionType": "Emergência",
+      "entranceReason": "Dor no peito e falta de ar",
+      "priority": "Alta",
+      "initialSymptoms": [
+        "Dor torácica",
+        "Dispneia",
+        "Sudorese",
+        "Palpitações"
+      ],
+      "initialDiagnosis": "Possível síndrome coronariana aguda",
+      "responsibleStaff": {
+        "id": "D001",
+        "name": "Dra. Ana Santos",
+        "role": "Cardiologista"
+      },
+      "status": "Em Atendimento",
+      "statusHistory": [
+        {
+          "status": "Aguardando Atendimento",
+          "timestamp": "2023-02-20T09:00:00",
+          "updatedBy": {
+            "id": "D001",
+            "name": "Dra. Ana Santos",
+            "role": "Cardiologista"
+          }
+        },
+        {
+          "status": "Em Triagem",
+          "timestamp": "2023-02-20T09:15:00",
+          "updatedBy": {
+            "id": "N001",
+            "name": "Carlos Enfermeiro",
+            "role": "Enfermeiro"
+          }
+        },
+        {
+          "status": "Em Atendimento",
+          "timestamp": "2023-02-20T09:45:00",
+          "updatedBy": {
+            "id": "D001",
+            "name": "Dra. Ana Santos",
+            "role": "Cardiologista"
+          }
+        }
+      ],
+      "departmentId": "UTI",
+      "bedId": "UTI-101",
+      "expectedDischarge": "2023-02-27T00:00:00"
+    },
+    {
+      "id": "ADM002",
+      "patientId": "PT002",
+      "admissionDate": "2023-02-19T14:00:00",
+      "admissionType": "Eletiva",
+      "entranceReason": "Cirurgia para artroplastia de quadril",
+      "priority": "Média",
+      "initialSymptoms": [
+        "Dor crônica no quadril esquerdo",
+        "Dificuldade de locomoção"
+      ],
+      "initialDiagnosis": "Artrose de quadril em estágio avançado",
+      "responsibleStaff": {
+        "id": "D003",
+        "name": "Dr. Ricardo Ortiz",
+        "role": "Ortopedista"
+      },
+      "status": "Em Recuperação",
+      "statusHistory": [
+        {
+          "status": "Aguardando Atendimento",
+          "timestamp": "2023-02-19T09:00:00",
+          "updatedBy": {
+            "id": "D003",
+            "name": "Dr. Ricardo Ortiz",
+            "role": "Ortopedista"
+          }
+        },
+        {
+          "status": "Em Procedimento",
+          "timestamp": "2023-02-19T11:00:00",
+          "updatedBy": {
+            "id": "D003",
+            "name": "Dr. Ricardo Ortiz",
+            "role": "Ortopedista"
+          }
+        },
+        {
+          "status": "Em Recuperação",
+          "timestamp": "2023-02-19T14:30:00",
+          "updatedBy": {
+            "id": "D003",
+            "name": "Dr. Ricardo Ortiz",
+            "role": "Ortopedista"
+          }
+        }
+      ],
+      "departmentId": "Enfermaria",
+      "bedId": "ENF-201",
+      "expectedDischarge": "2023-02-25T00:00:00"
+    }
+  ],
+  "patient-assignments": [
+    {
+      "id": "ASG001",
+      "admissionId": "ADM001",
+      "patientId": "PT001",
+      "departmentId": "UTI",
+      "bedId": "UTI-101",
+      "assignedDoctor": {
+        "id": "D001",
+        "name": "Dra. Ana Santos"
+      },
+      "assignedNurse": {
+        "id": "N001",
+        "name": "Carlos Enfermeiro"
+      },
+      "assignmentDate": "2023-02-20T09:50:00",
+      "status": "Assigned",
+      "priority": "Alta",
+      "notes": "Paciente necessita de monitoramento cardíaco contínuo"
+    },
+    {
+      "id": "ASG002",
+      "admissionId": "ADM002",
+      "patientId": "PT002",
+      "departmentId": "Enfermaria",
+      "bedId": "ENF-201",
+      "assignedDoctor": {
+        "id": "D003",
+        "name": "Dr. Ricardo Ortiz"
+      },
+      "assignedNurse": {
+        "id": "N002",
+        "name": "Maria Enfermeira"
+      },
+      "assignmentDate": "2023-02-19T14:40:00",
+      "status": "Assigned",
+      "priority": "Média",
+      "notes": "Paciente em pós-operatório de artroplastia de quadril"
+    }
+  ],
+  "insurances": [
+    {
+      "id": "INS001",
+      "name": "Amil",
+      "planType": "Básico",
+      "cardNumber": "",
+      "expirationDate": ""
+    },
+    {
+      "id": "INS002",
+      "name": "Amil",
+      "planType": "Intermediário",
+      "cardNumber": "",
+      "expirationDate": ""
+    },
+    {
+      "id": "INS003",
+      "name": "Amil",
+      "planType": "Premium",
+      "cardNumber": "",
+      "expirationDate": ""
+    },
+    {
+      "id": "INS004",
+      "name": "Bradesco Saúde",
+      "planType": "Básico",
+      "cardNumber": "",
+      "expirationDate": ""
+    },
+    {
+      "id": "INS005",
+      "name": "Bradesco Saúde",
+      "planType": "Premium",
+      "cardNumber": "",
+      "expirationDate": ""
+    },
+    {
+      "id": "INS006",
+      "name": "NotreDame Intermédica",
+      "planType": "Básico",
+      "cardNumber": "",
+      "expirationDate": ""
+    },
+    {
+      "id": "INS007",
+      "name": "NotreDame Intermédica",
+      "planType": "Intermediário",
+      "cardNumber": "",
+      "expirationDate": ""
+    },
+    {
+      "id": "INS008",
+      "name": "Unimed",
+      "planType": "Básico",
+      "cardNumber": "",
+      "expirationDate": ""
+    },
+    {
+      "id": "INS009",
+      "name": "Unimed",
+      "planType": "Intermediário",
+      "cardNumber": "",
+      "expirationDate": ""
+    },
+    {
+      "id": "INS010",
+      "name": "Unimed",
+      "planType": "Premium",
+      "cardNumber": "",
+      "expirationDate": ""
+    }
+  ],
+  "sus": {
+    "apiEndpoint": "https://api-sus.example.gov.br",
+    "validationEndpoint": "/validate",
+    "patientInfoEndpoint": "/patients/{cardNumber}"
+  },
   "staffTeams": {
     "RD4H-SP-ITAIM": [
       {

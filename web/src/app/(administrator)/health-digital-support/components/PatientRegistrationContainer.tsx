@@ -1,236 +1,296 @@
-import React, { useState } from 'react';
-import { PatientForm } from './PatientForm';
-import { IBed, IHospital } from '@/types/hospital-network-types';
+import { useState } from 'react';
+import { usePatientRegistration } from '@/services/hooks/digital-care-service/usePatientRegistration';
+import PatientPersonalInfo from './PatientPersonalInfo';
+import PatientContactInfo from './PatientContactInfo';
+import PatientInsuranceInfo from './PatientInsuranceInfo';
+import PatientMedicalInfo from './PatientMedicalInfo';
+import { IPatientRegistration } from '@/types/patient-types';
+import { toast } from '@/components/ui/molecules/Toast';
 
-import { AlertMessage } from '@/components/ui/templates/common/AlertMessage';
+type RegistrationStep = 'personal' | 'contact' | 'insurance' | 'medical' | 'review';
 
-interface PatientRegistrationContainerProps {
-  hospital: IHospital | null;
-  setSystemMessage: (message: { type: 'success' | 'error' | 'warning' | 'info'; text: string; } | null) => void;
-}
+export default function PatientRegistrationContainer() {
+  const [currentStep, setCurrentStep] = useState<RegistrationStep>('personal');
+  const [patientData, setPatientData] = useState<Partial<IPatientRegistration>>({
+    personalInfo: {
+      name: '',
+      birthDate: '',
+      gender: 'Outro',
+      cpf: '',
+      nationality: 'Brasileira',
+    },
+    contactInfo: {
+      phone: '',
+      cellphone: '',
+      address: {
+        street: '',
+        number: '',
+        neighborhood: '',
+        city: '',
+        state: '',
+        zipCode: '',
+      },
+      emergencyContact: {
+        name: '',
+        phone: '',
+        relationship: '',
+      },
+    },
+    medicalInfo: {
+      allergies: [],
+      chronicConditions: [],
+      medications: [],
+      previousSurgeries: [],
+    },
+    insuranceInfo: {
+      type: 'Particular',
+    },
+  });
 
-interface NewPatientData {
-  name: string;
-  age: number;
-  gender: string;
-  bloodType: string;
-  contactInfo: {
-    phone: string;
-    emergency: string;
-    address: string;
-  };
-  diagnosis: string;
-  expectedDischargeDate: string;
-  department: string;
-  specialty: string;
-}
+  const { 
+    isSubmitting, 
+    validationErrors, 
+    registerPatient, 
+    fillPatientFromSUS 
+  } = usePatientRegistration();
 
-export const PatientRegistrationContainer: React.FC<PatientRegistrationContainerProps> = ({
-  hospital,
-  setSystemMessage
-}) => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  
-  // Extrair departamentos e especialidades do hospital
-  const departments = hospital?.departments.map(dept => dept.name) || [];
-  const specialties = hospital?.specialties || [];
-  
-  const handleSubmit = async (data: NewPatientData) => {
-    if (!hospital) {
-      setError('Nenhum hospital selecionado');
-      return;
-    }
+  const handleNext = () => {
+    const steps: RegistrationStep[] = ['personal', 'contact', 'insurance', 'medical', 'review'];
+    const currentIndex = steps.indexOf(currentStep);
     
+    if (currentIndex < steps.length - 1) {
+      setCurrentStep(steps[currentIndex + 1]);
+    }
+  };
+
+  const handlePrevious = () => {
+    const steps: RegistrationStep[] = ['personal', 'contact', 'insurance', 'medical', 'review'];
+    const currentIndex = steps.indexOf(currentStep);
+    
+    if (currentIndex > 0) {
+      setCurrentStep(steps[currentIndex - 1]);
+    }
+  };
+
+  const handlePersonalInfoChange = (data: Partial<IPatientRegistration['personalInfo']>) => {
+    setPatientData(prev => ({
+      ...prev,
+      personalInfo: {
+        ...prev.personalInfo!,
+        ...data
+      }
+    }));
+  };
+
+  const handleContactInfoChange = (data: Partial<IPatientRegistration['contactInfo']>) => {
+    setPatientData(prev => ({
+      ...prev,
+      contactInfo: {
+        ...prev.contactInfo!,
+        ...data
+      }
+    }));
+  };
+
+  const handleInsuranceInfoChange = (data: Partial<IPatientRegistration['insuranceInfo']>) => {
+    setPatientData(prev => ({
+      ...prev,
+      insuranceInfo: {
+        ...prev.insuranceInfo!,
+        ...data
+      }
+    }));
+  };
+
+  const handleMedicalInfoChange = (data: Partial<IPatientRegistration['medicalInfo']>) => {
+    setPatientData(prev => ({
+      ...prev,
+      medicalInfo: {
+        ...prev.medicalInfo!,
+        ...data
+      }
+    }));
+  };
+
+  const handleFillFromSUS = async (cardNumber: string) => {
+    const susData = await fillPatientFromSUS(cardNumber);
+    
+    if (susData) {
+      setPatientData(prev => ({
+        ...prev,
+        ...susData
+      }));
+      toast.success('Dados do SUS carregados com sucesso!');
+    } else {
+      toast.error('Não foi possível carregar os dados do SUS.');
+    }
+  };
+
+  const handleSubmit = async () => {
     try {
-      setLoading(true);
-      setError(null);
+      // Converte o patientData parcial para o formato completo necessário para registro
+      const completeData = patientData as Omit<IPatientRegistration, 'id' | 'registrationDate' | 'lastUpdate'>;
       
-      // Gerar um ID temporário para o novo paciente
-      const patientId = `P${Date.now().toString().substring(7)}`;
+      const result = await registerPatient(completeData);
       
-      // Criar objeto com dados do paciente
-      const newPatient = {
-        id: patientId,
-        name: data.name,
-        age: data.age,
-        gender: data.gender,
-        bloodType: data.bloodType,
-        contactInfo: data.contactInfo,
-        admissionDate: new Date().toISOString(),
-        diagnosis: data.diagnosis,
-        expectedDischarge: data.expectedDischargeDate,
-        photo: "",
-        careHistory: {
-          admissionId: `ADM-${patientId.substring(1)}`,
-          startDate: new Date().toISOString().split('T')[0],
-          primaryDiagnosis: data.diagnosis,
-          status: 'active',
-          totalLOS: 0,
-          statusHistory: [
-            {
-              department: data.department,
-              status: 'Aguardando Atendimento',
-              timestamp: new Date().toISOString(),
-              specialty: data.specialty,
-              updatedBy: {
-                id: 'SYS001',
-                name: 'Sistema',
-                role: 'Atendimento Digital'
-              }
-            }
-          ],
-          events: [
-            {
-              id: `EVT-${Date.now().toString().substring(7)}`,
-              timestamp: new Date().toISOString(),
-              type: 'admission',
-              description: `Admissão no departamento ${data.department}`,
-              department: data.department,
-              responsibleStaff: {
-                id: 'SYS001',
-                name: 'Sistema',
-                role: 'Atendimento Digital'
-              },
-              details: {
-                toDepartment: data.department
-              }
-            }
-          ]
-        }
-      };
-      
-      // Encontrar uma cama disponível
-      const availableBed = findAvailableBed(hospital, data.department);
-      
-      if (!availableBed) {
-        throw new Error(`Não há leitos disponíveis no departamento ${data.department}. Por favor, selecione outro departamento.`);
+      if (result) {
+        toast.success('Paciente registrado com sucesso!');
+        // Limpar formulário ou redirecionar para outra página
       }
-      
-      // Em produção, iríamos adicionar o paciente à cama com uma chamada de API
-      // Aqui simulamos o processo
-      console.log(`Registrando paciente ${newPatient.name} no leito ${availableBed.number} do departamento ${data.department}`);
-      
-      // Simula delay de API
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Aqui seria feita a chamada real para a API
-      /*
-      const response = await axios.post(`/api/hospitals/${hospital.id}/beds/${availableBed.id}/patient`, newPatient);
-      if (!response.data.success) {
-        throw new Error(response.data.message || 'Falha ao registrar paciente');
-      }
-      */
-      
-      const successText = `Paciente ${data.name} registrado com sucesso e atribuído ao leito ${availableBed.number} (${data.department})`;
-      
-      setSuccessMessage(successText);
-      setSystemMessage({
-        type: 'success',
-        text: successText
-      });
-      
-      // Limpar a mensagem de sucesso após 5 segundos
-      setTimeout(() => {
-        setSuccessMessage(null);
-      }, 5000);
-      
-    } catch (err) {
-      console.error('Erro ao registrar paciente:', err);
-      const errorMessage = err instanceof Error ? err.message : 'Erro ao registrar paciente';
-      setError(errorMessage);
-      setSystemMessage({
-        type: 'error',
-        text: errorMessage
-      });
-    } finally {
-      setLoading(false);
+    } catch (error) {
+      toast.error('Erro ao registrar paciente.');
+      console.error('Erro ao registrar paciente:', error);
     }
   };
-  
-  // Função para encontrar uma cama disponível no departamento especificado
-  const findAvailableBed = (hospital: IHospital, departmentName: string): IBed | null => {
-    const department = hospital.departments.find(dept => dept.name === departmentName);
-    if (!department) return null;
-    
-    for (const room of department.rooms) {
-      for (const bed of room.beds) {
-        if (bed.status === 'available') {
-          return bed;
-        }
-      }
-    }
-    
-    return null;
-  };
-  
-  // Verificar se existem camas disponíveis em cada departamento
-  const availabilityByDepartment = React.useMemo(() => {
-    if (!hospital) return {};
-    
-    const availability: Record<string, number> = {};
-    
-    hospital.departments.forEach(dept => {
-      let availableCount = 0;
-      
-      dept.rooms.forEach(room => {
-        room.beds.forEach(bed => {
-          if (bed.status === 'available') {
-            availableCount++;
-          }
-        });
-      });
-      
-      availability[dept.name] = availableCount;
-    });
-    
-    return availability;
-  }, [hospital]);
-  
-  if (!hospital) {
-    return (
-      <div className="bg-white rounded-lg shadow-md p-6 text-center">
-        <p className="text-gray-600">Por favor, selecione um hospital para registrar pacientes</p>
-      </div>
-    );
-  }
-  
+
   return (
-    <div className="bg-gray-50 p-4 rounded-lg">
-      {successMessage && (
-        <AlertMessage type="success" message={successMessage} onClose={() => setSuccessMessage(null)} />
-      )}
+    <div className="bg-white rounded-lg shadow-md p-6 max-w-4xl mx-auto">
+      <h1 className="text-2xl font-bold mb-6 text-primary-900">Registro de Paciente</h1>
       
-      {error && (
-        <AlertMessage type="error" message={error} onClose={() => setError(null)} />
-      )}
+      {/* Indicador de Progresso */}
+      <div className="mb-8">
+        <div className="flex items-center">
+          {['Dados Pessoais', 'Contato', 'Convênio', 'Saúde', 'Revisão'].map((step, index) => (
+            <div key={index} className="flex items-center">
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                ['personal', 'contact', 'insurance', 'medical', 'review'][index] === currentStep
+                  ? 'bg-primary-600 text-white'
+                  : 'bg-gray-200 text-gray-600'
+              }`}>
+                {index + 1}
+              </div>
+              {index < 4 && (
+                <div className={`h-1 w-16 ${
+                  index < ['personal', 'contact', 'insurance', 'medical', 'review'].indexOf(currentStep)
+                    ? 'bg-primary-600'
+                    : 'bg-gray-200'
+                }`} />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
       
-      <div className="mb-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {/* Leitos disponíveis por departamento */}
-        {Object.entries(availabilityByDepartment).map(([dept, count]) => (
-          <div 
-            key={dept}
-            className={`p-3 rounded-lg border ${
-              count === 0 ? 'bg-red-50 border-red-200' : 'bg-green-50 border-green-200'
-            }`}
-          >
-            <p className="text-sm font-medium">{dept}</p>
-            <div className="flex items-end justify-between">
-              <p className={`text-xl font-bold ${count === 0 ? 'text-red-700' : 'text-green-700'}`}>{count}</p>
-              <p className="text-xs text-gray-500">leitos disponíveis</p>
+      {/* Formulário de Etapas */}
+      <div className="mb-8">
+        {currentStep === 'personal' && (
+          <PatientPersonalInfo 
+            data={patientData.personalInfo!} 
+            onChange={handlePersonalInfoChange}
+            errors={validationErrors}
+          />
+        )}
+        
+        {currentStep === 'contact' && (
+          <PatientContactInfo 
+            data={patientData.contactInfo!} 
+            onChange={handleContactInfoChange}
+            errors={validationErrors}
+          />
+        )}
+        
+        {currentStep === 'insurance' && (
+          <PatientInsuranceInfo 
+            data={patientData.insuranceInfo!}
+            onChange={handleInsuranceInfoChange}
+            onFillFromSUS={handleFillFromSUS}
+            errors={validationErrors}
+          />
+        )}
+        
+        {currentStep === 'medical' && (
+          <PatientMedicalInfo 
+            data={patientData.medicalInfo!}
+            onChange={handleMedicalInfoChange}
+            errors={validationErrors}
+          />
+        )}
+        
+        {currentStep === 'review' && (
+          <div>
+            <h2 className="text-xl font-semibold mb-4">Revisão de Dados</h2>
+            <div className="space-y-6">
+              <div className="bg-gray-50 p-4 rounded-md">
+                <h3 className="text-lg font-medium mb-2">Dados Pessoais</h3>
+                <p><span className="font-medium">Nome:</span> {patientData.personalInfo?.name}</p>
+                <p><span className="font-medium">CPF:</span> {patientData.personalInfo?.cpf}</p>
+                <p><span className="font-medium">Data de Nascimento:</span> {patientData.personalInfo?.birthDate}</p>
+                <p><span className="font-medium">Gênero:</span> {patientData.personalInfo?.gender}</p>
+              </div>
+              
+              <div className="bg-gray-50 p-4 rounded-md">
+                <h3 className="text-lg font-medium mb-2">Contato</h3>
+                <p><span className="font-medium">Telefone:</span> {patientData.contactInfo?.phone}</p>
+                <p><span className="font-medium">Celular:</span> {patientData.contactInfo?.cellphone}</p>
+                <p><span className="font-medium">Endereço:</span> {patientData.contactInfo?.address.street}, {patientData.contactInfo?.address.number}, {patientData.contactInfo?.address.city} - {patientData.contactInfo?.address.state}</p>
+              </div>
+              
+              <div className="bg-gray-50 p-4 rounded-md">
+                <h3 className="text-lg font-medium mb-2">Convênio</h3>
+                <p><span className="font-medium">Tipo:</span> {patientData.insuranceInfo?.type}</p>
+                {patientData.insuranceInfo?.type === 'Convênio' && patientData.insuranceInfo?.insuranceDetails && (
+                  <>
+                    <p><span className="font-medium">Nome do Convênio:</span> {patientData.insuranceInfo.insuranceDetails.name}</p>
+                    <p><span className="font-medium">Número do Cartão:</span> {patientData.insuranceInfo.insuranceDetails.cardNumber}</p>
+                  </>
+                )}
+                {patientData.insuranceInfo?.type === 'SUS' && patientData.insuranceInfo?.susInfo && (
+                  <>
+                    <p><span className="font-medium">Cartão SUS:</span> {patientData.insuranceInfo.susInfo.cartaoSUS}</p>
+                  </>
+                )}
+              </div>
+              
+              <div className="bg-gray-50 p-4 rounded-md">
+                <h3 className="text-lg font-medium mb-2">Informações Médicas</h3>
+                <p><span className="font-medium">Alergias:</span> {patientData.medicalInfo?.allergies.join(', ') || 'Nenhuma'}</p>
+                <p><span className="font-medium">Condições Crônicas:</span> {patientData.medicalInfo?.chronicConditions.join(', ') || 'Nenhuma'}</p>
+                <p><span className="font-medium">Medicamentos em Uso:</span> {patientData.medicalInfo?.medications.join(', ') || 'Nenhum'}</p>
+                <p><span className="font-medium">Cirurgias Anteriores:</span> {patientData.medicalInfo?.previousSurgeries.join(', ') || 'Nenhuma'}</p>
+              </div>
             </div>
           </div>
-        ))}
+        )}
       </div>
       
-      <PatientForm
-        onSubmit={handleSubmit}
-        departments={departments}
-        specialties={specialties}
-        isLoading={loading}
-        availabilityByDepartment={availabilityByDepartment}
-      />
+      {/* Botões de Navegação */}
+      <div className="flex justify-between">
+        <button
+          type="button"
+          onClick={handlePrevious}
+          disabled={currentStep === 'personal'}
+          className={`px-4 py-2 rounded-md ${
+            currentStep === 'personal'
+              ? 'bg-gray-300 cursor-not-allowed'
+              : 'bg-gray-200 hover:bg-gray-300'
+          }`}
+        >
+          Anterior
+        </button>
+        
+        {currentStep !== 'review' ? (
+          <button
+            type="button"
+            onClick={handleNext}
+            className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700"
+          >
+            Próximo
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+            className={`px-4 py-2 rounded-md text-white ${
+              isSubmitting
+                ? 'bg-primary-400 cursor-not-allowed'
+                : 'bg-primary-600 hover:bg-primary-700'
+            }`}
+          >
+            {isSubmitting ? 'Registrando...' : 'Finalizar Registro'}
+          </button>
+        )}
+      </div>
     </div>
   );
-};
+}
