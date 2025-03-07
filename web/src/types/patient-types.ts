@@ -75,6 +75,7 @@ export interface IPatientRegistration {
     insuranceDetails?: IInsurance;
     susInfo?: ISUSInfo;
   };
+  hospitalId: string
   registrationDate: string;
   lastUpdate: string;
 }

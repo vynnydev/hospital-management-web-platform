@@ -7,7 +7,11 @@ import PatientFilters from './PatientFilters';
 import { IPatientRegistration } from '@/types/patient-types';
 import Link from 'next/link';
 
-export default function PatientList() {
+interface PatientListProps {
+  onSelectPatientForAssignment?: (patientId: string, admissionId: string) => void;
+}
+
+export default function PatientList({ onSelectPatientForAssignment }: PatientListProps) {
   const { patients, isLoading, error, searchPatients, filterPatients } = usePatientManagement();
   const [displayedPatients, setDisplayedPatients] = useState<IPatientRegistration[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -61,26 +65,26 @@ export default function PatientList() {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center p-8">
-        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-primary-500"></div>
+        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-primary-500 dark:border-primary-400"></div>
       </div>
     );
   }
   
   if (error) {
     return (
-      <div className="p-4 bg-red-50 text-red-700 rounded-md">
+      <div className="p-4 bg-red-50 dark:bg-red-900 text-red-700 dark:text-red-200 rounded-md">
         Erro ao carregar pacientes: {error}
       </div>
     );
   }
   
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-        <h1 className="text-2xl font-bold text-primary-900 mb-4 md:mb-0">Lista de Pacientes</h1>
+        <h1 className="text-2xl font-bold text-primary-900 dark:text-primary-400 mb-4 md:mb-0">Lista de Pacientes</h1>
         <Link 
           href="/pacientes/novo" 
-          className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 transition-colors"
+          className="px-4 py-2 bg-primary-600 dark:bg-primary-700 text-white rounded-md hover:bg-primary-700 dark:hover:bg-primary-600 transition-colors"
         >
           Novo Paciente
         </Link>
@@ -96,15 +100,19 @@ export default function PatientList() {
       </div>
       
       {displayedPatients.length === 0 ? (
-        <div className="p-8 text-center bg-gray-50 rounded-md">
-          <p className="text-gray-500 mb-2">Nenhum paciente encontrado.</p>
-          <p className="text-gray-400 text-sm">Tente ajustar seus critérios de busca ou filtros.</p>
+        <div className="p-8 text-center bg-gray-50 dark:bg-gray-700 rounded-md">
+          <p className="text-gray-500 dark:text-gray-400 mb-2">Nenhum paciente encontrado.</p>
+          <p className="text-gray-400 dark:text-gray-500 text-sm">Tente ajustar seus critérios de busca ou filtros.</p>
         </div>
       ) : (
         <>
           <div className="space-y-4">
             {currentPatients.map((patient) => (
-              <PatientCard key={patient.id} patient={patient} />
+              <PatientCard 
+                key={patient.id} 
+                patient={patient} 
+                onSelectForAssignment={onSelectPatientForAssignment}
+              />
             ))}
           </div>
           
@@ -117,8 +125,8 @@ export default function PatientList() {
                   disabled={currentPage === 1}
                   className={`px-3 py-1 rounded-md ${
                     currentPage === 1
-                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
+                      : 'bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-500'
                   }`}
                 >
                   Anterior
@@ -131,8 +139,8 @@ export default function PatientList() {
                       onClick={() => paginate(index + 1)}
                       className={`px-3 py-1 rounded-md ${
                         currentPage === index + 1
-                          ? 'bg-primary-600 text-white'
-                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                          ? 'bg-primary-600 dark:bg-primary-700 text-white'
+                          : 'bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-500'
                       }`}
                     >
                       {index + 1}
@@ -145,8 +153,8 @@ export default function PatientList() {
                   disabled={currentPage === totalPages}
                   className={`px-3 py-1 rounded-md ${
                     currentPage === totalPages
-                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
+                      : 'bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-500'
                   }`}
                 >
                   Próxima
