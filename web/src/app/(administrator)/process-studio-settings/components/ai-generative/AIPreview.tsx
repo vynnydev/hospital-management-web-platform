@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@/components/ui/organisms/button';
+import { Button } from "@/components/ui/organisms/button";
 
 interface AIPreviewProps {
   title: string;
@@ -30,25 +30,38 @@ export const AIPreview: React.FC<AIPreviewProps> = ({
   );
 };
 
-// Exemplo de componentes de prévia para diferentes tipos de conteúdo
+// components/AIPreview/MetricPreview.tsx
+interface MetricPreviewProps {
+  value: string;
+  trend?: number;
+  title?: string;
+  subtitle?: string;
+}
 
-export const MetricPreview: React.FC<{ value: string, trend?: number }> = ({ value, trend }) => (
+export const MetricPreview: React.FC<MetricPreviewProps> = ({ 
+  value, 
+  trend,
+  title = "Taxa de Ocupação",
+  subtitle = "Ocupação atual dos leitos"
+}) => (
   <div className="grid grid-cols-2 gap-4">
     <div className="border rounded-lg p-3 bg-white dark:bg-gray-800">
-      <h4 className="text-sm font-medium">Taxa de Ocupação</h4>
-      <div className="text-2xl font-bold mt-2">{value}%</div>
+      <h4 className="text-sm font-medium">{title}</h4>
+      <div className="text-2xl font-bold mt-2">{value}</div>
       <div className="h-2 bg-gray-200 rounded-full mt-2">
         <div 
           className="h-2 bg-amber-500 rounded-full" 
-          style={{width: `${value}%`}}
+          style={{width: `${typeof value === 'string' && value.includes('%') 
+            ? parseFloat(value) 
+            : 80}%`}}
         ></div>
       </div>
     </div>
     
     <div className="border rounded-lg p-3 bg-white dark:bg-gray-800">
-      <h4 className="text-sm font-medium">Tempo Médio</h4>
+      <h4 className="text-sm font-medium">{subtitle}</h4>
       <div className="text-2xl font-bold mt-2">4.2 dias</div>
-      {trend && (
+      {trend !== undefined && (
         <div className="text-xs text-gray-500 mt-1">
           {trend > 0 ? '↑' : '↓'} {Math.abs(trend).toFixed(1)} vs semana anterior
         </div>
@@ -57,6 +70,7 @@ export const MetricPreview: React.FC<{ value: string, trend?: number }> = ({ val
   </div>
 );
 
+// components/AIPreview/AlertPreview.tsx
 export const AlertPreview: React.FC = () => (
   <div className="space-y-2">
     <div className="flex items-center justify-between p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800">
@@ -74,7 +88,7 @@ export const AlertPreview: React.FC = () => (
       <h4 className="text-sm font-medium">Configurações do Alerta</h4>
       <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-2 text-xs">
         <div className="text-gray-500">Condição:</div>
-        <div>Taxa de ocupação `{'>'}` 85%</div>
+        <div>Taxa de ocupação {'>'} 85%</div>
         <div className="text-gray-500">Severidade:</div>
         <div>Aviso</div>
         <div className="text-gray-500">Notificações:</div>
@@ -84,6 +98,7 @@ export const AlertPreview: React.FC = () => (
   </div>
 );
 
+// components/AIPreview/WorkflowPreview.tsx
 export const WorkflowPreview: React.FC = () => (
   <div className="border rounded-lg p-3 bg-white dark:bg-gray-800">
     <h4 className="text-sm font-medium">Fluxo: Admissão de Emergência</h4>

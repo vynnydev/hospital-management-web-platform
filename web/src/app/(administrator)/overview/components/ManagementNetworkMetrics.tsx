@@ -20,13 +20,27 @@ import {
   Settings,
   Puzzle,
   LayoutGrid,
-  Maximize2
+  Edit3,
+  X,
+  Sparkles,
+  Brain
 } from 'lucide-react';
-import { AdditionalHospitalMetrics } from './AdditionalHospitalMetrics';
 import { IHospital, INetworkData } from '@/types/hospital-network-types';
 import { IntegrationsPreviewPressable } from '@/components/ui/organisms/IntegrationsPreviewPressable';
 import { ConfigurationAndUserModalMenus } from '@/components/ui/templates/modals/ConfigurationAndUserModalMenus';
-import { MainHospitalAlertMetrics } from './MainHospitalAlertMetrics';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription
+} from '@/components/ui/organisms/dialog';
+import { useMetrics } from '@/services/hooks/hospital-metrics/useMetrics';
+import { TMetric } from '@/types/hospital-metrics';
+import { EditableMetricsPanel } from '@/components/ui/templates/hospital-metrics/EditableMetricsPanel';
+import { MetricManager } from '@/components/ui/templates/hospital-metrics/MetricManager';
+import { usePanelMetrics } from '@/services/hooks/hospital-metrics/usePanelMetrics';
 
 interface IHospitalMetrics {
   unit: {
@@ -75,13 +89,20 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
   currentMetrics,
   filteredHospitals,
   canChangeRegion,
-
-  // FOR FullscreenModeModal TO DepartmentStatus
   selectedHospital,
 }) => {
   const [activeSection, setActiveSection] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isManagerModalOpen, setIsManagerModalOpen] = useState(false);
   const [defaultSection, setDefaultSection] = useState<string>('integrations');
+  
+  // Estado para o modo de edição de métricas
+  const [isEditMetricsMode, setIsEditMetricsMode] = useState(false);
+  const [isAIGenerationModalOpen, setIsAIGenerationModalOpen] = useState(false);
+  
+  // Hooks para métricas
+  const { metrics } = useMetrics();
+  const { panelMetrics, addToPanel, removeFromPanel } = usePanelMetrics('default');
   
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -98,6 +119,51 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
       return acc;
     }, [] as string[]);
   }, [networkData?.hospitals]);
+
+  // Função para alternar o modo de edição de métricas
+  const toggleEditMetricsMode = () => {
+    setIsEditMetricsMode(!isEditMetricsMode);
+  };
+  
+  // Abrir modal de gerenciamento de métricas
+  const openMetricsManager = () => {
+    setIsManagerModalOpen(true);
+  };
+  
+  // Abrir modal de geração de métricas com IA
+  const openAIGenerationModal = () => {
+    setIsAIGenerationModalOpen(true);
+  };
+
+  // Preparar métricas visíveis para o painel
+  const visibleMainMetrics = panelMetrics
+    .filter(metric => metric.type === 'main')
+    .map(metric => metric.id);
+    
+  const visibleAdditionalMetrics = panelMetrics
+    .filter(metric => metric.type === 'additional')
+    .map(metric => metric.id);
+
+  // Manipuladores para adição/remoção de métricas
+  const handleRemoveMainMetric = async (metricId: string) => {
+    await removeFromPanel(metricId);
+  };
+  
+  const handleRemoveAdditionalMetric = async (metricId: string) => {
+    await removeFromPanel(metricId);
+  };
+  
+  const handleAddMetricById = async (metricId: string, type: 'main' | 'additional') => {
+    const metric = metrics.find(m => m.id === metricId);
+    if (metric) {
+      await addToPanel(metric);
+    }
+  };
+
+  const handleAddMetricToPanel = async (metric: TMetric) => {
+    await addToPanel(metric);
+    return true;
+  };
 
   return (
     <>    
@@ -121,66 +187,178 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
                   <IntegrationsPreviewPressable onSelectIntegration={handleOpenModal} hgt='10' wth='10' />
 
                   <ConfigurationAndUserModalMenus 
-                      isOpen={isModalOpen}
-                      onClose={() => setIsModalOpen(false)}
-                      defaultSection={defaultSection}
-                      user={null}
+                    isOpen={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                    defaultSection={defaultSection}
+                    user={null}
                   />
                 </div>
               </div>
 
               
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2">
+                {/* Botão para gerar métricas com IA */}
+                <Button
+                  onClick={openAIGenerationModal}
+                  variant="outline"
+                  className="bg-purple-100 hover:bg-purple-200 text-purple-800 border-purple-300 dark:bg-purple-900/30 dark:hover:bg-purple-800/50 dark:text-purple-300 dark:border-purple-800"
+                >
+                  <Brain size={18} className="mr-1" />
+                  <span>IA Generativa</span>
+                </Button>
+                
+                {/* Botão para gerenciar métricas */}
+                <Button
+                  onClick={openMetricsManager}
+                  variant="outline"
+                  className="bg-gray-100 hover:bg-gray-200 text-gray-800 border-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-300 dark:border-gray-600"
+                >
+                  <Settings size={18} className="mr-1" />
+                  <span>Gerenciar Métricas</span>
+                </Button>
+                
+                {/* Botão para editar métricas */}
+                <Button
+                  onClick={toggleEditMetricsMode}
+                  variant="outline"
+                  className={`
+                    flex items-center space-x-2 
+                    ${isEditMetricsMode 
+                      ? 'bg-blue-600 hover:bg-blue-700 text-white border-blue-700' 
+                      : 'bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600'
+                    }
+                  `}
+                >
+                  {isEditMetricsMode ? (
+                    <>
+                      <X size={18} />
+                      <span>Sair do modo de edição</span>
+                    </>
+                  ) : (
+                    <>
+                      <Edit3 size={18} className="text-gray-500 dark:text-gray-400" />
+                      <span>Editar Métricas</span>
+                    </>
+                  )}
+                </Button>
 
-                  {canChangeRegion && (
-                    <div className="relative">
-                      <Select value={selectedRegion} onValueChange={setSelectedRegion}>
-                        <SelectTrigger className="w-64 bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600">
+                {canChangeRegion && (
+                  <div className="relative">
+                    <Select value={selectedRegion} onValueChange={setSelectedRegion}>
+                      <SelectTrigger className="w-64 bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600">
+                        <div className="flex items-center space-x-2">
+                          <Map size={18} className="text-gray-500 dark:text-gray-400" />
+                          <SelectValue placeholder="Selecione a região" />
+                        </div>
+                      </SelectTrigger>
+                      <SelectContent>
+                        {/* Item para todas as regiões */}
+                        <SelectItem value="all">
                           <div className="flex items-center space-x-2">
-                            <Map size={18} className="text-gray-500 dark:text-gray-400" />
-                            <SelectValue placeholder="Selecione a região" />
+                            <Users size={18} className="text-gray-500 dark:text-gray-400" />
+                            <span>Todas as Regiões</span>
                           </div>
-                        </SelectTrigger>
-                        <SelectContent>
-                          {/* Item para todas as regiões */}
-                          <SelectItem value="all">
+                        </SelectItem>
+
+                        {/* Lista de regiões com estados */}
+                        {regions.map(region => (
+                          <SelectItem key={region} value={region} className='bg-gray-200 dark:bg-gray-700'>
                             <div className="flex items-center space-x-2">
-                              <Users size={18} className="text-gray-500 dark:text-gray-400" />
-                              <span>Todas as Regiões</span>
+                              <Map size={18} className="text-gray-500 dark:text-gray-400" />
+                              <span>Unidades - {region}</span>
                             </div>
                           </SelectItem>
-
-                          {/* Lista de regiões com estados */}
-                          {regions.map(region => (
-                            <SelectItem key={region} value={region} className='bg-gray-200 dark:bg-gray-700'>
-                              <div className="flex items-center space-x-2">
-                                <Map size={18} className="text-gray-500 dark:text-gray-400" />
-                                <span>Unidades - {region}</span>
-                              </div>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  )}
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
               </div>
             </div>
 
-            <MainHospitalAlertMetrics 
+            {/* Área de métricas editáveis */}
+            <div className="relative">
+              <EditableMetricsPanel 
                 networkData={networkData}
                 currentMetrics={currentMetrics}
-                selectedHospital={selectedHospital}
                 selectedRegion={selectedRegion}
-            />
-
-            {/* Metrics Cards */}
-            <AdditionalHospitalMetrics 
-                networkData={networkData}
-                currentMetrics={currentMetrics}
-            />
+                selectedHospital={selectedHospital}
+                isEditMode={isEditMetricsMode}
+                onExitEditMode={() => setIsEditMetricsMode(false)}
+                // Passando propriedades para gerenciamento de métricas
+                visibleMainMetrics={visibleMainMetrics}
+                visibleAdditionalMetrics={visibleAdditionalMetrics}
+                removeMainMetric={handleRemoveMainMetric}
+                removeAdditionalMetric={handleRemoveAdditionalMetric}
+                addMetricById={handleAddMetricById}
+                allMetrics={metrics}
+                onAddMetricClick={() => setIsManagerModalOpen(true)}
+              />
+              
+              {/* Efeito de blur para os componentes abaixo quando estiver no modo de edição */}
+              <div 
+                className={`
+                  fixed inset-0 bg-black/50 backdrop-blur-sm z-30 pointer-events-none
+                  transition-all duration-500 ease-in-out
+                  ${isEditMetricsMode ? 'opacity-100' : 'opacity-0 invisible'}
+                `}
+                style={{ top: '650px' }}
+              />
+            </div>
           </div>
         </CardContent>
       </Card>
+      
+      {/* Modal de Gerenciamento de Métricas */}
+      <Dialog open={isManagerModalOpen} onOpenChange={setIsManagerModalOpen}>
+        <DialogContent className="max-w-5xl">
+          <DialogHeader>
+            <DialogTitle>Gerenciador de Métricas</DialogTitle>
+            <DialogDescription>
+              Gerencie todas as métricas do sistema, padrão e personalizadas
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="h-[70vh] overflow-y-auto">
+            <MetricManager onAddToPanel={handleAddMetricToPanel} />
+          </div>
+          
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsManagerModalOpen(false)}>
+              Fechar
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      
+      {/* Modal de Geração de Métricas com IA */}
+      <Dialog open={isAIGenerationModalOpen} onOpenChange={setIsAIGenerationModalOpen}>
+        <DialogContent className="max-w-5xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center">
+              <Brain className="h-5 w-5 text-purple-500 mr-2" />
+              Assistente IA Generativa
+            </DialogTitle>
+            <DialogDescription>
+              Gere métricas personalizadas através de diálogo interativo com a IA
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="h-[70vh] overflow-y-auto">
+            <iframe 
+              src="/studio-de-processos/ia-generativa" 
+              className="w-full h-full border-none"
+              title="IA Generativa"
+            />
+          </div>
+          
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsAIGenerationModalOpen(false)}>
+              Fechar
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

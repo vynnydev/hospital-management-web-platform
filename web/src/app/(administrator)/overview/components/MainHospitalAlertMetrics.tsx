@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import React from 'react';
 import { Card } from "@/components/ui/organisms/card";
 import { INetworkData } from "@/types/hospital-network-types";
 import { AlertCircle, AlertTriangle, Clock, LucideIcon, Settings, Users } from "lucide-react";
@@ -99,7 +100,10 @@ interface MainHospitalAlertMetricsProps {
       averageOccupancy: number;
     };
     selectedRegion: string | null;
-    selectedHospital: string | null,
+    selectedHospital: string | null;
+    
+    // Nova propriedade para controlar quais métricas são visíveis
+    visibleMetrics?: string[];
     
     // Propriedades opcionais para personalização
     criticalOccupancyThreshold?: number;
@@ -125,6 +129,7 @@ export const MainHospitalAlertMetrics: React.FC<MainHospitalAlertMetricsProps> =
     currentMetrics,
     selectedRegion,
     selectedHospital,
+    visibleMetrics,
     criticalOccupancyThreshold = 90,
     staffingNormsThreshold = 0.6,
     emergencyWaitTimeThreshold = 4
@@ -220,10 +225,29 @@ export const MainHospitalAlertMetrics: React.FC<MainHospitalAlertMetricsProps> =
             severity: alertMetrics.emergencyRoomWaitingTime > 4 ? "high" : "low",
         }
     ];
+
+    // Filtrar os cards com base nas métricas visíveis
+    const filteredCards = visibleMetrics 
+        ? alertCards.filter(card => visibleMetrics.includes(card.cardType))
+        : alertCards;
+    
+    // Verificar se há métricas para exibir
+    if (filteredCards.length === 0) {
+        return (
+            <div className="flex justify-center items-center h-48 bg-gray-100 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                <p className="text-gray-500 dark:text-gray-400">
+                    Nenhuma métrica principal selecionada. {' '}
+                    <button className="text-blue-500 hover:underline">
+                        Adicionar métricas
+                    </button>
+                </p>
+            </div>
+        );
+    }
   
     return (
-        <div className="grid grid-cols-4 gap-6">
-            {alertCards.map((card, index) => {
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {filteredCards.map((card, index) => {
                 const situation = getSituationType(card.cardType, typeof card.value === 'number' ? card.value : 0);
                 const colors = getSituationColors(situation);
                 

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from 'react';
+import React from 'react';
 import { 
   Users,
   Activity,
@@ -8,13 +8,12 @@ import {
   Settings,
   ArrowUp,
   ArrowDown,
-  ChevronUp,
-  ChevronDown,
   AlertTriangle,
   GraduationCap,
   Users2,
   LucideIcon,
-  AlertCircle
+  AlertCircle,
+  PlusCircle
 } from 'lucide-react';
 import { INetworkData } from '@/types/hospital-network-types';
 
@@ -30,12 +29,8 @@ interface ICurrentMetrics {
 interface IMetricsProps {
   networkData: INetworkData;
   currentMetrics: ICurrentMetrics;
-  selectedHospital?: string;
-}
-
-interface IAdditionalInfo {
-  label: string;
-  value: string;
+  selectedHospital?: string | null;
+  visibleMetrics?: string[]; // Nova propriedade para controlar quais métricas são visíveis
 }
 
 interface IMetricCardProps {
@@ -46,8 +41,11 @@ interface IMetricCardProps {
   icon: LucideIcon;
   trend?: number;
   target?: number;
-  additionalInfo?: IAdditionalInfo;
-  selectedHospital?: string;
+  additionalInfo?: {
+    label: string;
+    value: string;
+  };
+  selectedHospital?: string | null;
   valueSize?: 'normal' | 'small';
   cardType: TCardType
 }
@@ -242,10 +240,9 @@ const MetricCard: React.FC<IMetricCardProps> = ({
 export const AdditionalHospitalMetrics: React.FC<IMetricsProps> = ({ 
   networkData, 
   currentMetrics,
-  selectedHospital 
+  selectedHospital,
+  visibleMetrics // Usar essa propriedade para filtrar métricas
 }) => {
-  const [expandedMetrics, setExpandedMetrics] = useState<boolean>(true);
-  
   const calculateAdditionalMetrics = (): ICalculatedMetrics => {
     const hospitals = networkData?.hospitals || [];
     const networkEfficiency = networkData?.networkInfo?.networkMetrics?.networkEfficiency;
@@ -298,7 +295,7 @@ export const AdditionalHospitalMetrics: React.FC<IMetricsProps> = ({
       subtitle: "Maior Ocupação",
       trend: 2.5,
       color: "red",
-      cardType: "hospital-critico",
+      cardType: "hospital-critico" as TCardType,
       icon: AlertTriangle,
       valueSize: 'small' as const,
       additionalInfo: {
@@ -313,7 +310,7 @@ export const AdditionalHospitalMetrics: React.FC<IMetricsProps> = ({
       trend: 1.8,
       target: 5.0,
       color: "orange",
-      cardType: "burnout",
+      cardType: "burnout" as TCardType,
       icon: Users,
       additionalInfo: {
         label: "Equipes em Alerta",
@@ -326,7 +323,7 @@ export const AdditionalHospitalMetrics: React.FC<IMetricsProps> = ({
       subtitle: "Leitos em Manutenção",
       trend: -0.5,
       color: "blue",
-      cardType: "manutencao",
+      cardType: "manutencao" as TCardType,
       icon: Settings,
       additionalInfo: {
         label: "Previsão de Conclusão",
@@ -340,7 +337,7 @@ export const AdditionalHospitalMetrics: React.FC<IMetricsProps> = ({
       trend: 1.2,
       target: 8.0,
       color: "cyan",
-      cardType: "taxa-giro",
+      cardType: "taxa-giro" as TCardType,
       icon: RotateCcw,
       additionalInfo: {
         label: "Média do Setor",
@@ -354,7 +351,7 @@ export const AdditionalHospitalMetrics: React.FC<IMetricsProps> = ({
       trend: 3.2,
       target: 90,
       color: "emerald",
-      cardType: "eficiencia",
+      cardType: "eficiencia" as TCardType,
       icon: TrendingUp,
       additionalInfo: {
         label: "Ranking na Rede",
@@ -368,7 +365,7 @@ export const AdditionalHospitalMetrics: React.FC<IMetricsProps> = ({
       trend: 2.3,
       target: 85,
       color: "violet",
-      cardType: "ocupacao",
+      cardType: "ocupacao" as TCardType,
       icon: Activity,
       additionalInfo: {
         label: "Leitos Ocupados",
@@ -382,7 +379,7 @@ export const AdditionalHospitalMetrics: React.FC<IMetricsProps> = ({
       trend: -1.5,
       target: 15,
       color: "fuchsia",
-      cardType: "variacao",
+      cardType: "variacao" as TCardType,
       icon: Users2,
       additionalInfo: {
         label: "Maior Diferença",
@@ -396,7 +393,7 @@ export const AdditionalHospitalMetrics: React.FC<IMetricsProps> = ({
       trend: 4.2,
       target: 95,
       color: "teal",
-      cardType: "treinamento",
+      cardType: "treinamento" as TCardType,
       icon: GraduationCap,
       additionalInfo: {
         label: "Profissionais Treinados",
@@ -405,66 +402,35 @@ export const AdditionalHospitalMetrics: React.FC<IMetricsProps> = ({
     }
   ];
 
-  return (
-    <div className="mt-8">
-      <div className="flex justify-between items-center mt-8 mb-8 bg-gray-900/40 backdrop-blur-sm rounded-2xl p-4 border border-gray-700/30 hover:bg-gray-800/40 transition-all duration-200">
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-blue-500/10 dark:bg-blue-900/30">
-              <Activity className="w-5 h-5 text-blue-500 dark:text-blue-400" />
-            </div>
-            <h2 className="text-xl font-semibold bg-gradient-to-r from-gray-100 to-gray-300 dark:from-gray-100 dark:to-blue-200 bg-clip-text text-transparent">
-              Métricas do Hospital
-            </h2>
-          </div>
-          {/* Mensagem sempre visível e maior */}
-          <p className="text-base text-gray-400 ml-10">
-            Clique para {expandedMetrics ? 'ocultar' : 'visualizar'} todas as métricas
-          </p>
-        </div>
+  // Filtrar métricas com base na propriedade visibleMetrics
+  const filteredMetrics = visibleMetrics
+    ? metrics.filter(metric => visibleMetrics.includes(metric.cardType))
+    : metrics;
 
-        <div className="flex items-center gap-3">
-          <div className={`
-            w-2 h-2 rounded-full
-            ${expandedMetrics ? 'bg-green-500' : 'bg-blue-500'}
-            animate-pulse
-          `} />
-          
-          <button 
-            onClick={() => setExpandedMetrics(!expandedMetrics)}
-            className="
-              flex items-center gap-2 px-4 py-2
-              bg-gray-800/40 hover:bg-gray-700/40
-              dark:bg-gray-800/40 dark:hover:bg-gray-700/40
-              rounded-xl transition-all duration-200
-              border border-gray-700/30
-            "
-          >
-            <span className="text-sm font-medium text-gray-300 group-hover:text-white transition-colors">
-              {expandedMetrics ? 'Ocultar' : 'Mostrar'} Métricas
-            </span>
-            <div className="w-5 h-5 rounded-full bg-gray-700/50 flex items-center justify-center">
-              {expandedMetrics ? (
-                <ChevronUp className="w-4 h-4 text-gray-300 group-hover:text-white transition-colors" />
-              ) : (
-                <ChevronDown className="w-4 h-4 text-gray-300 group-hover:text-white transition-colors" />
-              )}
-            </div>
-          </button>
-        </div>
+  // Verificar se há métricas para exibir
+  if (filteredMetrics.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center h-64 bg-gray-800/30 border border-gray-700/30 rounded-3xl p-8">
+        <PlusCircle className="h-16 w-16 text-gray-500 mb-4" />
+        <p className="text-gray-400 text-center">
+          Nenhuma métrica adicional selecionada.
+        </p>
+        <p className="text-gray-500 text-center mt-2">
+          Adicione métricas adicionais para visualizar mais informações sobre o desempenho do hospital.
+        </p>
       </div>
+    );
+  }
 
-      {expandedMetrics && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {metrics.map((metric, index) => (
-            <MetricCard 
-              key={index} 
-              {...metric as IMetricCardProps}
-              selectedHospital={selectedHospital}
-            />
-          ))}
-        </div>
-      )}
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      {filteredMetrics.map((metric, index) => (
+        <MetricCard 
+          key={index} 
+          {...metric as IMetricCardProps}
+          selectedHospital={selectedHospital}
+        />
+      ))}
     </div>
   );
 };

@@ -2107,5 +2107,299 @@
         }
       }
     }
+  },
+  "metrics": [
+    {
+      "id": "main-critical-hospital",
+      "title": "Hospital Crítico",
+      "subtitle": "Maior Ocupação",
+      "description": "Identifica o hospital com maior taxa de ocupação na rede",
+      "type": "main",
+      "cardType": "critical-hospital",
+      "createdAt": "2025-01-15T10:00:00.000Z",
+      "isCustom": false
+    },
+    {
+      "id": "main-staff",
+      "title": "Déficit de Equipes",
+      "subtitle": "Dificuldade nas Equipes",
+      "description": "Monitora hospitais com taxas de ocupação abaixo do esperado",
+      "type": "main",
+      "cardType": "staff",
+      "createdAt": "2025-01-15T10:00:00.000Z",
+      "isCustom": false
+    },
+    {
+      "id": "main-maintenance",
+      "title": "Higienização de Equipamentos",
+      "subtitle": "Higienização Geral",
+      "description": "Monitora UTIs com alto risco de indisponibilidade",
+      "type": "main",
+      "cardType": "maintenance",
+      "createdAt": "2025-01-15T10:00:00.000Z",
+      "isCustom": false
+    },
+    {
+      "id": "main-waiting",
+      "title": "Tempo de Espera",
+      "subtitle": "Espera",
+      "description": "Tempo médio de espera em horas",
+      "type": "main",
+      "cardType": "waiting",
+      "createdAt": "2025-01-15T10:00:00.000Z",
+      "isCustom": false
+    },
+    {
+      "id": "additional-hospital-critico",
+      "title": "Hospital Crítico (Detalhado)",
+      "subtitle": "Maior Ocupação",
+      "description": "Análise detalhada do hospital com situação mais crítica",
+      "type": "additional",
+      "cardType": "hospital-critico",
+      "createdAt": "2025-01-15T10:00:00.000Z",
+      "isCustom": false,
+      "additionalInfo": {
+        "label": "Taxa de Ocupação",
+        "value": "85.5%"
+      }
+    },
+    {
+      "id": "additional-burnout",
+      "title": "Risco de Burnout",
+      "subtitle": "Nível de Estresse",
+      "description": "Monitora o nível de estresse das equipes médicas",
+      "type": "additional",
+      "cardType": "burnout",
+      "createdAt": "2025-01-15T10:00:00.000Z",
+      "isCustom": false,
+      "additionalInfo": {
+        "label": "Equipes em Alerta",
+        "value": "3 de 8 equipes"
+      }
+    },
+    {
+      "id": "additional-manutencao",
+      "title": "Manutenção",
+      "subtitle": "Leitos em Manutenção",
+      "description": "Status dos leitos em manutenção",
+      "type": "additional",
+      "cardType": "manutencao",
+      "createdAt": "2025-01-15T10:00:00.000Z",
+      "isCustom": false,
+      "additionalInfo": {
+        "label": "Previsão de Conclusão",
+        "value": "7 dias"
+      }
+    },
+    {
+      "id": "additional-taxa-giro",
+      "title": "Taxa de Giro",
+      "subtitle": "Rotatividade de Leitos",
+      "description": "Monitora a rotatividade de pacientes por leito",
+      "type": "additional",
+      "cardType": "taxa-giro",
+      "createdAt": "2025-01-15T10:00:00.000Z",
+      "isCustom": false,
+      "additionalInfo": {
+        "label": "Média do Setor",
+        "value": "4.8 pacientes/leito"
+      }
+    },
+    {
+      "id": "additional-eficiencia",
+      "title": "Eficiência Operacional",
+      "subtitle": "Performance Geral",
+      "description": "Avalia a performance geral do hospital",
+      "type": "additional",
+      "cardType": "eficiencia",
+      "createdAt": "2025-01-15T10:00:00.000Z",
+      "isCustom": false,
+      "additionalInfo": {
+        "label": "Ranking na Rede",
+        "value": "#2 de 3 hospitais"
+      }
+    },
+    {
+      "id": "additional-ocupacao",
+      "title": "Ocupação Média",
+      "subtitle": "Taxa de Ocupação",
+      "description": "Taxa média de ocupação de leitos",
+      "type": "additional",
+      "cardType": "ocupacao",
+      "createdAt": "2025-01-15T10:00:00.000Z",
+      "isCustom": false,
+      "additionalInfo": {
+        "label": "Leitos Ocupados",
+        "value": "850/1200"
+      }
+    },
+    {
+      "id": "additional-variacao",
+      "title": "Variação de Pacientes",
+      "subtitle": "Entre Departamentos",
+      "description": "Variação de pacientes entre departamentos",
+      "type": "additional",
+      "cardType": "variacao",
+      "createdAt": "2025-01-15T10:00:00.000Z",
+      "isCustom": false,
+      "additionalInfo": {
+        "label": "Maior Diferença",
+        "value": "UTI vs. Enfermaria"
+      }
+    },
+    {
+      "id": "additional-treinamento",
+      "title": "Treinamento Profissional",
+      "subtitle": "Capacitação da Equipe",
+      "description": "Status de capacitação das equipes",
+      "type": "additional",
+      "cardType": "treinamento",
+      "createdAt": "2025-01-15T10:00:00.000Z",
+      "isCustom": false,
+      "additionalInfo": {
+        "label": "Profissionais Treinados",
+        "value": "42 este mês"
+      }
+    },
+    {
+      "id": "custom-metric-1",
+      "title": "Taxa de Readmissão UTI",
+      "subtitle": "Readmissões em 48h",
+      "description": "Métrica para acompanhar pacientes que retornam à UTI em até 48h após alta",
+      "type": "main",
+      "cardType": "critical-hospital",
+      "createdAt": "2025-02-18T14:30:00.000Z",
+      "createdBy": "user@example.com",
+      "isCustom": true
+    },
+    {
+      "id": "custom-metric-2",
+      "title": "Alerta de Superlotação",
+      "subtitle": "Capacidade Crítica",
+      "description": "Notificação quando ocupação ultrapassa 90% da capacidade",
+      "type": "additional",
+      "cardType": "burnout",
+      "createdAt": "2025-02-15T09:45:00.000Z",
+      "createdBy": "user@example.com",
+      "isCustom": true,
+      "additionalInfo": {
+        "label": "Última Ocorrência",
+        "value": "10/02/2025"
+      }
+    },
+    {
+      "id": "custom-metric-3",
+      "title": "Fluxo de Isolamento",
+      "subtitle": "Processo para Isolamento",
+      "description": "Processo para isolamento de pacientes com doenças infecciosas",
+      "type": "additional",
+      "cardType": "variacao",
+      "createdAt": "2025-02-10T16:20:00.000Z",
+      "createdBy": "ai-assistant",
+      "isCustom": true,
+      "additionalInfo": {
+        "label": "Processos Ativos",
+        "value": "3 processos"
+      }
+    }
+  ],
+  "panelMetrics": {
+    "default": [
+      "main-critical-hospital",
+      "main-staff",
+      "main-maintenance",
+      "main-waiting",
+      "additional-hospital-critico",
+      "additional-burnout",
+      "additional-manutencao",
+      "additional-taxa-giro"
+    ],
+    "custom": [
+      "main-critical-hospital",
+      "main-waiting",
+      "custom-metric-1",
+      "additional-burnout",
+      "additional-eficiencia",
+      "custom-metric-2",
+      "custom-metric-3"
+    ]
+  },
+  "metricTypes": {
+    "main": [
+      {
+        "value": "critical-hospital",
+        "label": "Hospital Crítico",
+        "description": "Alerta sobre hospital com ocupação crítica",
+        "icon": "AlertTriangle"
+      },
+      {
+        "value": "staff",
+        "label": "Déficit de Equipes",
+        "description": "Alerta sobre problemas com equipes",
+        "icon": "Users"
+      },
+      {
+        "value": "maintenance",
+        "label": "Manutenção de Equipamentos",
+        "description": "Status de equipamentos em manutenção",
+        "icon": "Settings"
+      },
+      {
+        "value": "waiting",
+        "label": "Tempo de Espera",
+        "description": "Monitoramento de tempo de espera",
+        "icon": "Clock"
+      }
+    ],
+    "additional": [
+      {
+        "value": "hospital-critico",
+        "label": "Hospital Crítico",
+        "description": "Detalhes sobre hospital em situação crítica",
+        "icon": "AlertTriangle"
+      },
+      {
+        "value": "burnout",
+        "label": "Risco de Burnout",
+        "description": "Nível de estresse das equipes",
+        "icon": "Users"
+      },
+      {
+        "value": "manutencao",
+        "label": "Manutenção",
+        "description": "Status de leitos em manutenção",
+        "icon": "Settings"
+      },
+      {
+        "value": "taxa-giro",
+        "label": "Taxa de Giro",
+        "description": "Rotatividade de pacientes por leito",
+        "icon": "RotateCcw"
+      },
+      {
+        "value": "eficiencia",
+        "label": "Eficiência Operacional",
+        "description": "Performance geral do hospital",
+        "icon": "TrendingUp"
+      },
+      {
+        "value": "ocupacao",
+        "label": "Ocupação Média",
+        "description": "Taxa média de ocupação de leitos",
+        "icon": "Activity"
+      },
+      {
+        "value": "variacao",
+        "label": "Variação de Pacientes",
+        "description": "Variação entre departamentos",
+        "icon": "BarChart"
+      },
+      {
+        "value": "treinamento",
+        "label": "Treinamento Profissional",
+        "description": "Status de capacitação das equipes",
+        "icon": "GraduationCap"
+      }
+    ]
   }
 }
