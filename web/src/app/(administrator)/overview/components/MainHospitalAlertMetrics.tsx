@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from 'react';
+import React, { useState } from 'react';
 import { Card } from "@/components/ui/organisms/card";
 import { INetworkData } from "@/types/hospital-network-types";
-import { AlertCircle, AlertTriangle, Clock, LucideIcon, Settings, Users } from "lucide-react";
+import { AlertCircle, AlertTriangle, Clock, LucideIcon, Plus, Settings, Users } from "lucide-react";
+import { Button } from '@/components/ui/organisms/button';
 
 type TCardType = 'critical-hospital' | 'staff' | 'maintenance' | 'waiting';
 type TSituation = 'normal' | 'attention' | 'critical';
@@ -109,6 +110,7 @@ interface MainHospitalAlertMetricsProps {
     criticalOccupancyThreshold?: number;
     staffingNormsThreshold?: number;
     emergencyWaitTimeThreshold?: number;
+    isMainSection?: boolean;
 }
 
 interface IAlertCard {
@@ -132,8 +134,11 @@ export const MainHospitalAlertMetrics: React.FC<MainHospitalAlertMetricsProps> =
     visibleMetrics,
     criticalOccupancyThreshold = 90,
     staffingNormsThreshold = 0.6,
-    emergencyWaitTimeThreshold = 4
+    emergencyWaitTimeThreshold = 4,
+    isMainSection
   }) => {
+    const [isAddMetricModalOpen, setIsAddMetricModalOpen] = useState(false);
+    
     const calculateAlertMetrics = () => {
         const filteredHospitals = selectedRegion && selectedRegion !== 'all'
             ? networkData?.hospitals.filter(h => h.unit.state === selectedRegion)
@@ -227,22 +232,47 @@ export const MainHospitalAlertMetrics: React.FC<MainHospitalAlertMetricsProps> =
     ];
 
     // Filtrar os cards com base nas métricas visíveis
-    const filteredCards = visibleMetrics 
-        ? alertCards.filter(card => visibleMetrics.includes(card.cardType))
-        : alertCards;
+    const filteredCards = visibleMetrics && visibleMetrics.length > 0
+    ? alertCards.filter(card => {
+        // Remover "main-" do início para compatibilidade com os IDs no backend
+        const cardTypeMatches = visibleMetrics.some(metricId => 
+            metricId.endsWith(card.cardType) || 
+            metricId === card.cardType);
+        return cardTypeMatches;
+    })
+    : alertCards;
+
+    const renderNotFoundMetric = (type: 'main' | 'additional') => {
+        return (
+            <div className="flex flex-col items-center justify-center p-8 bg-gray-800/30 rounded-xl border border-gray-700/30 text-center">
+                <div className="w-16 h-16 rounded-full bg-gray-700/50 flex items-center justify-center mb-4">
+                    <Plus className="w-8 h-8 text-gray-400" />
+                </div>
+                <h3 className="text-lg font-medium text-gray-300 mb-2">
+                    {type === 'main' 
+                    ? 'Nenhuma métrica principal encontrada' 
+                    : 'Nenhuma métrica adicional encontrada'}
+                </h3>
+                <p className="text-sm text-gray-400 mb-4 max-w-md">
+                    {type === 'main'
+                    ? 'Adicione métricas principais para monitorar os indicadores mais importantes do hospital'
+                    : 'Adicione métricas adicionais para visualizar mais informações sobre o desempenho do hospital'}
+                </p>
+                <Button 
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                    onClick={() => setIsAddMetricModalOpen(true)}
+                >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Adicionar Métricas
+                </Button>
+            </div>
+        );
+    };
     
     // Verificar se há métricas para exibir
     if (filteredCards.length === 0) {
-        return (
-            <div className="flex justify-center items-center h-48 bg-gray-100 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-                <p className="text-gray-500 dark:text-gray-400">
-                    Nenhuma métrica principal selecionada. {' '}
-                    <button className="text-blue-500 hover:underline">
-                        Adicionar métricas
-                    </button>
-                </p>
-            </div>
-        );
+        // Determinar o tipo com base em alguma condição do componente
+        return renderNotFoundMetric(isMainSection ? 'main' : 'additional');
     }
   
     return (

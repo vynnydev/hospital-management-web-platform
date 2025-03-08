@@ -105,9 +105,9 @@
                     "bloodType": "O+",
                     "photo": "",
                     "contactInfo": {
-                        "phone": "11987654321",
-                        "emergency": "11987654322",
-                        "address": "Rua dos Ipês, 123 - Jardim Paulista"
+                      "phone": "11987654321",
+                      "emergency": "11987654322",
+                      "address": "Rua dos Ipês, 123 - Jardim Paulista"
                     },
                     "careHistory": {
                       "admissionId": "ADM-001",
@@ -248,9 +248,9 @@
                     "bloodType": "A-",
                     "photo": "",
                     "contactInfo": {
-                        "phone": "11998765432",
-                        "emergency": "11998765433",
-                        "address": "Avenida Paulista, 1578 - Bela Vista"
+                      "phone": "11998765432",
+                      "emergency": "11998765433",
+                      "address": "Avenida Paulista, 1578 - Bela Vista"
                     },
                     "careHistory": {
                       "admissionId": "ADM-002",
@@ -519,9 +519,9 @@
                     "bloodType": "B+",
                     "photo": "",
                     "contactInfo": {
-                        "phone": "11976543210",
-                        "emergency": "11976543211",
-                        "address": "Rua Augusta, 789 - Consolação"
+                      "phone": "11976543210",
+                      "emergency": "11976543211",
+                      "address": "Rua Augusta, 789 - Consolação"
                     },
                     "careHistory": {
                       "admissionId": "ADM-003",
@@ -754,9 +754,9 @@
                       "bloodType": "AB+",
                       "photo": "",
                       "contactInfo": {
-                          "phone": "11965432109",
-                          "emergency": "11965432110",
-                          "address": "Rua Oscar Freire, 456 - Jardins"
+                        "phone": "11965432109",
+                        "emergency": "11965432110",
+                        "address": "Rua Oscar Freire, 456 - Jardins"
                       },
                       "statusHistory": [
                         {
@@ -1015,10 +1015,19 @@
         }
       },
       "medicalInfo": {
-        "allergies": ["Penicilina", "Dipirona"],
-        "chronicConditions": ["Hipertensão"],
-        "medications": ["Losartana 50mg - 1x ao dia"],
-        "previousSurgeries": ["Apendicectomia (2018)"],
+        "allergies": [
+          "Penicilina",
+          "Dipirona"
+        ],
+        "chronicConditions": [
+          "Hipertensão"
+        ],
+        "medications": [
+          "Losartana 50mg - 1x ao dia"
+        ],
+        "previousSurgeries": [
+          "Apendicectomia (2018)"
+        ],
         "observations": "Paciente com histórico familiar de problemas cardíacos."
       },
       "insuranceInfo": {
@@ -1068,8 +1077,12 @@
       },
       "medicalInfo": {
         "allergies": [],
-        "chronicConditions": ["Diabetes Tipo 2"],
-        "medications": ["Metformina 850mg - 2x ao dia"],
+        "chronicConditions": [
+          "Diabetes Tipo 2"
+        ],
+        "medications": [
+          "Metformina 850mg - 2x ao dia"
+        ],
         "previousSurgeries": [],
         "observations": ""
       },
@@ -1317,8 +1330,16 @@
         "department": "UTI",
         "shift": "Manhã",
         "leader": "D001",
-        "members": ["D001", "N001", "N002", "N003"],
-        "specialties": ["Cardiologia", "Enfermagem"],
+        "members": [
+          "D001",
+          "N001",
+          "N002",
+          "N003"
+        ],
+        "specialties": [
+          "Cardiologia",
+          "Enfermagem"
+        ],
         "status": "active",
         "capacityStatus": "optimal",
         "metrics": {
@@ -1360,8 +1381,16 @@
         "department": "UTI",
         "shift": "Tarde",
         "leader": "D004",
-        "members": ["D004", "N004", "N005", "N006"],
-        "specialties": ["Cardiologia", "Enfermagem"],
+        "members": [
+          "D004",
+          "N004",
+          "N005",
+          "N006"
+        ],
+        "specialties": [
+          "Cardiologia",
+          "Enfermagem"
+        ],
         "status": "active",
         "capacityStatus": "high_demand",
         "metrics": {
@@ -1391,8 +1420,16 @@
         "department": "Oncologia",
         "shift": "Manhã",
         "leader": "D004",
-        "members": ["D004", "N007", "N008", "N009"],
-        "specialties": ["Oncologia", "Enfermagem Oncológica"],
+        "members": [
+          "D004",
+          "N007",
+          "N008",
+          "N009"
+        ],
+        "specialties": [
+          "Oncologia",
+          "Enfermagem Oncológica"
+        ],
         "status": "active",
         "capacityStatus": "optimal",
         "metrics": {
@@ -1422,8 +1459,15 @@
         "department": "Pediatria",
         "shift": "Manhã",
         "leader": "D007",
-        "members": ["D007", "N010", "N011"],
-        "specialties": ["Pediatria", "Enfermagem Pediátrica"],
+        "members": [
+          "D007",
+          "N010",
+          "N011"
+        ],
+        "specialties": [
+          "Pediatria",
+          "Enfermagem Pediátrica"
+        ],
         "status": "active",
         "capacityStatus": "low_demand",
         "metrics": {
@@ -1441,8 +1485,16 @@
         "department": "Oncologia",
         "shift": "Manhã",
         "leader": "D006",
-        "members": ["D006", "N012", "N013", "N014"],
-        "specialties": ["Oncologia", "Enfermagem Oncológica"],
+        "members": [
+          "D006",
+          "N012",
+          "N013",
+          "N014"
+        ],
+        "specialties": [
+          "Oncologia",
+          "Enfermagem Oncológica"
+        ],
         "status": "active",
         "capacityStatus": "optimal",
         "metrics": {
@@ -1581,7 +1633,11 @@
           "period": "Manhã",
           "startTime": "07:00",
           "endTime": "13:00",
-          "staff": ["D001", "N001", "N002"],
+          "staff": [
+            "D001",
+            "N001",
+            "N002"
+          ],
           "status": "confirmed"
         },
         {
@@ -1591,7 +1647,11 @@
           "period": "Tarde",
           "startTime": "13:00",
           "endTime": "19:00",
-          "staff": ["D004", "N004", "N005"],
+          "staff": [
+            "D004",
+            "N004",
+            "N005"
+          ],
           "status": "confirmed"
         }
       ]
@@ -1600,69 +1660,213 @@
   "resources": {
     "RD4H-SP-ITAIM": {
       "equipmentStatus": {
-        "respirators": {"total": 65, "available": 10, "maintenance": 5},  
-        "monitors": {"total": 120, "available": 25, "maintenance": 8},
-        "defibrillators": {"total": 30, "available": 18, "maintenance": 2},
-        "imagingDevices": {"total": 12, "available": 5, "maintenance": 1}
+        "respirators": {
+          "total": 65,
+          "available": 10,
+          "maintenance": 5
+        },
+        "monitors": {
+          "total": 120,
+          "available": 25,
+          "maintenance": 8
+        },
+        "defibrillators": {
+          "total": 30,
+          "available": 18,
+          "maintenance": 2
+        },
+        "imagingDevices": {
+          "total": 12,
+          "available": 5,
+          "maintenance": 1
+        }
       },
       "bedStatus": {
-        "icu": {"total": 50, "available": 12},
-        "emergency": {"total": 35, "available": 8},
-        "general": {"total": 150, "available": 45},
-        "surgery": {"total": 25, "available": 7},
-        "pediatric": {"total": 30, "available": 14}
+        "icu": {
+          "total": 50,
+          "available": 12
+        },
+        "emergency": {
+          "total": 35,
+          "available": 8
+        },
+        "general": {
+          "total": 150,
+          "available": 45
+        },
+        "surgery": {
+          "total": 25,
+          "available": 7
+        },
+        "pediatric": {
+          "total": 30,
+          "available": 14
+        }
       },
       "suppliesStatus": {
-        "medications": {"criticalLow": 5, "lowStock": 7, "normal": 20},
-        "bloodBank": {"criticalLow": 3, "lowStock": 2, "normal": 3},   
-        "ppe": {"criticalLow": 0, "lowStock": 3, "normal": 8}
+        "medications": {
+          "criticalLow": 5,
+          "lowStock": 7,
+          "normal": 20
+        },
+        "bloodBank": {
+          "criticalLow": 3,
+          "lowStock": 2,
+          "normal": 3
+        },
+        "ppe": {
+          "criticalLow": 0,
+          "lowStock": 3,
+          "normal": 8
+        }
       },
       "transferRequests": [
-        {"patientId": "P1001", "severity": "high", "requiredSpecialty": "cardiology", "requestTime": "2025-02-19T10:30:00Z"},
-        {"patientId": "P1042", "severity": "medium", "requiredSpecialty": "neurology", "requestTime": "2025-02-19T11:15:00Z"}
+        {
+          "patientId": "P1001",
+          "severity": "high",
+          "requiredSpecialty": "cardiology",
+          "requestTime": "2025-02-19T10:30:00Z"
+        },
+        {
+          "patientId": "P1042",
+          "severity": "medium",
+          "requiredSpecialty": "neurology",
+          "requestTime": "2025-02-19T11:15:00Z"
+        }
       ]
     },
     "RD4H-SP-MORUMBI": {
       "equipmentStatus": {
-        "respirators": {"total": 45, "available": 35, "maintenance": 3},
-        "monitors": {"total": 90, "available": 72, "maintenance": 5},
-        "defibrillators": {"total": 25, "available": 20, "maintenance": 1},
-        "imagingDevices": {"total": 8, "available": 3, "maintenance": 2}
+        "respirators": {
+          "total": 45,
+          "available": 35,
+          "maintenance": 3
+        },
+        "monitors": {
+          "total": 90,
+          "available": 72,
+          "maintenance": 5
+        },
+        "defibrillators": {
+          "total": 25,
+          "available": 20,
+          "maintenance": 1
+        },
+        "imagingDevices": {
+          "total": 8,
+          "available": 3,
+          "maintenance": 2
+        }
       },
       "bedStatus": {
-        "icu": {"total": 40, "available": 8},
-        "emergency": {"total": 30, "available": 5},
-        "general": {"total": 120, "available": 38},
-        "surgery": {"total": 20, "available": 4},
-        "pediatric": {"total": 25, "available": 11}
+        "icu": {
+          "total": 40,
+          "available": 8
+        },
+        "emergency": {
+          "total": 30,
+          "available": 5
+        },
+        "general": {
+          "total": 120,
+          "available": 38
+        },
+        "surgery": {
+          "total": 20,
+          "available": 4
+        },
+        "pediatric": {
+          "total": 25,
+          "available": 11
+        }
       },
       "suppliesStatus": {
-        "medications": {"criticalLow": 0, "lowStock": 2, "normal": 45},
-        "bloodBank": {"criticalLow": 0, "lowStock": 1, "normal": 12},  
-        "ppe": {"criticalLow": 0, "lowStock": 1, "normal": 15}
+        "medications": {
+          "criticalLow": 0,
+          "lowStock": 2,
+          "normal": 45
+        },
+        "bloodBank": {
+          "criticalLow": 0,
+          "lowStock": 1,
+          "normal": 12
+        },
+        "ppe": {
+          "criticalLow": 0,
+          "lowStock": 1,
+          "normal": 15
+        }
       },
       "transferRequests": [
-        {"patientId": "P2076", "severity": "high", "requiredSpecialty": "pulmonology", "requestTime": "2025-02-19T09:45:00Z"}
+        {
+          "patientId": "P2076",
+          "severity": "high",
+          "requiredSpecialty": "pulmonology",
+          "requestTime": "2025-02-19T09:45:00Z"
+        }
       ]
     },
     "RD4H-RJ-COPA": {
       "equipmentStatus": {
-        "respirators": {"total": 55, "available": 20, "maintenance": 4},
-        "monitors": {"total": 100, "available": 36, "maintenance": 6},
-        "defibrillators": {"total": 28, "available": 14, "maintenance": 3},
-        "imagingDevices": {"total": 10, "available": 4, "maintenance": 1}
+        "respirators": {
+          "total": 55,
+          "available": 20,
+          "maintenance": 4
+        },
+        "monitors": {
+          "total": 100,
+          "available": 36,
+          "maintenance": 6
+        },
+        "defibrillators": {
+          "total": 28,
+          "available": 14,
+          "maintenance": 3
+        },
+        "imagingDevices": {
+          "total": 10,
+          "available": 4,
+          "maintenance": 1
+        }
       },
       "bedStatus": {
-        "icu": {"total": 45, "available": 10},
-        "emergency": {"total": 32, "available": 7},
-        "general": {"total": 135, "available": 42},
-        "surgery": {"total": 22, "available": 6},
-        "pediatric": {"total": 28, "available": 13}
+        "icu": {
+          "total": 45,
+          "available": 10
+        },
+        "emergency": {
+          "total": 32,
+          "available": 7
+        },
+        "general": {
+          "total": 135,
+          "available": 42
+        },
+        "surgery": {
+          "total": 22,
+          "available": 6
+        },
+        "pediatric": {
+          "total": 28,
+          "available": 13
+        }
       },
       "suppliesStatus": {
-        "medications": {"criticalLow": 2, "lowStock": 8, "normal": 45},
-        "bloodBank": {"criticalLow": 0, "lowStock": 2, "normal": 6},
-        "ppe": {"criticalLow": 0, "lowStock": 2, "normal": 9}
+        "medications": {
+          "criticalLow": 2,
+          "lowStock": 8,
+          "normal": 45
+        },
+        "bloodBank": {
+          "criticalLow": 0,
+          "lowStock": 2,
+          "normal": 6
+        },
+        "ppe": {
+          "criticalLow": 0,
+          "lowStock": 2,
+          "normal": 9
+        }
       },
       "transferRequests": []
     }
@@ -1680,7 +1884,11 @@
       "estimatedVictims": 15,
       "timestamp": "2025-02-19T14:30:00Z",
       "status": "active",
-      "respondingUnits": ["ambulance-3", "ambulance-7", "helicopter-1"]
+      "respondingUnits": [
+        "ambulance-3",
+        "ambulance-7",
+        "helicopter-1"
+      ]
     },
     {
       "id": "alert-002",
@@ -1694,7 +1902,9 @@
       "estimatedVictims": 8,
       "timestamp": "2025-02-19T15:15:00Z",
       "status": "pending",
-      "respondingUnits": ["ambulance-12"]
+      "respondingUnits": [
+        "ambulance-12"
+      ]
     }
   ],
   "resourceDeployment": {
@@ -1715,13 +1925,33 @@
         "next7d": 612
       },
       "resourceNeeds": {
-        "icu": {"current": 38, "predicted": 45, "trend": "increasing"},
-        "emergency": {"current": 27, "predicted": 32, "trend": "stable"},
-        "general": {"current": 105, "predicted": 118, "trend": "increasing"}
+        "icu": {
+          "current": 38,
+          "predicted": 45,
+          "trend": "increasing"
+        },
+        "emergency": {
+          "current": 27,
+          "predicted": 32,
+          "trend": "stable"
+        },
+        "general": {
+          "current": 105,
+          "predicted": 118,
+          "trend": "increasing"
+        }
       },
       "seasonalFactors": [
-        {"factor": "flu_season", "impact": "high", "probability": 0.85},
-        {"factor": "holiday_weekend", "impact": "medium", "probability": 0.72}
+        {
+          "factor": "flu_season",
+          "impact": "high",
+          "probability": 0.85
+        },
+        {
+          "factor": "holiday_weekend",
+          "impact": "medium",
+          "probability": 0.72
+        }
       ]
     },
     "RD4H-SP-MORUMBI": {
@@ -1731,13 +1961,33 @@
         "next7d": 485
       },
       "resourceNeeds": {
-        "icu": {"current": 32, "predicted": 36, "trend": "stable"},
-        "emergency": {"current": 25, "predicted": 28, "trend": "stable"},
-        "general": {"current": 82, "predicted": 95, "trend": "increasing"}
+        "icu": {
+          "current": 32,
+          "predicted": 36,
+          "trend": "stable"
+        },
+        "emergency": {
+          "current": 25,
+          "predicted": 28,
+          "trend": "stable"
+        },
+        "general": {
+          "current": 82,
+          "predicted": 95,
+          "trend": "increasing"
+        }
       },
       "seasonalFactors": [
-        {"factor": "flu_season", "impact": "medium", "probability": 0.76},
-        {"factor": "local_event", "impact": "low", "probability": 0.45}
+        {
+          "factor": "flu_season",
+          "impact": "medium",
+          "probability": 0.76
+        },
+        {
+          "factor": "local_event",
+          "impact": "low",
+          "probability": 0.45
+        }
       ]
     },
     "RD4H-RJ-COPA": {
@@ -1747,30 +1997,80 @@
         "next7d": 530
       },
       "resourceNeeds": {
-        "icu": {"current": 35, "predicted": 40, "trend": "increasing"},
-        "emergency": {"current": 25, "predicted": 30, "trend": "increasing"},
-        "general": {"current": 93, "predicted": 102, "trend": "stable"}
+        "icu": {
+          "current": 35,
+          "predicted": 40,
+          "trend": "increasing"
+        },
+        "emergency": {
+          "current": 25,
+          "predicted": 30,
+          "trend": "increasing"
+        },
+        "general": {
+          "current": 93,
+          "predicted": 102,
+          "trend": "stable"
+        }
       },
       "seasonalFactors": [
-        {"factor": "flu_season", "impact": "high", "probability": 0.82},
-        {"factor": "weather_event", "impact": "medium", "probability": 0.68}
+        {
+          "factor": "flu_season",
+          "impact": "high",
+          "probability": 0.82
+        },
+        {
+          "factor": "weather_event",
+          "impact": "medium",
+          "probability": 0.68
+        }
       ]
     }
   },
   "networkAnalysis": {
     "optimalResourceDistribution": {
       "staffReallocation": [
-        {"from": "RD4H-SP-ITAIM", "to": "RD4H-RJ-COPA", "specialty": "emergency", "count": 3},
-        {"from": "RD4H-SP-MORUMBI", "to": "RD4H-SP-ITAIM", "specialty": "icu", "count": 2}
+        {
+          "from": "RD4H-SP-ITAIM",
+          "to": "RD4H-RJ-COPA",
+          "specialty": "emergency",
+          "count": 3
+        },
+        {
+          "from": "RD4H-SP-MORUMBI",
+          "to": "RD4H-SP-ITAIM",
+          "specialty": "icu",
+          "count": 2
+        }
       ],
       "equipmentReallocation": [
-        {"from": "RD4H-SP-ITAIM", "to": "RD4H-SP-MORUMBI", "equipment": "respirators", "count": 5},
-        {"from": "RD4H-RJ-COPA", "to": "RD4H-SP-ITAIM", "equipment": "monitors", "count": 8}
+        {
+          "from": "RD4H-SP-ITAIM",
+          "to": "RD4H-SP-MORUMBI",
+          "equipment": "respirators",
+          "count": 5
+        },
+        {
+          "from": "RD4H-RJ-COPA",
+          "to": "RD4H-SP-ITAIM",
+          "equipment": "monitors",
+          "count": 8
+        }
       ]
     },
     "bottlenecks": [
-      {"hospital": "RD4H-SP-ITAIM", "department": "emergency", "issue": "staff_shortage", "severity": "medium"},
-      {"hospital": "RD4H-SP-MORUMBI", "department": "icu", "issue": "equipment_shortage", "severity": "high"}
+      {
+        "hospital": "RD4H-SP-ITAIM",
+        "department": "emergency",
+        "issue": "staff_shortage",
+        "severity": "medium"
+      },
+      {
+        "hospital": "RD4H-SP-MORUMBI",
+        "department": "icu",
+        "issue": "equipment_shortage",
+        "severity": "high"
+      }
     ]
   },
   "ambulanceData": {
@@ -1783,7 +2083,11 @@
           "type": "basic",
           "status": "available",
           "capacity": 1,
-          "equipment": ["stretcher", "first_aid", "oxygen"],
+          "equipment": [
+            "stretcher",
+            "first_aid",
+            "oxygen"
+          ],
           "currentLocation": {
             "lat": -23.5858,
             "lng": -46.6796
@@ -1799,7 +2103,13 @@
           "type": "advanced",
           "status": "dispatched",
           "capacity": 1,
-          "equipment": ["stretcher", "first_aid", "oxygen", "defibrillator", "monitor"],
+          "equipment": [
+            "stretcher",
+            "first_aid",
+            "oxygen",
+            "defibrillator",
+            "monitor"
+          ],
           "currentLocation": {
             "lat": -23.5658,
             "lng": -46.6696
@@ -1821,7 +2131,14 @@
           "type": "intensive",
           "status": "returning",
           "capacity": 1,
-          "equipment": ["stretcher", "first_aid", "oxygen", "defibrillator", "ventilator", "monitor"],
+          "equipment": [
+            "stretcher",
+            "first_aid",
+            "oxygen",
+            "defibrillator",
+            "ventilator",
+            "monitor"
+          ],
           "currentLocation": {
             "lat": -23.5458,
             "lng": -46.6596
@@ -1846,7 +2163,11 @@
           "type": "basic",
           "status": "available",
           "capacity": 1,
-          "equipment": ["stretcher", "first_aid", "oxygen"],
+          "equipment": [
+            "stretcher",
+            "first_aid",
+            "oxygen"
+          ],
           "currentLocation": {
             "lat": -23.6058,
             "lng": -46.7196
@@ -1862,7 +2183,13 @@
           "type": "advanced",
           "status": "available",
           "capacity": 1,
-          "equipment": ["stretcher", "first_aid", "oxygen", "defibrillator", "monitor"],
+          "equipment": [
+            "stretcher",
+            "first_aid",
+            "oxygen",
+            "defibrillator",
+            "monitor"
+          ],
           "currentLocation": {
             "lat": -23.6158,
             "lng": -46.7296
@@ -1880,9 +2207,15 @@
           "type": "advanced",
           "status": "available",
           "capacity": 1,
-          "equipment": ["stretcher", "first_aid", "oxygen", "defibrillator", "monitor"],
+          "equipment": [
+            "stretcher",
+            "first_aid",
+            "oxygen",
+            "defibrillator",
+            "monitor"
+          ],
           "currentLocation": {
-            "lat": -22.9700,
+            "lat": -22.97,
             "lng": -43.1836
           },
           "hospitalId": "RD4H-RJ-COPA",
@@ -1896,9 +2229,16 @@
           "type": "intensive",
           "status": "maintenance",
           "capacity": 1,
-          "equipment": ["stretcher", "first_aid", "oxygen", "defibrillator", "ventilator", "monitor"],
+          "equipment": [
+            "stretcher",
+            "first_aid",
+            "oxygen",
+            "defibrillator",
+            "ventilator",
+            "monitor"
+          ],
           "currentLocation": {
-            "lat": -22.9750,
+            "lat": -22.975,
             "lng": -43.1856
           },
           "hospitalId": "RD4H-RJ-COPA",
@@ -1950,8 +2290,8 @@
             "name": "Hospital 4Saúde",
             "address": "Av. Paulista, 200",
             "coordinates": {
-              "lat": -23.5700,
-              "lng": -46.6500
+              "lat": -23.57,
+              "lng": -46.65
             }
           },
           "destination": {
@@ -1999,7 +2339,10 @@
             "name": "Ana Silva",
             "age": 68,
             "gender": "F",
-            "symptoms": ["chest pain", "shortness of breath"],
+            "symptoms": [
+              "chest pain",
+              "shortness of breath"
+            ],
             "condition": "Possível infarto",
             "emergencyLevel": "high"
           },
@@ -2022,7 +2365,11 @@
             "name": "Pedro Souza",
             "age": 45,
             "gender": "M",
-            "symptoms": ["severe headache", "dizziness", "nausea"],
+            "symptoms": [
+              "severe headache",
+              "dizziness",
+              "nausea"
+            ],
             "condition": "Possível AVC",
             "emergencyLevel": "critical"
           },
@@ -2047,7 +2394,10 @@
             "name": "Idoso não identificado",
             "age": 75,
             "gender": "M",
-            "symptoms": ["unconscious", "fall"],
+            "symptoms": [
+              "unconscious",
+              "fall"
+            ],
             "condition": "Queda em via pública",
             "emergencyLevel": "high"
           },
@@ -2401,5 +2751,7208 @@
         "icon": "GraduationCap"
       }
     ]
-  }
+  },
+  "userMetrics": [
+    {
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [
+          "main-critical-hospital",
+          "main-staff",
+          "main-maintenance",
+          "main-waiting",
+          "additional-hospital-critico",
+          "additional-burnout",
+          "additional-manutencao",
+          "additional-taxa-giro"
+        ],
+        "custom": [
+          "main-critical-hospital",
+          "main-waiting",
+          "custom-metric-1",
+          "additional-burnout",
+          "additional-eficiencia",
+          "custom-metric-2",
+          "custom-metric-3"
+        ]
+      },
+      "favorites": [
+        "main-critical-hospital",
+        "additional-burnout"
+      ],
+      "id": "user-metrics-USR001"
+    },
+    {
+      "userId": "USR002",
+      "panelMetrics": {
+        "default": [
+          "main-critical-hospital",
+          "main-staff",
+          "additional-hospital-critico",
+          "additional-ocupacao"
+        ]
+      },
+      "favorites": [],
+      "id": "user-metrics-USR002"
+    },
+    {
+      "userId": "USR003",
+      "panelMetrics": {
+        "default": [
+          "main-maintenance",
+          "main-waiting",
+          "additional-manutencao",
+          "additional-taxa-giro"
+        ]
+      },
+      "favorites": [],
+      "id": "user-metrics-USR003"
+    },
+    {
+      "id": "2897",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b947",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "9822",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "720b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "591a",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "6d2c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "e25a",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "40a1",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0a60",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "f6f0",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "fe17",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2b2b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "cdb7",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "26d3",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ca74",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "1121",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "4349",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b457",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a704",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d399",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b8fb",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "93c9",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b10c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "64c1",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "9002",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "472d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d164",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "29f6",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "566a",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ef3c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8ff4",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5f2b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "3d2c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7939",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ec94",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "dc9c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "29e9",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "bdc1",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "286d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7f01",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7d89",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7965",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0349",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "6740",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "203e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7d38",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "e11b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c690",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "841b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "32da",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "72aa",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ba42",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "99a3",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "59bc",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b781",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "77ee",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "3427",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "f4df",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ee7c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2ebd",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0f4c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "877c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "656f",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c799",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "aaa2",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ada8",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "70d5",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ba13",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c226",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "45b9",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "947b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c45f",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c35d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b268",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ef3d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5300",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5358",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "12f4",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "452d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "e7f9",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5c11",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "fa00",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "56f8",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7910",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d84e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "984d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7e7b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7e43",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "bb57",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "4d9f",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "fa4f",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "9d53",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5aad",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2fbd",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "739e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "da0e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "82b8",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "19bd",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8f1e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b62d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5365",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d17f",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "e3b2",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "39b0",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2113",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8c05",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "87b0",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "bfd4",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "4658",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "fbe2",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "228b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a4f1",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2a95",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d0b6",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "9c9b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a393",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "701a",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "6cd1",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "859e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "18b4",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c44e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c257",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d040",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "70d3",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ec6c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a7ad",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "e197",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a2ae",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "e446",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "beac",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d909",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "32fd",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2894",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "22cc",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "6310",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7543",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "47d8",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "069a",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d27d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5e49",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "679b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b930",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "df08",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "e0a2",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "3546",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "56bb",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "3451",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5490",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "025a",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "feac",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c39b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "818d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "06a5",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7743",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2ea6",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c537",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c65b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "6ac2",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5cda",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8753",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7862",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ca19",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8ee2",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "9e01",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "e828",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "e42f",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "9d8e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8f59",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "fbbd",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0b30",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "cb30",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2488",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0bc4",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d7f1",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "16e0",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2dfd",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0a1a",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "1f98",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "709e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "e216",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "9aec",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b16c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8b77",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "be96",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2195",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "9db6",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "af1f",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2f7e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8b57",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a53f",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2929",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "df11",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "3233",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "61ea",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7342",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0505",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ed91",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "37b0",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "dc3e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "e3a7",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "9b6e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "1675",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "4009",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "78ac",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "4e47",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d271",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "098f",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7fb5",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "6c2e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b830",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "dd8b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "789b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "e1fe",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c71b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2115",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "518b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "94f7",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7792",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "3226",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "68c5",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "72a1",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7eb0",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "1409",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "6e4a",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "1cbd",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ad10",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "1e17",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ccaf",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "acab",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7766",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0a7e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8b65",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "1195",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "11f4",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "bc87",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "f8cf",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "f73c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "75e0",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0e81",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "bc7d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "e55e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "e53b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c841",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ef64",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "f637",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "9455",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "1ee8",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "1dc6",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7344",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "49c8",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "fc5f",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "9134",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "af17",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "fa3d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b089",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c018",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7940",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7745",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ee20",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8b59",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "6a38",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "abf8",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "e514",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b457",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "635e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "4a8f",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "baaa",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "f02d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "4b39",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0b8d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0985",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8a3b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "1c98",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a952",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "f1ea",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "949b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a969",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7161",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "3513",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "3da2",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "86ad",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "177a",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7368",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c233",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "4582",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "94b2",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8cf5",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "6cdc",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ecbe",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "cc2e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2d3d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2d7c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "9726",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c859",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c8d8",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a182",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d793",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a9bb",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "567b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "121c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "f9ce",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "428f",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5a89",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "91ca",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b55c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7fbd",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "3cec",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0188",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "23dc",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ca57",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "4944",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "9c5d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8995",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "1a78",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "64be",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "e8e3",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8b40",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "6db2",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "eb2c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "fc11",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a5d7",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "f471",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "e479",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "03ad",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "138e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8061",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c736",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "4174",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "1f7a",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2893",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8693",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "afb9",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "44c0",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "6a85",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "cd5c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "1d1e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5e31",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "69b4",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "377a",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "af69",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "12a8",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5b46",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7d67",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "1282",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "feb4",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a151",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "02f8",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "fb62",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0f79",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "eba6",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0733",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b366",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "03b2",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "e0c7",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2ed8",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b1b0",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a45c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d208",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "50fc",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a355",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "4c83",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7591",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "6c5a",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "028c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b58d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0334",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "87a3",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c108",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b0b8",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "6f7b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2ca5",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c020",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "50a8",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0494",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "39fd",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8b23",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a2de",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "26a3",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "afa1",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "716d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "38b5",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5163",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7322",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "051c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b412",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "84e6",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7dd3",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7096",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "26ea",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c867",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8a80",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "dbba",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "aed0",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "aaf2",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7659",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "9d03",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5026",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "1322",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "035f",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "48fd",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "e5ff",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "6333",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "da0a",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d9d1",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ae2c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b6e0",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7ff3",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d962",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "9e88",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "230b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "6d58",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5942",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a689",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "3d40",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2aa1",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8311",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7512",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b85d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "3191",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "11f1",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "6d1e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "9ae3",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "edeb",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "117b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ed0f",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "18aa",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "83c6",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "12af",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7568",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c21b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "6a20",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ba44",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "3598",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "34c1",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c89c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "3369",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "6c8c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "21bb",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "cdda",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2cfd",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7809",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a3cd",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "e82d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "bee2",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "f2e7",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "105f",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a67f",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c074",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "1ee2",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ba8c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2fb3",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "43d3",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a482",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7cf5",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a645",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "838a",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5333",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "1222",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d2d0",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "81ba",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2926",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "e407",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d292",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0322",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8da3",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0a28",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "4d62",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0def",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "124b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b716",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "61d1",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5925",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d28e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d617",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5bce",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2c84",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "e161",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "49fb",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "4df8",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a60d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "204f",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "6f7a",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "57a9",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "9a07",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "f3f4",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "9051",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d09b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "4e64",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0d0a",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "50af",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "dc05",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b3d6",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d826",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7de3",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5e3f",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a201",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b5e0",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "dd36",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b69f",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "bf6b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "91ac",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0686",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5969",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5467",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "1de9",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "888d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "62ed",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8a9c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c8b0",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a5f8",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "f4a8",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "cea4",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "aefe",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "54c3",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7346",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "9f82",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c7e9",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7f96",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "cb41",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a209",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "be1c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "3c96",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c443",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7b41",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "cd70",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ca5d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "1eb7",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "34b2",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "275e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "6c2a",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "926a",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7e95",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "4e77",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "add8",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "3517",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "1239",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ac17",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "02b7",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "9cb0",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b090",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c370",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "bb72",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "f98a",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ed81",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "e141",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "e2d7",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "4791",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "9abe",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "cd56",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "cb63",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "1ad5",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "e464",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2c91",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d4a2",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "e0e6",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d3a3",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "1d8b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b687",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0db1",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "69f1",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8ee6",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b555",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "56a5",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "9705",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "4619",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "9719",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "081e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "1519",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a269",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "bf2a",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8bd2",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "29d9",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c168",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5224",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0761",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a2cc",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8e44",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7ef7",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "709b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "712d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5e2a",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "4159",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "00b1",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "e4ca",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c24f",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "4314",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "50e4",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "73d9",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ce6e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "4a62",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7724",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a3f8",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ad33",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "58b9",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7fc8",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "4df7",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5ae0",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a874",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "aeba",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d4e0",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c9ef",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "881a",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "3145",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8987",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "674e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "4fb7",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "1828",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0de6",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "67a9",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "76a5",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b911",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a477",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0102",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8dff",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d374",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8966",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "39ca",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d0c3",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "17a3",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8150",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a724",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5da2",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "cc2d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b4a1",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "cdb2",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a829",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "56d8",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5322",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "abf6",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "010f",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "6a21",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b9ac",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "dd6e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2109",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "1262",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5ea0",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "f4ed",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b2c1",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "163e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d254",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d1c7",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b20f",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "3b17",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "e284",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8cff",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5dcf",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a00d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0922",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "95fa",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "54f3",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "45db",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b811",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d6d8",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b113",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "357a",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "299e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8639",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "02f4",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "3507",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "4d2c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "56a9",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c93d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "739c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "196f",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2122",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a233",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8fbc",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "bf86",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "f3a0",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "bc45",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "75c3",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7a08",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "f163",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "68b5",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "da44",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2d19",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b444",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "49f8",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5f23",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "59fd",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2c13",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "f935",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "87ed",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "f7ad",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "be73",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "65b2",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "e6ac",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7f1b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "3d8a",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "85eb",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "cb8a",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "9856",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "f76d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "6fa1",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a4a7",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "62af",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a6b9",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "cd2e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ca21",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "543a",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "3713",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b564",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7a2e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ce70",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "045d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "3964",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "46e8",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "db94",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "4de3",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2d89",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "50e9",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0ddc",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "71a9",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2297",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2d11",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c3d2",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "db36",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b717",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d09d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5096",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "cb60",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5241",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ac0e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "aa74",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "afaa",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "9b17",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a3b4",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2507",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c626",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c91d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7954",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0d85",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "07e9",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d51c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "4166",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7e3a",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "aa7e",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2ff9",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "dcca",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "423c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d23b",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "3b01",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b29c",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "00d5",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5ffe",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "3150",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8e41",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "6468",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0c04",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "3c02",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "1098",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b6a2",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "fb94",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a8d2",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "29fd",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b4ae",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "731f",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7372",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "d0f5",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "acef",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "6120",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0dda",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "f4b4",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "1886",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "09e2",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ae19",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "16df",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "3779",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "8071",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "3704",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "28fe",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "64e0",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "3155",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c4dc",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "c046",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "3dc6",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "b51d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "83fa",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0db8",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5d75",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "1f17",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "03cb",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "3b37",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "17a9",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "ff06",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "812d",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "0497",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "a6b8",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "53e1",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "5cfb",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "7c13",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "9ed1",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "1c30",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    },
+    {
+      "id": "2e98",
+      "userId": "USR001",
+      "panelMetrics": {
+        "default": [],
+        "custom": []
+      },
+      "favorites": []
+    }
+  ]
 }

@@ -32,7 +32,7 @@ import {
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/organisms/tabs';
 import { Input } from '@/components/ui/organisms/input';
 import { MetricForm } from './MetricForm';
-import { TMetric } from '@/types/hospital-metrics';
+import { ICreateMetricPayload, TMetric } from '@/types/hospital-metrics';
 import { useMetrics } from '@/services/hooks/hospital-metrics/useMetrics';
 
 import { 
@@ -118,14 +118,27 @@ export const MetricManager: React.FC<MetricManagerProps> = ({ onAddToPanel }) =>
   const additionalMetrics = filteredMetrics.filter(metric => metric.type === 'additional');
   
   // Handlers
-  const handleAddMetric = async (formData: any) => {
-    await addMetric(formData);
+  const handleAddMetric = async (formData: ICreateMetricPayload): Promise<TMetric | null> => {
+    try {
+      const newMetric = await addMetric(formData);
+      return newMetric; // Certifique-se que addMetric retorna a métrica adicionada
+    } catch (error) {
+      console.error('Erro ao adicionar métrica:', error);
+      return null;
+    }
   };
   
-  const handleUpdateMetric = async (formData: any) => {
+  const handleUpdateMetric = async (formData: ICreateMetricPayload): Promise<TMetric | null> => {
     if (editingMetric) {
-      await updateMetric(editingMetric.id, formData);
+      try {
+        const updatedMetric = await updateMetric(editingMetric.id, formData);
+        return updatedMetric; // Certifique-se que updateMetric retorna a métrica atualizada
+      } catch (error) {
+        console.error('Erro ao atualizar métrica:', error);
+        return null;
+      }
     }
+    return null;
   };
   
   const handleDeleteMetric = async () => {
@@ -234,26 +247,7 @@ export const MetricManager: React.FC<MetricManagerProps> = ({ onAddToPanel }) =>
   
   return (
     <Card className="border-gray-800 bg-gray-100 dark:bg-gray-900 w-full">
-      <CardHeader>
-        <div className="flex justify-between items-start">
-          <div>
-            <CardTitle className="text-white flex items-center gap-2">
-              <Layers className="h-5 w-5 text-purple-500" />
-              Gerenciador de Métricas
-            </CardTitle>
-            <CardDescription className="text-gray-400">
-              Gerencie todas as métricas do sistema, padrão e personalizadas
-            </CardDescription>
-          </div>
-          
-          <Button onClick={() => { setEditingMetric(null); setIsFormOpen(true); }}>
-            <Plus className="h-4 w-4 mr-2" />
-            Nova Métrica
-          </Button>
-        </div>
-      </CardHeader>
-      
-      <CardContent>
+      <CardContent className='pt-6'>
         {/* Barra de pesquisa e filtros */}
         <div className="flex flex-col sm:flex-row items-center gap-4 mb-6">
           <div className="relative w-full sm:w-auto flex-1">
@@ -287,6 +281,11 @@ export const MetricManager: React.FC<MetricManagerProps> = ({ onAddToPanel }) =>
                 <SelectItem value="custom">Personalizadas</SelectItem>
               </SelectContent>
             </Select>
+            
+            <Button onClick={() => { setEditingMetric(null); setIsFormOpen(true); }}>
+              <Plus className="h-4 w-4 mr-2" />
+              Nova Métrica
+            </Button>
             
             {(searchTerm || filterType !== 'all') && (
               <Button variant="ghost" size="sm" onClick={clearFilters}>

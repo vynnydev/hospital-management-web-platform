@@ -40,7 +40,7 @@ export const MetricEditor: React.FC<MetricEditorProps> = ({
           Personalize visualizações e defina metas
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className=" space-y-4">
         <CustomizableMetrics 
           networkData={networkData}
         />

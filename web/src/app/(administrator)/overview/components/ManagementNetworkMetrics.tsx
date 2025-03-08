@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/organisms/button";
 import { Card, CardContent } from "@/components/ui/organisms/card";
 import { 
@@ -23,11 +23,13 @@ import {
   Edit3,
   X,
   Sparkles,
-  Brain
+  Brain,
+  LogIn
 } from 'lucide-react';
 import { IHospital, INetworkData } from '@/types/hospital-network-types';
 import { IntegrationsPreviewPressable } from '@/components/ui/organisms/IntegrationsPreviewPressable';
 import { ConfigurationAndUserModalMenus } from '@/components/ui/templates/modals/ConfigurationAndUserModalMenus';
+import { Button as PrimaryButton } from '@/components/ui/organisms/button';
 import {
   Dialog,
   DialogContent,
@@ -36,11 +38,13 @@ import {
   DialogTitle,
   DialogDescription
 } from '@/components/ui/organisms/dialog';
-import { useMetrics } from '@/services/hooks/hospital-metrics/useMetrics';
-import { TMetric } from '@/types/hospital-metrics';
+import { authService } from '@/services/auth/AuthService';
+import { Alert } from "@/components/ui/organisms/alert";
+import { AlertCircle } from 'lucide-react';
+import { useUserMetrics } from '@/services/hooks/user/metrics/useUserMetrics';
+import { usePermissions } from '@/services/hooks/auth/usePermissions';
 import { EditableMetricsPanel } from '@/components/ui/templates/hospital-metrics/EditableMetricsPanel';
 import { MetricManager } from '@/components/ui/templates/hospital-metrics/MetricManager';
-import { usePanelMetrics } from '@/services/hooks/hospital-metrics/usePanelMetrics';
 
 interface IHospitalMetrics {
   unit: {
@@ -95,14 +99,48 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isManagerModalOpen, setIsManagerModalOpen] = useState(false);
   const [defaultSection, setDefaultSection] = useState<string>('integrations');
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   
   // Estado para o modo de edição de métricas
   const [isEditMetricsMode, setIsEditMetricsMode] = useState(false);
   const [isAIGenerationModalOpen, setIsAIGenerationModalOpen] = useState(false);
   
-  // Hooks para métricas
-  const { metrics } = useMetrics();
-  const { panelMetrics, addToPanel, removeFromPanel } = usePanelMetrics('default');
+  // Referência para o componente de métricas para ajustar o blur
+  const metricsContainerRef = useRef<HTMLDivElement>(null);
+  
+  // Hook para métricas de usuário
+  const { 
+    isAuthenticated, 
+    isLoading, 
+    error,
+    refreshMetrics,
+    panelMetrics
+  } = useUserMetrics();
+  
+  // Hook para permissões
+  const { isAdmin, isHospitalManager } = usePermissions();
+  
+  // Verificar se usuário está autenticado
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  
+  useEffect(() => {
+    const checkAuth = () => {
+      const isAuth = authService.isAuthenticated();
+      setIsUserLoggedIn(isAuth);
+    };
+    
+    checkAuth();
+    
+    // Listener para mudanças de autenticação
+    window.addEventListener('storage', checkAuth);
+    
+    return () => {
+      window.removeEventListener('storage', checkAuth);
+    };
+  }, []);
+  
+  // Verificar se há métricas salvas
+  const hasMetrics = panelMetrics.length > 0;
   
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -122,52 +160,56 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
 
   // Função para alternar o modo de edição de métricas
   const toggleEditMetricsMode = () => {
+    if (!isUserLoggedIn) {
+      setIsLoginModalOpen(true);
+      return;
+    }
+    
     setIsEditMetricsMode(!isEditMetricsMode);
+    
+    if (!isEditMetricsMode) {
+      refreshMetrics();
+    }
   };
   
   // Abrir modal de gerenciamento de métricas
   const openMetricsManager = () => {
+    if (!isUserLoggedIn) {
+      setIsLoginModalOpen(true);
+      return;
+    }
+    
     setIsManagerModalOpen(true);
   };
   
   // Abrir modal de geração de métricas com IA
   const openAIGenerationModal = () => {
+    if (!isUserLoggedIn) {
+      setIsLoginModalOpen(true);
+      return;
+    }
+    
     setIsAIGenerationModalOpen(true);
   };
-
-  // Preparar métricas visíveis para o painel
-  const visibleMainMetrics = panelMetrics
-    .filter(metric => metric.type === 'main')
-    .map(metric => metric.id);
-    
-  const visibleAdditionalMetrics = panelMetrics
-    .filter(metric => metric.type === 'additional')
-    .map(metric => metric.id);
-
-  // Manipuladores para adição/remoção de métricas
-  const handleRemoveMainMetric = async (metricId: string) => {
-    await removeFromPanel(metricId);
-  };
   
-  const handleRemoveAdditionalMetric = async (metricId: string) => {
-    await removeFromPanel(metricId);
-  };
-  
-  const handleAddMetricById = async (metricId: string, type: 'main' | 'additional') => {
-    const metric = metrics.find(m => m.id === metricId);
-    if (metric) {
-      await addToPanel(metric);
+  // Função para fazer login
+  const handleLogin = async () => {
+    try {
+      await authService.login({
+        email: 'admin@4health.com',
+        password: '123'
+      });
+      
+      setIsLoginModalOpen(false);
+      refreshMetrics();
+    } catch (error) {
+      console.error('Erro ao fazer login:', error);
     }
-  };
-
-  const handleAddMetricToPanel = async (metric: TMetric) => {
-    await addToPanel(metric);
-    return true;
   };
 
   return (
     <>    
-      <Card className="w-full bg-white dark:bg-gray-800 shadow-lg rounded-3xl p-6">
+      <Card className="w-full bg-white dark:bg-gray-800 shadow-lg rounded-3xl p-6 relative">
         <CardContent className="p-0">
           <div className="flex flex-col space-y-6">
             {/* Network Info Section */}
@@ -195,13 +237,29 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
                 </div>
               </div>
 
-              
               <div className="flex items-center space-x-2">
+                {/* Botão de login/usuário */}
+                {!isUserLoggedIn ? (
+                  <Button
+                    onClick={() => setIsLoginModalOpen(true)}
+                    variant="outline"
+                    className="bg-blue-600 hover:bg-blue-700 text-white border-blue-700"
+                  >
+                    <LogIn size={18} className="mr-1" />
+                    <span>Entrar</span>
+                  </Button>
+                ) : (
+                  <div className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 rounded-md text-blue-800 dark:text-blue-300 text-sm">
+                    {authService.getCurrentUser()?.name || 'Usuário'}
+                  </div>
+                )}
+                
                 {/* Botão para gerar métricas com IA */}
                 <Button
                   onClick={openAIGenerationModal}
                   variant="outline"
                   className="bg-purple-100 hover:bg-purple-200 text-purple-800 border-purple-300 dark:bg-purple-900/30 dark:hover:bg-purple-800/50 dark:text-purple-300 dark:border-purple-800"
+                  disabled={!isUserLoggedIn}
                 >
                   <Brain size={18} className="mr-1" />
                   <span>IA Generativa</span>
@@ -212,6 +270,7 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
                   onClick={openMetricsManager}
                   variant="outline"
                   className="bg-gray-100 hover:bg-gray-200 text-gray-800 border-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-300 dark:border-gray-600"
+                  disabled={!isUserLoggedIn}
                 >
                   <Settings size={18} className="mr-1" />
                   <span>Gerenciar Métricas</span>
@@ -228,6 +287,7 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
                       : 'bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600'
                     }
                   `}
+                  disabled={!isUserLoggedIn && !isEditMetricsMode}
                 >
                   {isEditMetricsMode ? (
                     <>
@@ -276,8 +336,8 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
               </div>
             </div>
 
-            {/* Área de métricas editáveis */}
-            <div className="relative">
+            {/* Área de métricas editáveis - Aqui fica o conteúdo principal */}
+            <div className="relative" ref={metricsContainerRef}>
               <EditableMetricsPanel 
                 networkData={networkData}
                 currentMetrics={currentMetrics}
@@ -285,29 +345,42 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
                 selectedHospital={selectedHospital}
                 isEditMode={isEditMetricsMode}
                 onExitEditMode={() => setIsEditMetricsMode(false)}
-                // Passando propriedades para gerenciamento de métricas
-                visibleMainMetrics={visibleMainMetrics}
-                visibleAdditionalMetrics={visibleAdditionalMetrics}
-                removeMainMetric={handleRemoveMainMetric}
-                removeAdditionalMetric={handleRemoveAdditionalMetric}
-                addMetricById={handleAddMetricById}
-                allMetrics={metrics}
-                onAddMetricClick={() => setIsManagerModalOpen(true)}
-              />
-              
-              {/* Efeito de blur para os componentes abaixo quando estiver no modo de edição */}
-              <div 
-                className={`
-                  fixed inset-0 bg-black/50 backdrop-blur-sm z-30 pointer-events-none
-                  transition-all duration-500 ease-in-out
-                  ${isEditMetricsMode ? 'opacity-100' : 'opacity-0 invisible'}
-                `}
-                style={{ top: '650px' }}
               />
             </div>
           </div>
         </CardContent>
       </Card>
+      
+      {/* Modal de Login */}
+      <Dialog open={isLoginModalOpen} onOpenChange={setIsLoginModalOpen}>
+        <DialogContent className="bg-gray-900 border-gray-800 text-white">
+          <DialogHeader>
+            <DialogTitle>Login necessário</DialogTitle>
+            <DialogDescription className="text-gray-400">
+              Faça login para gerenciar suas métricas
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="py-4 space-y-4">
+            <div className="bg-blue-900/30 border border-blue-800 rounded-lg p-4 text-blue-300 text-sm">
+              <p className="font-medium">Demo: Credenciais pré-configuradas</p>
+              <p className="mt-1">Email: admin@4health.com</p>
+              <p>Senha: 123</p>
+            </div>
+            
+            <div className="flex justify-between items-center">
+              <span className="text-gray-400">Clique em Login para continuar</span>
+              <Button
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+                onClick={handleLogin}
+              >
+                <LogIn className="w-4 h-4 mr-2" />
+                Login
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
       
       {/* Modal de Gerenciamento de Métricas */}
       <Dialog open={isManagerModalOpen} onOpenChange={setIsManagerModalOpen}>
@@ -320,7 +393,7 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
           </DialogHeader>
           
           <div className="h-[70vh] overflow-y-auto">
-            <MetricManager onAddToPanel={handleAddMetricToPanel} />
+            <MetricManager />
           </div>
           
           <DialogFooter>

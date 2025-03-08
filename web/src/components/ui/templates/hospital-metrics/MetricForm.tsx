@@ -224,7 +224,7 @@ export const MetricForm: React.FC<MetricFormProps> = ({
   
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-w-2xl bg-gray-100 dark:bg-gray-800">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
@@ -240,7 +240,7 @@ export const MetricForm: React.FC<MetricFormProps> = ({
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-4 ">
             {/* Coluna da esquerda */}
             <div className="space-y-4">
               <div>
@@ -317,7 +317,7 @@ export const MetricForm: React.FC<MetricFormProps> = ({
                   <SelectTrigger id="metric-type" className="mt-1">
                     <SelectValue placeholder="Selecione o tipo" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className='className=bg-green-100 dark:bg-gray-800'>
                     <SelectItem value="main">Principal</SelectItem>
                     <SelectItem value="additional">Adicional</SelectItem>
                   </SelectContent>
@@ -336,7 +336,7 @@ export const MetricForm: React.FC<MetricFormProps> = ({
                   <SelectTrigger id="card-type" className="mt-1">
                     <SelectValue placeholder="Selecione o estilo" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className='bg-green-100 dark:bg-gray-800'>
                     {cardTypeOptions.map(option => (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}
