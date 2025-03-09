@@ -168,9 +168,9 @@ export const AmbulanceManagement: React.FC = () => {
     }
   
     return (
-      <div className="relative h-screen">
+      <div className="relative h-screen rounded-lg">
         {/* Título */}
-        <div className="w-full bg-gradient-to-r from-blue-700 to-cyan-700 py-3 px-4 text-white">
+        <div className="w-full bg-gradient-to-r from-blue-700 to-cyan-700 py-3 px-4 text-white rounded-lg">
             <h1 className="text-xl font-semibold flex items-center">
                 <Ambulance className="mr-2" />
                 Sistema de Gerenciamento de Ambulâncias

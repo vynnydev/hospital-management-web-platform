@@ -15,6 +15,7 @@ import { AIAnalyticsMetrics } from '@/app/(administrator)/overview/components/AI
 import { MessageCenter } from '@/app/(administrator)/overview/components/MessageCenter';
 import { ModernTabs } from '@/app/(administrator)/overview/components/ModernTabs';
 import { IAppUser } from '@/types/auth-types';
+import { AmbulanceManagement } from './AmbulanceManagement';
 
 interface ReorderableSectionProps {
   children: React.ReactNode;
@@ -172,36 +173,36 @@ export const ReorderableSectionsInOverviewPage: React.FC<ReorderableOverviewProp
     };
 
     const initialSections: Section[] = [
-        {
-            id: 'metrics',
-            title: 'Métricas da Rede',
-            component: (
-            <div className='pt-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md'>
-                <div className='p-4 bg-gray-800 rounded-md'>
-                <ManagementNetworkMetrics 
-                    networkData={networkData}
-                    filteredHospitals={filteredHospitals}
-                    selectedRegion={selectedRegion}
-                    setSelectedRegion={setSelectedRegion}
-                    setDisplayMode={setDisplayMode}
-                    displayMode={displayMode}
-                    currentMetrics={currentMetrics}
-                    canChangeRegion={canChangeRegion}
-                    selectedHospital={selectedHospital}
-                    getStatusColor={getStatusColor}
-                    getFilteredHospitals={getFilteredHospitals}
-                    setSelectedHospital={setSelectedHospital}
-                />
-                </div>
-            </div>
-            )
-        },
-        {
-            id: 'departments-and-tabs',
-            title: 'Departamentos e Visão Geral',
-            component: (
-            <div className='pt-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md'>
-                <div className='p-4 bg-gray-800'>
+      {
+          id: 'metrics',
+          title: 'Métricas da Rede',
+          component: (
+          <div className='pt-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md'>
+              <div className='p-4 bg-gray-800 rounded-md'>
+              <ManagementNetworkMetrics 
+                  networkData={networkData}
+                  filteredHospitals={filteredHospitals}
+                  selectedRegion={selectedRegion}
+                  setSelectedRegion={setSelectedRegion}
+                  setDisplayMode={setDisplayMode}
+                  displayMode={displayMode}
+                  currentMetrics={currentMetrics}
+                  canChangeRegion={canChangeRegion}
+                  selectedHospital={selectedHospital}
+                  getStatusColor={getStatusColor}
+                  getFilteredHospitals={getFilteredHospitals}
+                  setSelectedHospital={setSelectedHospital}
+              />
+              </div>
+          </div>
+          )
+      },
+      {
+          id: 'departments-and-tabs',
+          title: 'Departamentos e Visão Geral',
+          component: (
+          <div className='pt-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md'>
+              <div className='p-4 bg-gray-800'>
                 <DepartmentStatus 
                     networkData={networkData}
                     selectedHospital={selectedHospital}
@@ -247,10 +248,20 @@ export const ReorderableSectionsInOverviewPage: React.FC<ReorderableOverviewProp
                     )
                     }}
                 </ModernTabs>
-                </div>
-            </div>
-            )
-        },
+
+              </div>
+          </div>
+        )
+      },
+      {
+        id: 'ambulance-management',
+        title: 'Sistema de Gerenciamento de Ambulâncias',
+        component: (
+          <div>
+            <AmbulanceManagement />
+          </div>
+        )
+      }
     ];
 
     // Notificar mudanças na ordem apenas quando necessário

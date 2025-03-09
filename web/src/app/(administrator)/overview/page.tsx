@@ -22,6 +22,9 @@ import { LayoutGrid } from 'lucide-react';
 import { DashboardModeModalOptions } from '@/components/ui/templates/modals/DashboardModeModalOptions';
 import { FullscreenModeModalForOverviewPage } from '@/components/ui/templates/modals/FullscreenModeModalForOverviewPage';
 import { AmbulanceManagement } from '@/components/ui/templates/AmbulanceManagement';
+import { useStaffData } from '@/services/hooks/staffs/useStaffData';
+import { useAmbulanceData } from '@/services/hooks/ambulance/useAmbulanceData';
+import { PatientMonitoringDashboard } from '@/components/ui/templates/PatientMonitoringDashboard';
 
 const Overview: React.FC = () => {
   const { networkData, currentUser, setNetworkData, loading, error } = useNetworkData();
@@ -43,7 +46,16 @@ const Overview: React.FC = () => {
   const [isDashboardModeModalOpen, setIsDashboardModeModalOpen] = useState(false);
   const [isFullscreenMode, setIsFullscreenMode] = useState(false);
   const [isReorderMode, setIsReorderMode] = useState<boolean>(false);
+
+  const {
+    staffData
+  } = useStaffData();
+
   
+  const {
+    ambulanceData
+  } = useAmbulanceData(selectedHospital);
+
   const handleModeSelection = (mode: 'fullscreen' | 'reposition') => {
     setIsDashboardModeModalOpen(false);
     
@@ -165,6 +177,9 @@ const Overview: React.FC = () => {
       }
     }
   };
+
+  if (!staffData) return;
+  if (!ambulanceData) return;
 
   const onRemoveUser = (userId: string) => {
     // Filtra os usuários selecionados, removendo o usuário com o ID especificado
@@ -330,6 +345,16 @@ const Overview: React.FC = () => {
                   }}
                 </ModernTabs>
               </div>
+            </div>
+
+            <div>
+              <PatientMonitoringDashboard 
+                  selectedHospitalId={selectedHospital || ''}
+                  setSelectedHospitalId={setSelectedHospital}
+                  networkData={networkData}
+                  staffData={staffData}
+                  ambulanceData={ambulanceData}
+              />
             </div>
 
             <div>

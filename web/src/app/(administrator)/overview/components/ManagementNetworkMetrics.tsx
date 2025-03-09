@@ -257,12 +257,14 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
                 {/* Botão para gerar métricas com IA */}
                 <Button
                   onClick={openAIGenerationModal}
-                  variant="outline"
-                  className="bg-purple-100 hover:bg-purple-200 text-purple-800 border-purple-300 dark:bg-purple-900/30 dark:hover:bg-purple-800/50 dark:text-purple-300 dark:border-purple-800"
+                  className="relative overflow-hidden bg-gradient-to-r from-blue-800 to-teal-500 hover:from-blue-600 hover:to-teal-500 text-white border-none rounded-full py-3 px-6 font-semibold shadow-lg transition-all duration-300 ease-in-out"
                   disabled={!isUserLoggedIn}
                 >
-                  <Brain size={18} className="mr-1" />
-                  <span>IA Generativa</span>
+                  <div className="absolute top-0 left-0 w-full h-full bg-white/10 rounded-full"></div>
+                  <div className="flex items-center justify-center space-x-2">
+                    <Sparkles size={20} className="text-white/90" />
+                    <span className="text-md">Iniciar a geração IA</span>
+                  </div>
                 </Button>
                 
                 {/* Botão para gerenciar métricas */}
