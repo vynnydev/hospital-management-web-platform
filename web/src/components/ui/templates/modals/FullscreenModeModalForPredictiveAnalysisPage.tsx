@@ -8,11 +8,6 @@ import type { IAppUser } from '@/types/auth-types';
 import type { IHospitalStaffMetrics, IStaffTeam } from '@/types/staff-types';
 
 // Componentes
-import { DepartmentAreaCardsWithDifferentUI } from '@/components/ui/templates/DepartmentAreaCardsWithDifferentUI';
-import { HospitalNetworkComponentWithDifferenteUI } from '@/components/ui/templates/HospitalNetworkComponentWithDifferenteUI';
-import { StaffPredictiveAnalysis } from '@/app/(administrator)/predictive-analysis/components/StaffPredictiveAnalysis';
-import { TeamAnalyticsBoard } from '@/app/(administrator)/predictive-analysis/components/TeamAnalyticsBoard';
-import { AnalysisChartStaffPredictive } from '@/app/(administrator)/predictive-analysis/components/AnalysisChartStaffPredictive';
 import { RepositionActionsBar } from '../RepositionActionsBar';
 import { Button } from '@/components/ui/organisms/button';
 import { ReorderableSectionsInPredictiveAnalysisPage } from '../ReorderableSectionsInPredictiveAnalysisPage';
