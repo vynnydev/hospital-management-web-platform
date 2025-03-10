@@ -16,6 +16,10 @@ import { MessageCenter } from '@/app/(administrator)/overview/components/Message
 import { ModernTabs } from '@/app/(administrator)/overview/components/ModernTabs';
 import { IAppUser } from '@/types/auth-types';
 import { AmbulanceManagement } from './AmbulanceManagement';
+import { PatientMonitoringDashboard } from './PatientMonitoringDashboard';
+import { useStaffData } from '@/services/hooks/staffs/useStaffData';
+import { useAmbulanceData } from '@/services/hooks/ambulance/useAmbulanceData';
+import { LoadingSpinner } from './LoadingSpinner';
 
 interface ReorderableSectionProps {
   children: React.ReactNode;
@@ -136,6 +140,15 @@ export const ReorderableSectionsInOverviewPage: React.FC<ReorderableOverviewProp
     const [sections, setSections] = useState<Section[]>([]);
     const [selectedMessageUsers, setSelectedMessageUsers] = useState<IAppUser[]>([]);
 
+    const {
+      staffData
+    } = useStaffData();
+  
+    
+    const {
+      ambulanceData
+    } = useAmbulanceData(selectedHospital);
+
     // Função para selecionar um hospital no Message Center
     const onHospitalSelect = (hospitalId: string | null) => {
       // Se o usuário tiver permissão para ver todos os hospitais, permite a seleção
@@ -250,6 +263,25 @@ export const ReorderableSectionsInOverviewPage: React.FC<ReorderableOverviewProp
                 </ModernTabs>
 
               </div>
+          </div>
+        )
+      },
+      {
+        id: 'patient-monitoring-dashboard',
+        title: 'Dashboard de Monitoramento do Paciente',
+        component: (
+          <div>
+            {networkData && staffData && ambulanceData ? (
+              <PatientMonitoringDashboard 
+                selectedHospitalId={selectedHospital || ''}
+                setSelectedHospitalId={setSelectedHospital}
+                networkData={networkData}
+                staffData={staffData}
+                ambulanceData={ambulanceData}
+              />
+            ) : (
+              <LoadingSpinner message="Carregando dados..." />
+            )}
           </div>
         )
       },
