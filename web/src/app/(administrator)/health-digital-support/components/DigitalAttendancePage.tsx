@@ -7,11 +7,16 @@ import PatientRegistrationContainer from './PatientRegistrationContainer';
 import EnhancedPatientList from './EnhancedPatientList';
 import PatientAssignmentForm from './PatientAssignmentForm';
 import HospitalSelector from './HospitalSelector';
+import { PatientMonitoringDashboard } from '@/components/ui/templates/PatientMonitoringDashboard';
+import { LoadingSpinner } from '@/components/ui/templates/LoadingSpinner';
+import { useStaffData } from '@/services/hooks/staffs/useStaffData';
+import { useAmbulanceData } from '@/services/hooks/ambulance/useAmbulanceData';
 
 enum AttendanceTab {
   PatientList = 'patient-list',
   PatientRegistration = 'patient-registration',
   PatientAssignment = 'patient-assignment',
+  PatientMonitoring = 'patient-monitoring'
 }
 
 export const DigitalAttendancePage = () => {
@@ -47,6 +52,15 @@ export const DigitalAttendancePage = () => {
 
   // Obter informações do hospital selecionado
   const selectedHospital = networkData?.hospitals.find(h => h.id === selectedHospitalId);
+
+  const {
+    staffData
+  } = useStaffData();
+
+  
+  const {
+    ambulanceData
+  } = useAmbulanceData(selectedHospitalId);
   
   if (loading) {
     return (
@@ -121,6 +135,18 @@ export const DigitalAttendancePage = () => {
               Novo Paciente
             </button>
           </li>
+          <li className="mr-2">
+            <button
+              className={`inline-block py-3 px-4 text-sm font-medium ${
+                activeTab === AttendanceTab.PatientMonitoring
+                  ? 'text-primary-600 dark:text-primary-400 border-b-2 border-primary-600 dark:border-primary-400'
+                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 border-b-2 border-transparent hover:border-gray-300 dark:hover:border-gray-600'
+              }`}
+              onClick={() => setActiveTab(AttendanceTab.PatientMonitoring)}
+            >
+              Monitoramento dos Pacientes
+            </button>
+          </li>
           {selectedPatientId && (
             <li className="mr-2">
               <button
@@ -155,6 +181,24 @@ export const DigitalAttendancePage = () => {
               setActiveTab(AttendanceTab.PatientList);
             }}
           />
+        )}
+
+        {activeTab === AttendanceTab.PatientMonitoring && selectedHospital && (
+          <>
+            <div>
+                {networkData && staffData && ambulanceData ? (
+                  <PatientMonitoringDashboard 
+                    selectedHospitalId={selectedHospitalId}
+                    setSelectedHospitalId={setSelectedHospitalId}
+                    networkData={networkData}
+                    staffData={staffData}
+                    ambulanceData={ambulanceData}
+                  />
+                ) : (
+                  <LoadingSpinner message="Carregando dados..." />
+                )}
+            </div>
+          </>
         )}
         
         {activeTab === AttendanceTab.PatientAssignment && selectedPatientId && (

@@ -88,7 +88,7 @@ export const PatientList: React.FC<PatientListProps> = ({
           {patients.map(({ patient, bed, department, lastStatus }) => (
             <TableRow 
               key={patient.id}
-              className={`cursor-pointer border-b border-gray-200 dark:border-gray-700 
+              className={`cursor-pointer border-b border-gray-200 dark:border-gray-700 px-2 
                         ${selectedPatientId === patient.id 
                           ? 'bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/20 dark:hover:bg-blue-900/30' 
                           : 'hover:bg-gray-50 dark:hover:bg-gray-900/50'}`}

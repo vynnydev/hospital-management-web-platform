@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from 'react';
 import { usePatientManagement } from '@/services/hooks/digital-care-service/usePatientManagement';
@@ -6,7 +7,6 @@ import { IPatientRegistration } from '@/types/patient-types';
 import EnhancedPatientCard from './EnhancedPatientCard';
 import PatientSearch from './PatientSearch';
 import PatientFilters from './PatientFilters';
-import HospitalMetricsPanel from './HospitalMetricsPanel';
 import Link from 'next/link';
 
 interface EnhancedPatientListProps {
@@ -117,10 +117,7 @@ export default function EnhancedPatientList({
   }
   
   return (
-    <div className="space-y-6">
-      {/* Painel de Métricas do Hospital */}
-      <HospitalMetricsPanel hospital={hospital} />
-      
+    <div className="space-y-6">      
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
           <h2 className="text-2xl font-bold text-primary-900 dark:text-primary-400 mb-4 md:mb-0">

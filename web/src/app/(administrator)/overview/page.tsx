@@ -296,8 +296,8 @@ const Overview: React.FC = () => {
               </div>
             </div>
 
-            <div className='pt-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-md shadow-md'>
-              <div className='p-4 bg-gray-800'>
+            <div className='pt-2 bg-gradient-to-r from-blue-700 to-cyan-700 rounded-lg shadow-md'>
+              <div className='p-4 bg-gray-800 rounded-lg'>
                 <DepartmentStatus 
                   networkData={networkData}
                   selectedHospital={selectedHospital}

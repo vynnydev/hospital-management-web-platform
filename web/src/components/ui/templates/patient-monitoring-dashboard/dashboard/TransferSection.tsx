@@ -51,7 +51,7 @@ export const TransferSection: React.FC<TransferSectionProps> = ({
           Acompanhe ambulâncias e transferências de pacientes em andamento
         </CardDescription>
       </CardHeader>
-      <CardContent className="bg-white dark:bg-gray-800">
+      <CardContent className="bg-white dark:bg-gray-800 py-4">
         {activeRoutes.length > 0 ? (
           <div className="space-y-4">
             {activeRoutes.map(route => (
