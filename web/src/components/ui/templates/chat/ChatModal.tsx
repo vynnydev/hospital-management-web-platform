@@ -5,12 +5,12 @@ import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData
 import { useStaffData } from '@/services/hooks/staffs/useStaffData';
 import { useAmbulanceData } from '@/services/hooks/ambulance/useAmbulanceData';
 import { IChatContact, IMessage } from '@/types/chat-types';
-import { ChatSidebar } from './chat/ChatSidebar';
-import { ContactAvatar } from './chat/ContactAvatar';
-import { MessageArea } from './chat/MessageArea';
-import { MessageInput } from './chat/MessageInput';
-import { EmptyState } from './chat/EmptyState';
-import { AiPanel } from './chat/AiPanel';
+import { ChatSidebar } from './ChatSidebar';
+import { ContactAvatar } from './ContactAvatar';
+import { MessageArea } from './MessageArea';
+import { MessageInput } from './MessageInput';
+import { EmptyState } from './EmptyState';
+import { AiPanel } from './AiPanel';
 
 // Componentes importados
 
