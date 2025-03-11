@@ -252,7 +252,7 @@ export const ResourceMonitor: React.FC<ResourceMonitorProps> = ({
   }
 
   return (
-    <div className={`bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden ${className}`}>
+    <div className={`bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden min-h-[1000px] ${className}`}>
       {/* Cabeçalho */}
       <div className="p-3 border-b dark:border-gray-700 bg-amber-50 dark:bg-amber-900/20 flex justify-between items-center">
         <h3 className="font-medium text-amber-900 dark:text-amber-100 flex items-center">

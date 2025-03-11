@@ -11,6 +11,7 @@ import { MessageArea } from './MessageArea';
 import { MessageInput } from './MessageInput';
 import { EmptyState } from './EmptyState';
 import { AiPanel } from './AiPanel';
+import { AlertsChatManager } from './integration-hub/integrations-notifications/AlertsChatManager';
 
 // Componentes importados
 
@@ -22,6 +23,7 @@ interface ChatModalProps {
   isOpen: boolean;
   onClose: () => void;
   hospitalId: string;
+  children?: React.ReactNode;
 }
 
 /**
@@ -37,7 +39,8 @@ interface ChatModalProps {
 export const ChatModal: React.FC<ChatModalProps> = ({ 
   isOpen, 
   onClose, 
-  hospitalId
+  hospitalId,
+  children
 }) => {
   // Estados do chat
   const [contacts, setContacts] = useState<IChatContact[]>([]);
@@ -50,6 +53,8 @@ export const ChatModal: React.FC<ChatModalProps> = ({
   const [activeTab, setActiveTab] = useState<'individual' | 'groups'>('individual');
   const [searchQuery, setSearchQuery] = useState('');
   const [showAiPanel, setShowAiPanel] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
   
   // Referências para elementos do DOM
   const messageEndRef = useRef<HTMLDivElement>(null);
@@ -300,6 +305,33 @@ export const ChatModal: React.FC<ChatModalProps> = ({
       }
     }
   };
+
+  // Função para abrir o chat com um ID específico
+  const openChatWithId = (chatId: string) => {
+    setIsModalOpen(true);
+    setSelectedChatId(chatId);
+  };
+
+  // Função para criar um novo chat
+  const createNewChat = (
+    title: string, 
+    initialMessage: string, 
+    participants: string[], 
+    metadata?: Record<string, any>
+  ): string => {
+    // Em uma implementação real, este código enviaria uma solicitação para a API
+    // para criar um novo chat e retornar o ID gerado.
+    
+    // Para esta demonstração, vamos apenas gerar um ID
+    const chatId = `chat-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    
+    // Simular a abertura do chat recém-criado
+    setTimeout(() => {
+      openChatWithId(chatId);
+    }, 300);
+    
+    return chatId;
+  };
   
   // Se o modal não estiver aberto, não renderizar nada
   if (!isOpen) return null;
@@ -313,104 +345,123 @@ export const ChatModal: React.FC<ChatModalProps> = ({
             <MessageCircle className="mr-2 h-6 w-6" />
             <h2 className="text-xl font-semibold">H24 Chat</h2>
           </div>
-          <button 
-            onClick={onClose} 
-            className="p-1 rounded-full hover:bg-blue-700 dark:hover:bg-blue-800 transition-colors"
-            aria-label="Fechar"
-          >
-            <X className="h-6 w-6" />
-          </button>
+
+          <div className='flex flex-row space-x-4'>
+            <AlertsChatManager
+              hospitalId={hospitalId}
+              currentUserId={currentUser?.id || 'default-user-id'}
+              onOpenChat={openChatWithId}
+              onCreateChat={createNewChat}
+              showAlertBanner={true}
+              showNotifications={false}
+            />
+
+            <button 
+              onClick={onClose} 
+              className="p-1 rounded-full hover:bg-blue-700 dark:hover:bg-blue-800 transition-colors"
+              aria-label="Fechar"
+            >
+              <X className="h-6 w-6" />
+            </button>
+          </div>
         </div>
         
+        {/* Renderize os filhos ou o conteúdo padrão */}
         {/* Main content */}
-        <div className="flex flex-1 overflow-hidden">
-          {/* Sidebar com lista de contatos */}
-          <ChatSidebar 
-            contacts={filteredContacts}
-            selectedContact={selectedContact}
-            setSelectedContact={setSelectedContact}
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            formatTime={formatters.formatTime}
-          />
-          
-          {/* Área principal de chat */}
-          <div className="flex-1 flex flex-col">
-            {selectedContact ? (
-              <>
-                {/* Cabeçalho do contato/conversa */}
-                <div className="py-3 px-6 border-b dark:border-gray-700 flex items-center justify-between bg-white dark:bg-gray-800">
-                  <div className="flex items-center">
-                    <ContactAvatar contact={selectedContact} size="md" />
-                    
-                    <div className="ml-3">
-                      <h3 className="font-medium text-gray-900 dark:text-gray-100">{selectedContact.name}</h3>
-                      <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
-                        {selectedContact.online ? (
-                          <>
-                            <span className="w-2 h-2 bg-green-500 rounded-full mr-1"></span>
-                            Online
-                          </>
-                        ) : (
-                          <>
-                            <Clock className="h-3 w-3 mr-1" />
-                            Visto por último: {formatters.formatTime(selectedContact.lastMessageTime || new Date())}
-                          </>
-                        )}
+        {children ? (
+          // Renderizar o conteúdo personalizado passado como children
+          children 
+          ) : (
+            // Renderizar o layout padrão do chat
+            <div className="flex flex-1 overflow-hidden">
+              {/* Sidebar com lista de contatos */}
+              <ChatSidebar 
+                contacts={filteredContacts}
+                selectedContact={selectedContact}
+                setSelectedContact={setSelectedContact}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+                formatTime={formatters.formatTime}
+              />
+              
+              {/* Área principal de chat */}
+              <div className="flex-1 flex flex-col">
+                {selectedContact ? (
+                  <>
+                    {/* Cabeçalho do contato/conversa */}
+                    <div className="py-3 px-6 border-b dark:border-gray-700 flex items-center justify-between bg-white dark:bg-gray-800">
+                      <div className="flex items-center">
+                        <ContactAvatar contact={selectedContact} size="md" />
+                        
+                        <div className="ml-3">
+                          <h3 className="font-medium text-gray-900 dark:text-gray-100">{selectedContact.name}</h3>
+                          <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
+                            {selectedContact.online ? (
+                              <>
+                                <span className="w-2 h-2 bg-green-500 rounded-full mr-1"></span>
+                                Online
+                              </>
+                            ) : (
+                              <>
+                                <Clock className="h-3 w-3 mr-1" />
+                                Visto por último: {formatters.formatTime(selectedContact.lastMessageTime || new Date())}
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center">
+                        <button
+                          className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 transition-colors"
+                          onClick={() => setShowAiPanel(!showAiPanel)}
+                          aria-label="Assistente IA"
+                        >
+                          <Sparkles className="h-5 w-5" />
+                        </button>
+                        
+                        <button
+                          className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 transition-colors ml-1"
+                          aria-label="Mais opções"
+                        >
+                          <Bell className="h-5 w-5" />
+                        </button>
                       </div>
                     </div>
-                  </div>
-                  
-                  <div className="flex items-center">
-                    <button
-                      className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 transition-colors"
-                      onClick={() => setShowAiPanel(!showAiPanel)}
-                      aria-label="Assistente IA"
-                    >
-                      <Sparkles className="h-5 w-5" />
-                    </button>
                     
-                    <button
-                      className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 transition-colors ml-1"
-                      aria-label="Mais opções"
-                    >
-                      <Bell className="h-5 w-5" />
-                    </button>
-                  </div>
-                </div>
-                
-                {/* Área de mensagens */}
-                <MessageArea
-                  messages={messages}
-                  isLoading={isLoading}
-                  isTyping={isTyping}
-                  formatTime={formatters.formatTime}
-                  formatDate={formatters.formatDate}
-                  messageEndRef={messageEndRef}
-                />
-                
-                {/* Campo de entrada de mensagem */}
-                <MessageInput
-                  messageInput={messageInput}
-                  setMessageInput={setMessageInput}
-                  sendMessage={sendMessage}
-                  placeholder={`Mensagem para ${selectedContact.name}...`}
-                  aiSuggestion={aiSuggestion}
-                  setAiSuggestion={setAiSuggestion}
-                />
-              </>
-            ) : (
-              <EmptyState />
-            )}
-          </div>
-          
-          {/* Painel de IA (condicional) */}
-          {showAiPanel && selectedContact && (
-            <AiPanel />
-          )}
-        </div>
+                    {/* Área de mensagens */}
+                    <MessageArea
+                      messages={messages}
+                      isLoading={isLoading}
+                      isTyping={isTyping}
+                      formatTime={formatters.formatTime}
+                      formatDate={formatters.formatDate}
+                      messageEndRef={messageEndRef}
+                    />
+                    
+                    {/* Campo de entrada de mensagem */}
+                    <MessageInput
+                      messageInput={messageInput}
+                      setMessageInput={setMessageInput}
+                      sendMessage={sendMessage}
+                      placeholder={`Mensagem para ${selectedContact.name}...`}
+                      aiSuggestion={aiSuggestion}
+                      setAiSuggestion={setAiSuggestion}
+                    />
+                  </>
+                ) : (
+                  <EmptyState />
+                )}
+              </div>
+              
+              {/* Painel de IA (condicional) */}
+              {showAiPanel && selectedContact && (
+                <AiPanel />
+              )}
+            </div>
+        )}
       </div>
     </div>
   );

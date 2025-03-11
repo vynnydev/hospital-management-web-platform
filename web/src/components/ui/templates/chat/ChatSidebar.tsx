@@ -63,6 +63,13 @@ export const ChatSidebar: React.FC<IChatSidebarProps> = ({
   setActiveTab,
   formatTime
 }) => {
+  // Filtrar contatos com base na pesquisa e na aba ativa
+  const filteredContacts = contacts.filter(contact => {
+    const matchesSearch = contact.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesTab = activeTab === 'individual' ? !contact.isGroup : contact.isGroup;
+    return matchesSearch && matchesTab;
+  });
+
   return (
     <div className="w-1/3 border-r dark:border-gray-700 flex flex-col bg-gray-50 dark:bg-gray-800">
       {/* Search and tabs */}
@@ -79,31 +86,31 @@ export const ChatSidebar: React.FC<IChatSidebarProps> = ({
         </div>
         
         <div className="flex border dark:border-gray-600 rounded-lg overflow-hidden">
-          <button
-            className={`flex-1 py-2 ${activeTab === 'individual' 
-              ? 'bg-blue-600 dark:bg-blue-700 text-white' 
-              : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300'}`}
-            onClick={() => setActiveTab('individual')}
-          >
-            <User className="h-4 w-4 mx-auto mb-1" />
-            <span className="text-xs">Individuais</span>
-          </button>
-          <button
-            className={`flex-1 py-2 ${activeTab === 'groups' 
-              ? 'bg-blue-600 dark:bg-blue-700 text-white' 
-              : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300'}`}
-            onClick={() => setActiveTab('groups')}
-          >
-            <Users className="h-4 w-4 mx-auto mb-1" />
-            <span className="text-xs">Grupos</span>
-          </button>
+            <button
+                className={`flex-1 py-2 ${activeTab === 'individual' 
+                  ? 'bg-blue-600 dark:bg-blue-700 text-white' 
+                  : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300'}`}
+                onClick={() => setActiveTab('individual')}
+            >
+                <User className="h-4 w-4 mx-auto mb-1" />
+                <span className="text-xs">Individuais</span>
+            </button>
+            <button
+                className={`flex-1 py-2 ${activeTab === 'groups' 
+                  ? 'bg-blue-600 dark:bg-blue-700 text-white' 
+                  : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300'}`}
+                onClick={() => setActiveTab('groups')}
+            >
+                <Users className="h-4 w-4 mx-auto mb-1" />
+                <span className="text-xs">Grupos</span>
+            </button>
         </div>
       </div>
       
       {/* Contacts list */}
       <div className="flex-1 overflow-y-auto">
-        {contacts.length > 0 ? (
-          contacts.map(contact => (
+        {filteredContacts.length > 0 ? (
+          filteredContacts.map(contact => (
             <ContactItem
               key={contact.id}
               contact={contact}

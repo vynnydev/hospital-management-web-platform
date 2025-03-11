@@ -228,7 +228,7 @@ export const AlertsChatManager: React.FC<AlertsChatManagerProps> = ({
             p-2 rounded-full relative
             ${unreadCount > 0 
               ? 'text-blue-600 bg-blue-100 hover:bg-blue-200 dark:text-blue-400 dark:bg-blue-900/30 dark:hover:bg-blue-800/50' 
-              : 'text-gray-600 bg-gray-100 hover:bg-gray-200 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700'
+              : 'text-gray-600 bg-gray-100 hover:bg-gray-200 dark:text-gray-400 dark:bg-blue-700 dark:hover:bg-blue-800'
             }
           `}
           onClick={() => setIsPanelOpen(prev => !prev)}

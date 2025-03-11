@@ -256,7 +256,7 @@ const Overview: React.FC = () => {
             <div className='rounded-full p-1 bg-gradient-to-r from-blue-700/90 to-cyan-700/90'>
               {currentUser && (
                 <AlertsProvider hospitalId={selectedHospital || ''}>
-                  <ChatButton userId={currentUser} userRole="médico" />
+                  <ChatButton userId={currentUser.id} userRole="medico" />
                 </AlertsProvider>
               )}
             </div>
