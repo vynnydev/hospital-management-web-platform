@@ -270,19 +270,15 @@ export const ReorderableSectionsInOverviewPage: React.FC<ReorderableOverviewProp
         id: 'patient-monitoring-dashboard',
         title: 'Dashboard de Monitoramento do Paciente',
         component: (
-          <div>
-            {networkData && staffData && ambulanceData ? (
+            <div>
               <PatientMonitoringDashboard 
-                selectedHospitalId={selectedHospital || ''}
-                setSelectedHospitalId={setSelectedHospital}
-                networkData={networkData}
-                staffData={staffData}
-                ambulanceData={ambulanceData}
+                  selectedHospitalId={selectedHospital || ''}
+                  setSelectedHospitalId={setSelectedHospital}
+                  networkData={networkData}
+                  staffData={staffData}
+                  ambulanceData={ambulanceData}
               />
-            ) : (
-              <LoadingSpinner message="Carregando dados..." />
-            )}
-          </div>
+            </div>
         )
       },
       {

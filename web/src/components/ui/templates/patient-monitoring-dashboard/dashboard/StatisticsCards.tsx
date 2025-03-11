@@ -13,7 +13,7 @@ interface StatisticsCardsProps {
     criticalPatients: number;
     occupancyRate: number;
   };
-  ambulanceData: IAmbulanceData;
+  ambulanceData: IAmbulanceData | null;
   selectedHospitalId: string;
 }
 

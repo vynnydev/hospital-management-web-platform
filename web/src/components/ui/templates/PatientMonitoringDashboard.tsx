@@ -23,8 +23,8 @@ interface PatientMonitoringDashboardProps {
   selectedHospitalId: string;
   setSelectedHospitalId: (hospitalId: string) => void;
   networkData: INetworkData;
-  staffData: IStaffData;
-  ambulanceData: IAmbulanceData;
+  staffData: IStaffData | null;
+  ambulanceData: IAmbulanceData | null;
 }
 
 export const PatientMonitoringDashboard: React.FC<PatientMonitoringDashboardProps> = ({
