@@ -22,12 +22,12 @@ interface RecommendationCardProps {
     applied: boolean;
     onApply: (id: string) => void;
     compact?: boolean;
-  }
+}
   
-  /**
-   * Componente de cartão para exibir uma recomendação do assistente de IA
-   */
-  export const RecommendationCard: React.FC<RecommendationCardProps> = ({
+/**
+ * Componente de cartão para exibir uma recomendação do assistente de IA
+ */
+export const RecommendationCard: React.FC<RecommendationCardProps> = ({
     id,
     type,
     title,

@@ -14,100 +14,85 @@ export type TRecommendationType =
 /**
  * Interface para recomendações geradas pelo assistente de IA
  */
+// Tipos para prioridades
+export type RecommendationPriority = 'high' | 'medium' | 'low';
+
+// Tipos para categorias de recomendações
+export type RecommendationType = 
+  | 'bed-management' 
+  | 'staff-allocation' 
+  | 'ambulance-dispatch' 
+  | 'resource-management'
+  | 'ai-prediction'
+  | 'patient-care';
+
+// Interface para recomendações
 export interface IRecommendation {
   id: string;
-  type: TRecommendationType;
+  type: RecommendationType;
   title: string;
   description: string;
-  priority: 'high' | 'medium' | 'low';
+  priority: RecommendationPriority;
   actionText: string;
-  actionLink?: string;
-  relatedAlertIds?: string[];
   timestamp: Date;
-  confidence: number; // 0 a 1
+  confidence: number; // 0.0 - 1.0
   applied: boolean;
+  metadata?: Record<string, any>; // Dados adicionais específicos do tipo
 }
 
-/**
- * Interface para estatísticas do hospital
- */
+// Interface para estatísticas do hospital
 export interface IStatistics {
-  bedOccupancy: number;
-  averageWaitTime: number;
+  bedOccupancy: number; // Porcentagem
+  averageWaitTime: number; // Em minutos
   criticalResourcesNeeded: number;
-  staffEfficiency: number;
-  patientFlow: number;
-  emergencyResponseTime: number;
+  staffEfficiency: number; // Porcentagem
+  patientFlow: number; // Pacientes por hora
+  emergencyResponseTime: number; // Em minutos
 }
 
-/**
- * Props para o componente H24Assistant
- */
-export interface IH24AssistantProps {
-  userId?: string;
-  hospitalId?: string;
-  onRecommendationApply?: (recommendation: IRecommendation) => void;
-  onViewAllAlerts?: () => void;
-  onShowChat?: () => void;
-}
-
-/**
- * Props para o botão do assistente
- */
-export interface AssistantButtonProps {
-  unreadAlertsCount?: number;
-  onClick?: () => void;
-  className?: string;
-}
-
-/**
- * Props para o modal do assistente
- */
-export interface AssistantModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  recommendations: IStatistics[];
-  alerts: any[]; // Usar o tipo Alert do AlertsProvider
-  statistics: IStatistics | null;
-  hospitalName: string;
-  userName: string;
-  userRole: string;
-  onApplyRecommendation: (recommendation: IRecommendation) => void;
-  onViewAllAlerts: () => void;
-  onShowChat: () => void;
-}
-
-/**
- * Estados de visualização do modal do assistente
- */
-export type AssistantModalView = 'welcome' | 'recommendations' | 'alerts' | 'statistics';
-
-/**
- * Interface para mensagens do assistente
- */
-export interface AssistantMessage {
-  id: string;
-  content: string;
-  timestamp: Date;
-  type: 'greeting' | 'alert' | 'recommendation' | 'information' | 'analysis';
-  priority?: 'high' | 'medium' | 'low';
-  metadata?: Record<string, any>;
-}
-
-/**
- * Interface para insights gerados pelo assistente
- */
-export interface AssistantInsight {
+// Interface para as ações de previsão
+export interface IPredictionAction {
   id: string;
   title: string;
   description: string;
-  category: 'efficiency' | 'quality' | 'resources' | 'staff' | 'patients';
-  dataPoints: {
-    label: string;
-    value: number;
-    change: number;
-    trend: 'up' | 'down' | 'stable';
-  }[];
+  type: 'staff' | 'beds' | 'resources' | 'general';
+  impact: 'high' | 'medium' | 'low';
+  timeframe: 'immediate' | 'short-term' | 'long-term';
+}
+
+// Interface para análises do assistente
+export interface IAssistantAnalysis {
+  title: string;
+  description: string;
+  insights: string[];
+  metrics: Record<string, number>;
+  recommendations: IRecommendation[];
+  trends: {
+    increasing: string[];
+    decreasing: string[];
+    stable: string[];
+  };
+}
+
+// Interface para eventos de timeline
+export interface ITimelineEvent {
+  id: string;
+  title: string;
+  description: string;
   timestamp: Date;
-  confidence: number;
+  type: 'alert' | 'recommendation' | 'action' | 'system';
+  priority: 'high' | 'medium' | 'low';
+  relatedEntityId?: string;
+  relatedEntityType?: string;
+}
+
+// Interface para o contexto do assistente (estado global)
+export interface IAssistantContext {
+  hospitalId: string;
+  recommendations: IRecommendation[];
+  statistics: IStatistics | null;
+  timeline: ITimelineEvent[];
+  analyses: IAssistantAnalysis[];
+  predictions: IPredictionAction[];
+  lastUpdate: Date;
 }

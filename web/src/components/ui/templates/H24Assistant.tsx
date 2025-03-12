@@ -1,26 +1,20 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Sparkles, 
-  X, 
-  ChevronRight, 
-  Ambulance, 
-  Layers, 
-  Users, 
-  AlertTriangle, 
-  ArrowRight, 
-  Check, 
-  Calendar, 
-  Lightbulb, 
-  LineChart,
-  BellRing
-} from 'lucide-react';
+import { Sparkles, X, Minimize2, BellRing } from 'lucide-react';
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
 import { useStaffData } from '@/services/hooks/staffs/useStaffData';
 import { useAmbulanceData } from '@/services/hooks/ambulance/useAmbulanceData';
 import { useAlerts } from './chat/integration-hub/alerts/AlertsProvider';
 import { motion, AnimatePresence } from 'framer-motion';
 import { IRecommendation, IStatistics } from '@/types/ai-assistant-types';
+
+// Componentes importados
+import { WelcomeView } from './ai-assistant/views/WelcomeView';
+import { RecommendationsView } from './ai-assistant/views/RecommendationsView';
+import { AlertsView } from './ai-assistant/views/AlertsView';
+import { MinimizedAssistant } from './ai-assistant/MinimizedAssistant';
+import { userPreferencesService } from '@/services/preferences/userPreferencesService';
 
 // Props para o componente
 interface H24AssistantProps {
@@ -38,11 +32,13 @@ export const H24Assistant: React.FC<H24AssistantProps> = ({
     onViewAllAlerts,
     onShowChat
   }) => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(true);
+    const [isMinimized, setIsMinimized] = useState(false);
     const [hasBeenSeen, setHasBeenSeen] = useState(false);
     const [recommendations, setRecommendations] = useState<IRecommendation[]>([]);
     const [statistics, setStatistics] = useState<IStatistics | null>(null);
     const [currentView, setCurrentView] = useState<'welcome' | 'recommendations' | 'alerts'>('welcome');
+    const [inactivityTimer, setInactivityTimer] = useState<NodeJS.Timeout | null>(null);
     const modalRef = useRef<HTMLDivElement>(null);
     
     // Hooks para dados
@@ -54,39 +50,111 @@ export const H24Assistant: React.FC<H24AssistantProps> = ({
     const selectedHospitalId = hospitalId || networkData?.hospitals[0]?.id || 'RD4H-SP-ITAIM';
     const hospital = networkData?.hospitals.find(h => h.id === selectedHospitalId);
     
+    // Inicializar estado com base nas preferências salvas
+    useEffect(() => {
+      const loadUserPreferences = () => {
+        // Verificar se o assistente foi minimizado
+        // const wasMinimized = userPreferencesService.getMinimizedState(userId);
+        // setIsMinimized(wasMinimized); <- Comentar esta linha
+        
+        // Verificar se já foi visto antes
+        const firstVisit = userPreferencesService.isFirstVisit(userId);
+        setHasBeenSeen(!firstVisit);
+        
+        // Carregar preferências
+        const preferences = userPreferencesService.getUserPreferences(userId);
+        setCurrentView(preferences.defaultView);
+      };
+      
+      loadUserPreferences();
+    }, [userId]);
+    
+    // Salvar o estado de minimização quando mudar
+    useEffect(() => {
+      userPreferencesService.saveMinimizedState(userId, isMinimized);
+    }, [isMinimized, userId]);
+    
     // Efeito para mostrar o modal automaticamente ao carregar (primeira vez)
     useEffect(() => {
-      // Verificar se é a primeira vez que o usuário está vendo (em uma implementação real, 
-      // você pode verificar isso com localStorage ou uma API)
-      const checkFirstVisit = () => {
-        // Se não foi visto antes, abre o modal automaticamente
-        if (!hasBeenSeen) {
+      // Verificar se é a primeira vez
+      if (!hasBeenSeen) {
+        // Obter as preferências do usuário
+        const preferences = userPreferencesService.getUserPreferences(userId);
+        
+        // Só abrir automaticamente se o usuário tiver configurado para mostrar no startup
+        if (preferences.showOnStartup) {
           setTimeout(() => {
             setIsModalOpen(true);
             setHasBeenSeen(true);
           }, 1000); // Atraso de 1 segundo para permitir que a página carregue primeiro
         }
-      };
-      
-      checkFirstVisit();
-    }, [hasBeenSeen]);
+      }
+    }, [hasBeenSeen, userId]);
     
-    // Efeito para fechar o modal ao clicar fora dele
+    // Efeito para fechar o modal ao clicar fora dele (apenas quando não estiver minimizado)
     useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
-        if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        if (modalRef.current && 
+            !modalRef.current.contains(event.target as Node) && 
+            isModalOpen && 
+            !isMinimized) {
           setIsModalOpen(false);
         }
       };
       
-      if (isModalOpen) {
+      if (isModalOpen && !isMinimized) {
         document.addEventListener('mousedown', handleClickOutside);
       }
       
       return () => {
         document.removeEventListener('mousedown', handleClickOutside);
       };
-    }, [isModalOpen]);
+    }, [isModalOpen, isMinimized]);
+    
+    // Efeito para lidar com inatividade
+    useEffect(() => {
+      const preferences = userPreferencesService.getUserPreferences(userId);
+      
+      // Verificar se o auto-minimizar está ativado
+      if (isModalOpen && !isMinimized && preferences.autoMinimizeAfterInactivity) {
+        // Limpar o timer anterior, se existir
+        if (inactivityTimer) {
+          clearTimeout(inactivityTimer);
+        }
+        
+        // Configurar novo timer
+        const timer = setTimeout(() => {
+          setIsMinimized(true);
+        }, preferences.inactivityTimeout * 1000);
+        
+        setInactivityTimer(timer);
+      }
+      
+      // Limpar o timer quando o componente for desmontado
+      return () => {
+        if (inactivityTimer) {
+          clearTimeout(inactivityTimer);
+        }
+      };
+    }, [isModalOpen, isMinimized, userId, inactivityTimer]);
+    
+    // Resetar o timer de inatividade quando houver interação com o modal
+    const resetInactivityTimer = () => {
+      if (inactivityTimer) {
+        clearTimeout(inactivityTimer);
+        setInactivityTimer(null);
+        
+        // Reiniciar o timer
+        const preferences = userPreferencesService.getUserPreferences(userId);
+        if (preferences.autoMinimizeAfterInactivity) {
+          const timer = setTimeout(() => {
+            setIsMinimized(true);
+          }, preferences.inactivityTimeout * 1000);
+          
+          setInactivityTimer(timer);
+        }
+      }
+    };
     
     // Efeito para gerar recomendações com base nos dados disponíveis
     useEffect(() => {
@@ -94,7 +162,7 @@ export const H24Assistant: React.FC<H24AssistantProps> = ({
         generateRecommendations();
         generateStatistics();
       }
-    }, [networkData, staffData, ambulanceData, alerts]);
+    }, [networkData, staffData, ambulanceData, alerts, selectedHospitalId]);
     
     // Função para gerar recomendações com base na análise dos dados
     const generateRecommendations = () => {
@@ -103,8 +171,13 @@ export const H24Assistant: React.FC<H24AssistantProps> = ({
       // Exemplo: Recomendação baseada em alta ocupação de UTI
       const hospital = networkData?.hospitals.find(h => h.id === selectedHospitalId);
       if (hospital && hospital.metrics && hospital.metrics.departmental?.uti?.occupancy > 85) {
+        const recId = `rec-bed-${Date.now()}`;
+        
+        // Verificar se a recomendação já foi aplicada pelo usuário
+        const applied = userPreferencesService.isRecommendationApplied(userId, recId);
+        
         newRecommendations.push({
-          id: `rec-${Date.now()}-1`,
+          id: recId,
           type: 'bed-management',
           title: 'Ocupação crítica de UTI',
           description: `A UTI está com ${hospital.metrics.departmental.uti.occupancy}% de ocupação. Considere redistribuir pacientes ou ativar leitos adicionais.`,
@@ -112,7 +185,7 @@ export const H24Assistant: React.FC<H24AssistantProps> = ({
           actionText: 'Ver leitos disponíveis',
           timestamp: new Date(),
           confidence: 0.92,
-          applied: false
+          applied
         });
       }
       
@@ -129,8 +202,13 @@ export const H24Assistant: React.FC<H24AssistantProps> = ({
         ).length;
         
         if (criticalCount > 0) {
+          const recId = `rec-ambulance-${Date.now()}`;
+          
+          // Verificar se a recomendação já foi aplicada pelo usuário
+          const applied = userPreferencesService.isRecommendationApplied(userId, recId);
+          
           newRecommendations.push({
-            id: `rec-${Date.now()}-2`,
+            id: recId,
             type: 'ambulance-dispatch',
             title: `${criticalCount} ambulância${criticalCount > 1 ? 's' : ''} com casos críticos a caminho`,
             description: `Prepare equipe de emergência e recursos para receber ${criticalCount} paciente${criticalCount > 1 ? 's' : ''} crítico${criticalCount > 1 ? 's' : ''} nos próximos 30 minutos.`,
@@ -138,7 +216,7 @@ export const H24Assistant: React.FC<H24AssistantProps> = ({
             actionText: 'Preparar recepção',
             timestamp: new Date(),
             confidence: 0.95,
-            applied: false
+            applied
           });
         }
       }
@@ -150,8 +228,13 @@ export const H24Assistant: React.FC<H24AssistantProps> = ({
       );
       
       if (teamUTI && (teamUTI.capacityStatus === 'high_demand' || teamUTI.metrics.taskCompletion < 85)) {
+        const recId = `rec-staff-${Date.now()}`;
+        
+        // Verificar se a recomendação já foi aplicada pelo usuário
+        const applied = userPreferencesService.isRecommendationApplied(userId, recId);
+        
         newRecommendations.push({
-          id: `rec-${Date.now()}-3`,
+          id: recId,
           type: 'staff-allocation',
           title: 'Equipe de UTI sobrecarregada',
           description: 'A equipe da UTI manhã está com sobrecarga de trabalho. Considere redistribuir tarefas ou alocar membros adicionais para equilibrar a demanda.',
@@ -159,13 +242,18 @@ export const H24Assistant: React.FC<H24AssistantProps> = ({
           actionText: 'Reorganizar escala',
           timestamp: new Date(),
           confidence: 0.85,
-          applied: false
+          applied
         });
       }
       
       // Recomendação baseada em análise preditiva (simulação)
+      const recId = `rec-prediction-${Date.now()}`;
+      
+      // Verificar se a recomendação já foi aplicada pelo usuário
+      const applied = userPreferencesService.isRecommendationApplied(userId, recId);
+      
       newRecommendations.push({
-        id: `rec-${Date.now()}-4`,
+        id: recId,
         type: 'ai-prediction',
         title: 'Previsão de alta demanda',
         description: 'Nosso modelo preditivo indica aumento de 23% na demanda de leitos para os próximos 3 dias. Recomendamos preparação prévia de recursos e equipes.',
@@ -173,7 +261,7 @@ export const H24Assistant: React.FC<H24AssistantProps> = ({
         actionText: 'Ver previsão detalhada',
         timestamp: new Date(),
         confidence: 0.88,
-        applied: false
+        applied
       });
       
       // Ordenar recomendações por prioridade e confiança
@@ -218,10 +306,16 @@ export const H24Assistant: React.FC<H24AssistantProps> = ({
         )
       );
       
+      // Salvar a ação nas preferências do usuário
+      userPreferencesService.markRecommendationAsApplied(userId, recommendation.id);
+      
       // Chamar callback se fornecido
       if (onRecommendationApply) {
         onRecommendationApply(recommendation);
       }
+      
+      // Resetar o timer de inatividade
+      resetInactivityTimer();
     };
     
     // Obter o nome e a função do usuário atual
@@ -255,12 +349,46 @@ export const H24Assistant: React.FC<H24AssistantProps> = ({
         day: 'numeric' 
       });
     };
+
+    // Alternar entre minimizado e maximizado
+    const toggleMinimize = () => {
+      setIsMinimized(!isMinimized);
+    };
     
-    // Obter alertas de alta prioridade
-    const highPriorityAlerts = getFilteredAlerts(undefined, 'high').slice(0, 3);
+    // Fechar o assistente completamente
+    const closeAssistant = () => {
+      setIsModalOpen(false);
+      setIsMinimized(false);
+      
+      // Limpar o timer de inatividade
+      if (inactivityTimer) {
+        clearTimeout(inactivityTimer);
+        setInactivityTimer(null);
+      }
+    };
+    
+    // Handler para quando o usuário interage com qualquer parte do assistente
+    const handleInteraction = () => {
+      resetInactivityTimer();
+    };
+    
+    // Conteúdo compartilhado entre as visualizações
+    const sharedProps = {
+      userGreeting: userGreeting(),
+      formattedDate: getFormattedDate(),
+      statistics,
+      recommendations,
+      alerts,
+      highPriorityAlerts: getFilteredAlerts(undefined, 'high').slice(0, 3),
+      unreadCount,
+      highPriorityCount,
+      onApplyRecommendation: handleApplyRecommendation,
+      setCurrentView,
+      hospital
+    };
     
     return (
-      <div className="relative">
+      <div className="relative" onMouseMove={handleInteraction} onClick={handleInteraction}>
         {/* Botão do assistente */}
         <button
           onClick={() => setIsModalOpen(true)}
@@ -268,7 +396,7 @@ export const H24Assistant: React.FC<H24AssistantProps> = ({
           bg-gradient-to-r from-indigo-600 to-cyan-600 
           hover:from-indigo-700 hover:to-cyan-700 
           text-white rounded-full shadow-md transition-all duration-300 hover:shadow-lg 
-          dark:from-indigo-700 dark:to-cyan-700 dark:hover:from-indigo-800 dark:hover:to-cyan-800"
+          dark:from-indigo-800 dark:to-cyan-800 dark:hover:from-indigo-800 dark:hover:to-cyan-800"
           aria-label="Assistente H24"
         >
           <Sparkles className="h-5 w-5" />
@@ -282,11 +410,20 @@ export const H24Assistant: React.FC<H24AssistantProps> = ({
           )}
         </button>
         
-        {/* Modal do assistente */}
+        {/* Assistente Minimizado */}
+        {isModalOpen && isMinimized && (   
+            <MinimizedAssistant 
+              onMaximize={() => setIsMinimized(false)}
+              onClose={closeAssistant}
+              unreadCount={unreadCount}
+            />
+        )}
+        
+        {/* Modal do assistente (expandido) */}
         <AnimatePresence>
-          {isModalOpen && (
+          {isModalOpen && !isMinimized && (
             <motion.div
-              className="fixed inset-0 z-50 flex items-start justify-end p-4 mr-4 pointer-events-none"
+              className="fixed inset-0 z-50 flex items-start justify-end p-4 mr-16 top-4 pointer-events-none"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -307,13 +444,22 @@ export const H24Assistant: React.FC<H24AssistantProps> = ({
                       <Sparkles className="h-6 w-6 mr-2" />
                       <h2 className="text-xl font-semibold">Assistente H24</h2>
                     </div>
-                    <button 
-                      onClick={() => setIsModalOpen(false)} 
-                      className="p-1 rounded-full hover:bg-white/10 transition-colors text-white"
-                      aria-label="Fechar"
-                    >
-                      <X className="h-5 w-5" />
-                    </button>
+                    <div className="flex items-center space-x-1">
+                      <button 
+                        onClick={toggleMinimize} 
+                        className="p-1 rounded-full hover:bg-white/10 transition-colors text-white"
+                        aria-label="Minimizar"
+                      >
+                        <Minimize2 className="h-5 w-5" />
+                      </button>
+                      <button 
+                        onClick={closeAssistant} 
+                        className="p-1 rounded-full hover:bg-white/10 transition-colors text-white"
+                        aria-label="Fechar"
+                      >
+                        <X className="h-5 w-5" />
+                      </button>
+                    </div>
                   </div>
                   <p className="text-sm text-indigo-100 dark:text-indigo-200 mt-1">
                     Sua assistente inteligente para gestão hospitalar
@@ -322,355 +468,16 @@ export const H24Assistant: React.FC<H24AssistantProps> = ({
                 
                 {/* Corpo do modal - Alternância entre visualizações */}
                 <div className="max-h-[70vh] overflow-y-auto">
-                  {/* Visualização de boas-vindas */}
                   {currentView === 'welcome' && (
-                    <div className="p-4">
-                      <div className="mb-4">
-                        <p className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-1">
-                          {userGreeting()}
-                        </p>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                          {getFormattedDate()}
-                        </p>
-                      </div>
-                      
-                      {/* Card de estatísticas */}
-                      {statistics && (
-                        <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-lg p-4 mb-4 border border-indigo-100 dark:border-indigo-800">
-                          <h3 className="font-medium text-indigo-800 dark:text-indigo-300 flex items-center mb-3">
-                            <LineChart className="h-4 w-4 mr-1" />
-                            Visão Geral de {hospital?.name || 'Hospital'}
-                          </h3>
-                          
-                          <div className="grid grid-cols-2 gap-3">
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm text-gray-600 dark:text-gray-400">Ocupação:</span>
-                              <span className={`font-medium ${
-                                statistics.bedOccupancy > 90 
-                                  ? 'text-red-600 dark:text-red-400' 
-                                  : statistics.bedOccupancy > 80 
-                                    ? 'text-amber-600 dark:text-amber-400' 
-                                    : 'text-green-600 dark:text-green-400'
-                              }`}>
-                                {statistics.bedOccupancy.toFixed(1)}%
-                              </span>
-                            </div>
-                            
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm text-gray-600 dark:text-gray-400">Tempo médio:</span>
-                              <span className="font-medium text-gray-800 dark:text-gray-200">
-                                {statistics.averageWaitTime} min
-                              </span>
-                            </div>
-                            
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm text-gray-600 dark:text-gray-400">Recursos críticos:</span>
-                              <span className="font-medium text-gray-800 dark:text-gray-200">
-                                {statistics.criticalResourcesNeeded}
-                              </span>
-                            </div>
-                            
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm text-gray-600 dark:text-gray-400">Fluxo de pacientes:</span>
-                              <span className="font-medium text-gray-800 dark:text-gray-200">
-                                {statistics.patientFlow}/hora
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                      
-                      {/* Alertas de alta prioridade */}
-                      {highPriorityAlerts.length > 0 && (
-                        <div className="mb-4">
-                          <h3 className="font-medium text-gray-800 dark:text-gray-200 flex items-center mb-2">
-                            <AlertTriangle className="h-4 w-4 mr-1 text-red-500" />
-                            Alertas Prioritários
-                          </h3>
-                          
-                          <div className="space-y-2">
-                            {highPriorityAlerts.map(alert => (
-                              <div 
-                                key={alert.id}
-                                className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg"
-                              >
-                                <div className="flex items-start">
-                                  <div className="flex-shrink-0 w-8 h-8 bg-red-100 dark:bg-red-900/50 rounded-full flex items-center justify-center text-red-600 dark:text-red-400 mr-2">
-                                    {alert.type === 'ambulance' ? (
-                                      <Ambulance className="h-4 w-4" />
-                                    ) : alert.type === 'resource' ? (
-                                      <Layers className="h-4 w-4" />
-                                    ) : alert.type === 'patient-arrival' ? (
-                                      <Users className="h-4 w-4" />
-                                    ) : (
-                                      <AlertTriangle className="h-4 w-4" />
-                                    )}
-                                  </div>
-                                  <div className="flex-1">
-                                    <h4 className="text-sm font-medium text-gray-800 dark:text-gray-200">
-                                      {alert.title}
-                                    </h4>
-                                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">
-                                      {alert.message}
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                          
-                          {unreadCount > highPriorityAlerts.length && (
-                            <button 
-                              className="w-full mt-2 text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300"
-                              onClick={() => setCurrentView('alerts')}
-                            >
-                              Ver todos os {unreadCount} alertas
-                            </button>
-                          )}
-                        </div>
-                      )}
-                      
-                      {/* Recomendações principais */}
-                      {recommendations.length > 0 && (
-                        <div className="mb-4">
-                          <h3 className="font-medium text-gray-800 dark:text-gray-200 flex items-center mb-2">
-                            <Lightbulb className="h-4 w-4 mr-1 text-amber-500" />
-                            Recomendações Inteligentes
-                          </h3>
-                          
-                          <div className="space-y-2">
-                            {recommendations.slice(0, 2).map(recommendation => (
-                              <div 
-                                key={recommendation.id}
-                                className={`p-3 ${
-                                  recommendation.applied 
-                                    ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800' 
-                                    : 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800'
-                                } border rounded-lg`}
-                              >
-                                <h4 className="text-sm font-medium text-gray-800 dark:text-gray-200 flex items-start">
-                                  {recommendation.applied ? (
-                                    <Check className="h-4 w-4 text-green-500 dark:text-green-400 mr-1 flex-shrink-0 mt-0.5" />
-                                  ) : (
-                                    <Lightbulb className="h-4 w-4 text-amber-500 dark:text-amber-400 mr-1 flex-shrink-0 mt-0.5" />
-                                  )}
-                                  <span>{recommendation.title}</span>
-                                </h4>
-                                <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 ml-5">
-                                  {recommendation.description}
-                                </p>
-                                
-                                {!recommendation.applied && (
-                                  <button 
-                                    className="mt-2 ml-5 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 flex items-center"
-                                    onClick={() => handleApplyRecommendation(recommendation)}
-                                  >
-                                    {recommendation.actionText}
-                                    <ArrowRight className="h-3 w-3 ml-1" />
-                                  </button>
-                                )}
-                              </div>
-                            ))}
-                          </div>
-                          
-                          {recommendations.length > 2 && (
-                            <button 
-                              className="w-full mt-2 text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300"
-                              onClick={() => setCurrentView('recommendations')}
-                            >
-                              Ver todas as {recommendations.length} recomendações
-                            </button>
-                          )}
-                        </div>
-                      )}
-                    </div>
+                    <WelcomeView {...sharedProps} />
                   )}
                   
-                  {/* Visualização de recomendações */}
                   {currentView === 'recommendations' && (
-                    <div className="p-4">
-                      <div className="flex items-center justify-between mb-4">
-                        <h3 className="font-medium text-gray-800 dark:text-gray-200 flex items-center">
-                          <Lightbulb className="h-5 w-5 mr-1 text-amber-500" />
-                          Recomendações Inteligentes
-                        </h3>
-                        <button 
-                          className="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300"
-                          onClick={() => setCurrentView('welcome')}
-                        >
-                          Voltar
-                        </button>
-                      </div>
-                      
-                      <div className="space-y-3">
-                        {recommendations.map(recommendation => (
-                          <div 
-                            key={recommendation.id}
-                            className={`p-3 ${
-                              recommendation.applied 
-                                ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800' 
-                                : recommendation.priority === 'high'
-                                  ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'
-                                  : recommendation.priority === 'medium'
-                                    ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800'
-                                    : 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800'
-                            } border rounded-lg`}
-                          >
-                            <div className="flex items-start justify-between">
-                              <h4 className="text-sm font-medium text-gray-800 dark:text-gray-200 flex items-center">
-                                {recommendation.applied ? (
-                                  <Check className="h-4 w-4 text-green-500 dark:text-green-400 mr-1.5 flex-shrink-0" />
-                                ) : recommendation.priority === 'high' ? (
-                                  <AlertTriangle className="h-4 w-4 text-red-500 dark:text-red-400 mr-1.5 flex-shrink-0" />
-                                ) : (
-                                  <Lightbulb className="h-4 w-4 text-amber-500 dark:text-amber-400 mr-1.5 flex-shrink-0" />
-                                )}
-                                {recommendation.title}
-                              </h4>
-                              
-                              <div className="flex items-center text-xs">
-                                <span className={`
-                                  px-1.5 py-0.5 rounded-full 
-                                  ${recommendation.priority === 'high' 
-                                    ? 'bg-red-100 dark:bg-red-900/40 text-red-800 dark:text-red-300' 
-                                    : recommendation.priority === 'medium'
-                                      ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300'
-                                      : 'bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300'
-                                  }
-                                `}>
-                                  {recommendation.priority === 'high' ? 'Alta' : recommendation.priority === 'medium' ? 'Média' : 'Baixa'}
-                                </span>
-                              </div>
-                            </div>
-                            
-                            <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-                              {recommendation.description}
-                            </p>
-                            
-                            <div className="flex justify-between items-center mt-3">
-                              <div className="text-xs text-gray-500 dark:text-gray-400">
-                                Confiança: {Math.round(recommendation.confidence * 100)}%
-                              </div>
-                              
-                              {!recommendation.applied && (
-                                <button 
-                                  className="text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 flex items-center"
-                                  onClick={() => handleApplyRecommendation(recommendation)}
-                                >
-                                  {recommendation.actionText}
-                                  <ArrowRight className="h-3 w-3 ml-1" />
-                                </button>
-                              )}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                    <RecommendationsView {...sharedProps} />
                   )}
                   
-                  {/* Visualização de alertas */}
                   {currentView === 'alerts' && (
-                    <div className="p-4">
-                      <div className="flex items-center justify-between mb-4">
-                        <h3 className="font-medium text-gray-800 dark:text-gray-200 flex items-center">
-                          <BellRing className="h-5 w-5 mr-1 text-red-500" />
-                          Alertas Ativos
-                        </h3>
-                        <button 
-                          className="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300"
-                          onClick={() => setCurrentView('welcome')}
-                        >
-                          Voltar
-                        </button>
-                      </div>
-                      
-                      <div className="space-y-3">
-                        {alerts.length > 0 ? (
-                          alerts.map(alert => (
-                            <div 
-                              key={alert.id}
-                              className={`p-3 ${
-                                alert.priority === 'high'
-                                  ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'
-                                  : alert.priority === 'medium'
-                                    ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800'
-                                    : 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800'
-                              } border rounded-lg ${alert.read ? 'opacity-75' : ''}`}
-                            >
-                              <div className="flex items-start">
-                                <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center mr-3 
-                                  ${alert.type === 'ambulance' 
-                                    ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300' 
-                                    : alert.type === 'resource'
-                                      ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-300'
-                                      : alert.type === 'patient-arrival'
-                                        ? 'bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-300'
-                                        : 'bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-300'
-                                  }"
-                                >
-                                  {alert.type === 'ambulance' ? (
-                                    <Ambulance className="h-4 w-4" />
-                                  ) : alert.type === 'resource' ? (
-                                    <Layers className="h-4 w-4" />
-                                  ) : alert.type === 'patient-arrival' ? (
-                                    <Users className="h-4 w-4" />
-                                  ) : (
-                                    <AlertTriangle className="h-4 w-4" />
-                                  )}
-                                </div>
-                                
-                                <div className="flex-1">
-                                  <div className="flex justify-between items-start">
-                                    <h4 className="text-sm font-medium text-gray-800 dark:text-gray-200">
-                                      {alert.title}
-                                    </h4>
-                                    <span className="text-xs text-gray-500 dark:text-gray-400">
-                                      {new Date(alert.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                    </span>
-                                  </div>
-                                  
-                                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                                    {alert.message}
-                                  </p>
-                                  
-                                  {alert.actionRequired && (
-                                    <div className="mt-2 flex justify-between items-center">
-                                      <span className={`
-                                        text-xs px-1.5 py-0.5 rounded
-                                        ${alert.priority === 'high' 
-                                          ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300' 
-                                          : alert.priority === 'medium'
-                                            ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300'
-                                            : 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300'
-                                        }
-                                      `}>
-                                        {alert.priority === 'high' ? 'Urgente' : alert.priority === 'medium' ? 'Importante' : 'Informativo'}
-                                      </span>
-                                      
-                                      <button 
-                                        className="text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 flex items-center"
-                                        onClick={() => onViewAllAlerts?.()}
-                                      >
-                                        Ver detalhes
-                                        <ChevronRight className="h-3 w-3 ml-0.5" />
-                                      </button>
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                          ))
-                        ) : (
-                          <div className="text-center p-6 text-gray-500 dark:text-gray-400">
-                            <div className="w-12 h-12 mx-auto bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mb-3">
-                              <BellRing className="h-6 w-6 text-gray-400 dark:text-gray-500" />
-                            </div>
-                            <p>Nenhum alerta ativo no momento</p>
-                            <p className="text-xs mt-1">Você será notificado quando surgirem novos alertas</p>
-                          </div>
-                        )}
-                      </div>
-                    </div>
+                    <AlertsView {...sharedProps} onViewAllAlerts={onViewAllAlerts} />
                   )}
                 </div>
                 
@@ -679,14 +486,17 @@ export const H24Assistant: React.FC<H24AssistantProps> = ({
                   <div className="flex space-x-2">
                     <button
                       className="flex-1 py-2 px-3 bg-indigo-600 dark:bg-indigo-700 hover:bg-indigo-700 dark:hover:bg-indigo-800 text-white rounded-lg text-sm font-medium transition-colors"
-                      onClick={onShowChat}
+                      onClick={() => {
+                        resetInactivityTimer();
+                        onShowChat && onShowChat();
+                      }}
                     >
                       Abrir Chat
                     </button>
                     
                     <button
                       className="py-2 px-3 border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors"
-                      onClick={() => setIsModalOpen(false)}
+                      onClick={closeAssistant}
                     >
                       Fechar
                     </button>

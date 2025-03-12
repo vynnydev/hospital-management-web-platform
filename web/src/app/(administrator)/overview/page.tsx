@@ -254,7 +254,7 @@ const Overview: React.FC = () => {
           {/* Display Mode Toggle Button */}
           <div className='flex flex-row justify-between w-full h-12 -mt-32 px-6 ml-6'>
             {/* Display Chat by Button */}
-            <div className='rounded-full p-1 bg-gradient-to-r from-blue-700/90 to-cyan-700/90'>
+            <div className='rounded-full p-1 bg-gray-700'>
               <AlertsProvider hospitalId={selectedHospital || ''} checkInterval={30000}>
                     {/* Barra com Assistente IA e Chat */}
                     <H24AssistantBar showTitle={false} />

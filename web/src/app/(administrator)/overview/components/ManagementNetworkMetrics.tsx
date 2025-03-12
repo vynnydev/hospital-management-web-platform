@@ -257,7 +257,7 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
                 {/* Botão para gerar métricas com IA */}
                 <Button
                   onClick={openAIGenerationModal}
-                  className="relative overflow-hidden bg-gradient-to-r from-indigo-800 to-teal-500 hover:from-indigo-600 hover:to-teal-500 text-white border-none rounded-full py-3 px-6 font-semibold shadow-lg transition-all duration-300 ease-in-out"
+                  className="relative overflow-hidden bg-gradient-to-r from-indigo-800 to-cyan-700 hover:from-indigo-600 hover:to-teal-500 text-white border-none rounded-full py-3 px-6 font-semibold shadow-lg transition-all duration-300 ease-in-out"
                   disabled={!isUserLoggedIn}
                 >
                   <div className="absolute top-0 left-0 w-full h-full bg-white/10 rounded-full"></div>
