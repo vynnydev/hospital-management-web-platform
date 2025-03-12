@@ -54,8 +54,8 @@ export const H24Assistant: React.FC<H24AssistantProps> = ({
     useEffect(() => {
       const loadUserPreferences = () => {
         // Verificar se o assistente foi minimizado
-        // const wasMinimized = userPreferencesService.getMinimizedState(userId);
-        // setIsMinimized(wasMinimized); <- Comentar esta linha
+        const wasMinimized = userPreferencesService.getMinimizedState(userId);
+        setIsMinimized(wasMinimized);
         
         // Verificar se já foi visto antes
         const firstVisit = userPreferencesService.isFirstVisit(userId);
