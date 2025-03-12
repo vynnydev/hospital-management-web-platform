@@ -1,5 +1,5 @@
 'use client'
-import { MediMindAIAssistant } from "@/components/ui/medimind-ai-assistant/MediMindAIAssistant"
+import { MediMindAIPatientAssistant } from "@/components/ui/templates/medimind-ai-assistant/MediMindAIPatientAssistant"
 import { MainStaffPredictiveAnalysis } from "./components/MainStaffPredictiveAnalysis"
 
 const PredictiveAnalisys = () => {
@@ -7,7 +7,7 @@ const PredictiveAnalisys = () => {
         <div className="px-6 -mt-12">
             <MainStaffPredictiveAnalysis />
 
-            <MediMindAIAssistant />
+            <MediMindAIPatientAssistant />
         </div>
     )
 }

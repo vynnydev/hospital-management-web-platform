@@ -243,13 +243,13 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
                   <Button
                     onClick={() => setIsLoginModalOpen(true)}
                     variant="outline"
-                    className="bg-blue-600 hover:bg-blue-700 text-white border-blue-700"
+                    className="bg-indigo-600 hover:bg-indigo-700 text-white border-indigo-700"
                   >
                     <LogIn size={18} className="mr-1" />
                     <span>Entrar</span>
                   </Button>
                 ) : (
-                  <div className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 rounded-md text-blue-800 dark:text-blue-300 text-sm">
+                  <div className="px-2 py-1 bg-indigo-100 dark:bg-indigo-900/30 rounded-md text-indigo-800 dark:text-indigo-300 text-sm">
                     {authService.getCurrentUser()?.name || 'Usuário'}
                   </div>
                 )}
@@ -257,7 +257,7 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
                 {/* Botão para gerar métricas com IA */}
                 <Button
                   onClick={openAIGenerationModal}
-                  className="relative overflow-hidden bg-gradient-to-r from-blue-800 to-teal-500 hover:from-blue-600 hover:to-teal-500 text-white border-none rounded-full py-3 px-6 font-semibold shadow-lg transition-all duration-300 ease-in-out"
+                  className="relative overflow-hidden bg-gradient-to-r from-indigo-800 to-teal-500 hover:from-indigo-600 hover:to-teal-500 text-white border-none rounded-full py-3 px-6 font-semibold shadow-lg transition-all duration-300 ease-in-out"
                   disabled={!isUserLoggedIn}
                 >
                   <div className="absolute top-0 left-0 w-full h-full bg-white/10 rounded-full"></div>
@@ -285,7 +285,7 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
                   className={`
                     flex items-center space-x-2 
                     ${isEditMetricsMode 
-                      ? 'bg-blue-600 hover:bg-blue-700 text-white border-blue-700' 
+                      ? 'bg-indigo-600 hover:bg-indigo-700 text-white border-indigo-700' 
                       : 'bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600'
                     }
                   `}
@@ -364,7 +364,7 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
           </DialogHeader>
           
           <div className="py-4 space-y-4">
-            <div className="bg-blue-900/30 border border-blue-800 rounded-lg p-4 text-blue-300 text-sm">
+            <div className="bg-indigo-900/30 border border-indigo-800 rounded-lg p-4 text-indigo-300 text-sm">
               <p className="font-medium">Demo: Credenciais pré-configuradas</p>
               <p className="mt-1">Email: admin@4health.com</p>
               <p>Senha: 123</p>
@@ -373,7 +373,7 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
             <div className="flex justify-between items-center">
               <span className="text-gray-400">Clique em Login para continuar</span>
               <Button
-                className="bg-blue-600 hover:bg-blue-700 text-white"
+                className="bg-indigo-600 hover:bg-indigo-700 text-white"
                 onClick={handleLogin}
               >
                 <LogIn className="w-4 h-4 mr-2" />

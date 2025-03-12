@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Card, CardReport } from "./mediMindAIAssistantFunctions";
+import { Card, CardReport } from "./mediMindAIPatientAssistantFunctions";
 
 import { PatientRiskAnalysis } from "@/services/AI/medimind-ai-assistant/PatientRiskAnalysis";
 import { VitalSignsAnalyzer } from "@/services/AI/medimind-ai-assistant/VitalSignsAnalyzer";

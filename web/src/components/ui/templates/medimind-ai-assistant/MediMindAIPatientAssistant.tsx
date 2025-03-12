@@ -13,10 +13,10 @@ import {
   formatAIResponse,
   initialMessage,
   ReportType,
-} from './utils/mediMindAIAssistantFunctions';
-import { funcionalitiesCards } from './utils/AssistantFuncionalities';
+} from '@/utils/mediMindAIPatientAssistantFunctions';
+import { funcionalitiesCards } from '@/utils/assistantFuncionalities';
 
-export const MediMindAIAssistant: React.FC = () => {
+export const MediMindAIPatientAssistant: React.FC = () => {
   const { theme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState('');

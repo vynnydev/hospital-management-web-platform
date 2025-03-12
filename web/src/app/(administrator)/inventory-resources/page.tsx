@@ -1,5 +1,5 @@
 'use client'
-import { MediMindAIAssistant } from "@/components/ui/medimind-ai-assistant/MediMindAIAssistant"
+import { MediMindAIPatientAssistant } from "@/components/ui/templates/medimind-ai-assistant/MediMindAIPatientAssistant"
 import { ResourceManagementContainerWithProviders } from "./components/MainResourceManagementContainer"
 
 const InventoryResources = () => {
@@ -8,7 +8,7 @@ const InventoryResources = () => {
             <h1 className="text-2xl font-bold mb-4">Gestão de Recursos</h1>
             <ResourceManagementContainerWithProviders />
             
-            <MediMindAIAssistant />
+            <MediMindAIPatientAssistant />
       </div>
     )
 }

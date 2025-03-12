@@ -4,7 +4,7 @@ import {
     MedicationImageRequest, 
     ImageGenerationConfig
 } from './types/image-types';
-import { isValidBase64Image } from '@/components/ui/medimind-ai-assistant/report-modal-ai/services/functions/imagePresenter';
+import { isValidBase64Image } from '@/components/ui/templates/medimind-ai-assistant/report-modal-ai/services/functions/imagePresenter';
 
 import pQueue from 'p-queue';
 

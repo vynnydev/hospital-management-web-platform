@@ -3,16 +3,23 @@
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData'
 
 export const WelcomeMsg = () => {
-    const { currentUser, loading } = useNetworkData()
+    const { currentUser } = useNetworkData()
 
     return (
         <div className='space-y-2 mb-4'>
-            <h2 className='text-2xl lg:text-3xl text-white font-medium'>
-                Bem-vindo de Volta{loading ? ', ' : ' '}{currentUser?.name} 😄 
-            </h2>
-            <p className='text-sm lg:text-base text-cyan-100 dark:text-cyan-400'>
-                Este é seu relatório de visão geral do H24
-            </p>
+            <header className="py-4 px-6">
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+                        Bem-vindo de Volta, {currentUser?.name || 'Administrador'}!
+                        </h1>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                        Este é seu relatório de visão geral do H24
+                        </p>
+                    </div>
+                
+                </div>
+            </header>
         </div>
     )
 }

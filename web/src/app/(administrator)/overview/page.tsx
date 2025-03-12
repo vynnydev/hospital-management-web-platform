@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/organisms/card';
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { MediMindAIAssistant } from '@/components/ui/medimind-ai-assistant/MediMindAIAssistant';
+import { MediMindAIPatientAssistant } from '@/components/ui/templates/medimind-ai-assistant/MediMindAIPatientAssistant';
 import { ReorderableSectionsInOverviewPage } from '@/components/ui/templates/ReorderableSectionsInOverviewPage';
 import { ManagementNetworkMetrics } from './components/ManagementNetworkMetrics';
 import { DepartmentStatus } from './components/DepartmentStatus';
@@ -27,6 +27,7 @@ import { useAmbulanceData } from '@/services/hooks/ambulance/useAmbulanceData';
 import { PatientMonitoringDashboard } from '@/components/ui/templates/PatientMonitoringDashboard';
 import { ChatButton } from '@/components/ui/templates/chat/ChatButton';
 import { AlertsProvider } from '@/components/ui/templates/chat/integration-hub/alerts/AlertsProvider';
+import { H24AssistantBar } from '@/components/ui/templates/ai-assistant/H24AssistantBar';
 
 const Overview: React.FC = () => {
   const { networkData, currentUser, setNetworkData, loading, error } = useNetworkData();
@@ -254,11 +255,10 @@ const Overview: React.FC = () => {
           <div className='flex flex-row justify-between w-full h-12 -mt-32 px-6 ml-6'>
             {/* Display Chat by Button */}
             <div className='rounded-full p-1 bg-gradient-to-r from-blue-700/90 to-cyan-700/90'>
-              {currentUser && (
-                <AlertsProvider hospitalId={selectedHospital || ''}>
-                  <ChatButton userId={currentUser.id} userRole="medico" />
-                </AlertsProvider>
-              )}
+              <AlertsProvider hospitalId={selectedHospital || ''} checkInterval={30000}>
+                    {/* Barra com Assistente IA e Chat */}
+                    <H24AssistantBar showTitle={false} />
+              </AlertsProvider>
             </div>
 
             <div className='flex justify-center justify-self-end px-16 mr-16 p-1 bg-gradient-to-r from-blue-700/90 to-cyan-700/90 rounded-xl w-48 h-12'>
@@ -406,7 +406,7 @@ const Overview: React.FC = () => {
         setSelectedHospital={setSelectedHospital}
       />
 
-      <MediMindAIAssistant />
+      <MediMindAIPatientAssistant />
     </>
   );
 };

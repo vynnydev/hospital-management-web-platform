@@ -28,8 +28,8 @@ export const Header = () => {
     return (
         <header className={`px-4 py-8 lg:px-14 pb-48
             ${theme === 'dark'
-                ? 'bg-[linear-gradient(135deg,#1E293B,#164E63)] shadow-[0_0_20px_rgba(30,41,59,0.5),0_0_40px_rgba(22,78,99,0.3)]'
-                : 'bg-[linear-gradient(135deg,#aecddc,#459bc6)] shadow-lg'
+                ? 'bg-gradient-to-tr from-slate-800 to-cyan-900 shadow-xl'
+                : 'bg-gradient-to-tr from-blue-200 to-blue-500 shadow-lg'
             }`
         }>
             <div className="max-w-screen-2xl mx-auto">

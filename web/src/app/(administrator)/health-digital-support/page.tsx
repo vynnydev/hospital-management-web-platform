@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 import React, { useState } from 'react';
-import { MediMindAIAssistant } from '@/components/ui/medimind-ai-assistant/MediMindAIAssistant';
+import { MediMindAIPatientAssistant } from '@/components/ui/templates/medimind-ai-assistant/MediMindAIPatientAssistant';
 import { DigitalAttendancePage } from './components/DigitalAttendancePage';
 
 const HealthDigitalSupportPage: React.FC = () => {
@@ -11,7 +11,7 @@ const HealthDigitalSupportPage: React.FC = () => {
         <DigitalAttendancePage />
       </div>    
 
-      <MediMindAIAssistant />
+      <MediMindAIPatientAssistant />
     </div>
   );
 };

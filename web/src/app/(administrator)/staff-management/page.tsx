@@ -2,7 +2,7 @@
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-import { MediMindAIAssistant } from "@/components/ui/medimind-ai-assistant/MediMindAIAssistant";
+import { MediMindAIPatientAssistant } from "@/components/ui/templates/medimind-ai-assistant/MediMindAIPatientAssistant";
 import { MainStaffManagement } from './components/MainStaffManagement';
 
 const StaffManagement: React.FC = () => {
@@ -12,7 +12,7 @@ const StaffManagement: React.FC = () => {
         <MainStaffManagement />
       </DndProvider>
 
-      <MediMindAIAssistant />
+      <MediMindAIPatientAssistant />
     </div>
   );
 };
