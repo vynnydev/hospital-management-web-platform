@@ -111,6 +111,7 @@ export const H24Assistant: React.FC<H24AssistantProps> = ({
       };
     }, [isModalOpen, isMinimized]);
     
+    
     // Efeito para lidar com inatividade
     useEffect(() => {
       const preferences = userPreferencesService.getUserPreferences(userId);
@@ -158,142 +159,142 @@ export const H24Assistant: React.FC<H24AssistantProps> = ({
     
     // Efeito para gerar recomendações com base nos dados disponíveis
     useEffect(() => {
-      if (networkData && staffData && ambulanceData && alerts) {
-        generateRecommendations();
-        generateStatistics();
-      }
-    }, [networkData, staffData, ambulanceData, alerts, selectedHospitalId]);
-    
-    // Função para gerar recomendações com base na análise dos dados
-    const generateRecommendations = () => {
-      const newRecommendations: IRecommendation[] = [];
-      
-      // Exemplo: Recomendação baseada em alta ocupação de UTI
-      const hospital = networkData?.hospitals.find(h => h.id === selectedHospitalId);
-      if (hospital && hospital.metrics && hospital.metrics.departmental?.uti?.occupancy > 85) {
-        const recId = `rec-bed-${Date.now()}`;
+      // Função para gerar recomendações com base na análise dos dados
+      const generateRecommendations = () => {
+        const newRecommendations: IRecommendation[] = [];
         
-        // Verificar se a recomendação já foi aplicada pelo usuário
-        const applied = userPreferencesService.isRecommendationApplied(userId, recId);
-        
-        newRecommendations.push({
-          id: recId,
-          type: 'bed-management',
-          title: 'Ocupação crítica de UTI',
-          description: `A UTI está com ${hospital.metrics.departmental.uti.occupancy}% de ocupação. Considere redistribuir pacientes ou ativar leitos adicionais.`,
-          priority: 'high',
-          actionText: 'Ver leitos disponíveis',
-          timestamp: new Date(),
-          confidence: 0.92,
-          applied
-        });
-      }
-      
-      // Recomendação baseada em ambulâncias a caminho
-      const incomingAmbulances = ambulanceData?.routes[selectedHospitalId]?.filter(route => 
-        route.status === 'in_progress' && 
-        route.destination.hospitalId === selectedHospitalId
-      );
-      
-      if (incomingAmbulances && incomingAmbulances.length > 0) {
-        const criticalCount = incomingAmbulances.filter(route => 
-          route.patient?.emergencyLevel === 'critical' || 
-          route.patient?.emergencyLevel === 'high'
-        ).length;
-        
-        if (criticalCount > 0) {
-          const recId = `rec-ambulance-${Date.now()}`;
+        // Exemplo: Recomendação baseada em alta ocupação de UTI
+        const hospital = networkData?.hospitals.find(h => h.id === selectedHospitalId);
+        if (hospital && hospital.metrics && hospital.metrics.departmental?.uti?.occupancy > 85) {
+          const recId = `rec-bed-${Date.now()}`;
           
           // Verificar se a recomendação já foi aplicada pelo usuário
           const applied = userPreferencesService.isRecommendationApplied(userId, recId);
           
           newRecommendations.push({
             id: recId,
-            type: 'ambulance-dispatch',
-            title: `${criticalCount} ambulância${criticalCount > 1 ? 's' : ''} com casos críticos a caminho`,
-            description: `Prepare equipe de emergência e recursos para receber ${criticalCount} paciente${criticalCount > 1 ? 's' : ''} crítico${criticalCount > 1 ? 's' : ''} nos próximos 30 minutos.`,
+            type: 'bed-management',
+            title: 'Ocupação crítica de UTI',
+            description: `A UTI está com ${hospital.metrics.departmental.uti.occupancy}% de ocupação. Considere redistribuir pacientes ou ativar leitos adicionais.`,
             priority: 'high',
-            actionText: 'Preparar recepção',
+            actionText: 'Ver leitos disponíveis',
             timestamp: new Date(),
-            confidence: 0.95,
+            confidence: 0.92,
             applied
           });
         }
-      }
-      
-      // Recomendação baseada na análise de equipes e escalas
-      const teamUTI = staffData?.staffTeams[selectedHospitalId]?.find(team => 
-        team.department.toLowerCase() === 'uti' && 
-        team.shift === 'Manhã'
-      );
-      
-      if (teamUTI && (teamUTI.capacityStatus === 'high_demand' || teamUTI.metrics.taskCompletion < 85)) {
-        const recId = `rec-staff-${Date.now()}`;
+        
+        // Recomendação baseada em ambulâncias a caminho
+        const incomingAmbulances = ambulanceData?.routes[selectedHospitalId]?.filter(route => 
+          route.status === 'in_progress' && 
+          route.destination.hospitalId === selectedHospitalId
+        );
+        
+        if (incomingAmbulances && incomingAmbulances.length > 0) {
+          const criticalCount = incomingAmbulances.filter(route => 
+            route.patient?.emergencyLevel === 'critical' || 
+            route.patient?.emergencyLevel === 'high'
+          ).length;
+          
+          if (criticalCount > 0) {
+            const recId = `rec-ambulance-${Date.now()}`;
+            
+            // Verificar se a recomendação já foi aplicada pelo usuário
+            const applied = userPreferencesService.isRecommendationApplied(userId, recId);
+            
+            newRecommendations.push({
+              id: recId,
+              type: 'ambulance-dispatch',
+              title: `${criticalCount} ambulância${criticalCount > 1 ? 's' : ''} com casos críticos a caminho`,
+              description: `Prepare equipe de emergência e recursos para receber ${criticalCount} paciente${criticalCount > 1 ? 's' : ''} crítico${criticalCount > 1 ? 's' : ''} nos próximos 30 minutos.`,
+              priority: 'high',
+              actionText: 'Preparar recepção',
+              timestamp: new Date(),
+              confidence: 0.95,
+              applied
+            });
+          }
+        }
+        
+        // Recomendação baseada na análise de equipes e escalas
+        const teamUTI = staffData?.staffTeams[selectedHospitalId]?.find(team => 
+          team.department.toLowerCase() === 'uti' && 
+          team.shift === 'Manhã'
+        );
+        
+        if (teamUTI && (teamUTI.capacityStatus === 'high_demand' || teamUTI.metrics.taskCompletion < 85)) {
+          const recId = `rec-staff-${Date.now()}`;
+          
+          // Verificar se a recomendação já foi aplicada pelo usuário
+          const applied = userPreferencesService.isRecommendationApplied(userId, recId);
+          
+          newRecommendations.push({
+            id: recId,
+            type: 'staff-allocation',
+            title: 'Equipe de UTI sobrecarregada',
+            description: 'A equipe da UTI manhã está com sobrecarga de trabalho. Considere redistribuir tarefas ou alocar membros adicionais para equilibrar a demanda.',
+            priority: 'medium',
+            actionText: 'Reorganizar escala',
+            timestamp: new Date(),
+            confidence: 0.85,
+            applied
+          });
+        }
+        
+        // Recomendação baseada em análise preditiva (simulação)
+        const recId = `rec-prediction-${Date.now()}`;
         
         // Verificar se a recomendação já foi aplicada pelo usuário
         const applied = userPreferencesService.isRecommendationApplied(userId, recId);
         
         newRecommendations.push({
           id: recId,
-          type: 'staff-allocation',
-          title: 'Equipe de UTI sobrecarregada',
-          description: 'A equipe da UTI manhã está com sobrecarga de trabalho. Considere redistribuir tarefas ou alocar membros adicionais para equilibrar a demanda.',
+          type: 'ai-prediction',
+          title: 'Previsão de alta demanda',
+          description: 'Nosso modelo preditivo indica aumento de 23% na demanda de leitos para os próximos 3 dias. Recomendamos preparação prévia de recursos e equipes.',
           priority: 'medium',
-          actionText: 'Reorganizar escala',
+          actionText: 'Ver previsão detalhada',
           timestamp: new Date(),
-          confidence: 0.85,
+          confidence: 0.88,
           applied
         });
-      }
-      
-      // Recomendação baseada em análise preditiva (simulação)
-      const recId = `rec-prediction-${Date.now()}`;
-      
-      // Verificar se a recomendação já foi aplicada pelo usuário
-      const applied = userPreferencesService.isRecommendationApplied(userId, recId);
-      
-      newRecommendations.push({
-        id: recId,
-        type: 'ai-prediction',
-        title: 'Previsão de alta demanda',
-        description: 'Nosso modelo preditivo indica aumento de 23% na demanda de leitos para os próximos 3 dias. Recomendamos preparação prévia de recursos e equipes.',
-        priority: 'medium',
-        actionText: 'Ver previsão detalhada',
-        timestamp: new Date(),
-        confidence: 0.88,
-        applied
-      });
-      
-      // Ordenar recomendações por prioridade e confiança
-      const sortedRecommendations = newRecommendations.sort((a, b) => {
-        const priorityOrder = { high: 0, medium: 1, low: 2 };
-        const priorityDiff = priorityOrder[a.priority] - priorityOrder[b.priority];
         
-        if (priorityDiff === 0) {
-          return b.confidence - a.confidence;
-        }
-        
-        return priorityDiff;
-      });
-      
-      setRecommendations(sortedRecommendations);
-    };
-    
-    // Função para gerar estatísticas
-    const generateStatistics = () => {
-      const hospital = networkData?.hospitals.find(h => h.id === selectedHospitalId);
-      
-      if (hospital && hospital.metrics) {
-        setStatistics({
-          bedOccupancy: hospital.metrics.overall.occupancyRate,
-          averageWaitTime: 35.2, // Exemplo (em minutos)
-          criticalResourcesNeeded: 3,
-          staffEfficiency: 87.5,
-          patientFlow: 12.3, // Pacientes/hora
-          emergencyResponseTime: 7.8 // Minutos
+        // Ordenar recomendações por prioridade e confiança
+        const sortedRecommendations = newRecommendations.sort((a, b) => {
+          const priorityOrder = { high: 0, medium: 1, low: 2 };
+          const priorityDiff = priorityOrder[a.priority] - priorityOrder[b.priority];
+          
+          if (priorityDiff === 0) {
+            return b.confidence - a.confidence;
+          }
+          
+          return priorityDiff;
         });
+        
+        setRecommendations(sortedRecommendations);
+      };
+      
+      // Função para gerar estatísticas
+      const generateStatistics = () => {
+        const hospital = networkData?.hospitals.find(h => h.id === selectedHospitalId);
+        
+        if (hospital && hospital.metrics) {
+          setStatistics({
+            bedOccupancy: hospital.metrics.overall.occupancyRate,
+            averageWaitTime: 35.2, // Exemplo (em minutos)
+            criticalResourcesNeeded: 3,
+            staffEfficiency: 87.5,
+            patientFlow: 12.3, // Pacientes/hora
+            emergencyResponseTime: 7.8 // Minutos
+          });
+        }
+      };
+      
+      if (networkData && staffData && ambulanceData && alerts) {
+        generateRecommendations();
+        generateStatistics();
       }
-    };
+    }, [networkData, staffData, ambulanceData, alerts, selectedHospitalId, userId]);
     
     // Função para lidar com a aplicação de uma recomendação
     const handleApplyRecommendation = (recommendation: IRecommendation) => {
