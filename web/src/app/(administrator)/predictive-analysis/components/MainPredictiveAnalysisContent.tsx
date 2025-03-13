@@ -208,10 +208,10 @@ export const MainPredictiveAnalysisContent: React.FC<MainPredictiveAnalysisConte
 
         return (
           <>        
-            <div className="space-y-6 -mt-28">
+            <div className="space-y-6 -mt-32">
               {/* Header sempre visível */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
+              <div className="flex items-center justify-end gap-40">
+                <div className="flex items-center space-x-4 pr-16">
                   <Brain className="w-6 h-6 text-blue-400" />
                   <h1 className="text-2xl font-bold">Análise Preditiva Detalhada</h1>
                   <Badge className="text-base bg-gradient-to-r from-blue-700/70 to-cyan-700/70">

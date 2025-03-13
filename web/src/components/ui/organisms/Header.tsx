@@ -13,12 +13,18 @@ import { authService } from "@/services/auth/AuthService"
 import { useState } from "react"
 import { ConfigurationAndUserModalMenus } from '../templates/modals/ConfigurationAndUserModalMenus';
 import { IntegrationsContent } from '../templates/modal-contents/IntegrationsContent';
+import { AlertsProvider } from '../templates/chat/integration-hub/alerts/AlertsProvider';
+import { H24AssistantBar } from '../templates/ai-assistant/H24AssistantBar';
+import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
 
 export const Header = () => {
     const { theme, setTheme } = useTheme();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isIntegrationsOpen, setIsIntegrationsOpen] = useState(false);
     const user = authService.getCurrentUser();
+    const { networkData, currentUser } = useNetworkData()
+
+    const selectedHospital = networkData?.hospitals?.find(h => h.id === currentUser?.hospitalId);
 
     const handleLogout = async () => {
         await authService.logout();
@@ -98,8 +104,16 @@ export const Header = () => {
                             </div>
                         </div>
                     </div>
-                <WelcomeMsg />
-            </div>
+                    
+                    <WelcomeMsg />
+
+                    <div className='absolute rounded-full p-1 bg-gray-700 mt-16'>
+                        <AlertsProvider hospitalId={selectedHospital as unknown as string || ''} checkInterval={30000}>
+                                {/* Barra com Assistente IA e Chat */}
+                                <H24AssistantBar showTitle={false} />
+                        </AlertsProvider>
+                    </div>
+                </div>
         </header>
     )
 }

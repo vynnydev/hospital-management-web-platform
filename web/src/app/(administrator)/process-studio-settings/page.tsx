@@ -6,7 +6,7 @@ import { SettingsDashboard } from './components/SettingsDashboard';
 
 const SettingsPage: React.FC = () => {
   return (
-    <div className="px-4 -mt-20 mb-8">
+    <div className="px-4 -mt-16 mb-8">
       <SettingsDashboard />
 
       <MediMindAIPatientAssistant />

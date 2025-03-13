@@ -4,8 +4,8 @@ import { ResourceManagementContainerWithProviders } from "./components/MainResou
 
 const InventoryResources = () => {
     return (
-       <div className="px-4 -mt-32">
-            <h1 className="text-2xl font-bold mb-4">Gestão de Recursos</h1>
+       <div className="px-4 -mt-28">
+            <h1 className="text-center text-2xl font-bold mb-4">Gestão de Recursos</h1>
             <ResourceManagementContainerWithProviders />
             
             <MediMindAIPatientAssistant />

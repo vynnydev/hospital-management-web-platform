@@ -252,37 +252,27 @@ const Overview: React.FC = () => {
       ) : (
         <>
           {/* Display Mode Toggle Button */}
-          <div className='flex flex-row justify-between w-full h-12 -mt-32 px-6 ml-6'>
-            {/* Display Chat by Button */}
-            <div className='rounded-full p-1 bg-gray-700'>
-              <AlertsProvider hospitalId={selectedHospital || ''} checkInterval={30000}>
-                    {/* Barra com Assistente IA e Chat */}
-                    <H24AssistantBar showTitle={false} />
-              </AlertsProvider>
-            </div>
-
-            <div className='flex justify-center justify-self-end px-16 mr-16 p-1 bg-gradient-to-r from-blue-700/90 to-cyan-700/90 rounded-xl w-48 h-12'>
-              <Button
-                onClick={() => setIsDashboardModeModalOpen(true)}
-                variant="outline"
-                size="default"
-                className={`
-                  flex items-center space-x-2 
-                  ${isReorderMode 
-                    ? 'bg-blue-50 hover:bg-blue-100 border-blue-200 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 dark:border-blue-800' 
-                    : 'bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 border-gray-200 dark:border-gray-600'}
-                  transition-all duration-200
-                `}
-              >
-                <LayoutGrid 
-                  size={18} 
-                  className={isReorderMode ? "text-blue-500" : "text-gray-500 dark:text-gray-400"} 
-                />
-                <span className={isReorderMode ? "text-blue-600" : ""}>
-                  {isReorderMode ? 'Modo Reposição' : 'Modo Dashboard'}
-                </span>
-              </Button>
-            </div>
+          <div className='-mt-32 relative flex justify-center justify-self-end px-16 mr-12 p-1 bg-gradient-to-r from-blue-700/90 to-cyan-700/90 rounded-xl w-48 h-12'>
+            <Button
+              onClick={() => setIsDashboardModeModalOpen(true)}
+              variant="outline"
+              size="default"
+              className={`
+                flex items-center space-x-2 
+                ${isReorderMode 
+                  ? 'bg-blue-50 hover:bg-blue-100 border-blue-200 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 dark:border-blue-800' 
+                  : 'bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 border-gray-200 dark:border-gray-600'}
+                transition-all duration-200
+              `}
+            >
+              <LayoutGrid 
+                size={18} 
+                className={isReorderMode ? "text-blue-500" : "text-gray-500 dark:text-gray-400"} 
+              />
+              <span className={isReorderMode ? "text-blue-600" : ""}>
+                {isReorderMode ? 'Modo Reposição' : 'Modo Dashboard'}
+              </span>
+            </Button>
           </div>
 
           <div className="space-y-20 p-6 rounded-md">
