@@ -1,275 +1,255 @@
-/**
- * Serviço para gerenciar preferências do usuário relacionadas ao Assistente H24
- * Armazena as preferências no localStorage para persistência entre sessões
- */
+// services/preferences/userPreferencesService.ts
 
-const STORAGE_PREFIX = 'h24_assistant_';
-
-// Keys para armazenamento
-const KEYS = {
-  FIRST_VISIT: `${STORAGE_PREFIX}first_visit`,
-  DISMISSED_ALERTS: `${STORAGE_PREFIX}dismissed_alerts`,
-  APPLIED_RECOMMENDATIONS: `${STORAGE_PREFIX}applied_recommendations`,
-  MINIMIZED_STATE: `${STORAGE_PREFIX}minimized_state`,
-  USER_PREFERENCES: `${STORAGE_PREFIX}user_preferences`,
-};
-
-interface AssistantPreferences {
-  showOnStartup: boolean;
+// Interface para preferências do usuário
+interface IUserPreferences {
+  // Padrões de visualização
   defaultView: 'welcome' | 'recommendations' | 'alerts';
-  notificationsEnabled: boolean;
+  showOnStartup: boolean;
+  
+  // Configurações de comportamento do assistente
   autoMinimizeAfterInactivity: boolean;
-  inactivityTimeout: number; // em segundos
+  inactivityTimeout: number; // segundos
+  
+  // Notificações
+  soundNotifications: boolean;
+  notifyOnNewAlerts: boolean;
+  notifyOnNewRecommendations: boolean;
+  
+  // Outras configurações
+  showDetailedStats: boolean;
+  aiSuggestions: boolean;
+
+  // Indica se o assistente deve ser maximizado após o login
+  maximizeOnLogin: boolean;
 }
 
 // Preferências padrão
-const DEFAULT_PREFERENCES: AssistantPreferences = {
-  showOnStartup: true,
+const DEFAULT_PREFERENCES: IUserPreferences = {
   defaultView: 'welcome',
-  notificationsEnabled: true,
+  showOnStartup: true,
   autoMinimizeAfterInactivity: true,
-  inactivityTimeout: 300, // 5 minutos
+  inactivityTimeout: 60, // 60 segundos
+  soundNotifications: true,
+  notifyOnNewAlerts: true,
+  notifyOnNewRecommendations: true,
+  showDetailedStats: false,
+  aiSuggestions: true,
+  maximizeOnLogin: true, // Por padrão, sempre maximiza após login
 };
 
-/**
- * Verifica se é a primeira vez que o usuário vê o assistente
- * @param userId ID do usuário
- * @returns boolean indicando se é a primeira visita
- */
-export const isFirstVisit = (userId: string): boolean => {
-  if (typeof window === 'undefined') return false; // SSR check
-  
-  const visitedUsers = localStorage.getItem(KEYS.FIRST_VISIT);
-  
-  if (!visitedUsers) {
-    // Se não houver registro, é a primeira visita
-    markAsVisited(userId);
-    return true;
+class UserPreferencesService {
+  private getStorageKey(userId: string, key: string): string {
+    return `h24_${userId}_${key}`;
   }
   
-  try {
-    const users = JSON.parse(visitedUsers) as string[];
-    if (!users.includes(userId)) {
-      // Se o usuário não estiver na lista, é a primeira visita dele
-      markAsVisited(userId);
-      return true;
+  /**
+   * Obtém as preferências do usuário
+   */
+  getUserPreferences(userId: string): IUserPreferences {
+    try {
+      // Tentar obter as preferências do localStorage
+      const storedPrefs = localStorage.getItem(this.getStorageKey(userId, 'preferences'));
+      if (storedPrefs) {
+        return JSON.parse(storedPrefs);
+      }
+    } catch (error) {
+      console.error('Erro ao obter preferências do usuário:', error);
     }
-  } catch (error) {
-    console.error('Erro ao verificar primeira visita:', error);
-    // Em caso de erro, marca como visitado e retorna false
-    markAsVisited(userId);
-    return false;
-  }
-  
-  return false;
-};
-
-/**
- * Marca um usuário como tendo visitado o assistente
- * @param userId ID do usuário
- */
-export const markAsVisited = (userId: string): void => {
-  if (typeof window === 'undefined') return; // SSR check
-  
-  try {
-    const visitedUsers = localStorage.getItem(KEYS.FIRST_VISIT);
-    const users = visitedUsers ? JSON.parse(visitedUsers) as string[] : [];
     
-    if (!users.includes(userId)) {
-      users.push(userId);
-      localStorage.setItem(KEYS.FIRST_VISIT, JSON.stringify(users));
-    }
-  } catch (error) {
-    console.error('Erro ao marcar usuário como visitado:', error);
-  }
-};
-
-/**
- * Salva o ID de um alerta descartado para não mostrá-lo novamente
- * @param userId ID do usuário
- * @param alertId ID do alerta
- */
-export const dismissAlert = (userId: string, alertId: string): void => {
-  if (typeof window === 'undefined') return; // SSR check
-  
-  try {
-    const key = `${KEYS.DISMISSED_ALERTS}_${userId}`;
-    const dismissedAlerts = localStorage.getItem(key);
-    const alerts = dismissedAlerts ? JSON.parse(dismissedAlerts) as string[] : [];
-    
-    if (!alerts.includes(alertId)) {
-      alerts.push(alertId);
-      localStorage.setItem(key, JSON.stringify(alerts));
-    }
-  } catch (error) {
-    console.error('Erro ao salvar alerta descartado:', error);
-  }
-};
-
-/**
- * Verifica se um alerta foi descartado pelo usuário
- * @param userId ID do usuário
- * @param alertId ID do alerta
- * @returns boolean indicando se o alerta foi descartado
- */
-export const isAlertDismissed = (userId: string, alertId: string): boolean => {
-  if (typeof window === 'undefined') return false; // SSR check
-  
-  try {
-    const key = `${KEYS.DISMISSED_ALERTS}_${userId}`;
-    const dismissedAlerts = localStorage.getItem(key);
-    
-    if (!dismissedAlerts) return false;
-    
-    const alerts = JSON.parse(dismissedAlerts) as string[];
-    return alerts.includes(alertId);
-  } catch (error) {
-    console.error('Erro ao verificar alerta descartado:', error);
-    return false;
-  }
-};
-
-/**
- * Marca uma recomendação como aplicada pelo usuário
- * @param userId ID do usuário
- * @param recommendationId ID da recomendação
- */
-export const markRecommendationAsApplied = (userId: string, recommendationId: string): void => {
-  if (typeof window === 'undefined') return; // SSR check
-  
-  try {
-    const key = `${KEYS.APPLIED_RECOMMENDATIONS}_${userId}`;
-    const appliedRecs = localStorage.getItem(key);
-    const recommendations = appliedRecs ? JSON.parse(appliedRecs) as string[] : [];
-    
-    if (!recommendations.includes(recommendationId)) {
-      recommendations.push(recommendationId);
-      localStorage.setItem(key, JSON.stringify(recommendations));
-    }
-  } catch (error) {
-    console.error('Erro ao marcar recomendação como aplicada:', error);
-  }
-};
-
-/**
- * Verifica se uma recomendação foi aplicada pelo usuário
- * @param userId ID do usuário
- * @param recommendationId ID da recomendação
- * @returns boolean indicando se a recomendação foi aplicada
- */
-export const isRecommendationApplied = (userId: string, recommendationId: string): boolean => {
-  if (typeof window === 'undefined') return false; // SSR check
-  
-  try {
-    const key = `${KEYS.APPLIED_RECOMMENDATIONS}_${userId}`;
-    const appliedRecs = localStorage.getItem(key);
-    
-    if (!appliedRecs) return false;
-    
-    const recommendations = JSON.parse(appliedRecs) as string[];
-    return recommendations.includes(recommendationId);
-  } catch (error) {
-    console.error('Erro ao verificar recomendação aplicada:', error);
-    return false;
-  }
-};
-
-/**
- * Salva o estado de minimização do assistente
- * @param userId ID do usuário
- * @param isMinimized Estado de minimização
- */
-export const saveMinimizedState = (userId: string, isMinimized: boolean): void => {
-  if (typeof window === 'undefined') return; // SSR check
-  
-  try {
-    localStorage.setItem(`${KEYS.MINIMIZED_STATE}_${userId}`, JSON.stringify(isMinimized));
-  } catch (error) {
-    console.error('Erro ao salvar estado de minimização:', error);
-  }
-};
-
-/**
- * Obtém o estado de minimização salvo do assistente
- * @param userId ID do usuário
- * @returns Estado de minimização, por padrão false
- */
-export const getMinimizedState = (userId: string): boolean => {
-  if (typeof window === 'undefined') return false; // SSR check
-  
-  try {
-    const state = localStorage.getItem(`${KEYS.MINIMIZED_STATE}_${userId}`);
-    return state ? JSON.parse(state) : false;
-  } catch (error) {
-    console.error('Erro ao obter estado de minimização:', error);
-    return false;
-  }
-};
-
-/**
- * Salva as preferências do usuário para o assistente
- * @param userId ID do usuário
- * @param preferences Preferências do usuário
- */
-export const saveUserPreferences = (userId: string, preferences: Partial<AssistantPreferences>): void => {
-  if (typeof window === 'undefined') return; // SSR check
-  
-  try {
-    const currentPrefs = getUserPreferences(userId);
-    const updatedPrefs = { ...currentPrefs, ...preferences };
-    
-    localStorage.setItem(`${KEYS.USER_PREFERENCES}_${userId}`, JSON.stringify(updatedPrefs));
-  } catch (error) {
-    console.error('Erro ao salvar preferências do usuário:', error);
-  }
-};
-
-/**
- * Obtém as preferências do usuário para o assistente
- * @param userId ID do usuário
- * @returns Preferências do usuário, com valores padrão se não existirem
- */
-export const getUserPreferences = (userId: string): AssistantPreferences => {
-  if (typeof window === 'undefined') return DEFAULT_PREFERENCES; // SSR check
-  
-  try {
-    const prefs = localStorage.getItem(`${KEYS.USER_PREFERENCES}_${userId}`);
-    return prefs ? { ...DEFAULT_PREFERENCES, ...JSON.parse(prefs) } : DEFAULT_PREFERENCES;
-  } catch (error) {
-    console.error('Erro ao obter preferências do usuário:', error);
+    // Se não encontrar ou ocorrer erro, retorna os valores padrão
     return DEFAULT_PREFERENCES;
   }
-};
-
-/**
- * Reseta todas as preferências e estados do assistente para um usuário
- * @param userId ID do usuário
- */
-export const resetAssistantPreferences = (userId: string): void => {
-  if (typeof window === 'undefined') return; // SSR check
   
-  try {
-    localStorage.removeItem(`${KEYS.DISMISSED_ALERTS}_${userId}`);
-    localStorage.removeItem(`${KEYS.APPLIED_RECOMMENDATIONS}_${userId}`);
-    localStorage.removeItem(`${KEYS.MINIMIZED_STATE}_${userId}`);
-    localStorage.removeItem(`${KEYS.USER_PREFERENCES}_${userId}`);
-    
-    // Não remove do FIRST_VISIT para manter o histórico de quem já viu o assistente
-  } catch (error) {
-    console.error('Erro ao resetar preferências do assistente:', error);
+  /**
+   * Salva as preferências do usuário
+   */
+  saveUserPreferences(userId: string, preferences: Partial<IUserPreferences>): void {
+    try {
+      // Obter preferências atuais
+      const currentPrefs = this.getUserPreferences(userId);
+      
+      // Mesclar com as novas preferências
+      const updatedPrefs = { ...currentPrefs, ...preferences };
+      
+      // Salvar no localStorage
+      localStorage.setItem(
+        this.getStorageKey(userId, 'preferences'), 
+        JSON.stringify(updatedPrefs)
+      );
+    } catch (error) {
+      console.error('Erro ao salvar preferências do usuário:', error);
+    }
   }
-};
+  
+  /**
+   * Verifica se é a primeira visita do usuário
+   */
+  isFirstVisit(userId: string): boolean {
+    try {
+      return localStorage.getItem(this.getStorageKey(userId, 'firstVisit')) === null;
+    } catch (error) {
+      console.error('Erro ao verificar primeira visita:', error);
+      return true;
+    }
+  }
 
-export const userPreferencesService = {
-  isFirstVisit,
-  markAsVisited,
-  dismissAlert,
-  isAlertDismissed,
-  markRecommendationAsApplied,
-  isRecommendationApplied,
-  saveMinimizedState,
-  getMinimizedState,
-  saveUserPreferences,
-  getUserPreferences,
-  resetAssistantPreferences,
-};
+  /**
+ * Método específico para verificar se o assistente deve ser maximizado após login
+ */
+  shouldMaximizeAfterLogin(userId: string): boolean {
+    try {
+      // Verificar se há uma configuração específica salva
+      const preferences = this.getUserPreferences(userId);
+      return preferences.maximizeOnLogin;
+    } catch (error) {
+      console.error('Erro ao verificar preferência de maximização após login:', error);
+      return true; // Por padrão, maximiza
+    }
+  }
+
+  /**
+ * Método para registrar que o usuário acabou de fazer login
+ * e resetar o estado de minimização para garantir que o assistente apareça maximizado
+ */
+  registerRecentLogin(userId: string): void {
+    try {
+      // Sempre definir o estado como não minimizado após login
+      localStorage.setItem(
+        this.getStorageKey(userId, 'assistantMinimized'), 
+        'false'
+      );
+      
+      // Registrar timestamp do login
+      localStorage.setItem(
+        this.getStorageKey(userId, 'lastLogin'),
+        Date.now().toString()
+      );
+    } catch (error) {
+      console.error('Erro ao registrar login recente:', error);
+    }
+  }
+
+  /**
+ * Verifica se o login foi recente (nos últimos 5 segundos)
+ */
+  isLoginRecent(userId: string): boolean {
+    try {
+      const lastLoginStr = localStorage.getItem(this.getStorageKey(userId, 'lastLogin'));
+      if (!lastLoginStr) return false;
+      
+      const lastLogin = parseInt(lastLoginStr, 10);
+      const now = Date.now();
+      const fiveSecondsAgo = now - 5000; // 5 segundos
+      
+      return lastLogin > fiveSecondsAgo;
+    } catch (error) {
+      console.error('Erro ao verificar login recente:', error);
+      return false;
+    }
+  }
+  
+  /**
+   * Marca que o usuário já visitou o sistema
+   */
+  markAsVisited(userId: string): void {
+    try {
+      localStorage.setItem(this.getStorageKey(userId, 'firstVisit'), 'false');
+    } catch (error) {
+      console.error('Erro ao marcar como visitado:', error);
+    }
+  }
+  
+  /**
+ * Sobrescrever o método de obtenção do estado minimizado
+ * para considerar o login recente
+ */
+  getMinimizedState(userId: string): boolean {
+    try {
+      // Se o login foi recente, sempre retornar false (não minimizado)
+      if (this.isLoginRecent(userId)) {
+        return false;
+      }
+      
+      // Caso contrário, retornar o estado salvo
+      const state = localStorage.getItem(this.getStorageKey(userId, 'assistantMinimized'));
+      return state === 'true';
+    } catch (error) {
+      console.error('Erro ao obter estado de minimização:', error);
+      return false;
+    }
+  }
+  
+  /**
+   * Salva o estado de minimização do assistente
+   */
+  saveMinimizedState(userId: string, isMinimized: boolean): void {
+    try {
+      localStorage.setItem(
+        this.getStorageKey(userId, 'assistantMinimized'), 
+        isMinimized.toString()
+      );
+    } catch (error) {
+      console.error('Erro ao salvar estado de minimização:', error);
+    }
+  }
+  
+  /**
+   * Verifica se uma recomendação já foi aplicada pelo usuário
+   */
+  isRecommendationApplied(userId: string, recommendationId: string): boolean {
+    try {
+      const appliedRecs = localStorage.getItem(this.getStorageKey(userId, 'appliedRecommendations'));
+      if (appliedRecs) {
+        const appliedList = JSON.parse(appliedRecs) as string[];
+        return appliedList.includes(recommendationId);
+      }
+      return false;
+    } catch (error) {
+      console.error('Erro ao verificar recomendação aplicada:', error);
+      return false;
+    }
+  }
+  
+  /**
+   * Marca uma recomendação como aplicada pelo usuário
+   */
+  markRecommendationAsApplied(userId: string, recommendationId: string): void {
+    try {
+      let appliedRecs = [];
+      const stored = localStorage.getItem(this.getStorageKey(userId, 'appliedRecommendations'));
+      
+      if (stored) {
+        appliedRecs = JSON.parse(stored);
+      }
+      
+      if (!appliedRecs.includes(recommendationId)) {
+        appliedRecs.push(recommendationId);
+        localStorage.setItem(
+          this.getStorageKey(userId, 'appliedRecommendations'),
+          JSON.stringify(appliedRecs)
+        );
+      }
+    } catch (error) {
+      console.error('Erro ao marcar recomendação como aplicada:', error);
+    }
+  }
+  
+  /**
+   * Reseta todas as preferências do usuário para os valores padrão
+   */
+  resetUserPreferences(userId: string): void {
+    try {
+      localStorage.setItem(
+        this.getStorageKey(userId, 'preferences'),
+        JSON.stringify(DEFAULT_PREFERENCES)
+      );
+      localStorage.removeItem(this.getStorageKey(userId, 'appliedRecommendations'));
+      localStorage.removeItem(this.getStorageKey(userId, 'assistantMinimized'));
+    } catch (error) {
+      console.error('Erro ao resetar preferências do usuário:', error);
+    }
+  }
+}
+
+// Exporta uma instância única do serviço
+export const userPreferencesService = new UserPreferencesService();

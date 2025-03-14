@@ -1,6 +1,7 @@
+/* eslint-disable react/display-name */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
 import { Sparkles, X, Minimize2, BellRing } from 'lucide-react';
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
 import { useStaffData } from '@/services/hooks/staffs/useStaffData';
@@ -8,6 +9,8 @@ import { useAmbulanceData } from '@/services/hooks/ambulance/useAmbulanceData';
 import { useAlerts } from './chat/integration-hub/alerts/AlertsProvider';
 import { motion, AnimatePresence } from 'framer-motion';
 import { IRecommendation, IStatistics } from '@/types/ai-assistant-types';
+import { eventService } from '@/services/events/EventService';
+import { LOGIN_SUCCESS_EVENT } from '@/services/hooks/auth/useAuth';
 
 // Componentes importados
 import { WelcomeView } from './ai-assistant/views/WelcomeView';
@@ -23,15 +26,22 @@ interface H24AssistantProps {
     onRecommendationApply?: (recommendation: IRecommendation) => void;
     onViewAllAlerts?: () => void;
     onShowChat?: () => void;
+    autoOpenOnLogin?: boolean; // Nova prop para controlar abertura automática
 }
 
-export const H24Assistant: React.FC<H24AssistantProps> = ({
-    userId = 'current-user',
-    hospitalId,
-    onRecommendationApply,
-    onViewAllAlerts,
-    onShowChat
-  }) => {
+// Métodos que serão expostos pela ref
+export interface H24AssistantHandle {
+  openAssistant: () => void;
+}
+
+export const H24Assistant = forwardRef<H24AssistantHandle, H24AssistantProps>(({
+  userId = 'current-user',
+  hospitalId,
+  onRecommendationApply,
+  onViewAllAlerts,
+  onShowChat,
+  autoOpenOnLogin = true
+}, ref) => {
     const [isModalOpen, setIsModalOpen] = useState(true);
     const [isMinimized, setIsMinimized] = useState(false);
     const [hasBeenSeen, setHasBeenSeen] = useState(false);
@@ -40,6 +50,14 @@ export const H24Assistant: React.FC<H24AssistantProps> = ({
     const [currentView, setCurrentView] = useState<'welcome' | 'recommendations' | 'alerts'>('welcome');
     const [inactivityTimer, setInactivityTimer] = useState<NodeJS.Timeout | null>(null);
     const modalRef = useRef<HTMLDivElement>(null);
+
+    // Expor métodos para a ref
+    useImperativeHandle(ref, () => ({
+      openAssistant: () => {
+        setIsModalOpen(true);
+        setIsMinimized(false);
+      }
+    }));
     
     // Hooks para dados
     const { networkData, currentUser } = useNetworkData();
@@ -55,6 +73,8 @@ export const H24Assistant: React.FC<H24AssistantProps> = ({
       const loadUserPreferences = () => {
         // Verificar se o assistente foi minimizado
         const wasMinimized = userPreferencesService.getMinimizedState(userId);
+        
+        // O serviço já vai retornar false se o login foi recente
         setIsMinimized(wasMinimized);
         
         // Verificar se já foi visto antes
@@ -90,6 +110,26 @@ export const H24Assistant: React.FC<H24AssistantProps> = ({
         }
       }
     }, [hasBeenSeen, userId]);
+    
+  // Escutar evento de login bem-sucedido
+  useEffect(() => {
+    // Só registra o listener se autoOpenOnLogin for true
+    if (autoOpenOnLogin) {
+      const unsubscribe = eventService.subscribe(LOGIN_SUCCESS_EVENT, (user) => {
+        // Abre o assistente quando o login for bem-sucedido
+        setTimeout(() => {
+          setIsModalOpen(true);
+          setIsMinimized(false); // Explicitamente define como não minimizado
+          setCurrentView('welcome'); // Reset para a view de boas-vindas
+        }, 1000); // Pequeno atraso para dar tempo à navegação
+      });
+      
+      // Limpar o listener quando o componente for desmontado
+      return () => {
+        unsubscribe();
+      };
+    }
+  }, [autoOpenOnLogin]);
     
     // Efeito para fechar o modal ao clicar fora dele (apenas quando não estiver minimizado)
     useEffect(() => {
@@ -373,6 +413,12 @@ export const H24Assistant: React.FC<H24AssistantProps> = ({
       resetInactivityTimer();
     };
     
+    // Método público para abrir o assistente programaticamente
+    const openAssistant = () => {
+      setIsModalOpen(true);
+      setIsMinimized(false);
+    };
+    
     // Conteúdo compartilhado entre as visualizações
     const sharedProps = {
       userGreeting: userGreeting(),
@@ -400,10 +446,9 @@ export const H24Assistant: React.FC<H24AssistantProps> = ({
           dark:from-indigo-800 dark:to-cyan-800 dark:hover:from-indigo-800 dark:hover:to-cyan-800"
           aria-label="Assistente H24"
         >
-          <Sparkles className="h-5 w-5" />
-          <span>Assistente IA</span>
-          
-          {/* Bolha de notificação para alertas não lidos */}
+                    <Sparkles className="h-5 w-5" />
+                    <span>Assistente IA</span>
+                  {/* Bolha de notificação para alertas não lidos */}
           {unreadCount > 0 && (
             <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
               {unreadCount > 9 ? '9+' : unreadCount}
@@ -509,4 +554,25 @@ export const H24Assistant: React.FC<H24AssistantProps> = ({
         </AnimatePresence>
       </div>
     );
+});
+
+// Adiciona método para abrir o assistente externamente
+// Isso permite que outros componentes possam abrir o assistente programaticamente
+export const assistantController = {
+  // Referência para a função openAssistant
+  _openAssistant: null as null | (() => void),
+  
+  // Método para registrar a função
+  registerOpenFunction(openFn: () => void) {
+    this._openAssistant = openFn;
+  },
+  
+  // Método para abrir o assistente
+  openAssistant() {
+    if (this._openAssistant) {
+      this._openAssistant();
+    } else {
+      console.warn('Função de abertura do assistente não registrada');
+    }
+  }
 };

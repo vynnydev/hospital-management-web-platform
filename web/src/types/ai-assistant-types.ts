@@ -15,24 +15,15 @@ export type TRecommendationType =
  * Interface para recomendações geradas pelo assistente de IA
  */
 // Tipos para prioridades
-export type RecommendationPriority = 'high' | 'medium' | 'low';
-
-// Tipos para categorias de recomendações
-export type RecommendationType = 
-  | 'bed-management' 
-  | 'staff-allocation' 
-  | 'ambulance-dispatch' 
-  | 'resource-management'
-  | 'ai-prediction'
-  | 'patient-care';
+export type TRecommendationPriority = 'high' | 'medium' | 'low';
 
 // Interface para recomendações
 export interface IRecommendation {
   id: string;
-  type: RecommendationType;
+  type: TRecommendationType;
   title: string;
   description: string;
-  priority: RecommendationPriority;
+  priority: TRecommendationPriority;
   actionText: string;
   timestamp: Date;
   confidence: number; // 0.0 - 1.0
@@ -95,4 +86,50 @@ export interface IAssistantContext {
   analyses: IAssistantAnalysis[];
   predictions: IPredictionAction[];
   lastUpdate: Date;
+}
+
+/**
+ * Interface para eventos gerados pelo assistente de IA
+ */
+export interface IAIEvent {
+  id: string;
+  type: 'recommendation' | 'alert' | 'insight' | 'suggestion';
+  timestamp: Date;
+  priority: TRecommendationPriority;
+  title: string;
+  description: string;
+  source: 'ai' | 'system' | 'user';
+  acknowledged: boolean;
+  metadata?: Record<string, any>;
+}
+
+/**
+ * Interface para respostas da API de IA
+ */
+export interface IAIResponse {
+  success: boolean;
+  recommendations?: IRecommendation[];
+  insights?: string[];
+  message?: string;
+  error?: string;
+  timestamp: string;
+  executionTime?: number;
+}
+
+/**
+ * Interface para configurações do assistente de IA
+ */
+export interface IAIAssistantConfig {
+  enabled: boolean;
+  features: {
+    recommendations: boolean;
+    insights: boolean;
+    alerts: boolean;
+    predictions: boolean;
+  };
+  autoOpen: boolean;
+  notificationLevel: 'all' | 'high-only' | 'none';
+  minimizedByDefault: boolean;
+  voiceEnabled: boolean;
+  language: 'pt-BR' | 'en-US' | 'es-ES';
 }

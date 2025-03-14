@@ -1,14 +1,22 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Sparkles, MessageCircle, BellRing } from 'lucide-react';
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
 import { useAlerts } from '../chat/integration-hub/alerts/AlertsProvider';
-import { H24Assistant } from '../H24Assistant';
+import { H24Assistant, assistantController } from '../H24Assistant';
 import { ChatButton } from '../chat/ChatButton';
+import { eventService } from '@/services/events/EventService';
+import { LOGIN_SUCCESS_EVENT } from '@/services/hooks/auth/useAuth';
 
 interface H24AssistantBarProps {
   showTitle?: boolean;
   className?: string;
+  autoOpenOnLogin?: boolean;
+}
+
+export interface H24AssistantHandle {
+  openAssistant: () => void;
 }
 
 /**
@@ -17,14 +25,43 @@ interface H24AssistantBarProps {
  */
 export const H24AssistantBar: React.FC<H24AssistantBarProps> = ({
   showTitle = true,
-  className = ''
+  className = '',
+  autoOpenOnLogin = true
 }) => {
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const assistantRef = useRef<H24AssistantHandle>(null);
   const { networkData, currentUser } = useNetworkData();
   const { unreadCount, highPriorityCount } = useAlerts();
   
   const selectedHospitalId = networkData?.hospitals[0]?.id || '';
   const userId = currentUser?.id || 'current-user';
+  
+  // Registrar a função para abrir o assistente externamente
+  useEffect(() => {
+    assistantController.registerOpenFunction(() => {
+      // Acesse o método através da ref atual
+      assistantRef.current?.openAssistant();
+    });
+    
+    // Escutar evento de login se autoOpenOnLogin estiver habilitado
+    if (autoOpenOnLogin) {
+      const unsubscribe = eventService.subscribe(LOGIN_SUCCESS_EVENT, (user) => {
+        // Pequeno atraso para garantir que o componente esteja montado
+        setTimeout(() => {
+          assistantController.openAssistant();
+        }, 1500);
+      });
+      
+      return () => {
+        unsubscribe();
+      };
+    }
+  }, [autoOpenOnLogin]);
+  
+  // Função para abrir o assistente
+  const openAssistant = () => {
+    assistantController.openAssistant();
+  };
   
   return (
     <div className={`flex items-center space-x-3 ${className}`}>
@@ -42,9 +79,11 @@ export const H24AssistantBar: React.FC<H24AssistantBarProps> = ({
 
       {/* Assistente de IA */}
       <H24Assistant 
+        ref={assistantRef}
         userId={userId}
         hospitalId={selectedHospitalId}
         onShowChat={() => setIsChatOpen(true)}
+        autoOpenOnLogin={autoOpenOnLogin}
       />
       
       {/* Indicador de notificações (Se necessário exibir separadamente) */}
@@ -53,6 +92,7 @@ export const H24AssistantBar: React.FC<H24AssistantBarProps> = ({
           <button
             className="p-2 text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/20 rounded-full hover:bg-red-200 dark:hover:bg-red-900/40 transition-colors"
             title={`${highPriorityCount} alerta${highPriorityCount > 1 ? 's' : ''} urgente${highPriorityCount > 1 ? 's' : ''}`}
+            onClick={openAssistant}
           >
             <BellRing className="h-5 w-5" />
           </button>
@@ -68,12 +108,40 @@ export const H24AssistantBar: React.FC<H24AssistantBarProps> = ({
 /**
  * Botão flutuante do assistente para telas menores ou layout minimalista
  */
-export const FloatingAssistantButton: React.FC<{ className?: string }> = ({ className = '' }) => {
+export const FloatingAssistantButton: React.FC<{ 
+  className?: string;
+  autoOpenOnLogin?: boolean;
+}> = ({ 
+  className = '',
+  autoOpenOnLogin = true
+}) => {
+  const assistantRef = useRef<H24AssistantHandle>(null);
   const { networkData, currentUser } = useNetworkData();
   const { unreadCount } = useAlerts();
   
   const selectedHospitalId = networkData?.hospitals[0]?.id || '';
   const userId = currentUser?.id || 'current-user';
+  
+  // Registrar a função para abrir o assistente externamente
+  useEffect(() => {
+    assistantController.registerOpenFunction(() => {
+      assistantRef.current?.openAssistant();
+    });
+    
+    // Escutar evento de login se autoOpenOnLogin estiver habilitado
+    if (autoOpenOnLogin) {
+      const unsubscribe = eventService.subscribe(LOGIN_SUCCESS_EVENT, (user) => {
+        // Pequeno atraso para garantir que o componente esteja montado
+        setTimeout(() => {
+          assistantController.openAssistant();
+        }, 1500);
+      });
+      
+      return () => {
+        unsubscribe();
+      };
+    }
+  }, [autoOpenOnLogin]);
   
   return (
     <div className={`fixed bottom-6 right-6 z-40 ${className}`}>
@@ -89,8 +157,10 @@ export const FloatingAssistantButton: React.FC<{ className?: string }> = ({ clas
         {/* Botão do assistente */}
         <div className="relative">
           <H24Assistant 
+            ref={assistantRef}
             userId={userId}
             hospitalId={selectedHospitalId}
+            autoOpenOnLogin={autoOpenOnLogin}
           />
           
           {/* Badge de notificação */}

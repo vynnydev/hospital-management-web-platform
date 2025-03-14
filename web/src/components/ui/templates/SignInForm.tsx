@@ -5,7 +5,7 @@ import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/organisms/button';
 import { Input } from '@/components/ui/organisms/input';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/organisms/card';
-import { authService } from '@/services/auth/AuthService';
+import { useAuth } from '@/services/hooks/auth/useAuth';
 import { useToast } from "@/components/ui/hooks/use-toast";
 
 type UserPermissions = 'VIEW_ALL_HOSPITALS' | 'VIEW_SINGLE_HOSPITAL';
@@ -26,13 +26,14 @@ export function SignInForm() {
   
   const router = useRouter();
   const { toast } = useToast();
+  const { login } = useAuth();
 
   const showSuccessToast = (message: string) => {
     toast({
       title: "Login bem-sucedido!",
       description: message,
       variant: "default",
-      duration: 1500, // Reduzido para 3s para melhor UX
+      duration: 1500, // Reduzido para 1.5s para melhor UX
     });
   };
 
@@ -59,7 +60,8 @@ export function SignInForm() {
     setIsLoading(true);
 
     try {
-      const response = await authService.login({ email, password }) as AuthResponse;
+      // Usando o método login do hook useAuth
+      const response = await login(email, password) as AuthResponse;
 
       if (!response?.user) {
         throw new Error('Resposta inválida do servidor');
