@@ -6,7 +6,7 @@ import { Sparkles, X, Minimize2, BellRing } from 'lucide-react';
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
 import { useStaffData } from '@/services/hooks/staffs/useStaffData';
 import { useAmbulanceData } from '@/services/hooks/ambulance/useAmbulanceData';
-import { useAlerts } from './chat/integration-hub/alerts/AlertsProvider';
+import { useAlerts } from './providers/alerts/AlertsProvider';
 import { motion, AnimatePresence } from 'framer-motion';
 import { IRecommendation, IStatistics } from '@/types/ai-assistant-types';
 import { eventService } from '@/services/events/EventService';

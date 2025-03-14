@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { IRecommendation, IStatistics } from '@/types/ai-assistant-types';
 import { IHospital } from '@/types/hospital-network-types';
-import { Alert } from '../../chat/integration-hub/alerts/AlertsProvider';
+import { Alert } from '../../providers/alerts/AlertsProvider';
 
 interface WelcomeViewProps {
   userGreeting: string;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Bell, AlertCircle } from 'lucide-react';
-import { useAlerts } from './AlertsProvider';
+import { useAlerts } from '../../../providers/alerts/AlertsProvider';
 
 interface AlertsIndicatorProps {
   onClick?: () => void;

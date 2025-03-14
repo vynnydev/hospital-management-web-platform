@@ -13,7 +13,7 @@ import { authService } from "@/services/auth/AuthService"
 import { useState } from "react"
 import { ConfigurationAndUserModalMenus } from '../templates/modals/ConfigurationAndUserModalMenus';
 import { IntegrationsContent } from '../templates/modal-contents/IntegrationsContent';
-import { AlertsProvider } from '../templates/chat/integration-hub/alerts/AlertsProvider';
+import { AlertsProvider } from '../templates/providers/alerts/AlertsProvider';
 import { H24AssistantBar } from '../templates/ai-assistant/H24AssistantBar';
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
 

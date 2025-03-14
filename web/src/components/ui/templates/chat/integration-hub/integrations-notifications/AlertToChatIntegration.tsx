@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect } from 'react';
-import { Alert, useAlerts } from '../alerts/AlertsProvider';
+import { Alert, useAlerts } from '../../../providers/alerts/AlertsProvider';
 
 
 interface AlertToChatIntegrationProps {

@@ -1,3 +1,4 @@
+import { IAlert } from "./alert-types";
 import { IAppUser } from "./auth-types";
 
 export type ViewType = 'board' | 'list' | 'calendar';
@@ -9,11 +10,14 @@ export interface IAttachment {
   }
   
   export interface IMessage {
-    id: number;
-    user: IAppUser;
+    id: string;
     content: string;
+    user: IAppUser;
     timestamp: string;
-    attachments: IAttachment[];
+    createdAt?: string;
+    attachments?: IAttachment[];
+    isAlert?: boolean;
+    alertData?: IAlert;
   }
   
   export interface IChannel {

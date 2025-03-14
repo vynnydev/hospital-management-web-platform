@@ -15,7 +15,7 @@ import {
   Route
 } from 'lucide-react';
 import { useAmbulanceData } from '@/services/hooks/ambulance/useAmbulanceData';
-import { Alert, useAlerts } from '../alerts/AlertsProvider';
+import { Alert, useAlerts } from '../../../providers/alerts/AlertsProvider';
 
 interface AmbulanceLiveTrackerProps {
   hospitalId: string;

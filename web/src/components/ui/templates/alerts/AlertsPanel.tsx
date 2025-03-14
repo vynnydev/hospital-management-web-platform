@@ -17,21 +17,22 @@ import {
   Share2,
   MessageSquare
 } from 'lucide-react';
-import { useAlerts, Alert, AlertType, AlertPriority } from './AlertsProvider';
+import { useAlerts } from '../providers/alerts/AlertsProvider';
+import { IAlert, TAlertPriority, TAlertType } from '@/types/alert-types';
 
 // Props para o componente de painel de alertas
 interface AlertsPanelProps {
-  onAlertClick?: (alert: Alert) => void;
-  onCreateChatFromAlert?: (alert: Alert) => void;
+  onAlertClick?: (alert: IAlert) => void;
+  onCreateChatFromAlert?: (alert: IAlert) => void;
 }
 
 // Componente para um único item de alerta
 const AlertItem: React.FC<{ 
-  alert: Alert; 
-  onAlertClick?: (alert: Alert) => void;
+  alert: IAlert; 
+  onAlertClick?: (alert: IAlert) => void;
   onMarkAsRead: (id: string) => void;
   onDismiss: (id: string) => void;
-  onCreateChat: (alert: Alert) => void;
+  onCreateChat: (alert: IAlert) => void;
 }> = ({ 
   alert, 
   onAlertClick, 
@@ -205,8 +206,8 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({
     getFilteredAlerts 
   } = useAlerts();
   
-  const [activeFilter, setActiveFilter] = useState<AlertType | 'all'>('all');
-  const [activePriority, setActivePriority] = useState<AlertPriority | 'all'>('all');
+  const [activeFilter, setActiveFilter] = useState<TAlertType | 'all'>('all');
+  const [activePriority, setActivePriority] = useState<TAlertPriority | 'all'>('all');
 
   // Filtros para tipos de alerta
   const filters = [
@@ -229,12 +230,12 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({
   const filteredAlerts = activeFilter === 'all' && activePriority === 'all'
     ? alerts
     : getFilteredAlerts(
-        activeFilter === 'all' ? undefined : activeFilter as AlertType,
-        activePriority === 'all' ? undefined : activePriority as AlertPriority
+        activeFilter === 'all' ? undefined : activeFilter as TAlertType,
+        activePriority === 'all' ? undefined : activePriority as TAlertPriority
       );
 
   // Criar chat a partir de um alerta
-  const handleCreateChat = (alert: Alert) => {
+  const handleCreateChat = (alert: IAlert) => {
     if (onCreateChatFromAlert) {
       onCreateChatFromAlert(alert);
     }
@@ -288,7 +289,7 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({
                   : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                 }
               `}
-              onClick={() => setActiveFilter(filter.id as AlertType | 'all')}
+              onClick={() => setActiveFilter(filter.id as TAlertType | 'all')}
             >
               <span className="mr-1">{filter.icon}</span>
               {filter.label}
@@ -313,7 +314,7 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({
                   : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                 }
               `}
-              onClick={() => setActivePriority(priority.id as AlertPriority | 'all')}
+              onClick={() => setActivePriority(priority.id as TAlertPriority | 'all')}
             >
               {priority.label}
             </button>

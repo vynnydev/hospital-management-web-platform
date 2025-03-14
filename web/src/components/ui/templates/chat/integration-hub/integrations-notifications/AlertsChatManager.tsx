@@ -4,9 +4,10 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { AlertToChatIntegration } from './AlertToChatIntegration';
 import { ChatNotificationData, ChatNotificationsContainer } from './ChatNotification';
 import { Bell, MessageCircle } from 'lucide-react';
-import { Alert, useAlerts } from '../alerts/AlertsProvider';
-import { AlertBanner } from '../alerts/AlertBanner';
-import { AlertsPanel } from '../alerts/AlertsPanel';
+import { useAlerts } from '../../../providers/alerts/AlertsProvider';
+import { AlertBanner } from '../../../alerts/AlertBanner';
+import { AlertsPanel } from '../../../alerts/AlertsPanel';
+import { IAlert } from '@/types/alert-types';
 
 // Interface para o grupo/canal de chat
 interface ChatGroup {
@@ -110,7 +111,7 @@ export const AlertsChatManager: React.FC<AlertsChatManagerProps> = ({
   }, [onCreateChat]);
   
   // Função para processar um alerta e criar um chat
-  const handleCreateChatFromAlert = useCallback((alert: Alert) => {
+  const handleCreateChatFromAlert = useCallback((alert: IAlert) => {
     // Lógica específica para cada tipo de alerta
     switch (alert.type) {
       case 'ambulance':

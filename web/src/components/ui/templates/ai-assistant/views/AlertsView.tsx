@@ -7,7 +7,7 @@ import {
   Users, 
   ChevronRight 
 } from 'lucide-react';
-import { Alert } from '../../chat/integration-hub/alerts/AlertsProvider';
+import { Alert } from '../../providers/alerts/AlertsProvider';
 
 interface AlertsViewProps {
   alerts: Alert[];

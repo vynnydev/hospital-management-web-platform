@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { AlertTriangle, X, ChevronLeft, ChevronRight, MessageSquare } from 'lucide-react';
-import { useAlerts, Alert } from './AlertsProvider';
+import { useAlerts } from '../providers/alerts/AlertsProvider';
+import { IAlert } from '@/types/alert-types';
+
 
 interface AlertBannerProps {
-  onCreateChat?: (alert: Alert) => void;
+  onCreateChat?: (alert: IAlert) => void;
   maxAlerts?: number;
   autoHideAfter?: number; // em milissegundos, 0 para não ocultar automaticamente
   showOnlyPriority?: ('high' | 'medium' | 'low')[];
@@ -80,7 +82,7 @@ export const AlertBanner: React.FC<AlertBannerProps> = ({
   };
 
   // Criar chat a partir do alerta
-  const handleCreateChat = (alert: Alert) => {
+  const handleCreateChat = (alert: IAlert) => {
     if (onCreateChat) {
       onCreateChat(alert);
     }

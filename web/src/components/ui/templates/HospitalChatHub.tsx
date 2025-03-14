@@ -12,7 +12,7 @@ import {
   ChevronRight,
   Settings
 } from 'lucide-react';
-import { AlertsProvider } from './chat/integration-hub/alerts/AlertsProvider';
+import { AlertsProvider } from './providers/alerts/AlertsProvider';
 import { AlertsBadge, AlertsChatManager } from './chat/integration-hub/integrations-notifications/AlertsChatManager';
 import { ChatButton } from './chat/ChatButton';
 import { ResourceMonitor } from './chat/integration-hub/real-time-monitoring/ResourceMonitor';

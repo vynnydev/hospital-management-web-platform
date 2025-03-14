@@ -1,15 +1,15 @@
 // types/auth-types.ts
 export type TPermission = 'VIEW_ALL_HOSPITALS' | 'VIEW_SINGLE_HOSPITAL';
 
-export type TRole = 'Admin' | 'Hospital Manager' | 'User';
+export type TRole = 'médico' | 'enfermeiro' | 'atendente' | 'administrador' | 'ai' | 'system';
 
 export interface IAppUser {
   id: string;
   name: string;
-  email: string;
+  email?: string;
   password?: string;
   role: TRole;
-  profileImage: string,
+  profileImage?: string,
   permissions: TPermission[];
   hospitalId?: string;
 }

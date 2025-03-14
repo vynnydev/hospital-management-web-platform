@@ -5,7 +5,7 @@ import { MessageCircle, Bell, Ambulance, Layers, Clock, Sparkles } from 'lucide-
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
 import { useStaffData } from '@/services/hooks/staffs/useStaffData';
 import { useAmbulanceData } from '@/services/hooks/ambulance/useAmbulanceData';
-import { useAlerts } from './integration-hub/alerts/AlertsProvider';
+import { useAlerts } from '../providers/alerts/AlertsProvider';
 import { IChatContact, IMessage } from '@/types/chat-types';
 
 import { ChatModal } from './ChatModal';

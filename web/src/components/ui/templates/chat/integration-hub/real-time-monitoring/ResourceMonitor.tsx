@@ -17,7 +17,7 @@ import {
   ChevronUp
 } from 'lucide-react';
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
-import { Alert, useAlerts } from '../alerts/AlertsProvider';
+import { Alert, useAlerts } from '../../../providers/alerts/AlertsProvider';
 
 interface ResourceMonitorProps {
   hospitalId: string;

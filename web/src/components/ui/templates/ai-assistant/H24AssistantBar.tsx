@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Sparkles, MessageCircle, BellRing } from 'lucide-react';
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
-import { useAlerts } from '../chat/integration-hub/alerts/AlertsProvider';
+import { useAlerts } from '../providers/alerts/AlertsProvider';
 import { H24Assistant, assistantController } from '../H24Assistant';
 import { ChatButton } from '../chat/ChatButton';
 import { eventService } from '@/services/events/EventService';

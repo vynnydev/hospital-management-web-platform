@@ -14,7 +14,6 @@ import { NetworkListHospital } from './components/NetworkListHospital';
 import { OccupancyRateCharts } from './components/OccupancyRateCharts';
 import { HospitalsLocations } from './components/HospitalsLocations';
 import { AIAnalyticsMetrics } from './components/AIAnalyticsMetrics';
-import { MessageCenter } from './components/MessageCenter';
 import { RepositionActionsBar } from '@/components/ui/templates/RepositionActionsBar';
 import { IAppUser } from '@/types/auth-types';
 import { Button } from '@/components/ui/organisms/button';
@@ -25,9 +24,7 @@ import { AmbulanceManagement } from '@/components/ui/templates/AmbulanceManageme
 import { useStaffData } from '@/services/hooks/staffs/useStaffData';
 import { useAmbulanceData } from '@/services/hooks/ambulance/useAmbulanceData';
 import { PatientMonitoringDashboard } from '@/components/ui/templates/PatientMonitoringDashboard';
-import { ChatButton } from '@/components/ui/templates/chat/ChatButton';
-import { AlertsProvider } from '@/components/ui/templates/chat/integration-hub/alerts/AlertsProvider';
-import { H24AssistantBar } from '@/components/ui/templates/ai-assistant/H24AssistantBar';
+import { AlertCenterHub } from '@/components/ui/templates/AlertCenterHub';
 
 const Overview: React.FC = () => {
   const { networkData, currentUser, setNetworkData, loading, error } = useNetworkData();
@@ -35,11 +32,9 @@ const Overview: React.FC = () => {
   const [selectedRegion, setSelectedRegion] = useState<string>('all');
   const [displayMode, setDisplayMode] = useState<'dashboard' | 'tv'>('dashboard');
   
-  // Props para o MessageCenter
-  const [selectedMessageUsers, setSelectedMessageUsers] = useState<IAppUser[]>([]);
-  const [showMessageUserDropdown, setShowMessageUserDropdown] = useState(false);
+  // Props para o AlertCenterHub
+  const [message, setMessage] = useState('');
   const [messageUserSearchQuery, setMessageUserSearchQuery] = useState('');
-  const [filteredMessageUsers, setFilteredMessageUsers] = useState<IAppUser[]>([]);
   
   // Para salvar o estado da funcionalidade de reposicionamento dos componentes
   const [initialSectionsOrder, setInitialSectionsOrder] = useState<string[]>(['metrics', 'departments', 'flow']);
@@ -127,26 +122,6 @@ const Overview: React.FC = () => {
   
   const filteredHospitals = getFilteredHospitals();
 
-  // Função useEffect para filtrar os usuários quando a busca mudar
-  useEffect(() => {
-    if (!networkData?.users) {
-      setFilteredMessageUsers([]);
-      return;
-    }
-
-    if (!messageUserSearchQuery) {
-      setFilteredMessageUsers(networkData.users);
-      return;
-    }
-
-    const filtered = networkData.users.filter(user =>
-      user.name.toLowerCase().includes(messageUserSearchQuery.toLowerCase()) ||
-      user.role.toLowerCase().includes(messageUserSearchQuery.toLowerCase())
-    );
-
-    setFilteredMessageUsers(filtered);
-  }, [messageUserSearchQuery, networkData?.users]);
-
   const currentMetrics = getCurrentRegionMetrics();
   
   // Restrict single hospital users from changing regions
@@ -183,13 +158,6 @@ const Overview: React.FC = () => {
 
   if (!staffData) return;
   if (!ambulanceData) return;
-
-  const onRemoveUser = (userId: string) => {
-    // Filtra os usuários selecionados, removendo o usuário com o ID especificado
-    setSelectedMessageUsers(prevUsers => 
-      prevUsers.filter(user => user.id !== userId)
-    );
-  };
   
   if (loading) {
     return (
@@ -220,6 +188,11 @@ const Overview: React.FC = () => {
     return colors[status];
   };
 
+  const handleSendMessage = () => {
+    // Implementar lógica de envio
+    setMessage('');
+  };
+
   return (
     <>
       <RepositionActionsBar
@@ -248,6 +221,7 @@ const Overview: React.FC = () => {
           loading={loading}
           isReorderMode={isReorderMode}
           onSectionsOrderChange={setCurrentSectionsOrder}
+          setMessage={setMessage}
         />
       ) : (
         <>
@@ -334,14 +308,13 @@ const Overview: React.FC = () => {
                         currentUser={currentUser}
                       />
                     ),
-                    messageCenter: (
-                      <MessageCenter 
-                        networkData={networkData}
-                        currentUser={currentUser}
-                        loading={loading}
-                        hospitals={networkData.hospitals}
-                        onHospitalSelect={onHospitalSelect} 
-                        onRemoveUser={onRemoveUser}                  
+                    alertCenterHub: (
+                      <AlertCenterHub 
+                        hospitalId="RD4H-SP-ITAIM"
+                        initialView="chat"
+                        onSendMessage={handleSendMessage}
+                        floatingButton={true}
+                        position="bottom-right"
                       />
                     )
                   }}

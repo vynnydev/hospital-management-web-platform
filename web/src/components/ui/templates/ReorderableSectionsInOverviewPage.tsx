@@ -12,7 +12,6 @@ import { NetworkListHospital } from '@/app/(administrator)/overview/components/N
 import { OccupancyRateCharts } from '@/app/(administrator)/overview/components/OccupancyRateCharts';
 import { HospitalsLocations } from '@/app/(administrator)/overview/components/HospitalsLocations';
 import { AIAnalyticsMetrics } from '@/app/(administrator)/overview/components/AIAnalyticsMetrics';
-import { MessageCenter } from '@/app/(administrator)/overview/components/MessageCenter';
 import { ModernTabs } from '@/app/(administrator)/overview/components/ModernTabs';
 import { IAppUser } from '@/types/auth-types';
 import { AmbulanceManagement } from './AmbulanceManagement';
@@ -20,6 +19,7 @@ import { PatientMonitoringDashboard } from './PatientMonitoringDashboard';
 import { useStaffData } from '@/services/hooks/staffs/useStaffData';
 import { useAmbulanceData } from '@/services/hooks/ambulance/useAmbulanceData';
 import { LoadingSpinner } from './LoadingSpinner';
+import { AlertCenterHub } from './AlertCenterHub';
 
 interface ReorderableSectionProps {
   children: React.ReactNode;
@@ -60,6 +60,7 @@ interface ReorderableOverviewProps {
   loading: boolean;
   isReorderMode: boolean;
   onSectionsOrderChange?: (sections: string[]) => void;
+  setMessage: React.Dispatch<React.SetStateAction<string>>
 }
 
 const ReorderableSection: React.FC<ReorderableSectionProps> = ({
@@ -135,7 +136,8 @@ export const ReorderableSectionsInOverviewPage: React.FC<ReorderableOverviewProp
   getFilteredHospitals,
   loading,
   isReorderMode,
-  onSectionsOrderChange
+  onSectionsOrderChange,
+  setMessage
 }) => {
     const [sections, setSections] = useState<Section[]>([]);
     const [selectedMessageUsers, setSelectedMessageUsers] = useState<IAppUser[]>([]);
@@ -178,11 +180,9 @@ export const ReorderableSectionsInOverviewPage: React.FC<ReorderableOverviewProp
       }
     };
 
-    const onRemoveUser = (userId: string) => {
-      // Filtra os usuários selecionados, removendo o usuário com o ID especificado
-      setSelectedMessageUsers(prevUsers => 
-        prevUsers.filter(user => user.id !== userId)
-      );
+    const handleSendMessage = () => {
+      // Implementar lógica de envio
+      setMessage('');
     };
 
     const initialSections: Section[] = [
@@ -250,14 +250,14 @@ export const ReorderableSectionsInOverviewPage: React.FC<ReorderableOverviewProp
                         currentUser={currentUser}
                         />
                     ),
-                    messageCenter: (
-                        <MessageCenter 
-                        networkData={networkData}
-                        currentUser={currentUser}
-                        loading={loading} 
-                        hospitals={networkData?.hospitals} 
-                        onHospitalSelect={onHospitalSelect} 
-                        onRemoveUser={onRemoveUser}                        />
+                    alertCenterHub: (
+                      <AlertCenterHub 
+                        hospitalId="RD4H-SP-ITAIM"
+                        initialView="chat"
+                        onSendMessage={handleSendMessage}
+                        floatingButton={true}
+                        position="bottom-right"
+                      />
                     )
                     }}
                 </ModernTabs>

@@ -2,7 +2,7 @@
 import { IntegrationsPreviewPressable } from "@/components/ui/organisms/IntegrationsPreviewPressable";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/organisms/tabs";
 import { ConfigurationAndUserModalMenus } from "@/components/ui/templates/modals/ConfigurationAndUserModalMenus";
-import { Home, Activity, MessageSquare, Map } from "lucide-react";
+import { Home, Activity, MessageSquare, Map, Bell } from "lucide-react";
 import { useState } from "react";
 
 interface IModernTabsProps {
@@ -10,7 +10,7 @@ interface IModernTabsProps {
     overview: React.ReactNode;
     hospitalsLocations: React.ReactNode;
     analytics: React.ReactNode;
-    messageCenter: React.ReactNode;
+    alertCenterHub: React.ReactNode;
   };
 }
 
@@ -72,10 +72,10 @@ export const ModernTabs: React.FC<IModernTabsProps> = ({ children }) => {
             gradient: "from-emerald-500/20 to-teal-500/20 hover:from-emerald-500/30 hover:to-teal-500/30"
           },
           {
-            value: "message-center",
-            label: "Comunicação",
-            icon: MessageSquare,
-            gradient: "from-rose-500/20 to-pink-500/20 hover:from-rose-500/30 hover:to-pink-500/30"
+            value: "alerts-center",
+            label: "Alertas",
+            icon: Bell,
+            gradient: "from-amber-400/20 to-red-600/20 hover:from-amber-500/40 hover:to-red-700/40"
           }
         ].map(tab => (
           <TabsTrigger
@@ -119,10 +119,10 @@ export const ModernTabs: React.FC<IModernTabsProps> = ({ children }) => {
         </TabsContent>
 
         <TabsContent 
-            value="message-center"
+            value="alerts-center"
             className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6 backdrop-blur-sm"
         >
-            {children.messageCenter}
+            {children.alertCenterHub}
         </TabsContent>
       </div>
     </Tabs>
