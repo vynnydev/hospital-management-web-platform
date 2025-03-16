@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
 import type { IHospital } from '@/types/hospital-network-types';
 import { useAlerts } from '@/components/ui/templates/providers/alerts/AlertsProvider';
@@ -10,23 +11,47 @@ import { SelectedHospitalsTag } from '../SelectedHospitalsTag';
 import { HospitalsList } from '../HospitalsList';
 import { AlertList } from '@/components/ui/templates/alerts/AlertList';
 import { IAlert } from '@/types/alert-types';
+import { AlertBadge } from '../alerts/AlertBadge';
 
 interface ChatAlertsTabProps {
   initialHospital?: string;
   onSendMessage?: (message: string) => void;
+  position?: 'top-right' | 'bottom-right' | 'bottom-left' | 'top-left';
+  showFloatingButton?: boolean;
 }
 
 type ViewMode = 'list' | 'detail' | 'create' | 'suggestions' | 'hospitals';
 
 export const ChatAlertsTab: React.FC<ChatAlertsTabProps> = ({
   initialHospital,
-  onSendMessage
+  onSendMessage,
+  position = 'bottom-right',
+  showFloatingButton = true
 }) => {
+  const [isOpen, setIsOpen] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>('list');
   const [selectedAlert, setSelectedAlert] = useState<IAlert | null>(null);
   const [selectedHospitals, setSelectedHospitals] = useState<IHospital[]>([]);
   const { alerts } = useAlerts();
   const { networkData } = useNetworkData();
+
+  // Fechar painel ao clicar fora
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      
+      // Se clicou fora do painel e ele está aberto, fechar
+      if (isOpen && !target.closest('.alert-center-panel') && !target.closest('.alert-center-button')) {
+        setIsOpen(false);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
   
   // Retorna os hospitais disponíveis do networkData
   const availableHospitals = networkData?.hospitals || [];
@@ -181,7 +206,7 @@ export const ChatAlertsTab: React.FC<ChatAlertsTabProps> = ({
             }`}
           >
             Alertas
-            {alerts.filter(a => !a.read && (a.status === 'pending' || a.status === 'acknowledged')).length > 0 && (
+            {alerts.filter((a: { read: any; status: string; }) => !a.read && (a.status === 'pending' || a.status === 'acknowledged')).length > 0 && (
               <span className="ml-1 w-5 h-5 flex items-center justify-center bg-red-500 text-white text-xs rounded-full">
                 {alerts.filter(a => !a.read && (a.status === 'pending' || a.status === 'acknowledged')).length}
               </span>

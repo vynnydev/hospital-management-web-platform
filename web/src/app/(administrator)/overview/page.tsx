@@ -13,7 +13,7 @@ import { ModernTabs } from './components/ModernTabs';
 import { NetworkListHospital } from './components/NetworkListHospital';
 import { OccupancyRateCharts } from './components/OccupancyRateCharts';
 import { HospitalsLocations } from './components/HospitalsLocations';
-import { AIAnalyticsMetrics } from './components/AIAnalyticsMetrics';
+import { AIAnalyticsGeneralData } from './components/AIAnalyticsGeneralData';
 import { RepositionActionsBar } from '@/components/ui/templates/RepositionActionsBar';
 import { IAppUser } from '@/types/auth-types';
 import { Button } from '@/components/ui/organisms/button';
@@ -303,14 +303,11 @@ const Overview: React.FC = () => {
                       />
                     ),
                     analytics: (
-                      <AIAnalyticsMetrics
-                        filteredHospitals={getFilteredHospitals() || []}
-                        currentUser={currentUser}
-                      />
+                      <AIAnalyticsGeneralData />
                     ),
                     alertCenterHub: (
                       <AlertCenterHub 
-                        hospitalId="RD4H-SP-ITAIM"
+                        hospitalId={selectedHospital || ''}
                         initialView="chat"
                         onSendMessage={handleSendMessage}
                         floatingButton={true}

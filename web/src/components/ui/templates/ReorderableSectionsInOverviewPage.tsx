@@ -11,7 +11,7 @@ import { DepartmentStatus } from '@/app/(administrator)/overview/components/Depa
 import { NetworkListHospital } from '@/app/(administrator)/overview/components/NetworkListHospital';
 import { OccupancyRateCharts } from '@/app/(administrator)/overview/components/OccupancyRateCharts';
 import { HospitalsLocations } from '@/app/(administrator)/overview/components/HospitalsLocations';
-import { AIAnalyticsMetrics } from '@/app/(administrator)/overview/components/AIAnalyticsMetrics';
+import { AIAnalyticsGeneralData } from '@/app/(administrator)/overview/components/AIAnalyticsGeneralData';
 import { ModernTabs } from '@/app/(administrator)/overview/components/ModernTabs';
 import { IAppUser } from '@/types/auth-types';
 import { AmbulanceManagement } from './AmbulanceManagement';
@@ -245,10 +245,7 @@ export const ReorderableSectionsInOverviewPage: React.FC<ReorderableOverviewProp
                         />
                     ),
                     analytics: (
-                        <AIAnalyticsMetrics
-                        filteredHospitals={getFilteredHospitals() || []}
-                        currentUser={currentUser}
-                        />
+                        <AIAnalyticsGeneralData />
                     ),
                     alertCenterHub: (
                       <AlertCenterHub 

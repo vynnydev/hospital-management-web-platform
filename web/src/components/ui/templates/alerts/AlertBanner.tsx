@@ -62,7 +62,7 @@ export const AlertBanner: React.FC<AlertBannerProps> = ({
         clearTimeout(timeoutId);
       };
     }
-  }, [autoHideAfter, isVisible, relevantAlerts.length]);
+  }, [autoHideAfter, autoHideTimeoutId, isVisible, relevantAlerts.length]);
 
   // Navegação entre alertas
   const goToNextAlert = () => {

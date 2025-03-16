@@ -97,7 +97,7 @@ const AlertCenterContent: React.FC<Omit<AlertCenterProps, 'hospitalId'>> = ({
       {showFloatingButton && (
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className={`alert-center-button bottom-72 left-80 fixed ${position.replace('-', ' ')} z-40 p-2 rounded-full shadow-lg bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all ${
+          className={`alert-center-button -mt-[550px] left-80 fixed ${position.replace('-', ' ')} z-40 p-2 rounded-full shadow-lg bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all ${
             isOpen ? 'scale-110' : 'scale-100'
           }`}
         >

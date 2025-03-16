@@ -34,6 +34,14 @@ export interface IAlert {
     confidence?: number;
     reasoning?: string;
     suggestedActions?: string[];
+    vitalSigns?: {
+      bloodPressure?: string;
+      heartRate?: number;
+      temperature?: number;
+      respiratoryRate?: number;
+      oxygenSaturation?: number;
+      [key: string]: any;
+    };
     [key: string]: any;
   };
 }
