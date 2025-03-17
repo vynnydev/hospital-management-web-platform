@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-// EditableMetricsPanel corrigido
 import React, { useState, useEffect } from 'react';
 import { X, Plus, ChevronUp, ChevronDown } from 'lucide-react';
 import { IHospital, INetworkData } from '@/types/hospital-network-types';
@@ -28,6 +27,7 @@ interface EditableMetricsPanelProps {
   selectedHospital: string | null;
   isEditMode: boolean;
   onExitEditMode: () => void;
+  getFilteredHospitals?: () => IHospital[];
 }
 
 export const EditableMetricsPanel: React.FC<EditableMetricsPanelProps> = ({
@@ -36,7 +36,8 @@ export const EditableMetricsPanel: React.FC<EditableMetricsPanelProps> = ({
   selectedRegion,
   selectedHospital,
   isEditMode,
-  onExitEditMode
+  onExitEditMode,
+  getFilteredHospitals
 }) => {
   // Estado para o modal de adicionar métricas
   const [isAddMetricModalOpen, setIsAddMetricModalOpen] = useState(false);
@@ -122,6 +123,22 @@ export const EditableMetricsPanel: React.FC<EditableMetricsPanelProps> = ({
     await addToPanel(metricId);
   };
   
+  // Função para filtrar hospitais com base na seleção atual
+  const getFilteredHospitalsData = () => {
+    if (!networkData || !networkData.hospitals) return [];
+    
+    if (selectedHospital) {
+      // Se um hospital específico foi selecionado, filtre apenas esse hospital
+      return networkData.hospitals.filter(hospital => hospital.id === selectedHospital);
+    } else if (selectedRegion && selectedRegion !== 'all') {
+      // Se uma região específica foi selecionada, filtre pelos hospitais dessa região
+      return networkData.hospitals.filter(hospital => hospital.unit?.state === selectedRegion);
+    } else {
+      // Se "Todas as Regiões" foi selecionado, use todos os hospitais
+      return networkData.hospitals;
+    }
+  };
+  
   // Renderizar mensagem quando não houver métricas
   const renderEmptyState = (type: 'main' | 'additional') => {
     return (
@@ -196,6 +213,9 @@ export const EditableMetricsPanel: React.FC<EditableMetricsPanelProps> = ({
       </motion.div>
     );
   };
+
+  // Obter hospitais filtrados
+  const filteredHospitals = getFilteredHospitalsData();
 
   return (
     <>    
@@ -273,6 +293,7 @@ export const EditableMetricsPanel: React.FC<EditableMetricsPanelProps> = ({
                 selectedHospital={selectedHospital}
                 visibleMetrics={visibleMainMetrics}
                 isMainSection={true}
+                filteredHospitals={filteredHospitals}
               />
             )}
             
@@ -375,7 +396,9 @@ export const EditableMetricsPanel: React.FC<EditableMetricsPanelProps> = ({
                       networkData={networkData}
                       currentMetrics={currentMetrics}
                       selectedHospital={selectedHospital}
+                      selectedRegion={selectedRegion}
                       visibleMetrics={visibleAdditionalMetrics}
+                      filteredHospitals={filteredHospitals}
                     />
                   )}
                   

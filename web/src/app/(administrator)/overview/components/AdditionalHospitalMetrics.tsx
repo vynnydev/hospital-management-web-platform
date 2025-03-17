@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { 
@@ -15,7 +16,7 @@ import {
   AlertCircle,
   PlusCircle
 } from 'lucide-react';
-import { INetworkData } from '@/types/hospital-network-types';
+import { IHospital, INetworkData } from '@/types/hospital-network-types';
 
 type TCardType = 'hospital-critico' | 'burnout' | 'manutencao' | 'taxa-giro' | 
                 'eficiencia' | 'ocupacao' | 'variacao' | 'treinamento';
@@ -29,8 +30,10 @@ interface ICurrentMetrics {
 interface IMetricsProps {
   networkData: INetworkData;
   currentMetrics: ICurrentMetrics;
-  selectedHospital?: string | null;
+  selectedHospital: string | null;
+  selectedRegion: string | null;
   visibleMetrics?: string[]; // Nova propriedade para controlar quais métricas são visíveis
+  filteredHospitals?: IHospital[]; // Hospitais filtrados passados como prop
 }
 
 interface IMetricCardProps {
@@ -56,6 +59,9 @@ interface ICalculatedMetrics {
   equipmentMaintenanceRisk: number;
   professionalTrainingRate: number;
   departmentPatientVariation: number;
+  bedTurnoverRate: number;
+  operationalEfficiency: number;
+  averageOccupancy: number;
 }
 
 const pulseAnimation = {
@@ -139,6 +145,19 @@ const getCardGradient = (cardType: TCardType): string => {
     'treinamento': 'from-[#2A3D3D] to-[#1F2D2D]'      // Tons de teal escuro
   };
   return gradients[cardType] || 'from-gray-800 to-gray-900'; // Fallback
+};
+
+const getHospitalDisplayName = (selectedHospital: string | null, networkData: INetworkData, selectedRegion: string | null) => {
+  if (!selectedHospital) {
+    return selectedRegion && selectedRegion !== 'all' 
+      ? selectedRegion 
+      : 'Todos';
+  }
+  
+  const hospital = networkData?.hospitals?.find(h => h.id === selectedHospital);
+  if (!hospital) return 'Todos';
+  
+  return hospital.name;
 };
 
 const MetricCard: React.FC<IMetricCardProps> = ({ 
@@ -236,46 +255,112 @@ const MetricCard: React.FC<IMetricCardProps> = ({
   )
 }
 
-
 export const AdditionalHospitalMetrics: React.FC<IMetricsProps> = ({ 
   networkData, 
   currentMetrics,
   selectedHospital,
-  visibleMetrics // Usar essa propriedade para filtrar métricas
+  selectedRegion,
+  visibleMetrics,
+  filteredHospitals
 }) => {
   const calculateAdditionalMetrics = (): ICalculatedMetrics => {
     const hospitals = networkData?.hospitals || [];
     const networkEfficiency = networkData?.networkInfo?.networkMetrics?.networkEfficiency;
 
-    const hospitalWithHighestOccupancy = hospitals.reduce((highest, current) => 
-      (current.metrics?.overall?.occupancyRate || 0) > (highest.metrics?.overall?.occupancyRate || 0) 
-        ? current 
-        : highest
-    );
+    // Hospitais filtrados com base na seleção do usuário
+    let filteredHospitalsList = hospitals;
+    
+    if (selectedHospital) {
+      // Se um hospital específico foi selecionado, filtrar apenas por ele
+      filteredHospitalsList = hospitals.filter(h => h.id === selectedHospital);
+    } else if (selectedRegion && selectedRegion !== 'all') {
+      // Se uma região específica foi selecionada, filtrar por região
+      filteredHospitalsList = hospitals.filter(h => h.unit?.state === selectedRegion);
+    }
 
-    const burnoutRiskCalculation = hospitals.reduce((total, hospital) => 
-      total + (hospital.metrics?.overall?.totalPatients / (hospital.metrics?.overall?.totalBeds || 1)), 
-      0
-    ) / hospitals.length;
+    const defaultHospital = {
+      id: '',
+      name: 'Nenhum hospital',
+      metrics: { overall: { occupancyRate: 0 } }
+    };
 
-    const equipmentMaintenanceRisk = hospitals.reduce((total, hospital) => 
-      total + (hospital.metrics?.departmental?.uti?.occupancy > 85 ? 1 : 0), 
-      0
-    );
+    // Obter o hospital selecionado, se existir
+    const selectedHospitalData = selectedHospital 
+      ? hospitals.find(h => h.id === selectedHospital) 
+      : null;
 
-    const professionalTrainingRate = Math.round(
-      (networkEfficiency?.resourceUtilization || 0) * 100
-    );
+    // 1. hospitalWithHighestOccupancy
+    const hospitalWithHighestOccupancy = filteredHospitalsList.length > 0 
+      ? filteredHospitalsList.reduce((highest, current) => 
+          (current.metrics?.overall?.occupancyRate || 0) > (highest.metrics?.overall?.occupancyRate || 0) 
+            ? current 
+            : highest, 
+          filteredHospitalsList[0] || defaultHospital)
+      : defaultHospital;
 
-    const departmentPatientVariation = hospitals.reduce((variation, hospital) => {
-      const departments = hospital.metrics?.departmental;
-      if (departments) {
-        const occupancies = Object.values(departments).map(dept => dept.occupancy);
-        const maxVariation = Math.max(...occupancies) - Math.min(...occupancies);
-        return Math.max(variation, maxVariation);
-      }
-      return variation;
-    }, 0);
+    // 2. burnoutRiskCalculation
+    const burnoutRiskCalculation = selectedHospitalData
+      ? selectedHospitalData.metrics?.overall?.totalPatients / (selectedHospitalData.metrics?.overall?.totalBeds || 1)
+      : filteredHospitalsList.length > 0
+        ? filteredHospitalsList.reduce((total, hospital) => 
+            total + (hospital.metrics?.overall?.totalPatients / (hospital.metrics?.overall?.totalBeds || 1)), 
+            0) / (filteredHospitalsList.length || 1)
+        : 0;
+
+    // 3. equipmentMaintenanceRisk
+    const equipmentMaintenanceRisk = selectedHospitalData
+      ? selectedHospitalData.metrics?.departmental?.uti?.occupancy > 85 ? 1 : 0
+      : filteredHospitalsList.length > 0
+        ? filteredHospitalsList.reduce((total, hospital) => 
+            total + (hospital.metrics?.departmental?.uti?.occupancy > 85 ? 1 : 0), 
+            0)
+        : 0;
+
+    // 4. professionalTrainingRate
+    const professionalTrainingRate = selectedHospitalData
+      ? Math.round((selectedHospitalData.metrics?.networkEfficiency?.resourceUtilization || 0) * 100)
+      : Math.round((networkEfficiency?.resourceUtilization || 0) * 100);
+
+    // 5. departmentPatientVariation
+    const departmentPatientVariation = selectedHospitalData
+      ? (() => {
+          const departments = selectedHospitalData.metrics?.departmental;
+          if (departments) {
+            const occupancies = Object.values(departments).map(dept => dept.occupancy);
+            if (occupancies.length > 1) {
+              return Math.max(...occupancies) - Math.min(...occupancies);
+            }
+          }
+          return 0;
+        })()
+      : filteredHospitalsList.length > 0
+        ? filteredHospitalsList.reduce((variation, hospital) => {
+            const departments = hospital.metrics?.departmental;
+            if (departments) {
+              const occupancies = Object.values(departments).map(dept => dept.occupancy);
+              if (occupancies.length > 1) {
+                const maxVariation = Math.max(...occupancies) - Math.min(...occupancies);
+                return Math.max(variation, maxVariation);
+              }
+            }
+            return variation;
+          }, 0)
+        : 0;
+
+    // 6. bedTurnoverRate
+    const bedTurnoverRate = selectedHospitalData
+      ? selectedHospitalData.metrics?.networkEfficiency?.bedTurnover || 0
+      : networkEfficiency?.bedTurnover || 0;
+
+    // 7. operationalEfficiency
+    const operationalEfficiency = selectedHospitalData
+      ? selectedHospitalData.metrics?.networkEfficiency?.resourceUtilization || 0
+      : networkEfficiency?.resourceUtilization || 0;
+
+    // 8. averageOccupancy
+    const averageOccupancy = selectedHospitalData
+      ? selectedHospitalData.metrics?.overall?.occupancyRate || 0
+      : networkData?.networkInfo?.networkMetrics?.averageOccupancy || 0;
 
     return {
       hospitalWithHighestOccupancy,
@@ -283,10 +368,20 @@ export const AdditionalHospitalMetrics: React.FC<IMetricsProps> = ({
       equipmentMaintenanceRisk,
       professionalTrainingRate,
       departmentPatientVariation,
+      bedTurnoverRate,
+      operationalEfficiency,
+      averageOccupancy
     };
   };
 
   const additionalMetrics = calculateAdditionalMetrics();
+
+  // Obter o nome de exibição do hospital selecionado
+  const hospitalDisplayName = selectedHospital
+    ? networkData?.hospitals?.find(h => h.id === selectedHospital)?.name || 'Hospital Selecionado'
+    : selectedRegion && selectedRegion !== 'all'
+      ? `Região ${selectedRegion}`
+      : 'Todos';
 
   const metrics = [
     {
@@ -300,7 +395,7 @@ export const AdditionalHospitalMetrics: React.FC<IMetricsProps> = ({
       valueSize: 'small' as const,
       additionalInfo: {
         label: "Taxa de Ocupação",
-        value: `${additionalMetrics.hospitalWithHighestOccupancy?.metrics?.overall?.occupancyRate?.toFixed(1)}%`
+        value: `${additionalMetrics.hospitalWithHighestOccupancy?.metrics?.overall?.occupancyRate?.toFixed(1) || '0'}%`
       }
     },
     {
@@ -332,7 +427,7 @@ export const AdditionalHospitalMetrics: React.FC<IMetricsProps> = ({
     },
     {
       title: "Taxa de Giro",
-      value: networkData?.networkInfo?.networkMetrics?.networkEfficiency?.bedTurnover?.toFixed(1) || "0",
+      value: additionalMetrics.bedTurnoverRate.toFixed(1) || "0",
       subtitle: "Rotatividade de Leitos",
       trend: 1.2,
       target: 8.0,
@@ -346,7 +441,7 @@ export const AdditionalHospitalMetrics: React.FC<IMetricsProps> = ({
     },
     {
       title: "Eficiência Operacional",
-      value: `${(networkData?.networkInfo?.networkMetrics?.networkEfficiency?.resourceUtilization * 100).toFixed(0)}%`,
+      value: `${(additionalMetrics.operationalEfficiency * 100).toFixed(0)}%`,
       subtitle: "Performance Geral",
       trend: 3.2,
       target: 90,
@@ -360,7 +455,7 @@ export const AdditionalHospitalMetrics: React.FC<IMetricsProps> = ({
     },
     {
       title: "Ocupação Média",
-      value: `${networkData?.networkInfo?.networkMetrics?.averageOccupancy?.toFixed(1)}%`,
+      value: `${additionalMetrics.averageOccupancy.toFixed(1)}%`,
       subtitle: "Taxa de Ocupação",
       trend: 2.3,
       target: 85,
@@ -403,7 +498,7 @@ export const AdditionalHospitalMetrics: React.FC<IMetricsProps> = ({
   ];
 
   // Filtrar métricas com base na propriedade visibleMetrics
-  const filteredMetrics = visibleMetrics
+  const filteredMetrics = visibleMetrics && visibleMetrics.length > 0
     ? metrics.filter(metric => visibleMetrics.includes(metric.cardType))
     : metrics;
 
@@ -428,7 +523,7 @@ export const AdditionalHospitalMetrics: React.FC<IMetricsProps> = ({
         <MetricCard 
           key={index} 
           {...metric as IMetricCardProps}
-          selectedHospital={selectedHospital}
+          selectedHospital={hospitalDisplayName}
         />
       ))}
     </div>

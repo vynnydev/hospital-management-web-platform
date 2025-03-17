@@ -94,6 +94,8 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
   filteredHospitals,
   canChangeRegion,
   selectedHospital,
+  setSelectedHospital,
+  getFilteredHospitals
 }) => {
   const [activeSection, setActiveSection] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -147,16 +149,30 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
     setDefaultSection('integrations');
   };
 
-  const regions = React.useMemo(() => { 
-    if (!networkData?.hospitals?.length) return [];
+  const regionHospitals = React.useMemo(() => { 
+    if (!networkData?.hospitals?.length) return {};
     
-    return networkData.hospitals.reduce<string[]>((acc: string[], hospital: { unit: { state: string } }) => {
-      if (!acc.includes(hospital?.unit?.state)) {
-        acc.push(hospital.unit.state);
+    return networkData.hospitals.reduce<Record<string, { id: string, name: string }[]>>((acc, hospital) => {
+      const state = hospital?.unit?.state;
+      if (!state) return acc;
+      
+      if (!acc[state]) {
+        acc[state] = [];
       }
+      
+      acc[state].push({
+        id: hospital.id,
+        name: hospital.name
+      });
+      
       return acc;
-    }, [] as string[]);
+    }, {});
   }, [networkData?.hospitals]);
+  
+  // Extrair apenas a lista de regiões (estados)
+  const regions = React.useMemo(() => {
+    return Object.keys(regionHospitals);
+  }, [regionHospitals]);
 
   // Função para alternar o modo de edição de métricas
   const toggleEditMetricsMode = () => {
@@ -204,6 +220,27 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
       refreshMetrics();
     } catch (error) {
       console.error('Erro ao fazer login:', error);
+    }
+  };
+
+  // Função para lidar com a mudança na seleção de região/hospital
+  const handleRegionOrHospitalChange = (value: string) => {
+    // Verificar se o valor é um ID de hospital ou uma região
+    const isHospitalId = !['all', ...regions].includes(value);
+    
+    if (isHospitalId) {
+      setSelectedHospital(value);
+      
+      // Encontrar a região (estado) do hospital selecionado
+      for (const [region, hospitals] of Object.entries(regionHospitals)) {
+        if (hospitals.some(h => h.id === value)) {
+          setSelectedRegion(region);
+          break;
+        }
+      }
+    } else {
+      setSelectedRegion(value);
+      setSelectedHospital(null);
     }
   };
 
@@ -306,7 +343,10 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
 
                 {canChangeRegion && (
                   <div className="relative">
-                    <Select value={selectedRegion} onValueChange={setSelectedRegion}>
+                    <Select 
+                      value={selectedHospital || selectedRegion} 
+                      onValueChange={handleRegionOrHospitalChange}
+                    >
                       <SelectTrigger className="w-64 bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600">
                         <div className="flex items-center space-x-2">
                           <Map size={18} className="text-gray-500 dark:text-gray-400" />
@@ -324,12 +364,25 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
 
                         {/* Lista de regiões com estados */}
                         {regions.map(region => (
-                          <SelectItem key={region} value={region} className='bg-gray-200 dark:bg-gray-700'>
-                            <div className="flex items-center space-x-2">
-                              <Map size={18} className="text-gray-500 dark:text-gray-400" />
-                              <span>Unidades - {region}</span>
-                            </div>
-                          </SelectItem>
+                          <React.Fragment key={region}>
+                            {/* Cabeçalho da região */}
+                            <SelectItem value={region} className='bg-gray-200 dark:bg-gray-700'>
+                              <div className="flex items-center space-x-2 bg-gray-200 dark:bg-gray-700">
+                                <Map size={18} className="text-gray-500 dark:text-gray-400" />
+                                <span className='bg-gray-200 dark:bg-gray-700'>Unidades - {region}</span>
+                              </div>
+                            </SelectItem>
+                            
+                            {/* Hospitais da região */}
+                            {regionHospitals[region]?.map(hospital => (
+                              <SelectItem key={hospital.id} value={hospital.id} className='bg-gray-200 dark:bg-gray-700'>
+                                <div className="flex items-center space-x-2 pl-6 ">
+                                  <Building2 size={16} className="text-gray-500 dark:text-gray-400" />
+                                  <span className=''>Unidade - {hospital.name}</span>
+                                </div>
+                              </SelectItem>
+                            ))}
+                          </React.Fragment>
                         ))}
                       </SelectContent>
                     </Select>
@@ -347,6 +400,7 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
                 selectedHospital={selectedHospital}
                 isEditMode={isEditMetricsMode}
                 onExitEditMode={() => setIsEditMetricsMode(false)}
+                getFilteredHospitals={getFilteredHospitals}
               />
             </div>
           </div>

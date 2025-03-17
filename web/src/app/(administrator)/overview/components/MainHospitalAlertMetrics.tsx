@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import { Card } from "@/components/ui/organisms/card";
-import { INetworkData } from "@/types/hospital-network-types";
+import { IHospital, INetworkData } from "@/types/hospital-network-types";
 import { AlertCircle, AlertTriangle, Clock, LucideIcon, Plus, Settings, Users } from "lucide-react";
 import { Button } from '@/components/ui/organisms/button';
 
@@ -111,6 +111,9 @@ interface MainHospitalAlertMetricsProps {
     staffingNormsThreshold?: number;
     emergencyWaitTimeThreshold?: number;
     isMainSection?: boolean;
+    
+    // Hospitais filtrados passados como prop
+    filteredHospitals?: IHospital[];
 }
 
 interface IAlertCard {
@@ -135,34 +138,65 @@ export const MainHospitalAlertMetrics: React.FC<MainHospitalAlertMetricsProps> =
     criticalOccupancyThreshold = 90,
     staffingNormsThreshold = 0.6,
     emergencyWaitTimeThreshold = 4,
-    isMainSection
+    isMainSection,
+    filteredHospitals
   }) => {
     const [isAddMetricModalOpen, setIsAddMetricModalOpen] = useState(false);
     
     const calculateAlertMetrics = () => {
-        const filteredHospitals = selectedRegion && selectedRegion !== 'all'
-            ? networkData?.hospitals.filter(h => h.unit.state === selectedRegion)
-            : networkData?.hospitals || [];
+        // Certifique-se de que networkData e hospitals existem
+        if (!networkData || !networkData.hospitals || networkData.hospitals.length === 0) {
+            return {
+                hospitalWithHighestOccupancy: null,
+                hospitalsBelowStaffingNorms: 0,
+                equipmentMaintenanceAlerts: 0,
+                emergencyRoomWaitingTime: 0
+            };
+        }
+        
+        // Se um hospital específico foi selecionado
+        if (selectedHospital) {
+            const hospital = networkData.hospitals.find(h => h.id === selectedHospital);
+            
+            if (hospital) {
+                return {
+                    hospitalWithHighestOccupancy: hospital,
+                    hospitalsBelowStaffingNorms: hospital.metrics?.overall?.totalPatients / hospital.metrics?.overall?.totalBeds < staffingNormsThreshold ? 1 : 0,
+                    equipmentMaintenanceAlerts: hospital.metrics?.departmental?.uti?.occupancy > 85 ? 1 : 0,
+                    emergencyRoomWaitingTime: hospital.metrics?.networkEfficiency?.avgWaitTime || 0
+                };
+            }
+        }
 
-        const hospitalWithHighestOccupancy = filteredHospitals.reduce((highest, current) => 
-            (current.metrics?.overall?.occupancyRate || 0) > (highest.metrics?.overall?.occupancyRate || 0) 
-                ? current 
-                : highest
-        );
+        // Filtrar os hospitais com base na região selecionada
+        const filteredHospitalsByRegion = selectedRegion && selectedRegion !== 'all'
+            ? networkData.hospitals.filter(h => h.unit?.state === selectedRegion)
+            : networkData.hospitals || [];
+
+        // Adicione valor inicial ao reduce para evitar erro com array vazio
+        const hospitalWithHighestOccupancy = filteredHospitalsByRegion.length > 0 
+            ? filteredHospitalsByRegion.reduce((highest, current) => 
+                (current.metrics?.overall?.occupancyRate || 0) > (highest.metrics?.overall?.occupancyRate || 0) 
+                    ? current 
+                    : highest, 
+                filteredHospitalsByRegion[0]) // Valor inicial é o primeiro hospital
+            : null;
 
         return {
             hospitalWithHighestOccupancy,
-            hospitalsBelowStaffingNorms: filteredHospitals.filter(hospital => 
-                hospital.metrics?.overall?.totalPatients / hospital.metrics?.overall?.totalBeds < 0.6
+            hospitalsBelowStaffingNorms: filteredHospitalsByRegion.filter(hospital => 
+                hospital.metrics?.overall?.totalPatients / hospital.metrics?.overall?.totalBeds < staffingNormsThreshold
             ).length,
-            equipmentMaintenanceAlerts: filteredHospitals.reduce((total, hospital) => 
+            equipmentMaintenanceAlerts: filteredHospitalsByRegion.reduce((total, hospital) => 
                 total + (hospital.metrics?.departmental?.uti?.occupancy > 85 ? 1 : 0), 
-                0
+                0 // Valor inicial é 0
             ),
-            emergencyRoomWaitingTime: filteredHospitals.reduce((avg, hospital) => 
-                avg + (hospital.metrics?.networkEfficiency?.avgWaitTime || 0), 
-                0
-            ) / filteredHospitals.length
+            emergencyRoomWaitingTime: filteredHospitalsByRegion.length > 0 
+                ? filteredHospitalsByRegion.reduce((avg, hospital) => 
+                    avg + (hospital.metrics?.networkEfficiency?.avgWaitTime || 0), 
+                    0 // Valor inicial é 0
+                  ) / filteredHospitalsByRegion.length
+                : 0 // Retorna 0 se não houver hospitais
         };
     };
 
@@ -171,13 +205,20 @@ export const MainHospitalAlertMetrics: React.FC<MainHospitalAlertMetricsProps> =
     const getAnalysisMessage = (card: TCardType, value: number): string => {
         switch (card) {
             case 'critical-hospital':
-                return 'Taxa de ocupação dentro dos parâmetros esperados. Margem segura na gestão de leitos mantida.';
+                const occupancyRate = alertMetrics.hospitalWithHighestOccupancy?.metrics?.overall?.occupancyRate || 0;
+                return occupancyRate > 85 
+                    ? 'Taxa de ocupação maior que a média da rede. Necessita atenção especial na gestão de leitos.'
+                    : 'Taxa de ocupação dentro dos parâmetros esperados. Margem segura na gestão de leitos mantida.';
             case 'staff':
-                return `Taxa de ocupação ${value}% menor que a média da rede. UTI requer atenção com média acima do esperado.`;
+                return `Taxa de ocupação ${value > 0 ? value + '% menor' : 'dentro'} que a média da rede. ${value > 1 ? 'UTI requer atenção com média acima do esperado.' : ''}`;
             case 'maintenance':
-                return 'Alta eficiência na gestão de leitos. Média de 42 altas/dia indica ótimo fluxo de pacientes.';
+                return value > 0 
+                    ? `${value} UTI(s) com risco de indisponibilidade. Verificar manutenção de equipamentos.` 
+                    : 'Alta eficiência na gestão de leitos. Média de 42 altas/dia indica ótimo fluxo de pacientes.';
             case 'waiting':
-                return '2º lugar na rede com 85% de eficiência. Melhor resultado dos últimos 6 meses.';
+                return value > 4 
+                    ? `Tempo de espera acima da média (${value} horas). Verificar fluxo de atendimento.` 
+                    : '2º lugar na rede com 85% de eficiência. Melhor resultado dos últimos 6 meses.';
             default:
                 return '';
         }
@@ -189,7 +230,7 @@ export const MainHospitalAlertMetrics: React.FC<MainHospitalAlertMetricsProps> =
             icon: AlertTriangle,
             value: alertMetrics.hospitalWithHighestOccupancy?.name || 'N/A',
             subtitle: "Maior Ocupação",
-            description: `Taxa de Ocupação: ${alertMetrics.hospitalWithHighestOccupancy?.metrics?.overall?.occupancyRate?.toFixed(1)}%`,
+            description: `Taxa de Ocupação: ${alertMetrics.hospitalWithHighestOccupancy?.metrics?.overall?.occupancyRate?.toFixed(1) || 'N/A'}%`,
             gradient: "from-red-400/20 to-rose-500/20 dark:from-red-500/20 dark:to-rose-600/20",
             iconColor: "text-red-600 dark:text-red-400",
             cardType: "critical-hospital",
@@ -304,7 +345,14 @@ export const MainHospitalAlertMetrics: React.FC<MainHospitalAlertMetricsProps> =
                             </div>
                             <div className="px-2 py-1 rounded-lg bg-gray-800/40 backdrop-blur-sm">
                                 <span className="text-xs font-medium text-gray-300">
-                                    {getFormattedHospitalName(selectedHospital, selectedRegion)}
+                                    {selectedHospital 
+                                        ? getFormattedHospitalName(
+                                            networkData.hospitals.find(h => h.id === selectedHospital)?.name || null, 
+                                            selectedRegion
+                                          )
+                                        : selectedRegion && selectedRegion !== 'all' 
+                                            ? selectedRegion 
+                                            : 'Todos'}
                                 </span>
                             </div>
                         </div>
