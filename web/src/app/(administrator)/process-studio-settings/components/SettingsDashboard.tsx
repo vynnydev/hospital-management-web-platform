@@ -10,6 +10,7 @@ import { NotificationsTab } from './notifications/NotificationsTab';
 import { CalendarTab } from './calendar/CalendarTab';
 import { ConnectionsTab } from './connections/ConnectionsTab';
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
+import { AlertsProvider } from '@/components/ui/templates/providers/alerts/AlertsProvider';
 
 export const SettingsDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState('workflow');
@@ -70,10 +71,15 @@ export const SettingsDashboard: React.FC = () => {
             ))}
           </TabsList>
 
+          <div className='border-b border-gray-700'/>
+
+          {/* Implementar o "hospitalId no AlertsProvider" */}
           <TabsContent value="workflow" className="space-y-4">
-            <Card className="h-full">
+            <Card className="h-full border-b border-gray-700">
               <CardContent className="p-0 h-full">
-                <WorkflowTab />
+                <AlertsProvider>
+                  <WorkflowTab />
+                </AlertsProvider>
               </CardContent>
             </Card>
           </TabsContent>

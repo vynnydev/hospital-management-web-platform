@@ -106,7 +106,7 @@ export const AlertsProvider: React.FC<AlertsProviderProps> = ({
     
     return filtered.sort((a, b) => {
       // Ordenar por prioridade (high > medium > low)
-      const priorityOrder = { high: 0, medium: 1, low: 2 };
+      const priorityOrder = { high: 0, medium: 1, low: 2, critical: 3 };
       const priorityDiff = priorityOrder[a.priority] - priorityOrder[b.priority];
       
       // Se a prioridade for igual, ordenar por data (mais recente primeiro)

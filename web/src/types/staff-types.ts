@@ -86,6 +86,7 @@ export interface IStaffSchedule {
 
 // Interface principal que agrupa todos os dados de equipe
 export interface IStaffData {
+  loading: boolean;
   staffTeams: {
     [hospitalId: string]: IStaffTeam[];
   };

@@ -4,7 +4,7 @@ import { IMessage } from "./app-types";
 import { IAppUser } from "./auth-types";
 
 // Tipos para o sistema de alertas
-export type TAlertPriority = 'high' | 'medium' | 'low';
+export type TAlertPriority = 'high' | 'medium' | 'low' | 'critical';
 export type TAlertType = 
   'ambulance' | 
   'patient-arrival' | 
