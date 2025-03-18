@@ -5,7 +5,19 @@ import { IAppUser } from "./auth-types";
 
 // Tipos para o sistema de alertas
 export type TAlertPriority = 'high' | 'medium' | 'low';
-export type TAlertType = 'ambulance' | 'patient-arrival' | 'resource' | 'emergency';
+export type TAlertType = 
+  'ambulance' | 
+  'patient-arrival' | 
+  'resource' | 
+  'emergency' | 
+  'occupancy' | 
+  'staff' | 
+  'operational' | 
+  'equipment' | 
+  'warning' | 
+  'info' | 
+  'success' | 
+  'error';
 export type TAlertStatus = 'pending' | 'acknowledged' | 'resolved' | 'dismissed';
 export type TUserRole = 'doctor' | 'nurse' | 'attendant' | 'admin' | 'system' | 'ai';
 
@@ -20,7 +32,8 @@ export interface IAlert {
   status: TAlertStatus;
   read: boolean;
   actionRequired: boolean;
-  hospitalId: string;
+  hospitalId?: string; // Opcional para permitir alertas sem hospital específico
+  sourceId?: string;
   metadata?: {
     patientId?: string;
     ambulanceId?: string;

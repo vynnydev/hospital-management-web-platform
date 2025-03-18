@@ -46,6 +46,9 @@ import { usePermissions } from '@/services/hooks/auth/usePermissions';
 import { EditableMetricsPanel } from '@/components/ui/templates/hospital-metrics/EditableMetricsPanel';
 import { MetricManager } from '@/components/ui/templates/hospital-metrics/MetricManager';
 
+// Importar o componente de gestão avançada de métricas
+import { AdvancedMetricsManagement } from '@/components/ui/templates/ai-metrics/AdvancedMetricsManagement';
+
 interface IHospitalMetrics {
   unit: {
     state: string;
@@ -105,7 +108,9 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
   
   // Estado para o modo de edição de métricas
   const [isEditMetricsMode, setIsEditMetricsMode] = useState(false);
-  const [isAIGenerationModalOpen, setIsAIGenerationModalOpen] = useState(false);
+  
+  // Estado para modal avançado de métricas (substituindo o antigo isAIGenerationModalOpen)
+  const [isAdvancedMetricsModalOpen, setIsAdvancedMetricsModalOpen] = useState(false);
   
   // Referência para o componente de métricas para ajustar o blur
   const metricsContainerRef = useRef<HTMLDivElement>(null);
@@ -198,14 +203,14 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
     setIsManagerModalOpen(true);
   };
   
-  // Abrir modal de geração de métricas com IA
-  const openAIGenerationModal = () => {
+  // Abrir modal avançado de métricas (substituindo a função anterior)
+  const openAdvancedMetricsModal = () => {
     if (!isUserLoggedIn) {
       setIsLoginModalOpen(true);
       return;
     }
     
-    setIsAIGenerationModalOpen(true);
+    setIsAdvancedMetricsModalOpen(true);
   };
   
   // Função para fazer login
@@ -291,16 +296,16 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
                   </div>
                 )}
                 
-                {/* Botão para gerar métricas com IA */}
+                {/* Botão para gerar métricas com IA - atualizado para usar o novo componente */}
                 <Button
-                  onClick={openAIGenerationModal}
+                  onClick={openAdvancedMetricsModal}
                   className="relative overflow-hidden bg-gradient-to-r from-indigo-800 to-cyan-700 hover:from-indigo-600 hover:to-teal-500 text-white border-none rounded-full py-3 px-6 font-semibold shadow-lg transition-all duration-300 ease-in-out"
                   disabled={!isUserLoggedIn}
                 >
                   <div className="absolute top-0 left-0 w-full h-full bg-white/10 rounded-full"></div>
                   <div className="flex items-center justify-center space-x-2">
                     <Sparkles size={20} className="text-white/90" />
-                    <span className="text-md">Iniciar a geração IA</span>
+                    <span className="text-md">Métricas Avançadas</span>
                   </div>
                 </Button>
                 
@@ -409,7 +414,7 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
       
       {/* Modal de Login */}
       <Dialog open={isLoginModalOpen} onOpenChange={setIsLoginModalOpen}>
-        <DialogContent className="bg-gray-900 border-gray-800 text-white">
+        <DialogContent className="bg-gray-200 dark:bg-gray-900 border-gray-800 text-white">
           <DialogHeader>
             <DialogTitle>Login necessário</DialogTitle>
             <DialogDescription className="text-gray-400">
@@ -440,7 +445,7 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
       
       {/* Modal de Gerenciamento de Métricas */}
       <Dialog open={isManagerModalOpen} onOpenChange={setIsManagerModalOpen}>
-        <DialogContent className="max-w-5xl">
+        <DialogContent className="max-w-5xl bg-gray-200 dark:bg-gray-900">
           <DialogHeader>
             <DialogTitle>Gerenciador de Métricas</DialogTitle>
             <DialogDescription>
@@ -460,34 +465,14 @@ export const ManagementNetworkMetrics: React.FC<IManagementNetworkMetricsProps> 
         </DialogContent>
       </Dialog>
       
-      {/* Modal de Geração de Métricas com IA */}
-      <Dialog open={isAIGenerationModalOpen} onOpenChange={setIsAIGenerationModalOpen}>
-        <DialogContent className="max-w-5xl">
-          <DialogHeader>
-            <DialogTitle className="flex items-center">
-              <Brain className="h-5 w-5 text-purple-500 mr-2" />
-              Assistente IA Generativa
-            </DialogTitle>
-            <DialogDescription>
-              Gere métricas personalizadas através de diálogo interativo com a IA
-            </DialogDescription>
-          </DialogHeader>
-          
-          <div className="h-[70vh] overflow-y-auto">
-            <iframe 
-              src="/studio-de-processos/ia-generativa" 
-              className="w-full h-full border-none"
-              title="IA Generativa"
-            />
-          </div>
-          
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsAIGenerationModalOpen(false)}>
-              Fechar
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      {/* Novo componente para gestão avançada de métricas */}
+      <AdvancedMetricsManagement 
+        isOpen={isAdvancedMetricsModalOpen}
+        onClose={() => setIsAdvancedMetricsModalOpen(false)}
+        networkData={networkData}
+        selectedHospital={selectedHospital}
+        currentMetrics={currentMetrics}
+      />
     </>
   );
 };

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useRef, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/organisms/card';
@@ -110,7 +111,7 @@ export const AIGenerativeTab: React.FC = () => {
     }
     
     // Ajustar modelo de métrica baseado no prompt do usuário
-    let newMetricPreview = { ...previewMetric };
+    const newMetricPreview = { ...previewMetric };
     
     // Análise simples do texto do prompt para gerar uma prévia mais relevante
     if (prompt.includes('uti') || prompt.includes('unidade de terapia intensiva')) {

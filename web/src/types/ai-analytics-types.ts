@@ -2,9 +2,8 @@
 // Tipos para o sistema de análise de IA 
 
 // Tipos de alertas (também estão definidos no arquivo alert-types.ts)
-export type TAlertType = 'capacity' | 'staff' | 'resource' | 'patient' | 'communication' | 'system';
-export type TAlertPriority = 'high' | 'medium' | 'low';
-export type TAlertStatus = 'pending' | 'acknowledged' | 'resolved' | 'dismissed';
+import { TAlertPriority, TAlertStatus, TAlertType } from "./alert-types";
+
 export type TAlertSource = 'system' | 'staff' | 'communication' | 'ai' | 'external';
 
 // Interface para alertas (simplificada, a completa está em alert-types.ts)
