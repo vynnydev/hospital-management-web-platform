@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { IAlert } from '@/types/alert-types';
 import { IWorkflowTemplate } from '@/types/workflow/customize-process-by-workflow-types';
 import { INetworkData } from '@/types/hospital-network-types';
@@ -9,7 +10,6 @@ import {
     IOccupancyRateMetric, 
     ISLAComplianceMetric 
 } from '@/types/metrics-workflow-process-calculator-types';
-import { TAlertPriority } from '@/types/alert-types';
 
 /**
  * Classe utilitária para calcular todas as métricas do dashboard

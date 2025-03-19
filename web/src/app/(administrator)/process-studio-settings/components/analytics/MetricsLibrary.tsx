@@ -12,7 +12,7 @@ interface MetricTemplate {
 }
 
 interface MetricsLibraryProps {
-  onAddMetric?: (metricId: string) => void;
+  onAddMetric?: (metricTemplate: string) => void;
 }
 
 export const MetricsLibrary: React.FC<MetricsLibraryProps> = ({ onAddMetric }) => {
