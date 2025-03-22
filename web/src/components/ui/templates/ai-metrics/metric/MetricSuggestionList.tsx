@@ -3,7 +3,7 @@ import { BadgeInfo, Brain } from 'lucide-react';
 import { Button } from "@/components/ui/organisms/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/organisms/select";
 import { ScrollArea } from "@/components/ui/organisms/scroll-area";
-import { MetricCard } from './MetricCard';
+import { MetricCard } from './AIMetricCard';
 import { IMetricSuggestion } from '@/types/ai-metric';
 
 interface MetricSuggestionListProps {

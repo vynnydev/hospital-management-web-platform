@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { LucideIcon } from 'lucide-react';
 import { IHospital } from '@/types/hospital-network-types';
+import React from 'react';
 
 // Tipos de cartões de métrica
 export type TCardType = 
@@ -85,6 +86,9 @@ export interface IAdditionalInfo {
   value: string;
 }
 
+// Tipo para qualquer componente que aceite pelo menos className
+export type IconComponent = React.ComponentType<{ className?: string } & Record<string, any>>;
+
 // Interface para métrica
 export interface IMetric {
   id: string;
@@ -95,13 +99,28 @@ export interface IMetric {
   target?: number;
   color: string;
   cardType: TCardType;
-  icon: LucideIcon;
+  icon: IconComponent;
   valueSize?: 'small' | 'medium' | 'large';
   additionalInfo?: IAdditionalInfo;
   chartData?: IChartDataPoint[];
-  position: IMetricPosition;
+  position?: IMetricPosition;
   chartType?: TChartType;
   config?: IThresholdConfig;
+}
+
+// Interface para cartão de métrica
+export interface IMetricCard {
+  id: string;
+  title: string;
+  value: string | number;
+  subtitle: string;
+  trend?: number;
+  target?: number;
+  color: string;
+  cardType: TCardType;
+  icon: IconComponent;
+  valueSize?: 'small' | 'medium' | 'large';
+  additionalInfo?: IAdditionalInfo;
 }
 
 // Interface para cartão de alerta
@@ -125,4 +144,16 @@ export interface IAlertMetrics {
   hospitalsBelowStaffingNorms: number;
   equipmentMaintenanceAlerts: number;
   emergencyRoomWaitingTime: number;
+}
+
+// Interface para métricas adicionais
+export interface IAdditionalMetrics {
+  hospitalWithHighestOccupancy?: IHospital | null;
+  burnoutRiskCalculation?: number;
+  equipmentMaintenanceRisk?: number;
+  bedTurnoverRate?: number;
+  operationalEfficiency?: number;
+  averageOccupancy?: number;
+  departmentPatientVariation?: number;
+  professionalTrainingRate?: number;
 }

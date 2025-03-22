@@ -1,8 +1,8 @@
 import React from 'react';
-import { Check, ChevronRight, Flag } from 'lucide-react';
+import { Check, ChevronRight } from 'lucide-react';
 import { Button } from "@/components/ui/organisms/button";
 import { ScrollArea } from "@/components/ui/organisms/scroll-area";
-import { MetricCard } from './MetricCard';
+import { AIMetricCard } from './AIMetricCard';
 import { Badge } from "@/components/ui/organisms/badge";
 import { IMetricSuggestion } from '@/types/ai-metric';
 
@@ -71,7 +71,7 @@ export const ApprovedMetricsList: React.FC<ApprovedMetricsListProps> = ({
                 <div className="space-y-4 mb-8">
                   {pendingMetrics.map((metric) => (
                     <div key={metric.id} className="transform transition-all duration-200 hover:scale-[1.01]">
-                      <MetricCard 
+                      <AIMetricCard 
                         metric={metric}
                         onImplement={onImplement}
                         showActions={true}
@@ -93,7 +93,7 @@ export const ApprovedMetricsList: React.FC<ApprovedMetricsListProps> = ({
                 <div className="space-y-4">
                   {implementedMetrics.map((metric) => (
                     <div key={metric.id} className="transform transition-all duration-200 hover:scale-[1.01] opacity-80 hover:opacity-100">
-                      <MetricCard 
+                      <AIMetricCard 
                         metric={metric}
                         showActions={false}
                       />

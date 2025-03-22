@@ -386,7 +386,7 @@ export const AdditionalHospitalMetrics: React.FC<IMetricsProps> = ({
   const metrics = [
     {
       title: "Hospital Crítico",
-      value: additionalMetrics.hospitalWithHighestOccupancy?.name || 'N/A',
+      value: additionalMetrics?.hospitalWithHighestOccupancy?.name || 'N/A',
       subtitle: "Maior Ocupação",
       trend: 2.5,
       color: "red",
@@ -395,12 +395,12 @@ export const AdditionalHospitalMetrics: React.FC<IMetricsProps> = ({
       valueSize: 'small' as const,
       additionalInfo: {
         label: "Taxa de Ocupação",
-        value: `${additionalMetrics.hospitalWithHighestOccupancy?.metrics?.overall?.occupancyRate?.toFixed(1) || '0'}%`
+        value: `${additionalMetrics?.hospitalWithHighestOccupancy?.metrics?.overall?.occupancyRate?.toFixed(1) || '0'}%`
       }
     },
     {
       title: "Risco de Burnout",
-      value: additionalMetrics.burnoutRiskCalculation.toFixed(1),
+      value: additionalMetrics?.burnoutRiskCalculation.toFixed(1),
       subtitle: "Nível de Estresse",
       trend: 1.8,
       target: 5.0,
@@ -414,7 +414,7 @@ export const AdditionalHospitalMetrics: React.FC<IMetricsProps> = ({
     },
     {
       title: "Manutenção",
-      value: additionalMetrics.equipmentMaintenanceRisk,
+      value: additionalMetrics?.equipmentMaintenanceRisk,
       subtitle: "Leitos em Manutenção",
       trend: -0.5,
       color: "blue",
@@ -427,7 +427,7 @@ export const AdditionalHospitalMetrics: React.FC<IMetricsProps> = ({
     },
     {
       title: "Taxa de Giro",
-      value: additionalMetrics.bedTurnoverRate.toFixed(1) || "0",
+      value: additionalMetrics?.bedTurnoverRate.toFixed(1) || "0",
       subtitle: "Rotatividade de Leitos",
       trend: 1.2,
       target: 8.0,
@@ -441,7 +441,7 @@ export const AdditionalHospitalMetrics: React.FC<IMetricsProps> = ({
     },
     {
       title: "Eficiência Operacional",
-      value: `${(additionalMetrics.operationalEfficiency * 100).toFixed(0)}%`,
+      value: `${(additionalMetrics?.operationalEfficiency * 100).toFixed(0)}%`,
       subtitle: "Performance Geral",
       trend: 3.2,
       target: 90,
@@ -455,7 +455,7 @@ export const AdditionalHospitalMetrics: React.FC<IMetricsProps> = ({
     },
     {
       title: "Ocupação Média",
-      value: `${additionalMetrics.averageOccupancy.toFixed(1)}%`,
+      value: `${additionalMetrics?.averageOccupancy.toFixed(1)}%`,
       subtitle: "Taxa de Ocupação",
       trend: 2.3,
       target: 85,
@@ -469,7 +469,7 @@ export const AdditionalHospitalMetrics: React.FC<IMetricsProps> = ({
     },
     {
       title: "Variação de Pacientes",
-      value: `${additionalMetrics.departmentPatientVariation.toFixed(1)}%`,
+      value: `${additionalMetrics?.departmentPatientVariation.toFixed(1)}%`,
       subtitle: "Entre Departamentos",
       trend: -1.5,
       target: 15,
@@ -483,7 +483,7 @@ export const AdditionalHospitalMetrics: React.FC<IMetricsProps> = ({
     },
     {
       title: "Treinamento Profissional",
-      value: `${additionalMetrics.professionalTrainingRate}%`,
+      value: `${additionalMetrics?.professionalTrainingRate}%`,
       subtitle: "Capacitação da Equipe",
       trend: 4.2,
       target: 95,

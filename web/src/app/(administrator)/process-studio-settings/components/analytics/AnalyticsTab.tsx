@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect, useCallback } from 'react';
 import { 
@@ -8,19 +9,16 @@ import {
   RefreshCw, 
   Maximize2, 
   LayoutDashboard, 
-  Activity, 
   Plus, 
-  Move,
-  BarChart,
+  BarChart3,
   Save,
   X
 } from 'lucide-react';
 import { Button } from '@/components/ui/organisms/button';
 import { INetworkData } from '@/types/hospital-network-types';
 import { Card } from '@/components/ui/organisms/card';
-import { IAlertMetrics, IMetric, TCardType } from '@/types/custom-metrics';
+import { IMetric, IMetricCard } from '@/types/custom-metrics';
 import { AlertsSection } from './AlertsSection';
-import { MetricsDashboard } from './metrics/MetricsDashboard';
 import { MetricCategoriesSidebar } from './metrics/MetricCategoriesSidebar';
 import { CreateMetricPanel } from './metrics/CreateMetricPanel';
 import { MetricsGrid } from './metrics/MetricsGrid';
@@ -44,29 +42,25 @@ export const AnalyticsTab: React.FC<IEnhancedAnalyticsTabProps> = ({
   const [selectedCategory, setSelectedCategory] = useState('all');
   
   // Estados para modal de edição de métrica
-  const [editingMetric, setEditingMetric] = useState<IMetric | null>(null);
+  const [editingMetric, setEditingMetric] = useState<IMetricCard | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editedTitle, setEditedTitle] = useState('');
   const [editedSubtitle, setEditedSubtitle] = useState('');
 
-  // Estado para armazenar as métricas principais e adicionais
-  const [mainMetrics, setMainMetrics] = useState<IAlertMetrics>({
-    hospitalWithHighestOccupancy: null,
-    hospitalsBelowStaffingNorms: 1,
-    equipmentMaintenanceAlerts: 2,
-    emergencyRoomWaitingTime: 0.0
-  });
-
-  // Métricas adicionais que podem ser adicionadas ao dashboard
-  const [additionalMetrics, setAdditionalMetrics] = useState<IMetric[]>([]);
-
-  // Métricas selecionadas para exibição no dashboard
-  const [selectedMetrics, setSelectedMetrics] = useState<IMetric[]>([]);
-  
-  // Estado para controlar o título da seção de métricas operacionais
+  // Estado para o título da seção de métricas operacionais
   const [metricsTitle, setMetricsTitle] = useState('Métricas Operacionais');
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [editedSectionTitle, setEditedSectionTitle] = useState('');
+
+  // Estado para armazenar as métricas do dashboard
+  const [selectedMetrics, setSelectedMetrics] = useState<IMetricCard[]>([]);
+  const [availableMetrics, setAvailableMetrics] = useState<IMetric[]>([]);
+  
+  // Valores estatísticos atuais para uso nos cards
+  const [currentStats, setCurrentStats] = useState({
+    totalPatients: 45,
+    totalBeds: 60
+  });
 
   // Função para carregar as métricas do backend
   const loadMetrics = useCallback(async () => {
@@ -76,84 +70,58 @@ export const AnalyticsTab: React.FC<IEnhancedAnalyticsTabProps> = ({
       // Simula uma chamada à API
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Atualiza métricas principais (alertas)
-      const alertMetrics: IAlertMetrics = {
-        hospitalWithHighestOccupancy: networkData?.hospitals[0] || null,
-        hospitalsBelowStaffingNorms: 1,
-        equipmentMaintenanceAlerts: 2,
-        emergencyRoomWaitingTime: 0.0
-      };
+      // Calcular alguns valores baseados nos dados da rede
+      const totalPatients = networkData?.hospitals.reduce((acc, hospital) => 
+        acc + (hospital.metrics?.overall?.totalPatients || 0), 0) || 45;
+        
+      const totalBeds = networkData?.hospitals.reduce((acc, hospital) => 
+        acc + (hospital.metrics?.overall?.totalBeds || 0), 0) || 60;
       
-      // Atualiza métricas adicionais
-      const additionalMetricsData: IMetric[] = [
+      setCurrentStats({
+        totalPatients,
+        totalBeds
+      });
+      
+      // Métricas para exibição no dashboard
+      const metricsData: IMetric[] = [
         {
-          id: 'taxa-ocupacao',
-          title: "Taxa de Ocupação",
-          value: "78.4%",
-          subtitle: "Meta: 85%",
-          trend: 2.3,
-          color: "blue",
-          cardType: "gauge" as TCardType,
-          icon: Activity,
-          chartData: [
-            { date: '2025-03-12', value: 76.2 },
-            { date: '2025-03-13', value: 75.8 },
-            { date: '2025-03-14', value: 77.1 },
-            { date: '2025-03-15', value: 77.9 },
-            { date: '2025-03-16', value: 78.4 },
-            { date: '2025-03-17', value: 78.6 },
-            { date: '2025-03-18', value: 78.4 }
-          ],
-          position: { x: 0, y: 0, w: 6, h: 4 },
-          chartType: 'gauge',
-          config: {
-            target: 85,
-            warning: 90,
-            critical: 95
+          id: 'hospital-critico',
+          title: "Hospital Crítico",
+          value: networkData?.hospitals[0]?.name || 'Hospital 4Health - Itaim',
+          subtitle: "Maior Ocupação",
+          trend: 2.5,
+          color: "red",
+          cardType: "hospital-critico",
+          icon: ({ className, ...props }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+              <path d="M10 8V6a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2v-2"></path>
+              <path d="M19 12H5l7 7-7-7 7-7z"></path>
+            </svg>
+          ),
+          valueSize: 'small',
+          additionalInfo: {
+            label: "Taxa de Ocupação",
+            value: `${networkData?.hospitals[0]?.metrics?.overall?.occupancyRate?.toFixed(1) || '89.5'}%`
           }
         },
         {
-          id: 'tempo-permanencia',
-          title: "Tempo Médio de Permanência",
-          value: "4.7",
-          subtitle: "Em dias",
-          trend: -0.3,
-          color: "purple",
-          cardType: "line" as TCardType,
-          icon: Activity,
-          chartData: [
-            { date: '2025-03-12', value: 5.1 },
-            { date: '2025-03-13', value: 5.0 },
-            { date: '2025-03-14', value: 4.9 },
-            { date: '2025-03-15', value: 4.7 },
-            { date: '2025-03-16', value: 4.8 },
-            { date: '2025-03-17', value: 4.7 },
-            { date: '2025-03-18', value: 4.7 }
-          ],
-          position: { x: 6, y: 0, w: 6, h: 4 },
-          chartType: 'line'
-        },
-        // Adicionando mais métricas com base no que você forneceu
-        {
           id: 'risco-burnout',
           title: "Risco de Burnout",
-          value: "7.8",
+          value: "4.5",
           subtitle: "Nível de Estresse",
           trend: 1.8,
           target: 5.0,
           color: "orange",
-          cardType: "burnout" as TCardType,
-          icon: Activity,
+          cardType: "burnout",
+          icon: ({ className, ...props }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          ),
           additionalInfo: {
             label: "Equipes em Alerta",
             value: "3 de 8 equipes"
-          },
-          position: { x: 0, y: 4, w: 4, h: 4 },
-          chartType: 'gauge',
-          config: {
-            target: 5,
-            warning: 7,
-            critical: 8
           }
         },
         {
@@ -163,44 +131,132 @@ export const AnalyticsTab: React.FC<IEnhancedAnalyticsTabProps> = ({
           subtitle: "Leitos em Manutenção",
           trend: -0.5,
           color: "blue",
-          cardType: "manutencao" as TCardType,
-          icon: Activity,
+          cardType: "manutencao",
+          icon: ({ className, ...props }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+              <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          ),
           additionalInfo: {
             label: "Previsão de Conclusão",
             value: "7 dias"
-          },
-          position: { x: 4, y: 4, w: 4, h: 4 },
-          chartType: 'bar'
+          }
         },
         {
           id: 'taxa-giro',
           title: "Taxa de Giro",
-          value: "6.2",
+          value: "4.2",
           subtitle: "Rotatividade de Leitos",
           trend: 1.2,
           target: 8.0,
           color: "cyan",
-          cardType: "taxa-giro" as TCardType,
-          icon: Activity,
+          cardType: "taxa-giro",
+          icon: ({ className, ...props }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+              <path d="M20 8a6 6 0 0 0-8.5-3.5"></path>
+              <path d="M12 16v-4h4"></path>
+              <path d="M3 12a9 9 0 1 0 15-6.7L12 12"></path>
+            </svg>
+          ),
           additionalInfo: {
             label: "Média do Setor",
             value: "4.8 pacientes/leito"
-          },
-          position: { x: 8, y: 4, w: 4, h: 4 },
-          chartType: 'line'
+          }
+        },
+        {
+          id: 'eficiencia',
+          title: "Eficiência Operacional",
+          value: "85%",
+          subtitle: "Performance Geral",
+          trend: 3.2,
+          target: 90,
+          color: "emerald",
+          cardType: "eficiencia",
+          icon: ({ className, ...props }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+              <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+              <polyline points="16 7 22 7 22 13"></polyline>
+            </svg>
+          ),
+          additionalInfo: {
+            label: "Ranking na Rede",
+            value: "#2 de 3 hospitais"
+          }
+        },
+        {
+          id: 'ocupacao',
+          title: "Ocupação Média",
+          value: "78.5%",
+          subtitle: "Taxa de Ocupação",
+          trend: 2.3,
+          target: 85,
+          color: "violet",
+          cardType: "ocupacao",
+          icon: ({ className, ...props }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
+          ),
+          additionalInfo: {
+            label: "Leitos Ocupados",
+            value: `${currentStats.totalPatients}/${currentStats.totalBeds}`
+          }
+        },
+        {
+          id: 'variacao',
+          title: "Variação de Pacientes",
+          value: "12.3%",
+          subtitle: "Entre Departamentos",
+          trend: -1.5,
+          target: 15,
+          color: "fuchsia",
+          cardType: "variacao",
+          icon: ({ className, ...props }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          ),
+          additionalInfo: {
+            label: "Maior Diferença",
+            value: "UTI vs. Enfermaria"
+          }
+        },
+        {
+          id: 'treinamento',
+          title: "Treinamento Profissional",
+          value: "92%",
+          subtitle: "Capacitação da Equipe",
+          trend: 4.2,
+          target: 95,
+          color: "teal",
+          cardType: "treinamento",
+          icon: ({ className, ...props }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+              <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+            </svg>
+          ),
+          additionalInfo: {
+            label: "Profissionais Treinados",
+            value: "42 este mês"
+          }
         }
       ];
       
-      setMainMetrics(alertMetrics);
-      setAdditionalMetrics(additionalMetricsData);
-      setSelectedMetrics(additionalMetricsData);
+      // Atualizar o estado com as métricas carregadas
+      setAvailableMetrics(metricsData);
+      setSelectedMetrics(metricsData);
       
     } catch (error) {
       console.error('Erro ao carregar métricas:', error);
     } finally {
       setIsRefreshing(false);
     }
-  }, [networkData]);
+  }, [networkData, currentStats.totalPatients, currentStats.totalBeds]);
 
   // Carregar métricas quando o componente for montado
   useEffect(() => {
@@ -208,7 +264,7 @@ export const AnalyticsTab: React.FC<IEnhancedAnalyticsTabProps> = ({
   }, [loadMetrics]);
 
   // Função para adicionar uma métrica ao dashboard
-  const handleAddMetric = (metric: IMetric) => {
+  const handleAddMetric = (metric: IMetricCard) => {
     setSelectedMetrics(prev => {
       // Verificar se a métrica já existe
       const exists = prev.some(m => m.id === metric.id);
@@ -222,27 +278,6 @@ export const AnalyticsTab: React.FC<IEnhancedAnalyticsTabProps> = ({
   // Função para remover uma métrica do dashboard
   const handleRemoveMetric = (metricId: string) => {
     setSelectedMetrics(prev => prev.filter(m => m.id !== metricId));
-  };
-
-  // Função para atualizar o layout das métricas
-  const handleUpdateLayout = (layout: any[]) => {
-    setSelectedMetrics(prev => 
-      prev.map(metric => {
-        const layoutItem = layout.find(item => item.i === metric.id);
-        if (layoutItem) {
-          return {
-            ...metric,
-            position: {
-              x: layoutItem.x,
-              y: layoutItem.y,
-              w: layoutItem.w,
-              h: layoutItem.h
-            }
-          };
-        }
-        return metric;
-      })
-    );
   };
   
   // Função para editar uma métrica
@@ -288,7 +323,7 @@ export const AnalyticsTab: React.FC<IEnhancedAnalyticsTabProps> = ({
     <TabsContent value="analytics" className="space-y-4">
       <div className={isFullscreen ? "fixed inset-0 z-50 bg-gray-950 p-4 overflow-auto" : ""}>
         {/* Cabeçalho */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 pt-4">
           <div>
             <h1 className="text-2xl font-bold text-white">Painel Analítico</h1>
             <p className="text-gray-400">Visualize e personalize métricas para monitoramento da operação hospitalar</p>
@@ -359,13 +394,13 @@ export const AnalyticsTab: React.FC<IEnhancedAnalyticsTabProps> = ({
         
         {viewMode === 'dashboard' ? (
           <>
-            {/* Seção de alertas - baseados na primeira imagem */}
+            {/* Seção de alertas */}
             <AlertsSection 
-              alertMetrics={mainMetrics} 
+              networkData={networkData}
               isEditing={isEditing}
             />
             
-            {/* Seção de métricas adicionais */}
+            {/* Seção de métricas operacionais */}
             <div className="mb-6">
               <div className="flex justify-between items-center mb-3">
                 {isEditingTitle ? (
@@ -394,13 +429,13 @@ export const AnalyticsTab: React.FC<IEnhancedAnalyticsTabProps> = ({
                   </div>
                 ) : (
                   <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-                    <BarChart className="h-5 w-5 text-blue-500" />
+                    <BarChart3 className="h-5 w-5 text-blue-500" />
                     {metricsTitle}
                     {isEditing && (
                       <Button 
                         variant="ghost" 
                         size="sm"
-                        className="text-gray-400 hover:text-white hover:bg-gray-800 h-6 w-6 p-0"
+                        className="text-gray-400 hover:text-white hover:bg-gray-800 h-6 w-6 p-0 ml-2"
                         onClick={handleEditSectionTitle}
                       >
                         <Edit className="h-3.5 w-3.5" />
@@ -414,35 +449,19 @@ export const AnalyticsTab: React.FC<IEnhancedAnalyticsTabProps> = ({
                     <Badge className="bg-blue-600 text-white">
                       Modo de Edição
                     </Badge>
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      className="bg-gray-800 border-gray-700 text-gray-300 hover:text-white flex items-center gap-1"
-                    >
-                      <Move className="h-3.5 w-3.5" />
-                      Arraste para reorganizar
-                    </Button>
                   </div>
                 )}
               </div>
               
-              {/* Componente para mostrar métricas adicionais como cards */}
+              {/* Componente de métricas operacionais com cards editáveis */}
               <AdditionalMetricsSection 
                 metrics={selectedMetrics}
                 isEditing={isEditing}
                 onEditMetric={handleEditMetric}
                 onRemoveMetric={handleRemoveMetric}
+                currentMetrics={currentStats}
               />
             </div>
-            
-            {/* Dashboard de métricas - baseado na segunda imagem */}
-            <MetricsDashboard 
-              metrics={selectedMetrics}
-              isEditing={isEditing}
-              onEditMetric={handleEditMetric}
-              onRemoveMetric={handleRemoveMetric}
-              onUpdateLayout={handleUpdateLayout}
-            />
           </>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
@@ -458,7 +477,7 @@ export const AnalyticsTab: React.FC<IEnhancedAnalyticsTabProps> = ({
               
               {/* Grid de métricas disponíveis */}
               <MetricsGrid 
-                additionalMetrics={additionalMetrics}
+                additionalMetrics={availableMetrics}
                 selectedCategory={selectedCategory}
                 onAddMetric={handleAddMetric}
               />

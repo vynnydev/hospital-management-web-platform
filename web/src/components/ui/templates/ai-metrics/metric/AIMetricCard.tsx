@@ -26,6 +26,7 @@ import {
   Brain 
 } from 'lucide-react';
 import { IMetricSuggestion } from '@/types/ai-metric';
+import { TAlertPriority } from '@/types/alert-types';
 
 const iconMap = {
   activity: Activity,
@@ -37,7 +38,7 @@ const iconMap = {
   brain: Brain,
 };
 
-interface MetricCardProps {
+interface AIMetricCardProps {
   metric: IMetricSuggestion;
   onApprove?: (id: string) => void;
   onReject?: (id: string) => void;
@@ -45,7 +46,7 @@ interface MetricCardProps {
   showActions: boolean;
 }
 
-export const MetricCard: React.FC<MetricCardProps> = ({
+export const AIMetricCard: React.FC<AIMetricCardProps> = ({
   metric,
   onApprove,
   onReject,
@@ -84,10 +85,11 @@ export const MetricCard: React.FC<MetricCardProps> = ({
     implemented: 'bg-indigo-800/60 text-indigo-300 border-indigo-700/70'
   };
 
-  const iconBackgrounds = {
+  const iconBackgrounds: Record<TAlertPriority, string> = {
     high: 'bg-red-800/60 text-red-300',
     medium: 'bg-amber-800/60 text-amber-300',
-    low: 'bg-blue-800/60 text-blue-300'
+    low: 'bg-blue-800/60 text-blue-300',
+    critical: 'bg-red-500/60 text-red-300',
   };
 
   return (
