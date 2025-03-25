@@ -57,16 +57,25 @@ export interface IPatient {
   careHistory?: IPatientCareHistory;
 }
 
+// Interface para a previsão de higienização
+export interface IHygienizationPrediction {
+  score: number;          // Pontuação de risco/prioridade (0-100)
+  urgent: boolean;        // Se a higienização é urgente
+  recommendedDate: string; // Data recomendada para higienização
+  reason: string;         // Motivo da recomendação de higienização
+}
+
 // Interface atualizada para IBed
 export interface IBed {
   id: string;
   number: string;
   floor: string;
-  status: 'occupied' | 'available' | 'maintenance';
+  status: 'occupied' | 'available' | 'hygienization';
   department: string;
   specialty: string;
   hospital: string;
   patient?: IPatient;
+  hygienizationPrediction?: IHygienizationPrediction;
 }
 
 export interface IRoom {

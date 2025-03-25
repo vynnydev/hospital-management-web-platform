@@ -8,7 +8,7 @@ interface AlertBannerProps {
   onCreateChat?: (alert: IAlert) => void;
   maxAlerts?: number;
   autoHideAfter?: number; // em milissegundos, 0 para não ocultar automaticamente
-  showOnlyPriority?: ('high' | 'medium' | 'low')[];
+  showOnlyPriority?: ('high' | 'medium' | 'low' | 'critical')[];
 }
 
 /**

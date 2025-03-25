@@ -179,7 +179,8 @@ export const useStaffData = (selectedHospitalId?: string) => {
         const data: IStaffData = {
           staffTeams: teamsResponse.data,
           staffMetrics: metricsResponse.data,
-          staffSchedule: scheduleResponse.data
+          staffSchedule: scheduleResponse.data,
+          loading: false
         };
 
         const filteredData = {

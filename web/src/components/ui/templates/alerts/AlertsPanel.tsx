@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import { 
@@ -41,7 +42,7 @@ const AlertItem: React.FC<{
   onCreateChat
 }) => {
   // Ícones e cores para cada tipo de alerta
-  const alertConfig = {
+  const alertConfig: any = {
     ambulance: {
       icon: <Ambulance className="h-5 w-5" />,
       bgColor: 'bg-blue-100 dark:bg-blue-900/30',

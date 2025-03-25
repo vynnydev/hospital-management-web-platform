@@ -2,17 +2,25 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import { 
+  AlertCircle,
   AlertTriangle, 
   Ambulance, 
+  BedDouble, 
   Bell, 
+  CheckCircle, 
   CheckCircle2, 
   ChevronDown, 
   ChevronRight, 
   Clock, 
   Filter, 
   Heart, 
+  Info, 
+  Settings, 
+  Stethoscope, 
   User, 
-  Users
+  UserCog, 
+  Users,
+  XCircle
 } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/organisms/scroll-area';
 import { useAlerts } from '../providers/alerts/AlertsProvider';
@@ -55,29 +63,77 @@ export const AlertList: React.FC<AlertListProps> = ({
     darkBgClass: string,
     label: string
   }> = {
-    'ambulance': { 
+    'ambulance': {
       icon: Ambulance,
       bgClass: 'bg-blue-100',
       darkBgClass: 'dark:bg-blue-900/30',
       label: 'Ambulâncias'
     },
-    'patient-arrival': { 
+    'patient-arrival': {
       icon: Users,
       bgClass: 'bg-green-100',
       darkBgClass: 'dark:bg-green-900/30',
       label: 'Chegada de Pacientes'
     },
-    'resource': { 
+    'resource': {
       icon: Bell,
       bgClass: 'bg-amber-100',
       darkBgClass: 'dark:bg-amber-900/30',
       label: 'Recursos'
     },
-    'emergency': { 
+    'emergency': {
       icon: AlertTriangle,
       bgClass: 'bg-red-100',
-      darkBgClass: 'dark:bg-red-900/30', 
+      darkBgClass: 'dark:bg-red-900/30',
       label: 'Emergências'
+    },
+    occupancy: {
+      icon: BedDouble,
+      bgClass: 'bg-purple-100',
+      darkBgClass: 'dark:bg-purple-900/30',
+      label: 'Ocupação de Leitos'
+    },
+    staff: {
+      icon: UserCog,
+      bgClass: 'bg-cyan-100',
+      darkBgClass: 'dark:bg-cyan-900/30',
+      label: 'Equipe Médica'
+    },
+    operational: {
+      icon: Settings,
+      bgClass: 'bg-slate-100',
+      darkBgClass: 'dark:bg-slate-900/30',
+      label: 'Operacional'
+    },
+    equipment: {
+      icon: Stethoscope,
+      bgClass: 'bg-indigo-100',
+      darkBgClass: 'dark:bg-indigo-900/30',
+      label: 'Equipamentos'
+    },
+    warning: {
+      icon: AlertCircle,
+      bgClass: 'bg-yellow-100',
+      darkBgClass: 'dark:bg-yellow-900/30',
+      label: 'Avisos'
+    },
+    info: {
+      icon: Info,
+      bgClass: 'bg-blue-50',
+      darkBgClass: 'dark:bg-blue-950/30',
+      label: 'Informações'
+    },
+    success: {
+      icon: CheckCircle,
+      bgClass: 'bg-emerald-100',
+      darkBgClass: 'dark:bg-emerald-900/30',
+      label: 'Sucesso'
+    },
+    error: {
+      icon: XCircle,
+      bgClass: 'bg-rose-100',
+      darkBgClass: 'dark:bg-rose-900/30',
+      label: 'Erros'
     }
   };
 
@@ -85,14 +141,16 @@ export const AlertList: React.FC<AlertListProps> = ({
   const priorityColors = {
     'high': 'text-red-600 dark:text-red-400',
     'medium': 'text-amber-600 dark:text-amber-400',
-    'low': 'text-blue-600 dark:text-blue-400'
+    'low': 'text-blue-600 dark:text-blue-400',
+    'critical': 'text-red-400 dark:text-red-400'
   };
 
   // Labels de prioridade
   const priorityLabels = {
     'high': 'Alta',
     'medium': 'Média',
-    'low': 'Baixa'
+    'low': 'Baixa',
+    'critical': 'Critíco'
   };
 
   // Formatar a data de um alerta

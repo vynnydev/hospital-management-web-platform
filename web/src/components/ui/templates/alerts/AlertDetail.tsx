@@ -3,21 +3,27 @@
 import React from 'react';
 import { 
   AlertTriangle, 
-  Ambulance, 
-  ArrowLeft, 
-  Bell, 
-  Calendar, 
-  CheckCircle2, 
-  Clock, 
-  ExternalLink, 
-  FileText, 
-  MapPin, 
-  MoreHorizontal, 
-  Share2, 
-  Trash2, 
-  User, 
+  Ambulance,
   Users, 
-  XCircle 
+  Bell, 
+  BedDouble, 
+  UserCog, 
+  Settings, 
+  Stethoscope, 
+  AlertCircle, 
+  Info, 
+  CheckCircle, 
+  XCircle, 
+  FileText,
+  Clock,
+  CheckCircle2,
+  ArrowLeft,
+  MapPin,
+  User,
+  Share2,
+  Trash2,
+  MoreHorizontal,
+  ExternalLink
 } from 'lucide-react';
 import { Button } from '@/components/ui/organisms/button';
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
@@ -91,6 +97,54 @@ export const AlertDetail: React.FC<AlertDetailProps> = ({
       bgColor: 'bg-amber-100',
       darkBgColor: 'dark:bg-amber-900/30',
       textColor: 'text-amber-600 dark:text-amber-400'
+    },
+    'occupancy': {
+      icon: BedDouble,
+      bgColor: 'bg-purple-100',
+      darkBgColor: 'dark:bg-purple-900/30',
+      textColor: 'text-purple-600 dark:text-purple-400'
+    },
+    'staff': {
+      icon: UserCog,
+      bgColor: 'bg-cyan-100',
+      darkBgColor: 'dark:bg-cyan-900/30',
+      textColor: 'text-cyan-600 dark:text-cyan-400'
+    },
+    'operational': {
+      icon: Settings,
+      bgColor: 'bg-slate-100',
+      darkBgColor: 'dark:bg-slate-900/30',
+      textColor: 'text-slate-600 dark:text-slate-400'
+    },
+    'equipment': {
+      icon: Stethoscope,
+      bgColor: 'bg-indigo-100',
+      darkBgColor: 'dark:bg-indigo-900/30',
+      textColor: 'text-indigo-600 dark:text-indigo-400'
+    },
+    'warning': {
+      icon: AlertCircle,
+      bgColor: 'bg-yellow-100',
+      darkBgColor: 'dark:bg-yellow-900/30',
+      textColor: 'text-yellow-600 dark:text-yellow-400'
+    },
+    'info': {
+      icon: Info,
+      bgColor: 'bg-blue-50',
+      darkBgColor: 'dark:bg-blue-950/30',
+      textColor: 'text-blue-500 dark:text-blue-300'
+    },
+    'success': {
+      icon: CheckCircle,
+      bgColor: 'bg-emerald-100',
+      darkBgColor: 'dark:bg-emerald-900/30',
+      textColor: 'text-emerald-600 dark:text-emerald-400'
+    },
+    'error': {
+      icon: XCircle,
+      bgColor: 'bg-rose-100',
+      darkBgColor: 'dark:bg-rose-900/30',
+      textColor: 'text-rose-600 dark:text-rose-400'
     }
   };
 
@@ -129,14 +183,23 @@ export const AlertDetail: React.FC<AlertDetailProps> = ({
   const priorityLabels = {
     'high': 'Alta',
     'medium': 'Média',
-    'low': 'Baixa'
+    'low': 'Baixa',
+    'critical': 'Critico'
   };
 
   const typeLabels = {
     'emergency': 'Emergência',
     'ambulance': 'Ambulância',
     'patient-arrival': 'Chegada de Paciente',
-    'resource': 'Recurso'
+    'resource': 'Recurso',
+    'occupancy': 'Ocupação',
+    'staff': 'Colaborador',
+    'operational': 'Operacional',
+    'equipment': 'Equipamento',
+    'warning': 'Atenção',
+    'info': 'Informação',
+    'success': 'Sucesso', 
+    'error': 'Erro'
   };
 
   // Formatar a data completa do alerta
@@ -472,7 +535,7 @@ export const AlertDetail: React.FC<AlertDetailProps> = ({
                   <button 
                     className="text-sm font-medium text-blue-600 dark:text-blue-400 flex items-center gap-1 hover:underline"
                     onClick={() => {
-                      if (onSelectHospital) onSelectHospital(alert.hospitalId);
+                      if (onSelectHospital) onSelectHospital(alert.hospitalId ? alert.hospitalId : '');
                     }}
                   >
                     {hospital.name}

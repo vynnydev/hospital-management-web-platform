@@ -125,7 +125,15 @@ export const CreateAlertForm: React.FC<CreateAlertFormProps> = ({
       'Atualização de recursos: [recurso] com disponibilidade limitada. Favor racionalizar uso.',
       'Solicitação de [recurso] para [departamento]. Necessidade: [quantidade/descrição].',
       'Notificação sobre manutenção de [equipamento] agendada para [data/horário].'
-    ]
+    ],
+    occupancy: [],
+    staff: [],
+    operational: [],
+    equipment: [],
+    warning: [],
+    info: [],
+    success: [],
+    error: []
   };
 
   // Validação do formulário

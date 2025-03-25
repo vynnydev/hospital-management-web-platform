@@ -158,7 +158,10 @@ export const AlertsNotifications: React.FC<AlertsNotificationsProps> = ({ hospit
       filteredAlerts.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
     } else if (sortBy === 'priority') {
       // Ordenar por prioridade (high > medium > low)
-      const priorityOrder: Record<TAlertPriority, number> = { high: 0, medium: 1, low: 2 };
+      const priorityOrder: Record<TAlertPriority, number> = {
+        high: 0, medium: 1, low: 2,
+        critical: 0
+      };
       filteredAlerts.sort((a, b) => {
         const priorityDiff = priorityOrder[a.priority] - priorityOrder[b.priority];
         
@@ -253,7 +256,7 @@ export const AlertsNotifications: React.FC<AlertsNotificationsProps> = ({ hospit
   };
   
   // Obter texto traduzido da prioridade
-  const getPriorityText = (priority: TAlertPriority): string => {
+  const getPriorityText = (priority: TAlertPriority) => {
     switch (priority) {
       case 'high':
         return 'Alta';

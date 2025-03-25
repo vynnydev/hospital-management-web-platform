@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { IPatient } from "@/types/hospital-network-types";
 import { getMaintenanceRecommendations, getMaintenanceSchedule } from "@/utils/AI/getMaintenanceRecommendations";
 
