@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { 
   Brain, 
@@ -13,10 +14,7 @@ import {
   LineChart,
   Droplets,
   Lightbulb,
-  Calendar,
-  File,
   Pill,
-  Stethoscope,
   BarChart,
   ShieldAlert,
   Zap,
@@ -35,7 +33,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
 } from '@/components/ui/organisms/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/organisms/tabs';
 import { Badge } from '@/components/ui/organisms/badge';

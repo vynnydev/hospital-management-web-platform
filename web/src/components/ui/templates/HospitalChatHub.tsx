@@ -175,7 +175,7 @@ export const HospitalChatHub: React.FC<HospitalChatHubProps> = ({
                   <div className="py-4 px-6 border-b dark:border-gray-700 flex items-center justify-between bg-gradient-to-r from-blue-600 to-indigo-700 dark:from-blue-800 dark:to-indigo-900 text-white">
                     <div className="flex items-center">
                       <MessageCircle className="mr-2 h-6 w-6" />
-                      <h2 className="text-xl font-semibold">H24 Chat</h2>
+                      <h2 className="text-xl font-semibold">Cognitiva Chat</h2>
                     </div>
                     
                     <div className="flex items-center">

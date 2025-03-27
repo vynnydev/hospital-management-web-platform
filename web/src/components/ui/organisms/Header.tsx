@@ -40,7 +40,7 @@ export const Header = () => {
         }>
             <div className="max-w-screen-2xl mx-auto">
                 <div className="w-full flex items-center justify-between mb-14">
-                    <div className="flex items-center space-x-8 lg:gap-x-8">
+                    <div className="flex items-center space-x-4 lg:gap-x-8">
                         <Brand />
                         <HeaderNavigation />
                     </div>

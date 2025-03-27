@@ -213,7 +213,7 @@
                   "id": "UTI-103",
                   "number": "103",
                   "floor": "1",
-                  "status": "hygienization",
+                  "status": "maintenance",
                   "department": "UTI",
                   "specialty": "Neurologia"
                 }
@@ -897,7 +897,7 @@
                   "id": "UTI-103",
                   "number": "103",
                   "floor": "1",
-                  "status": "hygienization",
+                  "status": "maintenance",
                   "department": "UTI",
                   "specialty": "Neurologia"
                 }
@@ -1663,22 +1663,22 @@
         "respirators": {
           "total": 65,
           "available": 10,
-          "hygienization": 5
+          "maintenance": 5
         },
         "monitors": {
           "total": 120,
           "available": 25,
-          "hygienization": 8
+          "maintenance": 8
         },
         "defibrillators": {
           "total": 30,
           "available": 18,
-          "hygienization": 2
+          "maintenance": 2
         },
         "imagingDevices": {
           "total": 12,
           "available": 5,
-          "hygienization": 1
+          "maintenance": 1
         }
       },
       "bedStatus": {
@@ -1740,22 +1740,22 @@
         "respirators": {
           "total": 45,
           "available": 35,
-          "hygienization": 3
+          "maintenance": 3
         },
         "monitors": {
           "total": 90,
           "available": 72,
-          "hygienization": 5
+          "maintenance": 5
         },
         "defibrillators": {
           "total": 25,
           "available": 20,
-          "hygienization": 1
+          "maintenance": 1
         },
         "imagingDevices": {
           "total": 8,
           "available": 3,
-          "hygienization": 2
+          "maintenance": 2
         }
       },
       "bedStatus": {
@@ -1811,22 +1811,22 @@
         "respirators": {
           "total": 55,
           "available": 20,
-          "hygienization": 4
+          "maintenance": 4
         },
         "monitors": {
           "total": 100,
           "available": 36,
-          "hygienization": 6
+          "maintenance": 6
         },
         "defibrillators": {
           "total": 28,
           "available": 14,
-          "hygienization": 3
+          "maintenance": 3
         },
         "imagingDevices": {
           "total": 10,
           "available": 4,
-          "hygienization": 1
+          "maintenance": 1
         }
       },
       "bedStatus": {
@@ -2093,8 +2093,8 @@
             "lng": -46.6796
           },
           "hospitalId": "RD4H-SP-ITAIM",
-          "lastHygienization": "2025-02-01",
-          "nextHygienizationDue": "2025-05-01"
+          "lastMaintenance": "2025-02-01",
+          "nextMaintenanceDue": "2025-05-01"
         },
         {
           "id": "amb-itaim-002",
@@ -2121,8 +2121,8 @@
             "nurseId": "staff-003"
           },
           "currentRoute": "route-itaim-001",
-          "lastHygienization": "2025-01-15",
-          "nextHygienizationDue": "2025-04-15"
+          "lastMaintenance": "2025-01-15",
+          "nextMaintenanceDue": "2025-04-15"
         },
         {
           "id": "amb-itaim-003",
@@ -2151,8 +2151,8 @@
             "doctorId": "staff-007"
           },
           "currentRoute": "route-itaim-002",
-          "lastHygienization": "2025-01-05",
-          "nextHygienizationDue": "2025-04-05"
+          "lastMaintenance": "2025-01-05",
+          "nextMaintenanceDue": "2025-04-05"
         }
       ],
       "RD4H-SP-MORUMBI": [
@@ -2173,8 +2173,8 @@
             "lng": -46.7196
           },
           "hospitalId": "RD4H-SP-MORUMBI",
-          "lastHygienization": "2025-01-20",
-          "nextHygienizationDue": "2025-04-20"
+          "lastMaintenance": "2025-01-20",
+          "nextMaintenanceDue": "2025-04-20"
         },
         {
           "id": "amb-morumbi-002",
@@ -2195,8 +2195,8 @@
             "lng": -46.7296
           },
           "hospitalId": "RD4H-SP-MORUMBI",
-          "lastHygienization": "2025-02-05",
-          "nextHygienizationDue": "2025-05-05"
+          "lastMaintenance": "2025-02-05",
+          "nextMaintenanceDue": "2025-05-05"
         }
       ],
       "RD4H-RJ-COPA": [
@@ -2219,15 +2219,15 @@
             "lng": -43.1836
           },
           "hospitalId": "RD4H-RJ-COPA",
-          "lastHygienization": "2025-02-10",
-          "nextHygienizationDue": "2025-05-10"
+          "lastMaintenance": "2025-02-10",
+          "nextMaintenanceDue": "2025-05-10"
         },
         {
           "id": "amb-copa-002",
           "vehicleId": "AMB-1357",
           "plateNumber": "STU-1357",
           "type": "intensive",
-          "status": "hygienization",
+          "status": "maintenance",
           "capacity": 1,
           "equipment": [
             "stretcher",
@@ -2242,8 +2242,8 @@
             "lng": -43.1856
           },
           "hospitalId": "RD4H-RJ-COPA",
-          "lastHygienization": "2025-02-20",
-          "nextHygienizationDue": "2025-05-20"
+          "lastMaintenance": "2025-02-20",
+          "nextMaintenanceDue": "2025-05-20"
         }
       ]
     },
@@ -2480,12 +2480,12 @@
       "isCustom": false
     },
     {
-      "id": "main-hygienization",
+      "id": "main-maintenance",
       "title": "Higienização de Equipamentos",
       "subtitle": "Higienização Geral",
       "description": "Monitora UTIs com alto risco de indisponibilidade",
       "type": "main",
-      "cardType": "hygienization",
+      "cardType": "maintenance",
       "createdAt": "2025-01-15T10:00:00.000Z",
       "isCustom": false
     },
@@ -2529,9 +2529,9 @@
     },
     {
       "id": "additional-manutencao",
-      "title": "Higienização",
-      "subtitle": "Leitos em Higienização",
-      "description": "Status dos leitos em Higienização",
+      "title": "Manutenção",
+      "subtitle": "Leitos em Manutenção",
+      "description": "Status dos leitos em manutenção",
       "type": "additional",
       "cardType": "manutencao",
       "createdAt": "2025-01-15T10:00:00.000Z",
@@ -2657,7 +2657,7 @@
     "default": [
       "main-critical-hospital",
       "main-staff",
-      "main-hygienization",
+      "main-maintenance",
       "main-waiting",
       "additional-hospital-critico",
       "additional-burnout",
@@ -2689,9 +2689,9 @@
         "icon": "Users"
       },
       {
-        "value": "hygienization",
-        "label": "Higienização de Equipamentos",
-        "description": "Status de equipamentos em Higienização",
+        "value": "maintenance",
+        "label": "Manutenção de Equipamentos",
+        "description": "Status de equipamentos em manutenção",
         "icon": "Settings"
       },
       {
@@ -2716,8 +2716,8 @@
       },
       {
         "value": "manutencao",
-        "label": "Higienização",
-        "description": "Status de leitos em Higienização",
+        "label": "Manutenção",
+        "description": "Status de leitos em manutenção",
         "icon": "Settings"
       },
       {
@@ -2759,7 +2759,7 @@
         "default": [
           "main-critical-hospital",
           "main-staff",
-          "main-hygienization",
+          "main-maintenance",
           "main-waiting",
           "additional-hospital-critico",
           "additional-burnout",
@@ -2799,7 +2799,7 @@
       "userId": "USR003",
       "panelMetrics": {
         "default": [
-          "main-hygienization",
+          "main-maintenance",
           "main-waiting",
           "additional-manutencao",
           "additional-taxa-giro"
@@ -2808,5 +2808,245 @@
       "favorites": [],
       "id": "user-metrics-USR003"
     }
-  ]
+  ],
+  "aiInsights": {
+    "systemWide": [
+      {
+        "id": "insight-system-1",
+        "title": "Tendência de Ocupação Hospitalar",
+        "description": "A ocupação média dos hospitais da rede aumentou 7% no último trimestre. O Hospital 4Health - Itaim apresenta a maior taxa.",
+        "severity": "medium",
+        "category": "occupancy",
+        "metrics": ["Taxa de Ocupação Geral", "Eficiência Operacional"],
+        "timestamp": "2025-03-20T09:12:45Z",
+        "confidence": 0.89,
+        "suggestedActions": [
+          "Revisar políticas de alta hospitalar",
+          "Avaliar transferências entre unidades"
+        ],
+        "affectedHospitals": ["RD4H-SP-ITAIM", "RD4H-SP-MORUMBI"]
+      },
+      {
+        "id": "insight-system-2",
+        "title": "Déficit de Equipes Médicas",
+        "description": "Detectado déficit de 30% na equipe de Oncologia em RD4H-SP-MORUMBI, resultando em aumento de 15% no tempo de espera.",
+        "severity": "high",
+        "category": "staff",
+        "metrics": ["Déficit de Equipes", "Tempo de Espera"],
+        "timestamp": "2025-03-22T14:30:10Z",
+        "confidence": 0.95,
+        "suggestedActions": [
+          "Realocar recursos temporariamente da unidade RD4H-RJ-COPA",
+          "Priorizar contratações para o setor de Oncologia"
+        ],
+        "affectedHospitals": ["RD4H-SP-MORUMBI"]
+      },
+      {
+        "id": "insight-system-3",
+        "title": "Manutenção Preventiva Necessária",
+        "description": "7 equipamentos críticos precisarão de manutenção nos próximos 10 dias, com potencial impacto em procedimentos diagnósticos.",
+        "severity": "medium",
+        "category": "equipment",
+        "metrics": ["Higienização de Equipamentos", "Manutenção"],
+        "timestamp": "2025-03-21T08:45:22Z",
+        "confidence": 0.87,
+        "suggestedActions": [
+          "Agendar manutenções fora do horário de pico",
+          "Preparar equipamentos alternativos"
+        ],
+        "affectedHospitals": ["RD4H-SP-ITAIM", "RD4H-RJ-COPA"]
+      }
+    ],
+    "hospital": {
+      "RD4H-SP-ITAIM": [
+        {
+          "id": "insight-itaim-1",
+          "title": "Alta Taxa de Reinternação em UTI",
+          "description": "Pacientes cardíacos estão apresentando taxa de reinternação 12% acima da média histórica na UTI.",
+          "severity": "high",
+          "category": "clinical",
+          "metrics": ["Taxa de Reinternação", "Ocupação UTI"],
+          "timestamp": "2025-03-23T10:15:33Z",
+          "confidence": 0.92,
+          "suggestedActions": [
+            "Revisar protocolos de alta da UTI para pacientes cardíacos",
+            "Implementar acompanhamento pós-alta mais rigoroso"
+          ],
+          "affectedDepartments": ["UTI", "Cardiologia"]
+        },
+        {
+          "id": "insight-itaim-2",
+          "title": "Eficiência no Uso de Leitos",
+          "description": "A rotatividade de leitos está 8% abaixo da meta estabelecida, impactando a disponibilidade para novos pacientes.",
+          "severity": "medium",
+          "category": "operational",
+          "metrics": ["Taxa de Giro", "Tempo Médio de Permanência"],
+          "timestamp": "2025-03-22T16:40:12Z",
+          "confidence": 0.85,
+          "suggestedActions": [
+            "Revisar processos de alta hospitalar",
+            "Otimizar preparação de leitos entre pacientes"
+          ],
+          "affectedDepartments": ["Enfermaria", "Internação Geral"]
+        },
+        {
+          "id": "insight-itaim-3",
+          "title": "Risco de Burnout em Equipes",
+          "description": "A equipe da UTI apresenta indicadores de estresse elevado, com potencial impacto na qualidade do atendimento.",
+          "severity": "high",
+          "category": "staff",
+          "metrics": ["Risco de Burnout", "Eficiência Operacional"],
+          "timestamp": "2025-03-21T11:22:45Z",
+          "confidence": 0.91,
+          "suggestedActions": [
+            "Reavaliação da escala de trabalho",
+            "Implementar programa de suporte psicológico"
+          ],
+          "affectedDepartments": ["UTI"]
+        }
+      ],
+      "RD4H-SP-MORUMBI": [
+        {
+          "id": "insight-morumbi-1",
+          "title": "Aumento em Tempo de Espera",
+          "description": "O tempo médio de espera para atendimento na emergência aumentou 18% no último mês.",
+          "severity": "high",
+          "category": "operational",
+          "metrics": ["Tempo de Espera", "Eficiência Operacional"],
+          "timestamp": "2025-03-23T09:10:25Z",
+          "confidence": 0.89,
+          "suggestedActions": [
+            "Revisar processos de triagem",
+            "Alocar pessoal adicional nos horários de pico"
+          ],
+          "affectedDepartments": ["Emergência"]
+        },
+        {
+          "id": "insight-morumbi-2",
+          "title": "Otimização de Ambulâncias",
+          "description": "As rotas de ambulância poderiam ser otimizadas para reduzir o tempo de resposta em 15%.",
+          "severity": "medium",
+          "category": "ambulance",
+          "metrics": ["Tempo de Resposta de Ambulâncias"],
+          "timestamp": "2025-03-20T14:35:18Z",
+          "confidence": 0.84,
+          "suggestedActions": [
+            "Implementar novo algoritmo de roteamento",
+            "Ajustar alocação de ambulâncias por região"
+          ],
+          "affectedDepartments": ["Serviço de Ambulância"]
+        }
+      ],
+      "RD4H-RJ-COPA": [
+        {
+          "id": "insight-copa-1",
+          "title": "Potencial Redução de Custos",
+          "description": "Análise de processos identificou oportunidade de redução de 12% nos custos operacionais sem impacto na qualidade.",
+          "severity": "low",
+          "category": "financial",
+          "metrics": ["Eficiência Operacional", "Custos Operacionais"],
+          "timestamp": "2025-03-22T13:20:40Z",
+          "confidence": 0.83,
+          "suggestedActions": [
+            "Revisar contratos com fornecedores",
+            "Otimizar processos administrativos"
+          ],
+          "affectedDepartments": ["Administração", "Compras"]
+        },
+        {
+          "id": "insight-copa-2",
+          "title": "Padrão de Infecções Hospitalares",
+          "description": "Detectado aumento de 8% na taxa de infecções pós-cirúrgicas em relação ao trimestre anterior.",
+          "severity": "high",
+          "category": "clinical",
+          "metrics": ["Taxa de Infecção Hospitalar"],
+          "timestamp": "2025-03-23T08:15:30Z",
+          "confidence": 0.90,
+          "suggestedActions": [
+            "Revisar protocolos de esterilização",
+            "Auditar procedimentos de higienização"
+          ],
+          "affectedDepartments": ["Centro Cirúrgico", "Controle de Infecção"]
+        }
+      ]
+    },
+    "predictive": [
+      {
+        "id": "prediction-1",
+        "title": "Previsão de Pico de Ocupação",
+        "description": "Modelo preditivo indica probabilidade de 78% de ocupação acima de 90% na UTI nos próximos 7 dias.",
+        "severity": "high",
+        "category": "occupancy",
+        "metrics": ["Taxa de Ocupação UTI", "Admissões Previstas"],
+        "timestamp": "2025-03-23T10:00:15Z",
+        "confidence": 0.78,
+        "suggestedActions": [
+          "Preparar plano de contingência para alta ocupação",
+          "Revisar critérios de admissão não-emergenciais"
+        ],
+        "affectedHospitals": ["RD4H-SP-ITAIM"],
+        "timeframe": "7 dias"
+      },
+      {
+        "id": "prediction-2",
+        "title": "Tendência de Aumento em Emergências Cardíacas",
+        "description": "Análise sazonal indica provável aumento de 25% em emergências cardíacas nas próximas 2 semanas.",
+        "severity": "medium",
+        "category": "clinical",
+        "metrics": ["Atendimentos de Emergência", "Taxa de Ocupação UTI"],
+        "timestamp": "2025-03-22T15:30:45Z",
+        "confidence": 0.81,
+        "suggestedActions": [
+          "Assegurar disponibilidade de equipe especializada",
+          "Preparar leitos de UTI e equipamentos específicos"
+        ],
+        "affectedHospitals": ["RD4H-SP-ITAIM", "RD4H-SP-MORUMBI"],
+        "timeframe": "14 dias"
+      },
+      {
+        "id": "prediction-3",
+        "title": "Previsão de Escassez de Medicamentos",
+        "description": "Algoritmo identificou risco de escassez de antibióticos específicos em 10-15 dias devido a atrasos na cadeia de suprimentos.",
+        "severity": "high",
+        "category": "supply",
+        "metrics": ["Gestão de Estoque", "Plano de Contingência"],
+        "timestamp": "2025-03-21T09:45:20Z",
+        "confidence": 0.85,
+        "suggestedActions": [
+          "Explorar fornecedores alternativos",
+          "Avaliar substituições terapêuticas possíveis"
+        ],
+        "affectedHospitals": ["RD4H-SP-ITAIM", "RD4H-SP-MORUMBI", "RD4H-RJ-COPA"],
+        "timeframe": "10-15 dias"
+      }
+    ],
+    "meta": {
+      "lastUpdated": "2025-03-23T11:45:00Z",
+      "insightEngine": "HealthAI Analytics v3.2",
+      "dataSourcesAnalyzed": ["admissions", "occupancy", "staff", "equipment", "finances"],
+      "insightCount": {
+        "total": 13,
+        "byHospital": {
+          "RD4H-SP-ITAIM": 3,
+          "RD4H-SP-MORUMBI": 2,
+          "RD4H-RJ-COPA": 2
+        },
+        "byCategory": {
+          "occupancy": 2,
+          "staff": 2,
+          "equipment": 1,
+          "clinical": 3,
+          "operational": 2,
+          "ambulance": 1,
+          "financial": 1,
+          "supply": 1
+        },
+        "bySeverity": {
+          "high": 6,
+          "medium": 6,
+          "low": 1
+        }
+      }
+    }
+  }
 }

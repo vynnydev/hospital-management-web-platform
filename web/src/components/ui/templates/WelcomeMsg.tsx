@@ -14,7 +14,7 @@ export const WelcomeMsg = () => {
                         Bem-vindo de Volta, {currentUser?.name || 'Administrador'}!
                         </h1>
                         <p className="text-sm text-gray-500 dark:text-gray-400">
-                        Este é seu relatório de visão geral do H24
+                        Este é seu relatório de visão geral do Cognitiva
                         </p>
                     </div>
                 

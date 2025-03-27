@@ -104,7 +104,7 @@ export const ChatButton: React.FC<ChatButtonProps> = ({
         },
         {
           id: 'ai',
-          name: 'Assistente H24',
+          name: 'Assistente Cognitiva',
           role: 'ai',
           avatar: '',
           lastMessage: 'Como posso ajudar hoje?',
@@ -187,7 +187,7 @@ export const ChatButton: React.FC<ChatButtonProps> = ({
             content: `Analisei os dados vitais do paciente João Silva. Os registros indicam uma pressão arterial de 150/90, frequência cardíaca de 88bpm e saturação de 95%. Baseado no histórico médico, sugiro monitoramento contínuo e avaliação da medicação anti-hipertensiva.`,
             sender: {
               id: 'ai',
-              name: 'Assistente H24',
+              name: 'Assistente Cognitiva',
               role: 'ai'
             },
             timestamp: new Date(Date.now() - 24 * 60000),
@@ -285,7 +285,7 @@ export const ChatButton: React.FC<ChatButtonProps> = ({
           content: `Baseado nas informações fornecidas, recomendo verificar os sinais vitais recentes e o histórico de medicação do paciente. Se necessário, considere consultar o protocolo institucional para manejo de hipertensão em pacientes pós-cirúrgicos cardíacos.`,
           sender: {
             id: 'ai',
-            name: 'Assistente H24',
+            name: 'Assistente Cognitiva',
             role: 'ai'
           },
           timestamp: new Date(),
@@ -318,7 +318,7 @@ export const ChatButton: React.FC<ChatButtonProps> = ({
           className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white rounded-full shadow-md transition-all duration-300 hover:shadow-lg dark:from-blue-800 dark:to-indigo-900 dark:hover:from-blue-900 dark:hover:to-indigo-950"
         >
           <MessageCircle className="h-5 w-5" />
-          <span>Chat H24</span>
+          <span>Chat Cognitiva</span>
         </button>
         
         {/* Indicador de alertas não lidos */}

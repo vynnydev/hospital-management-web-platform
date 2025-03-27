@@ -28,7 +28,7 @@ export const MinimizedAssistant: React.FC<MinimizedAssistantProps> = ({
           <div className="flex items-center">
             <Sparkles className="h-5 w-5 text-white mr-2" />
             <div>
-              <h3 className="font-medium text-sm">Assistente H24</h3>
+              <h3 className="font-medium text-sm">Assistente Cognitiva</h3>
               <p className="text-xs text-indigo-100 dark:text-indigo-200">
                 Sua assistente inteligente para gestão hospitalar
               </p>

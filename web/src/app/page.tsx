@@ -7,7 +7,7 @@ import { MenuItem } from "@/utils/types/maps"
 import { HomeHeader } from "@/components/ui/organisms/HomeHeader"
 
 const MENUITEMS: MenuItem[] = [
-  { label: 'Entenda a H24', href: '/site' }
+  { label: 'Entenda a Cognitiva', href: '/site' }
 ]
 
 const HomePage = () => {

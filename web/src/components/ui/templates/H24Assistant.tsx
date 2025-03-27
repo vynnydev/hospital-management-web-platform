@@ -365,7 +365,7 @@ export const H24Assistant = forwardRef<H24AssistantHandle, H24AssistantProps>(({
       const userRole = currentUser?.role || 'Administrador';
       const period = getPeriodOfDay();
       
-      return `${period}, ${userName}! Como ${userRole} do H24, hoje temos:`
+      return `${period}, ${userName}! Como ${userRole} do Cognitiva, hoje temos:`
     };
     
     // Determinar o período do dia
@@ -444,7 +444,7 @@ export const H24Assistant = forwardRef<H24AssistantHandle, H24AssistantProps>(({
           hover:from-indigo-700 hover:to-cyan-700 
           text-white rounded-full shadow-md transition-all duration-300 hover:shadow-lg 
           dark:from-indigo-800 dark:to-cyan-800 dark:hover:from-indigo-800 dark:hover:to-cyan-800"
-          aria-label="Assistente H24"
+          aria-label="Assistente Cognitiva"
         >
                     <Sparkles className="h-5 w-5" />
                     <span>Assistente IA</span>
@@ -488,7 +488,7 @@ export const H24Assistant = forwardRef<H24AssistantHandle, H24AssistantProps>(({
                   <div className="flex justify-between items-start">
                     <div className="flex items-center">
                       <Sparkles className="h-6 w-6 mr-2" />
-                      <h2 className="text-xl font-semibold">Assistente H24</h2>
+                      <h2 className="text-xl font-semibold">Assistente Cognitiva</h2>
                     </div>
                     <div className="flex items-center space-x-1">
                       <button 

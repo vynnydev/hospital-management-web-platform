@@ -149,7 +149,7 @@ export const FloatingAssistantButton: React.FC<{
         {/* Botão do chat */}
         <button
           className="p-3 bg-blue-600 dark:bg-blue-700 text-white rounded-full shadow-lg hover:bg-blue-700 dark:hover:bg-blue-800 transition-colors"
-          title="Chat H24"
+          title="Chat Cognitiva"
         >
           <MessageCircle className="h-6 w-6" />
         </button>

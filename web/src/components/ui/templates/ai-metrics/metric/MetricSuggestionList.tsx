@@ -3,7 +3,7 @@ import { BadgeInfo, Brain } from 'lucide-react';
 import { Button } from "@/components/ui/organisms/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/organisms/select";
 import { ScrollArea } from "@/components/ui/organisms/scroll-area";
-import { MetricCard } from './AIMetricCard';
+import { AIMetricCard } from './AIMetricCard';
 import { IMetricSuggestion } from '@/types/ai-metric';
 
 interface MetricSuggestionListProps {
@@ -94,7 +94,7 @@ export const MetricSuggestionList: React.FC<MetricSuggestionListProps> = ({
             
             {filteredSuggestions.map((suggestion) => (
               <div key={suggestion.id} className="transform transition-all duration-200 hover:scale-[1.01]">
-                <MetricCard 
+                <AIMetricCard 
                   metric={suggestion}
                   onApprove={onApprove}
                   onReject={onReject}

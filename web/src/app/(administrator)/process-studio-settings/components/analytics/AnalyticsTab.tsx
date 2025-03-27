@@ -18,7 +18,7 @@ import { Button } from '@/components/ui/organisms/button';
 import { INetworkData } from '@/types/hospital-network-types';
 import { Card } from '@/components/ui/organisms/card';
 import { IMetric, IMetricCard } from '@/types/custom-metrics';
-import { AlertsSection } from './AlertsSection';
+import { AlertsSection } from './metrics/AlertsSection';
 import { MetricCategoriesSidebar } from './metrics/MetricCategoriesSidebar';
 import { CreateMetricPanel } from './metrics/CreateMetricPanel';
 import { MetricsGrid } from './metrics/MetricsGrid';

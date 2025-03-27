@@ -79,9 +79,9 @@ class UserMetricsService {
         userMetricsConfig.panelMetrics[panelType] = [...currentMetricIds, ...newMetricIds];
         
         // Atualizar a configuração
-        await axios.put(`${this.baseUrl}/userMetrics/${userId}`, userMetricsConfig, {
-          headers: this.getHeaders()
-        });
+        // await axios.put(`${this.baseUrl}/userMetrics/${userId}`, userMetricsConfig, {
+        //   headers: this.getHeaders()
+        // });
       }
       
       return true;
@@ -163,9 +163,9 @@ class UserMetricsService {
       // Atualizar a configuração do usuário
       userConfig.panelMetrics.default = updatedMainMetrics;
       
-      await axios.put(`${this.baseUrl}/userMetrics/${userId}`, userConfig, {
-        headers: this.getHeaders()
-      });
+      // await axios.put(`${this.baseUrl}/userMetrics/${userId}`, userConfig, {
+      //   headers: this.getHeaders()
+      // });
       
       return true;
     } catch (error) {
@@ -211,21 +211,21 @@ class UserMetricsService {
       throw new Error('Usuário não autenticado');
     }
 
-    try {
-      await axios.post(`${this.baseUrl}/userMetrics`, {
-        userId,
-        panelMetrics: {
-          default: [],
-          custom: []
-        },
-        favorites: []
-      }, {
-        headers: this.getHeaders()
-      });
-    } catch (error) {
-      console.error('Erro ao criar configuração de métricas do usuário:', error);
-      throw error;
-    }
+    // try {
+    //   await axios.post(`${this.baseUrl}/userMetrics`, {
+    //     userId,
+    //     panelMetrics: {
+    //       default: [],
+    //       custom: []
+    //     },
+    //     favorites: []
+    //   }, {
+    //     headers: this.getHeaders()
+    //   });
+    // } catch (error) {
+    //   console.error('Erro ao criar configuração de métricas do usuário:', error);
+    //   throw error;
+    // }
   }
 
   // Adicionar métrica ao painel do usuário
@@ -270,9 +270,9 @@ class UserMetricsService {
         userMetricsConfig.panelMetrics[panelType].push(metricId);
         
         // Atualizar a configuração
-        await axios.put(`${this.baseUrl}/userMetrics/${userId}`, userMetricsConfig, {
-          headers: this.getHeaders()
-        });
+        // await axios.put(`${this.baseUrl}/userMetrics/${userId}`, userMetricsConfig, {
+        //   headers: this.getHeaders()
+        // });
         
         return true;
       }
@@ -312,9 +312,9 @@ class UserMetricsService {
         userMetricsConfig.panelMetrics[panelType].splice(index, 1);
         
         // Atualizar a configuração
-        await axios.put(`${this.baseUrl}/userMetrics/${userId}`, userMetricsConfig, {
-          headers: this.getHeaders()
-        });
+        // await axios.put(`${this.baseUrl}/userMetrics/${userId}`, userMetricsConfig, {
+        //   headers: this.getHeaders()
+        // });
         
         return true;
       }

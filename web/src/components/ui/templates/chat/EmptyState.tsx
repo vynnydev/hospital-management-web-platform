@@ -6,7 +6,7 @@ export const EmptyState: React.FC<IEmptyStateProps> = () => {
   return (
     <div className="flex-1 flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-900 p-8">
       <MessageCircle className="h-16 w-16 text-blue-200 dark:text-blue-800 mb-4" />
-      <h3 className="text-xl font-medium text-gray-700 dark:text-gray-400 mb-2">Chat H24</h3>
+      <h3 className="text-xl font-medium text-gray-700 dark:text-gray-400 mb-2">Chat Cognitiva</h3>
       <p className="text-gray-500 dark:text-gray-500 text-center max-w-md mb-8">
         Selecione um contato para iniciar uma conversa ou utilize o assistente IA para obter ajuda rápida com questões clínicas.
       </p>

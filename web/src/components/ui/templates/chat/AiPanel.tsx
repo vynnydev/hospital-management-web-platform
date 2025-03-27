@@ -32,7 +32,7 @@ export const AiPanel: React.FC<IAiPanelProps> = () => {
       <div className="p-4 border-b dark:border-gray-700 bg-indigo-50 dark:bg-indigo-900/30">
         <h3 className="font-medium text-indigo-900 dark:text-indigo-100 flex items-center">
           <Sparkles className="h-5 w-5 mr-2" />
-          Assistente H24
+          Assistente Cognitiva
         </h3>
         <p className="text-xs text-indigo-700 dark:text-indigo-300 mt-1">
           Inteligência artificial integrada para apoio clínico

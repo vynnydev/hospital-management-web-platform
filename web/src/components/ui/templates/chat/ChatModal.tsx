@@ -120,7 +120,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({
         },
         {
           id: 'ai',
-          name: 'Assistente H24',
+          name: 'Assistente Cognitiva',
           role: 'ai',
           avatar: '',
           lastMessage: 'Como posso ajudar hoje?',
@@ -177,7 +177,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({
             content: `Analisei os dados vitais do paciente João Silva. Os registros indicam uma pressão arterial de 150/90, frequência cardíaca de 88bpm e saturação de 95%. Baseado no histórico médico, sugiro monitoramento contínuo e avaliação da medicação anti-hipertensiva.`,
             sender: {
               id: 'ai',
-              name: 'Assistente H24',
+              name: 'Assistente Cognitiva',
               role: 'ai'
             },
             timestamp: new Date(Date.now() - 24 * 60000),
@@ -255,7 +255,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({
           content: `Baseado nas informações fornecidas, recomendo verificar os sinais vitais recentes e o histórico de medicação do paciente. Se necessário, considere consultar o protocolo institucional para manejo de hipertensão em pacientes pós-cirúrgicos cardíacos.`,
           sender: {
             id: 'ai',
-            name: 'Assistente H24',
+            name: 'Assistente Cognitiva',
             role: 'ai'
           },
           timestamp: new Date(),
@@ -344,7 +344,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({
         <div className="py-4 px-6 border-b dark:border-gray-700 flex items-center justify-between bg-gradient-to-r from-blue-600 to-indigo-700 dark:from-blue-800 dark:to-indigo-900 text-white">
           <div className="flex items-center">
             <MessageCircle className="mr-2 h-6 w-6" />
-            <h2 className="text-xl font-semibold">H24 Chat</h2>
+            <h2 className="text-xl font-semibold">Cognitiva Chat</h2>
           </div>
 
           <div className='flex flex-row space-x-4'>
