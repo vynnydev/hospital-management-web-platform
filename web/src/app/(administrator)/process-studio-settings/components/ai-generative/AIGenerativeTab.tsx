@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/organisms/button';
 
 // Importações de componentes
 import { ChatSection } from './ChatSection';
-import { AILibrary, defaultHistoryItems, defaultPromptItems } from './AILibrary';
+import { AILibrary } from './AILibrary';
 import { MetricForm } from '@/components/ui/templates/hospital-metrics/MetricForm';
 import { MetricsManagementSection } from '@/components/ui/templates/metrics/MetricsManagementSection';
 
@@ -205,7 +205,6 @@ export const AIGenerativeTab: React.FC = () => {
           networkData={networkData}
           metrics={metrics}
           onAddMetric={() => setIsDashboardView(false)}
-          insights={insights?.allInsights || []}
         />
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -259,8 +258,6 @@ export const AIGenerativeTab: React.FC = () => {
                 ) : (
                   <MetricsManagementSection 
                     metrics={metrics}
-                    isLoading={metricsLoading}
-                    error={metricsError}
                     onAddMetricToPanel={handleAddMetricToPanel}
                     onOpenMetricForm={() => setIsMetricFormOpen(true)}
                   />
@@ -271,28 +268,9 @@ export const AIGenerativeTab: React.FC = () => {
           
           {/* Coluna lateral: Biblioteca de sugestões e histórico */}
           <AILibrary 
-            historyItems={defaultHistoryItems}
-            promptItems={defaultPromptItems}
-            onHistoryItemSelect={(item) => {
-              setPreviewMetric({
-                title: item.name,
-                subtitle: item.type === 'metric' ? 'Métrica carregada do histórico' : 'Item carregado do histórico',
-                description: item.preview,
-                type: 'main',
-                cardType: item.type === 'metric' ? 'critical-hospital' : 
-                        item.type === 'alert' ? 'waiting' : 'staff',
-                additionalInfo: {
-                  label: 'Valor',
-                  value: item.type === 'metric' ? '82%' : 
-                        item.type === 'alert' ? 'Ativo' : 'Em uso'
-                }
-              });
-            }}
-            onPromptSelect={(prompt) => {
-              // Apenas passa o prompt para o componente filho processar
-              updatePreviewMetric(prompt.description);
-            }}
-            insights={getCriticalInsights() || []}
+            onHistoryItemSelect={(item) => console.log('Item selecionado:', item)}
+            onPromptSelect={(prompt) => console.log('Prompt selecionado:', prompt)}
+            onShowAllPrompts={() => console.log('Mostrar todos os prompts')}
           />
         </div>
       )}

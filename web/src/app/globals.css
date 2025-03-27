@@ -744,3 +744,53 @@ html, body, #root, .app-container {
 .cancel-process-button:hover {
   background-color: #b91c1c;  /* red-700 */
 }
+
+/* src/styles/scrollbar.css */
+/* Este arquivo pode ser importado no seu arquivo principal de CSS ou ser aplicado diretamente nos componentes */
+
+/* Estilos para barra de rolagem personalizada */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent; /* Cor de fundo da trilha */
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: rgba(75, 85, 99, 0.5); /* Cor do "thumb" (a parte arrastável) */
+  border-radius: 20px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(75, 85, 99, 0.7);
+}
+
+/* Firefox */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(75, 85, 99, 0.5) transparent;
+}
+
+/* Para esconder a barra de rolagem mas manter a funcionalidade */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+/* Customizações específicas por tema */
+.dark .scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.3);
+}
+
+.dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(156, 163, 175, 0.5);
+}
+
+.dark .scrollbar-thin {
+  scrollbar-color: rgba(156, 163, 175, 0.3) transparent;
+}

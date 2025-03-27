@@ -3,17 +3,17 @@ import { Card } from '@/components/ui/organisms/card';
 import { AlertCircle, BarChart2, Plus, RefreshCw, AlertTriangle, Users, Shield, Clock, Zap, Activity, BarChart, Rotate3D } from 'lucide-react';
 import { Button } from '@/components/ui/organisms/button';
 import { INetworkData } from '@/types/hospital-network-types';
-import { TMetric } from '@/types/hospital-metrics';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/organisms/tabs';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/organisms/tooltip';
+import { TMetric } from '@/types/hospital-metrics';
 
-interface MetricsDashboardProps {
+interface IMetricsDashboardProps {
   networkData: INetworkData | null;
   metrics: TMetric[];
   onAddMetric: () => void;
 }
 
-export const MetricsDashboard: React.FC<MetricsDashboardProps> = ({
+export const MetricsDashboard: React.FC<IMetricsDashboardProps> = ({
   networkData,
   metrics,
   onAddMetric
@@ -387,14 +387,12 @@ export const MetricsDashboard: React.FC<MetricsDashboardProps> = ({
                             </div>
                           </div>
                           
-                          <div className="mb-3">
-                            <div className="text-3xl font-bold text-white">
-                              {metric.additionalInfo?.value || "N/A"}
-                            </div>
-                            <p className="text-xs text-gray-300 mt-1">
-                              {metric.additionalInfo?.label || "Valor atual"}
-                            </p>
+                          <div className="text-3xl font-bold text-white">
+                            {metric.type === 'additional' && metric.additionalInfo?.value || "N/A"}
                           </div>
+                          <p className="text-xs text-gray-300 mt-1">
+                            {metric.type === 'additional' && metric.additionalInfo?.label || "Valor atual"}
+                          </p>
                           
                           <div className="text-xs text-gray-400">
                             {metric.description || "Métrica personalizada gerada pelo usuário"}
@@ -583,14 +581,12 @@ export const MetricsDashboard: React.FC<MetricsDashboardProps> = ({
                         </div>
                       </div>
                       
-                      <div className="mb-3">
-                        <div className="text-3xl font-bold text-white">
-                          {metric.additionalInfo?.value || "N/A"}
-                        </div>
-                        <p className="text-xs text-gray-300 mt-1">
-                          {metric.additionalInfo?.label || "Valor atual"}
-                        </p>
+                      <div className="text-3xl font-bold text-white">
+                        {metric.type === 'additional' && metric.additionalInfo?.value || "N/A"}
                       </div>
+                      <p className="text-xs text-gray-300 mt-1">
+                        {metric.type === 'additional' && metric.additionalInfo?.label || "Valor atual"}
+                      </p>
                       
                       <div className="text-xs text-gray-400">
                         {metric.description || "Métrica personalizada gerada pelo usuário"}

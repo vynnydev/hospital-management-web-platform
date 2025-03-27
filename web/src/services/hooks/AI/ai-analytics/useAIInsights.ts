@@ -26,6 +26,11 @@ export interface IInsight {
   timestamp: string;
   confidence: number;
   suggestedActions: string[];
+  
+  // Adicionar as propriedades que você está usando
+  timeframe?: string;
+  affectedDepartments?: string[];
+  affectedHospitals?: string[];
 }
 
 export interface ISystemInsight extends IInsight {

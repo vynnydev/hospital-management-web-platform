@@ -3048,5 +3048,74 @@
         }
       }
     }
-  }
+  },
+  "ai-generation-history": [
+    { 
+      "id": "ai-hist-001", 
+      "name": "Taxa de Readmissão UTI", 
+      "type": "metric", 
+      "date": "18/02/2025", 
+      "preview": "Métrica para acompanhar pacientes que retornam à UTI em até 48h" 
+    },
+    { 
+      "id": "ai-hist-002", 
+      "name": "Alerta de Superlotação", 
+      "type": "alert", 
+      "date": "15/02/2025", 
+      "preview": "Notificação quando ocupação ultrapassa 90% da capacidade" 
+    },
+    { 
+      "id": "ai-hist-003", 
+      "name": "Fluxo de Isolamento", 
+      "type": "workflow", 
+      "date": "10/02/2025", 
+      "preview": "Processo para isolamento de pacientes com doenças infecciosas" 
+    },
+    { 
+      "id": "ai-hist-004", 
+      "name": "Dashboard de Equipes UTI", 
+      "type": "metric", 
+      "date": "05/02/2025", 
+      "preview": "Monitoramento do desempenho das equipes UTI com KPIs específicos" 
+    },
+    { 
+      "id": "ai-hist-005", 
+      "name": "Alerta de Manutenção Equipamentos", 
+      "type": "alert", 
+      "date": "01/02/2025", 
+      "preview": "Notificação proativa para equipamentos que necessitam manutenção" 
+    }
+  ],
+  "ai-prompt-library": [
+    {
+      "id": "prompt-001",
+      "title": "Dashboard Operacional",
+      "description": "Crie um dashboard para monitoramento operacional com foco em ocupação e fluxo de pacientes"
+    },
+    {
+      "id": "prompt-002",
+      "title": "Alertas Financeiros",
+      "description": "Configure alertas para métricas financeiras críticas com base em metas trimestrais"
+    },
+    {
+      "id": "prompt-003",
+      "title": "Fluxo de Emergência",
+      "description": "Crie um processo otimizado para atendimento de emergência com base em classificação de risco"
+    },
+    {
+      "id": "prompt-004",
+      "title": "Análise de Eficiência",
+      "description": "Gere um relatório comparativo de eficiência entre departamentos com recomendações"
+    },
+    {
+      "id": "prompt-005",
+      "title": "Monitoramento de Equipes",
+      "description": "Crie métricas para acompanhar desempenho e carga de trabalho das equipes médicas"
+    },
+    {
+      "id": "prompt-006",
+      "title": "Previsão de Ocupação",
+      "description": "Gere um modelo preditivo para antecipar picos de ocupação nos próximos 7 dias"
+    }
+  ]
 }
