@@ -21,7 +21,7 @@ export const Header = () => {
     const { theme, setTheme } = useTheme();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isIntegrationsOpen, setIsIntegrationsOpen] = useState(false);
-    const [userType, setUserType] = useState<'admin' | 'doctor' | 'patient' | null>(null);
+    const [userType, setUserType] = useState<'admin' | 'doctor' | 'patient' | 'nurse' | null>(null);
     const user = authService.getCurrentUser();
     const { networkData, currentUser } = useNetworkData();
 
@@ -34,6 +34,8 @@ export const Header = () => {
                 setUserType('doctor');
             } else if (authService.isPatient()) {
                 setUserType('patient');
+            } else if (authService.isNurse()) {
+                setUserType('nurse')
             } else {
                 setUserType('admin');
             }
@@ -64,22 +66,28 @@ export const Header = () => {
     };
 
     // Função para retornar o ícone/badge do tipo de usuário
-    const getUserTypeBadge = () => {
+    const setUserTypeMenu = () => {
         switch (userType) {
             case 'doctor':
-                return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 ml-2">
-                    <Stethoscope className="mr-1 h-3 w-3" />
-                    Médico
-                </span>;
+                return <div className="flex items-center space-x-20 lg:gap-x-8">
+                            <Brand />
+                            <HeaderNavigation />
+                        </div>;
             case 'patient':
-                return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ml-2">
-                    <User className="mr-1 h-3 w-3" />
-                    Paciente
-                </span>;
+                return <div className="flex items-center space-x-40 lg:gap-x-8">
+                            <Brand />
+                            <HeaderNavigation />
+                        </div>;
+            case 'nurse':
+                return <div className="flex items-center space-x-24 lg:gap-x-8">
+                            <Brand />
+                            <HeaderNavigation />
+                        </div>
             case 'admin':
-                return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 ml-2">
-                    Administrador
-                </span>;
+                return <div className="flex items-center space-x-6 lg:gap-x-8">
+                            <Brand />
+                            <HeaderNavigation />
+                        </div>
             default:
                 return null;
         }
@@ -94,10 +102,7 @@ export const Header = () => {
         }>
             <div className="max-w-screen-2xl mx-auto">
                 <div className="w-full flex items-center justify-between mb-14">
-                    <div className="flex items-center space-x-4 lg:gap-x-8">
-                        <Brand />
-                        <HeaderNavigation />
-                    </div>
+                    {setUserTypeMenu()}
                     <div className="flex items-center gap-x-4">
                         <Button 
                             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}

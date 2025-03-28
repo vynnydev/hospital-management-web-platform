@@ -1,12 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData'
 import { authService } from '@/services/auth/AuthService'
 import { useEffect, useState } from 'react'
+import { Stethoscope, UserCog, User, Heart } from 'lucide-react'
 
 export const WelcomeMsg = () => {
     const { networkData, currentUser } = useNetworkData()
-    const [userType, setUserType] = useState<'admin' | 'doctor' | 'patient' | null>(null)
+    const [userType, setUserType] = useState<'admin' | 'doctor' | 'patient' | 'nurse' | null>(null)
     const user = authService.getCurrentUser()
     
     // Seleciona o hospital atual (se aplicável)
@@ -19,6 +21,8 @@ export const WelcomeMsg = () => {
                 setUserType('doctor')
             } else if (authService.isPatient()) {
                 setUserType('patient')
+            } else if (authService.isNurse()) {
+                setUserType('nurse')
             } else {
                 setUserType('admin')
             }
@@ -32,6 +36,8 @@ export const WelcomeMsg = () => {
         switch (userType) {
             case 'doctor':
                 return `Bem-vindo, Dr. ${user.name}!`
+            case 'nurse':
+                return `Bem-vinda, Enf. ${user.name}!`
             case 'patient':
                 return `Bem-vindo, ${user.name}!`
             case 'admin':
@@ -48,6 +54,10 @@ export const WelcomeMsg = () => {
                 return user?.specialization 
                     ? `${user.specialization} • CRM ${user.medicalLicense || '00000'}`
                     : 'Portal Médico'
+            case 'nurse':
+                return user?.nursingLicense 
+                    ? `COREN ${user.nursingLicense || '00000'} • ${selectedHospital?.name || 'Hospital'}`
+                    : 'Portal de Enfermagem'
             case 'patient':
                 return 'Portal do Paciente'
             case 'admin':
@@ -59,19 +69,43 @@ export const WelcomeMsg = () => {
         }
     }
 
+    // Função para retornar o ícone do tipo de usuário
+    const getUserTypeIcon = () => {
+        switch (userType) {
+            case 'doctor':
+                return <Stethoscope className="h-4 w-4 mr-1" />;
+            case 'nurse':
+                return <Heart className="h-4 w-4 mr-1" />;
+            case 'patient':
+                return <User className="h-4 w-4 mr-1" />;
+            case 'admin':
+                return <UserCog className="h-4 w-4 mr-1" />;
+            default:
+                return null;
+        }
+    };
+
     // Função para retornar o badge do tipo de usuário
     const getUserTypeBadge = () => {
         switch (userType) {
             case 'doctor':
                 return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 ml-2">
+                    <Stethoscope className="mr-1 h-3 w-3" />
                     Médico
+                </span>
+            case 'nurse':
+                return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-pink-100 text-pink-800 ml-2">
+                    <Heart className="mr-1 h-3 w-3" />
+                    Enfermagem
                 </span>
             case 'patient':
                 return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ml-2">
+                    <User className="mr-1 h-3 w-3" />
                     Paciente
                 </span>
             case 'admin':
                 return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 ml-2">
+                    <UserCog className="mr-1 h-3 w-3" />
                     Administrador
                 </span>
             default:

@@ -13,7 +13,14 @@ export type TPermission =
   | 'PATIENT_ACCESS'
   | 'SCHEDULE_APPOINTMENTS'
   | 'VIEW_OWN_RECORDS'
-  | 'REQUEST_TELEMEDICINE';
+  | 'REQUEST_TELEMEDICINE'
+  // Novas permissões para enfermeiros
+  | 'NURSE_ACCESS'
+  | 'ADMINISTER_MEDICATION'
+  | 'RECORD_VITALS'
+  | 'MANAGE_BEDS'
+  | 'VIEW_PATIENT_RECORDS_NURSE'
+  | 'ASSIGN_TASKS';
 
 export type TRole = 
   // Funções existentes
@@ -35,12 +42,17 @@ export interface IAppUser {
   profileImage?: string;
   permissions: TPermission[];
   hospitalId?: string;
-  // Novas propriedades
-  specialization?: string;     // Para médicos (ex: cardiologia, dermatologia)
-  medicalLicense?: string;     // Para médicos (CRM)
-  patientId?: string;          // Para pacientes
-  healthInsurance?: string;    // Para pacientes
-  dateOfBirth?: string;        // Para pacientes
+  // Propriedades para médicos
+  specialization?: string;     // Especialização médica
+  medicalLicense?: string;     // CRM
+  // Propriedades para pacientes
+  patientId?: string;          
+  healthInsurance?: string;    
+  dateOfBirth?: string;        
+  // Propriedades para enfermeiros
+  nursingLicense?: string;     // COREN
+  department?: string;         // Departamento/setor
+  shift?: 'manhã' | 'tarde' | 'noite';  // Turno
 }
 
 export interface IAuthResponse {
@@ -67,72 +79,68 @@ export interface ICreateUserData {
   role?: TRole;
   permissions?: TPermission[];
   hospitalId?: string;
-  specialization?: string;
-  medicalLicense?: string;
-  patientId?: string;
-  healthInsurance?: string;
-  dateOfBirth?: string;
+  // Campos específicos por função
+  specialization?: string;     // Para médicos
+  medicalLicense?: string;     // Para médicos
+  nursingLicense?: string;     // Para enfermeiros
+  department?: string;         // Para enfermeiros
+  shift?: 'manhã' | 'tarde' | 'noite';  // Para enfermeiros
+  patientId?: string;          // Para pacientes
+  healthInsurance?: string;    // Para pacientes
+  dateOfBirth?: string;        // Para pacientes
 }
 
-// Novos tipos para telemedicina
-export interface IMedicalRecord {
+// Tipos específicos para enfermagem
+export interface INursingTask {
   id: string;
   patientId: string;
-  doctorId: string;
-  date: string;
-  diagnosis: string;
-  aiSuggestions?: {
-    diagnosisProbability: number;
-    suggestedDiagnosis: string;
-    confidence: number;
-  };
-  notes: string;
-  prescriptions?: IPrescription[];
-  attachments?: IAttachment[];
-}
-
-export interface IPrescription {
-  id: string;
-  patientId: string;
-  doctorId: string;
-  date: string;
-  medications: {
-    name: string;
-    dosage: string;
-    frequency: string;
-    duration: string;
-    aiRecommended: boolean;
-    aiConfidence?: number;
-  }[];
-  instructions: string;
-  aiGenerated: boolean;
-  doctorApproved: boolean;
-}
-
-export interface IAttachment {
-  id: string;
-  type: 'IMAGE' | 'DOCUMENT' | 'VIDEO' | 'OTHER';
-  url: string;
+  nurseId: string;
   description: string;
-  uploadDate: string;
-  aiAnalysisResult?: {
-    detectedCondition?: string;
-    confidence: number;
-    recommendations?: string;
-  };
+  priority: 'baixa' | 'média' | 'alta' | 'urgente';
+  status: 'pendente' | 'em andamento' | 'concluída' | 'cancelada';
+  createdAt: string;
+  dueDate: string;
+  completedAt?: string;
+  notes?: string;
 }
 
-export interface ITelemedicineConsultation {
+export interface IVitalSign {
   id: string;
   patientId: string;
-  doctorId: string;
-  scheduledDate: string;
-  status: 'SCHEDULED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
-  meetingUrl?: string;
-  preConsultationNotes?: string;
-  aiPreDiagnosis?: {
-    suggestedConditions: string[];
-    confidence: number[];
-    recommendedTests?: string[];
-  };
+  nurseId: string;
+  timestamp: string;
+  temperature?: number;        // em °C
+  heartRate?: number;          // em BPM
+  bloodPressureSystolic?: number;  // em mmHg
+  bloodPressureDiastolic?: number; // em mmHg
+  respiratoryRate?: number;    // em ciclos por minuto
+  oxygenSaturation?: number;   // em %
+  painLevel?: number;          // escala de 0 a 10
+  notes?: string;
+}
+
+export interface IMedicationAdministration {
+  id: string;
+  prescriptionId: string;
+  medicationId: string;
+  patientId: string;
+  nurseId: string;
+  administeredAt: string;
+  scheduledTime: string;
+  status: 'pendente' | 'administrado' | 'adiado' | 'recusado';
+  dose: string;
+  route: string;
+  notes?: string;
+}
+
+export interface IBedAssignment {
+  id: string;
+  bedId: string;
+  patientId: string;
+  assignedAt: string;
+  assignedByNurseId: string;
+  dischargedAt?: string;
+  transferredToId?: string;
+  status: 'ocupado' | 'reservado' | 'liberado' | 'em manutenção';
+  notes?: string;
 }
