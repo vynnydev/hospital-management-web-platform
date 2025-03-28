@@ -25,7 +25,7 @@ export const Header = () => {
     const user = authService.getCurrentUser();
     const { networkData, currentUser } = useNetworkData();
 
-    console.log("Usuário atual:", user?.profileImage)
+    console.log("Usuário atual:", user?.email)
 
     useEffect(() => {
         // Determinar o tipo de usuário logado
@@ -140,9 +140,7 @@ export const Header = () => {
                                 onClick={() => setIsIntegrationsOpen(!isIntegrationsOpen)}
                                 className="w-10 h-10 rounded-full overflow-hidden border border-gray-300 hover:border-blue-500"
                             >
-                                {!user?.profileImage ? (
-                                    <User className="h-4 w-4"/>
-                                ) : (
+                                {user?.profileImage ? (
                                     <Image 
                                         src={user?.profileImage}
                                         alt="User Avatar"
@@ -150,6 +148,8 @@ export const Header = () => {
                                         width={40}
                                         height={40}
                                     />
+                                ) : (
+                                    <User className="ml-2 h-5 w-5"/>
                                 )}
                             </button>
                             
