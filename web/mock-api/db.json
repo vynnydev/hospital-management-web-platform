@@ -6,7 +6,7 @@
       "email": "admin@4health.com",
       "role": "administrador",
       "password": "123",
-      "profileImage": "/images/avatars/admin.png",
+      "profileImage": "",
       "permissions": [
         "VIEW_ALL_HOSPITALS"
       ]
