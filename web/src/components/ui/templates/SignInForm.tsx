@@ -72,15 +72,15 @@ export function SignInForm() {
       }
       else if (userRole === 'médico' && permissions.includes('DOCTOR_ACCESS')) {
         showSuccessToast("Redirecionando para o painel médico...");
-        router.push('/doctor/dashboard');
+        router.push('/doctor-dashboard');
       }
       else if (userRole === 'paciente' && permissions.includes('PATIENT_ACCESS')) {
         showSuccessToast("Redirecionando para sua área de paciente...");
-        router.push('/patient/dashboard');
+        router.push('/patient-dashboard');
       }
       else if (userRole === 'enfermeiro' && permissions.length > 0) {
         showSuccessToast("Redirecionando para área de enfermagem...");
-        router.push('/staff/dashboard');
+        router.push('/nurse-dashboard');
       }
       else {
         showErrorToast(

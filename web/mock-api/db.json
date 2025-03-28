@@ -29,7 +29,7 @@
       "email": "gestor.morumbi@4health.com",
       "role": "administrador",
       "password": "123",
-      "profileImage": "/images/avatars/manager2.png",
+      "profileImage": "",
       "permissions": [
         "VIEW_SINGLE_HOSPITAL"
       ],
@@ -41,7 +41,7 @@
       "email": "dr.carlos@4health.com",
       "role": "médico",
       "password": "123",
-      "profileImage": "/images/avatars/doctor1.png",
+      "profileImage": "",
       "permissions": [
         "DOCTOR_ACCESS",
         "PRESCRIBE_MEDICATION",
@@ -59,7 +59,7 @@
       "email": "dra.juliana@4health.com",
       "role": "médico",
       "password": "123",
-      "profileImage": "/images/avatars/doctor2.png",
+      "profileImage": "",
       "permissions": [
         "DOCTOR_ACCESS",
         "PRESCRIBE_MEDICATION",
@@ -76,7 +76,7 @@
       "email": "dr.marcelo@4health.com",
       "role": "médico",
       "password": "123",
-      "profileImage": "/images/avatars/doctor3.png",
+      "profileImage": "",
       "permissions": [
         "DOCTOR_ACCESS",
         "PRESCRIBE_MEDICATION",
@@ -94,7 +94,7 @@
       "email": "maria.silva@email.com",
       "role": "paciente",
       "password": "123",
-      "profileImage": "/images/avatars/patient1.png",
+      "profileImage": "",
       "permissions": [
         "PATIENT_ACCESS",
         "SCHEDULE_APPOINTMENTS",
@@ -111,7 +111,7 @@
       "email": "joao.pereira@email.com",
       "role": "paciente",
       "password": "123",
-      "profileImage": "/images/avatars/patient2.png",
+      "profileImage": "",
       "permissions": [
         "PATIENT_ACCESS",
         "SCHEDULE_APPOINTMENTS",
@@ -128,7 +128,7 @@
       "email": "ana.souza@email.com",
       "role": "paciente",
       "password": "123",
-      "profileImage": "/images/avatars/patient3.png",
+      "profileImage": "",
       "permissions": [
         "PATIENT_ACCESS",
         "SCHEDULE_APPOINTMENTS",
@@ -145,7 +145,7 @@
       "email": "fernanda.lima@4health.com",
       "role": "enfermeiro",
       "password": "123",
-      "profileImage": "/images/avatars/nurse1.png",
+      "profileImage": "",
       "permissions": [
         "VIEW_PATIENT_RECORDS"
       ],

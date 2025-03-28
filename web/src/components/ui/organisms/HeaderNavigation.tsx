@@ -61,37 +61,37 @@ const adminRoutes = [
 
 const doctorRoutes = [
     {
-        href: '/doctor/dashboard',
+        href: '/doctor-dashboard',
         label: 'Meu Painel',
         icon: Activity
     },
     {
-        href: '/doctor/patients',
+        href: '/doctor-patients',
         label: 'Meus Pacientes',
         icon: User
     },
     {
-        href: '/doctor/appointments',
+        href: '/doctor-appointments',
         label: 'Consultas',
         icon: Calendar
     },
     {
-        href: '/doctor/telemedicine',
+        href: '/doctor-telemedicine',
         label: 'Telemedicina',
         icon: Stethoscope
     },
     {
-        href: '/doctor/prescriptions',
+        href: '/doctor-prescriptions',
         label: 'Prescrições',
         icon: FileText
     },
     {
-        href: '/doctor/medical-records',
+        href: '/doctor-medical-records',
         label: 'Prontuários',
         icon: FileText
     },
     {
-        href: '/doctor/analytics',
+        href: '/doctor-analytics',
         label: 'Estatísticas',
         icon: BarChart3
     },
@@ -99,32 +99,32 @@ const doctorRoutes = [
 
 const patientRoutes = [
     {
-        href: '/patient/dashboard',
+        href: '/patient-dashboard',
         label: 'Meu Painel',
         icon: Activity
     },
     {
-        href: '/patient/appointments',
+        href: '/patient-appointments',
         label: 'Minhas Consultas',
         icon: Calendar
     },
     {
-        href: '/patient/telemedicine',
+        href: '/patient-telemedicine',
         label: 'Telemedicina',
         icon: Stethoscope
     },
     {
-        href: '/patient/prescriptions',
+        href: '/patient-prescriptions',
         label: 'Minhas Prescrições',
         icon: FileText
     },
     {
-        href: '/patient/medical-history',
+        href: '/patient-medical-history',
         label: 'Histórico Médico',
         icon: FileText
     },
     {
-        href: '/patient/profile',
+        href: '/patient-profile',
         label: 'Meu Perfil',
         icon: User
     },
