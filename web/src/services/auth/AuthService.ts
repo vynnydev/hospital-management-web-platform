@@ -232,7 +232,7 @@ import {
               case 'paciente':
                   return '/patient/dashboard';
               case 'enfermeiro':
-                  return '/staff/dashboard';
+                  return '/nurse/dashboard';
               default:
                   return '/overview';
           }
@@ -250,6 +250,13 @@ import {
        */
       public isPatient(): boolean {
           return this.hasRole('paciente');
+      }
+      
+      /**
+       * Verifica se o usuário é enfermeiro
+       */
+      public isNurse(): boolean {
+          return this.hasRole('enfermeiro');
       }
   
       /**

@@ -12,7 +12,7 @@ import {
     SheetContent,
     SheetTrigger
 } from '@/components/ui/organisms/sheet'
-import { Menu, Activity, User, Calendar, FileText, Stethoscope, Hospital, BarChart3, Package, Settings } from 'lucide-react'
+import { Menu, Activity, User, Calendar, FileText, Stethoscope, Hospital, BarChart3, Package, Settings, CheckSquare } from 'lucide-react'
 import { authService } from '@/services/auth/AuthService'
 
 // Definição dos itens de menu para cada tipo de usuário
@@ -130,6 +130,44 @@ const patientRoutes = [
     },
 ]
 
+const nurseRoutes = [
+    {
+        href: '/nurse-dashboard',
+        label: 'Meu Painel',
+        icon: Activity
+    },
+    {
+        href: '/nurse-patients',
+        label: 'Pacientes',
+        icon: User
+    },
+    {
+        href: '/nurse-beds',
+        label: 'Gestão de Leitos',
+        icon: Hospital
+    },
+    {
+        href: '/nurse-vitals',
+        label: 'Sinais Vitais',
+        icon: Activity
+    },
+    {
+        href: '/nurse-medication',
+        label: 'Medicação',
+        icon: FileText
+    },
+    {
+        href: '/nurse-tasks',
+        label: 'Tarefas',
+        icon: CheckSquare
+    },
+    {
+        href: '/nurse-schedule',
+        label: 'Escala',
+        icon: Calendar
+    },
+]
+
 export const HeaderNavigation = () => {
     const [isOpen, setIsOpen] = useState(false)
     const [userRoutes, setUserRoutes] = useState(adminRoutes) // Default para admin
@@ -147,6 +185,8 @@ export const HeaderNavigation = () => {
                 setUserRoutes(doctorRoutes);
             } else if (authService.isPatient()) {
                 setUserRoutes(patientRoutes);
+            } else if (authService.isNurse()) {
+                setUserRoutes(nurseRoutes);
             } else {
                 // Administrador ou outros tipos de usuário
                 setUserRoutes(adminRoutes);
@@ -202,7 +242,7 @@ export const HeaderNavigation = () => {
     }
 
     return (
-        <nav className="hidden lg:flex items-center space-x-2 overflow-x-auto">
+        <nav className="hidden lg:flex items-center gap-x-1 overflow-x-auto">
             {userRoutes.map((route) => (
                 <NavButton 
                     key={route.href}

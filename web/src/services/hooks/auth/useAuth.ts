@@ -84,6 +84,13 @@ export function useAuth() {
   };
 
   /**
+   * Verifica se o usuário atual é um enfermeiro
+   */
+  const isNurse = (): boolean => {
+    return hasRole('enfermeiro');
+  };
+
+  /**
    * Verifica se o usuário atual é um administrador
    */
   const isAdministrator = (): boolean => {
@@ -107,6 +114,7 @@ export function useAuth() {
     hasPermission,
     isDoctor,
     isPatient,
+    isNurse,
     isAdministrator,
     canAccessTelemedicine
   };
