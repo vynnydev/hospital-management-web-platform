@@ -4,9 +4,9 @@
       "id": "USR001",
       "name": "Administrador",
       "email": "admin@4health.com",
-      "role": "Admin",
+      "role": "administrador",
       "password": "123",
-      "profileImage": "",
+      "profileImage": "/images/avatars/admin.png",
       "permissions": [
         "VIEW_ALL_HOSPITALS"
       ]
@@ -15,9 +15,9 @@
       "id": "USR002",
       "name": "Gestor Itaim",
       "email": "gestor.itaim@4health.com",
-      "role": "Hospital Manager",
+      "role": "administrador",
       "password": "123",
-      "profileImage": "",
+      "profileImage": "/images/avatars/manager1.png",
       "permissions": [
         "VIEW_SINGLE_HOSPITAL"
       ],
@@ -27,13 +27,364 @@
       "id": "USR003",
       "name": "Gestor Morumbi",
       "email": "gestor.morumbi@4health.com",
-      "role": "Hospital Manager",
+      "role": "administrador",
       "password": "123",
-      "profileImage": "",
+      "profileImage": "/images/avatars/manager2.png",
       "permissions": [
         "VIEW_SINGLE_HOSPITAL"
       ],
       "hospitalId": "RD4H-SP-MORUMBI"
+    },
+    {
+      "id": "DR001",
+      "name": "Carlos Oliveira",
+      "email": "dr.carlos@4health.com",
+      "role": "médico",
+      "password": "123",
+      "profileImage": "/images/avatars/doctor1.png",
+      "permissions": [
+        "DOCTOR_ACCESS",
+        "PRESCRIBE_MEDICATION",
+        "VIEW_PATIENT_RECORDS",
+        "USE_AI_DIAGNOSIS",
+        "APPROVE_AI_PRESCRIPTIONS"
+      ],
+      "specialization": "Clínico Geral",
+      "medicalLicense": "CRM-SP-123456",
+      "hospitalId": "RD4H-SP-ITAIM"
+    },
+    {
+      "id": "DR002",
+      "name": "Juliana Andrade",
+      "email": "dra.juliana@4health.com",
+      "role": "médico",
+      "password": "123",
+      "profileImage": "/images/avatars/doctor2.png",
+      "permissions": [
+        "DOCTOR_ACCESS",
+        "PRESCRIBE_MEDICATION",
+        "VIEW_PATIENT_RECORDS",
+        "USE_AI_DIAGNOSIS"
+      ],
+      "specialization": "Dermatologia",
+      "medicalLicense": "CRM-SP-234567",
+      "hospitalId": "RD4H-SP-ITAIM"
+    },
+    {
+      "id": "DR003",
+      "name": "Marcelo Santos",
+      "email": "dr.marcelo@4health.com",
+      "role": "médico",
+      "password": "123",
+      "profileImage": "/images/avatars/doctor3.png",
+      "permissions": [
+        "DOCTOR_ACCESS",
+        "PRESCRIBE_MEDICATION",
+        "VIEW_PATIENT_RECORDS",
+        "USE_AI_DIAGNOSIS",
+        "APPROVE_AI_PRESCRIPTIONS"
+      ],
+      "specialization": "Cardiologia",
+      "medicalLicense": "CRM-SP-345678",
+      "hospitalId": "RD4H-SP-MORUMBI"
+    },
+    {
+      "id": "PAT001",
+      "name": "Maria Silva",
+      "email": "maria.silva@email.com",
+      "role": "paciente",
+      "password": "123",
+      "profileImage": "/images/avatars/patient1.png",
+      "permissions": [
+        "PATIENT_ACCESS",
+        "SCHEDULE_APPOINTMENTS",
+        "VIEW_OWN_RECORDS",
+        "REQUEST_TELEMEDICINE"
+      ],
+      "patientId": "PTH-SP-001",
+      "healthInsurance": "Plano Saúde Total",
+      "dateOfBirth": "1980-05-15"
+    },
+    {
+      "id": "PAT002",
+      "name": "João Pereira",
+      "email": "joao.pereira@email.com",
+      "role": "paciente",
+      "password": "123",
+      "profileImage": "/images/avatars/patient2.png",
+      "permissions": [
+        "PATIENT_ACCESS",
+        "SCHEDULE_APPOINTMENTS",
+        "VIEW_OWN_RECORDS",
+        "REQUEST_TELEMEDICINE"
+      ],
+      "patientId": "PTH-SP-002",
+      "healthInsurance": "Saúde Completa",
+      "dateOfBirth": "1975-08-22"
+    },
+    {
+      "id": "PAT003",
+      "name": "Ana Souza",
+      "email": "ana.souza@email.com",
+      "role": "paciente",
+      "password": "123",
+      "profileImage": "/images/avatars/patient3.png",
+      "permissions": [
+        "PATIENT_ACCESS",
+        "SCHEDULE_APPOINTMENTS",
+        "VIEW_OWN_RECORDS",
+        "REQUEST_TELEMEDICINE"
+      ],
+      "patientId": "PTH-SP-003",
+      "healthInsurance": "Medicare Plus",
+      "dateOfBirth": "1990-03-10"
+    },
+    {
+      "id": "ENF001",
+      "name": "Fernanda Lima",
+      "email": "fernanda.lima@4health.com",
+      "role": "enfermeiro",
+      "password": "123",
+      "profileImage": "/images/avatars/nurse1.png",
+      "permissions": [
+        "VIEW_PATIENT_RECORDS"
+      ],
+      "hospitalId": "RD4H-SP-ITAIM"
+    }
+  ],
+  "consultations": [
+    {
+      "id": "CONS-001",
+      "patientId": "PAT001",
+      "doctorId": "DR001",
+      "scheduledDate": "2025-04-30T10:00:00Z",
+      "status": "SCHEDULED",
+      "preConsultationNotes": "Paciente relata dores de cabeça frequentes e fadiga."
+    },
+    {
+      "id": "CONS-002",
+      "patientId": "PAT002",
+      "doctorId": "DR002",
+      "scheduledDate": "2025-04-30T14:30:00Z",
+      "status": "SCHEDULED",
+      "preConsultationNotes": "Acompanhamento de lesão cutânea."
+    },
+    {
+      "id": "CONS-003",
+      "patientId": "PAT003",
+      "doctorId": "DR003",
+      "scheduledDate": "2025-05-02T09:15:00Z",
+      "status": "SCHEDULED",
+      "preConsultationNotes": "Consulta de rotina para avaliação cardíaca."
+    }
+  ],
+  "prescriptions": [
+    {
+      "id": "PRESC-001",
+      "patientId": "PAT001",
+      "doctorId": "DR001",
+      "date": "2025-03-15T11:30:00Z",
+      "medications": [
+        {
+          "name": "Dipirona",
+          "dosage": "500mg",
+          "frequency": "8/8 horas",
+          "duration": "3 dias",
+          "aiRecommended": true,
+          "aiConfidence": 0.92
+        },
+        {
+          "name": "Paracetamol",
+          "dosage": "750mg",
+          "frequency": "6/6 horas",
+          "duration": "5 dias",
+          "aiRecommended": false
+        }
+      ],
+      "instructions": "Tomar com bastante água. Evitar bebidas alcoólicas durante o tratamento.",
+      "aiGenerated": true,
+      "doctorApproved": true
+    },
+    {
+      "id": "PRESC-002",
+      "patientId": "PAT002",
+      "doctorId": "DR002",
+      "date": "2025-03-20T16:45:00Z",
+      "medications": [
+        {
+          "name": "Betametasona",
+          "dosage": "Creme 0,05%",
+          "frequency": "2x ao dia",
+          "duration": "7 dias",
+          "aiRecommended": true,
+          "aiConfidence": 0.89
+        }
+      ],
+      "instructions": "Aplicar uma fina camada sobre a área afetada. Lavar as mãos após a aplicação.",
+      "aiGenerated": true,
+      "doctorApproved": true
+    },
+    {
+      "id": "PRESC-003",
+      "patientId": "PAT003",
+      "doctorId": "DR003",
+      "date": "2025-04-01T10:15:00Z",
+      "medications": [
+        {
+          "name": "Losartana",
+          "dosage": "50mg",
+          "frequency": "1x ao dia",
+          "duration": "uso contínuo",
+          "aiRecommended": true,
+          "aiConfidence": 0.95
+        },
+        {
+          "name": "Ácido Acetilsalicílico",
+          "dosage": "100mg",
+          "frequency": "1x ao dia",
+          "duration": "uso contínuo",
+          "aiRecommended": true,
+          "aiConfidence": 0.91
+        }
+      ],
+      "instructions": "Tomar os medicamentos sempre no mesmo horário. Manter monitoramento regular da pressão arterial.",
+      "aiGenerated": true,
+      "doctorApproved": true
+    }
+  ],
+  "medicalRecords": [
+    {
+      "id": "REC-001",
+      "patientId": "PAT001",
+      "doctorId": "DR001",
+      "date": "2025-03-15T11:30:00Z",
+      "diagnosis": "Cefaleia tensional",
+      "aiSuggestions": {
+        "diagnosisProbability": 0.85,
+        "suggestedDiagnosis": "Cefaleia tensional",
+        "confidence": 0.85
+      },
+      "notes": "Paciente relata dores de cabeça frequentes, principalmente ao final do dia. Associa ao estresse no trabalho. Sem outros sintomas neurológicos.",
+      "prescriptions": ["PRESC-001"],
+      "attachments": []
+    },
+    {
+      "id": "REC-002",
+      "patientId": "PAT002",
+      "doctorId": "DR002",
+      "date": "2025-03-20T16:45:00Z",
+      "diagnosis": "Dermatite de contato",
+      "aiSuggestions": {
+        "diagnosisProbability": 0.92,
+        "suggestedDiagnosis": "Dermatite de contato",
+        "confidence": 0.92
+      },
+      "notes": "Paciente apresenta lesão eritematosa em antebraço direito, com coceira e descamação. Relata contato com novo produto de limpeza doméstica.",
+      "prescriptions": ["PRESC-002"],
+      "attachments": [
+        {
+          "id": "ATT-001",
+          "type": "IMAGE",
+          "url": "/attachments/dermatite-pt002.jpg",
+          "description": "Imagem da lesão no antebraço direito",
+          "uploadDate": "2025-03-20T16:40:00Z",
+          "aiAnalysisResult": {
+            "detectedCondition": "Dermatite de contato",
+            "confidence": 0.92,
+            "recommendations": ["Evitar contato com o alérgeno", "Aplicação de corticoide tópico"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "REC-003",
+      "patientId": "PAT003",
+      "doctorId": "DR003",
+      "date": "2025-04-01T10:15:00Z",
+      "diagnosis": "Hipertensão arterial estágio 1",
+      "aiSuggestions": {
+        "diagnosisProbability": 0.95,
+        "suggestedDiagnosis": "Hipertensão arterial estágio 1",
+        "confidence": 0.95
+      },
+      "notes": "Paciente com pressão arterial 145/95 mmHg (média de três medidas). Histórico familiar positivo para HAS. Recomendada mudança de hábitos alimentares e atividade física regular.",
+      "prescriptions": ["PRESC-003"],
+      "attachments": []
+    }
+  ],
+  "aiWoundAnalysis": [
+    {
+      "id": "WOUND-001",
+      "patientId": "PAT002",
+      "imageUrl": "/attachments/wound-image-001.jpg",
+      "uploadDate": "2025-03-20T16:35:00Z",
+      "result": {
+        "detectedCondition": "Dermatite de contato",
+        "confidence": 0.92,
+        "recommendations": [
+          "Evitar contato com possíveis alérgenos",
+          "Aplicação de corticoide tópico de potência leve a moderada",
+          "Uso de emolientes para hidratação da pele"
+        ],
+        "possibleDiagnoses": [
+          "Dermatite de contato",
+          "Dermatite atópica",
+          "Reação alérgica"
+        ],
+        "severity": "MEDIUM"
+      }
+    },
+    {
+      "id": "WOUND-002",
+      "patientId": "PAT001",
+      "imageUrl": "/attachments/wound-image-002.jpg",
+      "uploadDate": "2025-04-05T14:20:00Z",
+      "result": {
+        "detectedCondition": "Ferida superficial com sinais iniciais de infecção",
+        "confidence": 0.88,
+        "recommendations": [
+          "Limpeza diária com solução salina",
+          "Aplicação de pomada antibiótica",
+          "Cobertura com curativo estéril",
+          "Avaliação médica para possível prescrição de antibiótico sistêmico"
+        ],
+        "possibleDiagnoses": [
+          "Ferida infectada",
+          "Celulite inicial",
+          "Foliculite"
+        ],
+        "severity": "MEDIUM"
+      }
+    }
+  ],
+  "telemedicineConsultations": [
+    {
+      "id": "TELE-001",
+      "patientId": "PAT001",
+      "doctorId": "DR001",
+      "scheduledDate": "2025-04-25T09:00:00Z",
+      "status": "SCHEDULED",
+      "meetingUrl": "https://meet.4health.com/TELE-001",
+      "preConsultationNotes": "Acompanhamento de cefaleia tensional",
+      "aiPreDiagnosis": {
+        "suggestedConditions": ["Cefaleia tensional", "Enxaqueca", "Sinusite"],
+        "confidence": [0.85, 0.40, 0.25],
+        "recommendedTests": ["Avaliação detalhada dos gatilhos", "Diário da dor"]
+      }
+    },
+    {
+      "id": "TELE-002",
+      "patientId": "PAT002",
+      "doctorId": "DR002",
+      "scheduledDate": "2025-04-27T10:30:00Z",
+      "status": "SCHEDULED",
+      "meetingUrl": "https://meet.4health.com/TELE-002",
+      "preConsultationNotes": "Acompanhamento de dermatite de contato",
+      "aiPreDiagnosis": {
+        "suggestedConditions": ["Dermatite de contato em resolução", "Dermatite atópica"],
+        "confidence": [0.92, 0.35],
+        "recommendedTests": []
+      }
     }
   ],
   "networkInfo": {

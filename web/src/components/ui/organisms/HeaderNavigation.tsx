@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useMedia } from 'react-use'
 import { usePathname, useRouter } from 'next/navigation'
 
@@ -12,55 +12,152 @@ import {
     SheetContent,
     SheetTrigger
 } from '@/components/ui/organisms/sheet'
-import { Menu } from 'lucide-react'
+import { Menu, Activity, User, Calendar, FileText, Stethoscope, Hospital, BarChart3, Package, Settings } from 'lucide-react'
+import { authService } from '@/services/auth/AuthService'
 
-const routes = [
+// Definição dos itens de menu para cada tipo de usuário
+const adminRoutes = [
     {
         href: '/overview',
         label: 'Visão geral',
+        icon: Activity
     },
     {
         href: '/health-digital-support',
         label: 'Atendimento Digital',
+        icon: User
     },
     {
         href: '/bed-management',
         label: 'Gestão de Leitos',
+        icon: Hospital
     },
     {
         href: '/patient-management',
         label: 'Gestão de Pacientes',
+        icon: User
     },
     {
         href: '/staff-management',
         label: 'Gestão de Equipes',
+        icon: User
     },
     {
         href: '/predictive-analysis',
         label: 'Análise Preditiva',
+        icon: BarChart3
     },
     {
         href: '/inventory-resources',
         label: 'Recursos & Inventário',
+        icon: Package
     },
     {
         href: '/process-studio-settings',
         label: 'Studio de Processos',
+        icon: Settings
+    },
+]
+
+const doctorRoutes = [
+    {
+        href: '/doctor/dashboard',
+        label: 'Meu Painel',
+        icon: Activity
+    },
+    {
+        href: '/doctor/patients',
+        label: 'Meus Pacientes',
+        icon: User
+    },
+    {
+        href: '/doctor/appointments',
+        label: 'Consultas',
+        icon: Calendar
+    },
+    {
+        href: '/doctor/telemedicine',
+        label: 'Telemedicina',
+        icon: Stethoscope
+    },
+    {
+        href: '/doctor/prescriptions',
+        label: 'Prescrições',
+        icon: FileText
+    },
+    {
+        href: '/doctor/medical-records',
+        label: 'Prontuários',
+        icon: FileText
+    },
+    {
+        href: '/doctor/analytics',
+        label: 'Estatísticas',
+        icon: BarChart3
+    },
+]
+
+const patientRoutes = [
+    {
+        href: '/patient/dashboard',
+        label: 'Meu Painel',
+        icon: Activity
+    },
+    {
+        href: '/patient/appointments',
+        label: 'Minhas Consultas',
+        icon: Calendar
+    },
+    {
+        href: '/patient/telemedicine',
+        label: 'Telemedicina',
+        icon: Stethoscope
+    },
+    {
+        href: '/patient/prescriptions',
+        label: 'Minhas Prescrições',
+        icon: FileText
+    },
+    {
+        href: '/patient/medical-history',
+        label: 'Histórico Médico',
+        icon: FileText
+    },
+    {
+        href: '/patient/profile',
+        label: 'Meu Perfil',
+        icon: User
     },
 ]
 
 export const HeaderNavigation = () => {
     const [isOpen, setIsOpen] = useState(false)
+    const [userRoutes, setUserRoutes] = useState(adminRoutes) // Default para admin
 
     const router = useRouter()
     const pathname = usePathname()
     const isMobile = useMedia('(max-width: 1024px)', false)
 
+    // Determinar quais rotas exibir com base no tipo de usuário
+    useEffect(() => {
+        const user = authService.getCurrentUser();
+        
+        if (user) {
+            if (authService.isDoctor()) {
+                setUserRoutes(doctorRoutes);
+            } else if (authService.isPatient()) {
+                setUserRoutes(patientRoutes);
+            } else {
+                // Administrador ou outros tipos de usuário
+                setUserRoutes(adminRoutes);
+            }
+        }
+    }, []);
+
     const onClick = (href: string) => {
         router.push(href)
         setIsOpen(false)
     }
-
 
     if (isMobile) {
         return (
@@ -85,15 +182,16 @@ export const HeaderNavigation = () => {
                             <Menu className='size-4' />
                     </Button>
                 </SheetTrigger>
-                <SheetContent side='left' className='bg-white px-2'>
+                <SheetContent side='right' className='bg-white px-2'>
                     <nav className='flex flex-col gap-y-2 pt-6'>
-                        {routes.map((route) => (
+                        {userRoutes.map((route) => (
                             <Button
                                 key={route.href}
-                                variant={route.href === pathname ? 'secondary' : 'ghost'}
+                                variant={pathname.startsWith(route.href) ? 'secondary' : 'ghost'}
                                 onClick={() => onClick(route.href)}
-                                className='w-full justify-start'
+                                className='w-full justify-center'
                             >
+                                {route.icon && <route.icon className="h-4 w-4 mr-2" />}
                                 {route.label}
                             </Button>
                         ))}
@@ -104,13 +202,14 @@ export const HeaderNavigation = () => {
     }
 
     return (
-        <nav className="hidden lg:flex items-center gap-x-1 overflow-x-auto">
-            {routes.map((route) => (
+        <nav className="hidden lg:flex items-center gap-x-0.5 overflow-x-auto">
+            {userRoutes.map((route) => (
                 <NavButton 
                     key={route.href}
                     href={route.href}
                     label={route.label}
-                    isActive={pathname === route.href}
+                    icon={route.icon}
+                    isActive={pathname.startsWith(route.href)}
                 />
             ))}
         </nav>

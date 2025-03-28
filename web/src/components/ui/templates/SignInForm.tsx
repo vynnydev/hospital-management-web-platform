@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -7,16 +8,7 @@ import { Input } from '@/components/ui/organisms/input';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/organisms/card';
 import { useAuth } from '@/services/hooks/auth/useAuth';
 import { useToast } from "@/components/ui/hooks/use-toast";
-
-type UserPermissions = 'VIEW_ALL_HOSPITALS' | 'VIEW_SINGLE_HOSPITAL';
-
-interface AuthResponse {
-  user?: {
-    permissions: UserPermissions[];
-    hospitalId?: string;
-  };
-  error?: string;
-}
+import { TRole } from '@/types/auth-types';
 
 export function SignInForm() {
   const [email, setEmail] = useState('');
@@ -26,7 +18,7 @@ export function SignInForm() {
   
   const router = useRouter();
   const { toast } = useToast();
-  const { login } = useAuth();
+  const { login, isDoctor, isPatient, isAdministrator } = useAuth();
 
   const showSuccessToast = (message: string) => {
     toast({
@@ -60,22 +52,37 @@ export function SignInForm() {
     setIsLoading(true);
 
     try {
-      // Usando o método login do hook useAuth
-      const response = await login(email, password) as AuthResponse;
+      const response = await login(email, password);
 
       if (!response?.user) {
         throw new Error('Resposta inválida do servidor');
       }
 
-      const { permissions, hospitalId } = response.user;
+      const userRole = response.user.role;
+      const { permissions } = response.user;
 
-      if (permissions.includes('VIEW_ALL_HOSPITALS')) {
-        showSuccessToast("Redirecionando para a página inicial...");
+      // Redirecionamento baseado no tipo de usuário
+      if (userRole === 'administrador' && permissions.includes('VIEW_ALL_HOSPITALS')) {
+        showSuccessToast("Redirecionando para o painel administrativo...");
         router.push('/overview');
-      } else if (permissions.includes('VIEW_SINGLE_HOSPITAL') && hospitalId) {
-        showSuccessToast("Redirecionando para a página do hospital...");
+      } 
+      else if (userRole === 'administrador' && permissions.includes('VIEW_SINGLE_HOSPITAL') && response.user.hospitalId) {
+        showSuccessToast("Redirecionando para o painel do hospital...");
         router.push('/overview');
-      } else {
+      }
+      else if (userRole === 'médico' && permissions.includes('DOCTOR_ACCESS')) {
+        showSuccessToast("Redirecionando para o painel médico...");
+        router.push('/doctor/dashboard');
+      }
+      else if (userRole === 'paciente' && permissions.includes('PATIENT_ACCESS')) {
+        showSuccessToast("Redirecionando para sua área de paciente...");
+        router.push('/patient/dashboard');
+      }
+      else if (userRole === 'enfermeiro' && permissions.length > 0) {
+        showSuccessToast("Redirecionando para área de enfermagem...");
+        router.push('/staff/dashboard');
+      }
+      else {
         showErrorToast(
           "Erro de permissão",
           "Usuário sem permissões necessárias para acessar o sistema."
@@ -164,6 +171,12 @@ export function SignInForm() {
           Não tem uma conta?{' '}
           <a href="/sign-up" className="text-primary hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500">
             Cadastre-se
+          </a>
+        </div>
+        <div className="text-sm text-muted-foreground">
+          É um paciente?{' '}
+          <a href="/patient/register" className="text-primary hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500">
+            Registre-se como paciente
           </a>
         </div>
       </CardFooter>

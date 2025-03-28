@@ -1,14 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { authService } from '@/services/auth/AuthService';
 import { eventService } from '@/services/events/EventService';
 import { userPreferencesService } from '@/services/preferences/userPreferencesService';
-import type { IAppUser } from '@/types/auth-types';
+import type { IAppUser, TRole } from '@/types/auth-types';
 
 export const LOGIN_SUCCESS_EVENT = 'auth:login:success';
 
 export function useAuth() {
   const [user, setUser] = useState<IAppUser | null>(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const currentUser = authService.getCurrentUser();
@@ -16,6 +19,9 @@ export function useAuth() {
     setLoading(false);
   }, []);
 
+  /**
+   * Função de login com redirecionamento baseado na função do usuário
+   */
   const login = async (email: string, password: string) => {
     const response = await authService.login({ email, password });
     setUser(response.user);
@@ -36,12 +42,72 @@ export function useAuth() {
   const logout = async () => {
     await authService.logout();
     setUser(null);
+    router.push('/login');
+  };
+
+  /**
+   * Redireciona o usuário para a página apropriada com base na sua função
+   */
+  const redirectByRole = () => {
+    if (!user) return;
+
+    const redirectPath = authService.getRedirectPathByRole();
+    router.push(redirectPath);
+  };
+
+  /**
+   * Verifica se o usuário tem uma determinada função
+   */
+  const hasRole = (role: TRole): boolean => {
+    return user?.role === role || false;
+  };
+
+  /**
+   * Verifica se o usuário tem determinada permissão
+   */
+  const hasPermission = (permission: string): boolean => {
+    return authService.hasPermission(permission as any);
+  };
+
+  /**
+   * Verifica se o usuário atual é um médico
+   */
+  const isDoctor = (): boolean => {
+    return hasRole('médico');
+  };
+
+  /**
+   * Verifica se o usuário atual é um paciente
+   */
+  const isPatient = (): boolean => {
+    return hasRole('paciente');
+  };
+
+  /**
+   * Verifica se o usuário atual é um administrador
+   */
+  const isAdministrator = (): boolean => {
+    return hasRole('administrador');
+  };
+
+  /**
+   * Verifica se o usuário tem acesso à telemedicina
+   */
+  const canAccessTelemedicine = (): boolean => {
+    return authService.canAccessTelemedicine();
   };
 
   return {
     user,
     loading,
     login,
-    logout
+    logout,
+    redirectByRole,
+    hasRole,
+    hasPermission,
+    isDoctor,
+    isPatient,
+    isAdministrator,
+    canAccessTelemedicine
   };
 }
