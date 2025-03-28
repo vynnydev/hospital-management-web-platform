@@ -17,7 +17,7 @@
       "email": "gestor.itaim@4health.com",
       "role": "administrador",
       "password": "123",
-      "profileImage": "/images/avatars/manager1.png",
+      "profileImage": "",
       "permissions": [
         "VIEW_SINGLE_HOSPITAL"
       ],

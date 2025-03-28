@@ -182,16 +182,16 @@ export const HeaderNavigation = () => {
                             <Menu className='size-4' />
                     </Button>
                 </SheetTrigger>
-                <SheetContent side='right' className='bg-white px-2'>
+                <SheetContent side='left' className='bg-white px-2'>
                     <nav className='flex flex-col gap-y-2 pt-6'>
                         {userRoutes.map((route) => (
                             <Button
                                 key={route.href}
                                 variant={pathname.startsWith(route.href) ? 'secondary' : 'ghost'}
                                 onClick={() => onClick(route.href)}
-                                className='w-full justify-center'
+                                className='w-full justify-start'
                             >
-                                {route.icon && <route.icon className="h-4 w-4 mr-2" />}
+                                {route.icon && <route.icon className="h-4 w-4 mr-1" />}
                                 {route.label}
                             </Button>
                         ))}
@@ -202,7 +202,7 @@ export const HeaderNavigation = () => {
     }
 
     return (
-        <nav className="hidden lg:flex items-center gap-x-0.5 overflow-x-auto">
+        <nav className="hidden lg:flex items-center space-x-2 overflow-x-auto">
             {userRoutes.map((route) => (
                 <NavButton 
                     key={route.href}

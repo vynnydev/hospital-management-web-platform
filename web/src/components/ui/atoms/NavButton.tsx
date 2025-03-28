@@ -21,8 +21,7 @@ export const NavButton = ({
         <Link 
             href={href}
             className={cn(
-                'flex px-2',
-                'text-sm font-medium rounded-full px-3 py-2 transition-all duration-300 ease-in-out relative',
+                'w-36 text-sm font-medium rounded-full px-2 py-2 transition-all duration-300 ease-in-out relative',
                 'hover:bg-white/20 hover:text-white',
                 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-400',
                 isActive 
@@ -30,8 +29,8 @@ export const NavButton = ({
                     : 'text-white/60'
             )}
         >
-            <span className="flex items-center">
-                {Icon && <Icon className="mr-2 h-4 w-4" />}
+            <span className="flex items-center justify-center ml-2">
+                {Icon && <Icon className="mr-2 h-6 w-6" />}
                 {label}
             </span>
             {isActive && (
