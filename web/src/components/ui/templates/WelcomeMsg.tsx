@@ -4,11 +4,11 @@
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData'
 import { authService } from '@/services/auth/AuthService'
 import { useEffect, useState } from 'react'
-import { Stethoscope, UserCog, User, Heart } from 'lucide-react'
+import { Stethoscope, UserCog, User, Heart, UserCheck } from 'lucide-react'
 
 export const WelcomeMsg = () => {
     const { networkData, currentUser } = useNetworkData()
-    const [userType, setUserType] = useState<'admin' | 'doctor' | 'patient' | 'nurse' | null>(null)
+    const [userType, setUserType] = useState<'admin' | 'doctor' | 'patient' | 'nurse' | 'attendant' | null>(null)
     const user = authService.getCurrentUser()
     
     // Seleciona o hospital atual (se aplicável)
@@ -23,6 +23,8 @@ export const WelcomeMsg = () => {
                 setUserType('patient')
             } else if (authService.isNurse()) {
                 setUserType('nurse')
+            } else if (authService.isAttendant()) {
+                setUserType('attendant')
             } else {
                 setUserType('admin')
             }
@@ -40,6 +42,8 @@ export const WelcomeMsg = () => {
                 return `Bem-vinda, Enf. ${user.name}!`
             case 'patient':
                 return `Bem-vindo, ${user.name}!`
+            case 'attendant':
+                return `Bem-vindo ${user.name}!`
             case 'admin':
                 return `Bem-vindo de Volta, ${user.name || 'Administrador'}!`
             default:
@@ -60,6 +64,8 @@ export const WelcomeMsg = () => {
                     : 'Portal de Enfermagem'
             case 'patient':
                 return 'Portal do Paciente'
+            case 'attendant':
+                return 'Portal do Atendente'
             case 'admin':
                 return selectedHospital 
                     ? `${selectedHospital.name || 'Hospital'}`
@@ -78,6 +84,8 @@ export const WelcomeMsg = () => {
                 return <Heart className="h-4 w-4 mr-1" />;
             case 'patient':
                 return <User className="h-4 w-4 mr-1" />;
+            case 'attendant':
+                return <UserCheck className="mr-1 h-3 w-3" />
             case 'admin':
                 return <UserCog className="h-4 w-4 mr-1" />;
             default:
@@ -103,6 +111,11 @@ export const WelcomeMsg = () => {
                     <User className="mr-1 h-3 w-3" />
                     Paciente
                 </span>
+            case 'attendant':
+                return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800 ml-2">
+                  <UserCheck className="mr-1 h-3 w-3" />
+                    Atendente
+                </span>;
             case 'admin':
                 return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 ml-2">
                     <UserCog className="mr-1 h-3 w-3" />

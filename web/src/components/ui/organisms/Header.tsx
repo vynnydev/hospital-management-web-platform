@@ -21,7 +21,7 @@ export const Header = () => {
     const { theme, setTheme } = useTheme();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isIntegrationsOpen, setIsIntegrationsOpen] = useState(false);
-    const [userType, setUserType] = useState<'admin' | 'doctor' | 'patient' | 'nurse' | null>(null);
+    const [userType, setUserType] = useState<'admin' | 'doctor' | 'patient' | 'nurse' | 'attendant' | null>(null);
     const user = authService.getCurrentUser();
     const { networkData, currentUser } = useNetworkData();
 
@@ -36,6 +36,8 @@ export const Header = () => {
                 setUserType('patient');
             } else if (authService.isNurse()) {
                 setUserType('nurse')
+            } else if (authService.isAttendant()) {
+                setUserType('attendant')
             } else {
                 setUserType('admin');
             }
@@ -47,22 +49,6 @@ export const Header = () => {
     const handleLogout = async () => {
         await authService.logout();
         window.location.href = '/sign-in';
-    };
-
-    // Função para retornar o título baseado no tipo de usuário
-    const getTitleByUserType = () => {
-        if (!user) return 'Bem-vindo de Volta!';
-        
-        switch (userType) {
-            case 'doctor':
-                return `Bem-vindo, Dr. ${user.name}!`;
-            case 'patient':
-                return `Bem-vindo, ${user.name}!`;
-            case 'admin':
-                return `Bem-vindo de Volta, Administrador!`;
-            default:
-                return `Bem-vindo de Volta!`;
-        }
     };
 
     // Função para retornar o ícone/badge do tipo de usuário
@@ -80,6 +66,11 @@ export const Header = () => {
                         </div>;
             case 'nurse':
                 return <div className="flex items-center space-x-24 lg:gap-x-8">
+                            <Brand />
+                            <HeaderNavigation />
+                        </div>
+            case 'attendant':
+                return <div className="flex items-center space-x-44 lg:gap-x-8">
                             <Brand />
                             <HeaderNavigation />
                         </div>

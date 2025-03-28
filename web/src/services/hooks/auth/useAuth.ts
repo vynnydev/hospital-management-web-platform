@@ -98,6 +98,13 @@ export function useAuth() {
   };
 
   /**
+   * Verifica se o usuário atual é um atendente
+   */
+  const isAttendant = (): boolean => {
+    return hasRole('atendente');
+  };
+
+  /**
    * Verifica se o usuário tem acesso à telemedicina
    */
   const canAccessTelemedicine = (): boolean => {
@@ -115,6 +122,7 @@ export function useAuth() {
     isDoctor,
     isPatient,
     isNurse,
+    isAttendant,
     isAdministrator,
     canAccessTelemedicine
   };

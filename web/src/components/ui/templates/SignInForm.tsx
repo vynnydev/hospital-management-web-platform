@@ -71,15 +71,19 @@ export const SignInForm = () => {
       }
       else if (userRole === 'médico' && permissions.includes('DOCTOR_ACCESS')) {
         showSuccessToast("Redirecionando para o painel médico...")
-        router.push('/doctor/dashboard')
+        router.push('/doctor-dashboard')
       }
       else if (userRole === 'paciente' && permissions.includes('PATIENT_ACCESS')) {
         showSuccessToast("Redirecionando para sua área de paciente...")
-        router.push('/patient/dashboard')
+        router.push('/patient-dashboard')
       }
-      else if (userRole === 'enfermeiro' && permissions.length > 0) {
+      else if (userRole === 'enfermeiro' && permissions.includes('NURSE_ACCESS')) {
         showSuccessToast("Redirecionando para área de enfermagem...")
-        router.push('/nurse/dashboard')
+        router.push('/nurse-dashboard')
+      }
+      else if (userRole === 'atendente' && permissions.includes('ATTENDANT_ACCESS')) {
+        showSuccessToast("Redirecionando para área de atendimento...")
+        router.push('/attendant-dashboard')
       }
       else {
         showErrorToast(

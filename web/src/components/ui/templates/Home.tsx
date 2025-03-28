@@ -12,7 +12,7 @@ export const Home = () => {
       <div className="flex flex-col items-start space-y-2 font-black text-white text-4xl mt-20">
         <div className="bg-cyan-600 z-10 inline-block px-3 bg-primary mt-2">Gestão hospitalar inteligente e integrada.</div>{' '}
         <div className="bg-cyan-600 z-10 inline-block px-3 bg-primary text-white">
-          Cognitiva: Inovação que você precisa.
+          Cognitiva: Pensando em tudo por você.
         </div>
         <Link
           href="/search"

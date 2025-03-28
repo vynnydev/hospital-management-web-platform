@@ -20,7 +20,15 @@ export type TPermission =
   | 'RECORD_VITALS'
   | 'MANAGE_BEDS'
   | 'VIEW_PATIENT_RECORDS_NURSE'
-  | 'ASSIGN_TASKS';
+  | 'ASSIGN_TASKS'
+  // Permissões para atendentes
+  | 'ATTENDANT_ACCESS'
+  | 'SCHEDULE_MANAGEMENT'
+  | 'PATIENT_REGISTRATION'
+  | 'VIEW_BASIC_PATIENT_INFO'
+  | 'MANAGE_APPOINTMENTS'
+  | 'VIEW_DOCTOR_SCHEDULE'
+  | 'GENERATE_REPORTS';
 
 export type TRole = 
   // Funções existentes

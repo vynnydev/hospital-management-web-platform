@@ -12,7 +12,7 @@ import {
     SheetContent,
     SheetTrigger
 } from '@/components/ui/organisms/sheet'
-import { Menu, Activity, User, Calendar, FileText, Stethoscope, Hospital, BarChart3, Package, Settings, CheckSquare } from 'lucide-react'
+import { Menu, Activity, User, Calendar, FileText, Stethoscope, Hospital, BarChart3, Package, Settings, CheckSquare, UserPlus } from 'lucide-react'
 import { authService } from '@/services/auth/AuthService'
 
 // Definição dos itens de menu para cada tipo de usuário
@@ -168,6 +168,39 @@ const nurseRoutes = [
     },
 ]
 
+const attendantRoutes = [
+    {
+      href: '/attendant-dashboard',
+      label: 'Meu Painel',
+      icon: Activity
+    },
+    {
+      href: '/attendant-appointments',
+      label: 'Agendamentos',
+      icon: Calendar
+    },
+    {
+      href: '/attendant-patients',
+      label: 'Pacientes',
+      icon: User
+    },
+    {
+      href: '/attendant-registration',
+      label: 'Cadastros',
+      icon: UserPlus
+    },
+    {
+      href: '/attendant-doctors',
+      label: 'Agenda Médica',
+      icon: Stethoscope
+    },
+    {
+      href: '/attendant-reports',
+      label: 'Relatórios',
+      icon: FileText
+    },
+];
+
 export const HeaderNavigation = () => {
     const [isOpen, setIsOpen] = useState(false)
     const [userRoutes, setUserRoutes] = useState(adminRoutes) // Default para admin
@@ -187,6 +220,8 @@ export const HeaderNavigation = () => {
                 setUserRoutes(patientRoutes);
             } else if (authService.isNurse()) {
                 setUserRoutes(nurseRoutes);
+            } else if (authService.isAttendant()) {
+                setUserRoutes(attendantRoutes)
             } else {
                 // Administrador ou outros tipos de usuário
                 setUserRoutes(adminRoutes);

@@ -265,7 +265,14 @@ import {
       public isAdministrator(): boolean {
           return this.hasRole('administrador');
       }
-  
+
+      /**
+      * Verifica se o usuário é atendente
+      */
+      public isAttendant(): boolean {
+        return this.hasRole('atendente');
+      }
+    
       /**
        * Verifica se o usuário tem acesso à telemedicina
        */

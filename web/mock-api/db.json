@@ -150,6 +150,94 @@
         "VIEW_PATIENT_RECORDS"
       ],
       "hospitalId": "RD4H-SP-ITAIM"
+    },
+    {
+      "id": "ATD001",
+      "name": "Juliana Santos",
+      "email": "juliana.santos@4health.com",
+      "role": "atendente",
+      "password": "123",
+      "profileImage": "",
+      "permissions": [
+        "ATTENDANT_ACCESS",
+        "SCHEDULE_MANAGEMENT",
+        "PATIENT_REGISTRATION",
+        "VIEW_BASIC_PATIENT_INFO",
+        "MANAGE_APPOINTMENTS"
+      ],
+      "department": "Recepção Principal",
+      "hospitalId": "RD4H-SP-ITAIM"
+    },
+    {
+      "id": "ATD002",
+      "name": "Ricardo Almeida",
+      "email": "ricardo.almeida@4health.com",
+      "role": "atendente",
+      "password": "123",
+      "profileImage": "",
+      "permissions": [
+        "ATTENDANT_ACCESS",
+        "SCHEDULE_MANAGEMENT",
+        "PATIENT_REGISTRATION",
+        "VIEW_BASIC_PATIENT_INFO",
+        "MANAGE_APPOINTMENTS",
+        "VIEW_DOCTOR_SCHEDULE"
+      ],
+      "department": "Agendamento",
+      "hospitalId": "RD4H-SP-ITAIM"
+    },
+    {
+      "id": "ATD003",
+      "name": "Amanda Ferreira",
+      "email": "amanda.ferreira@4health.com",
+      "role": "atendente",
+      "password": "123",
+      "profileImage": "",
+      "permissions": [
+        "ATTENDANT_ACCESS",
+        "SCHEDULE_MANAGEMENT",
+        "PATIENT_REGISTRATION",
+        "VIEW_BASIC_PATIENT_INFO",
+        "MANAGE_APPOINTMENTS",
+        "GENERATE_REPORTS"
+      ],
+      "department": "Atendimento Prioritário",
+      "hospitalId": "RD4H-SP-ITAIM"
+    },
+    {
+      "id": "ATD004",
+      "name": "Bruno Costa",
+      "email": "bruno.costa@4health.com",
+      "role": "atendente",
+      "password": "123",
+      "profileImage": "",
+      "permissions": [
+        "ATTENDANT_ACCESS",
+        "PATIENT_REGISTRATION",
+        "VIEW_BASIC_PATIENT_INFO",
+        "MANAGE_APPOINTMENTS"
+      ],
+      "department": "Pronto Atendimento",
+      "hospitalId": "RD4H-SP-MORUMBI"
+    },
+    {
+      "id": "ATD005",
+      "name": "Carolina Mendes",
+      "email": "carolina.mendes@4health.com",
+      "role": "atendente",
+      "password": "123",
+      "profileImage": "",
+      "permissions": [
+        "ATTENDANT_ACCESS",
+        "SCHEDULE_MANAGEMENT",
+        "PATIENT_REGISTRATION",
+        "VIEW_BASIC_PATIENT_INFO",
+        "MANAGE_APPOINTMENTS",
+        "VIEW_DOCTOR_SCHEDULE",
+        "GENERATE_REPORTS"
+      ],
+      "department": "Recepção Principal",
+      "hospitalId": "RD4H-SP-MORUMBI"
     }
   ],
   "consultations": [
