@@ -2,20 +2,20 @@ import React from 'react';
 import { Sparkles, X, Maximize2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-interface MinimizedAssistantProps {
+interface IMinimizedAssistantProps {
   onMaximize: () => void;
   onClose: () => void;
   unreadCount: number;
 }
 
-export const MinimizedAssistant: React.FC<MinimizedAssistantProps> = ({
+export const MinimizedAssistant: React.FC<IMinimizedAssistantProps> = ({
   onMaximize,
   onClose,
   unreadCount
 }) => {
   return (
     <motion.div
-      className="fixed top-36 right-32 w-[500px] z-50 pointer-events-none"
+      className="fixed top-44 right-32 w-[500px] z-50 pointer-events-none"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       exit={{ y: -100 }}

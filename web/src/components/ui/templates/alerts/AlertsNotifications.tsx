@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
-import { useAlerts } from '../providers/alerts/AlertsProvider';
+import { useAlertsProvider } from '../providers/alerts/AlertsProvider';
 import { 
   AlertTriangle, 
   Filter, 
@@ -27,7 +27,7 @@ interface AlertsNotificationsProps {
 }
 
 export const AlertsNotifications: React.FC<AlertsNotificationsProps> = ({ hospitalId }) => {
-  const { alerts, markAsRead, updateAlertStatus, dismissAlert, getFilteredAlerts } = useAlerts();
+  const { alerts, markAsRead, updateAlertStatus, dismissAlert, getFilteredAlerts } = useAlertsProvider();
   const { networkData } = useNetworkData();
   
   const [filterType, setFilterType] = useState<TAlertType | 'all'>('all');

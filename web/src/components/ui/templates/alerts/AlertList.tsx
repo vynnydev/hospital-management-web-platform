@@ -15,6 +15,7 @@ import {
   Filter, 
   Heart, 
   Info, 
+  Server, 
   Settings, 
   Stethoscope, 
   User, 
@@ -23,7 +24,7 @@ import {
   XCircle
 } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/organisms/scroll-area';
-import { useAlerts } from '../providers/alerts/AlertsProvider';
+import { useAlertsProvider } from '../providers/alerts/AlertsProvider';
 import { IAlert, TAlertPriority, TAlertType } from '@/types/alert-types';
 
 
@@ -38,7 +39,7 @@ export const AlertList: React.FC<AlertListProps> = ({
   onAlertSelect,
   className
 }) => {
-  const { alerts, getFilteredAlerts, markAsRead, updateAlertStatus } = useAlerts();
+  const { alerts, getFilteredAlerts, markAsRead, updateAlertStatus } = useAlertsProvider();
   const [filterType, setFilterType] = useState<TAlertType | undefined>(undefined);
   const [filterPriority, setFilterPriority] = useState<TAlertPriority | undefined>(undefined);
   const [showFilters, setShowFilters] = useState(false);
@@ -87,53 +88,59 @@ export const AlertList: React.FC<AlertListProps> = ({
       darkBgClass: 'dark:bg-red-900/30',
       label: 'Emergências'
     },
-    occupancy: {
+    'occupancy': {
       icon: BedDouble,
       bgClass: 'bg-purple-100',
       darkBgClass: 'dark:bg-purple-900/30',
       label: 'Ocupação de Leitos'
     },
-    staff: {
+    'staff': {
       icon: UserCog,
       bgClass: 'bg-cyan-100',
       darkBgClass: 'dark:bg-cyan-900/30',
       label: 'Equipe Médica'
     },
-    operational: {
+    'operational': {
       icon: Settings,
       bgClass: 'bg-slate-100',
       darkBgClass: 'dark:bg-slate-900/30',
       label: 'Operacional'
     },
-    equipment: {
+    'equipment': {
       icon: Stethoscope,
       bgClass: 'bg-indigo-100',
       darkBgClass: 'dark:bg-indigo-900/30',
       label: 'Equipamentos'
     },
-    warning: {
+    'warning': {
       icon: AlertCircle,
       bgClass: 'bg-yellow-100',
       darkBgClass: 'dark:bg-yellow-900/30',
       label: 'Avisos'
     },
-    info: {
+    'info': {
       icon: Info,
       bgClass: 'bg-blue-50',
       darkBgClass: 'dark:bg-blue-950/30',
       label: 'Informações'
     },
-    success: {
+    'success': {
       icon: CheckCircle,
       bgClass: 'bg-emerald-100',
       darkBgClass: 'dark:bg-emerald-900/30',
       label: 'Sucesso'
     },
-    error: {
+    'error': {
       icon: XCircle,
       bgClass: 'bg-rose-100',
       darkBgClass: 'dark:bg-rose-900/30',
       label: 'Erros'
+    },
+    'system': {
+      icon: Server,
+      bgClass: 'bg-gray-100',
+      darkBgClass: 'dark:bg-gray-900/30',
+      label: 'Sistema'
     }
   };
 

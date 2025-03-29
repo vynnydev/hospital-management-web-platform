@@ -5,7 +5,7 @@ import {
   Bell, 
   Users
 } from 'lucide-react';
-import { useAlerts } from '../providers/alerts/AlertsProvider';
+import { useAlertsProvider } from '../providers/alerts/AlertsProvider';
 
 interface AlertBadgeProps {
   hospitalId?: string;
@@ -24,7 +24,7 @@ export const AlertBadge: React.FC<AlertBadgeProps> = ({
   position = 'relative',
   className = ''
 }) => {
-  const { alerts, unreadCount, highPriorityCount } = useAlerts();
+  const { alerts, unreadCount, highPriorityCount } = useAlertsProvider();
   
   // Filtrar alertas por hospital, se fornecido
   const filteredUnreadCount = hospitalId 

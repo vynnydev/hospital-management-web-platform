@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
 import { useAmbulanceData } from '@/services/hooks/ambulance/useAmbulanceData';
 import { useStaffData } from '@/services/hooks/staffs/useStaffData';
-import { useAlerts } from '../providers/alerts/AlertsProvider';
+import { useAlertsProvider } from '../providers/alerts/AlertsProvider';
 import { 
   Sparkles, 
   CheckCircle2, 
@@ -48,7 +48,7 @@ export const IntelligentRecommendations: React.FC<IntelligentRecommendationsProp
   const { networkData } = useNetworkData();
   const { ambulanceData } = useAmbulanceData(hospitalId);
   const { staffData } = useStaffData(hospitalId);
-  const { alerts } = useAlerts();
+  const { alerts } = useAlertsProvider();
 
   // Verificar se os dados do hospital estão disponíveis
   const hospital = networkData?.hospitals.find(h => h.id === hospitalId);

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
 import type { IHospital } from '@/types/hospital-network-types';
-import { useAlerts } from '@/components/ui/templates/providers/alerts/AlertsProvider';
+import { useAlertsProvider } from '@/components/ui/templates/providers/alerts/AlertsProvider';
 import { AlertDetail } from '@/components/ui/templates/alerts/AlertDetail';
 import { CreateAlertForm } from '@/components/ui/templates/alerts/CreateAlertForm';
 import { AIAlertSuggestions } from '@/components/ui/templates/alerts/AI/AIAlertSuggestions';
@@ -32,7 +32,7 @@ export const ChatAlertsTab: React.FC<ChatAlertsTabProps> = ({
   const [viewMode, setViewMode] = useState<ViewMode>('list');
   const [selectedAlert, setSelectedAlert] = useState<IAlert | null>(null);
   const [selectedHospitals, setSelectedHospitals] = useState<IHospital[]>([]);
-  const { alerts } = useAlerts();
+  const { alerts } = useAlertsProvider();
   const { networkData } = useNetworkData();
 
   // Fechar painel ao clicar fora

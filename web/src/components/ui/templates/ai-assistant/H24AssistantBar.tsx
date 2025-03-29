@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Sparkles, MessageCircle, BellRing } from 'lucide-react';
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
-import { useAlerts } from '../providers/alerts/AlertsProvider';
+import { useAlertsProvider } from '../providers/alerts/AlertsProvider';
 import { H24Assistant, assistantController } from '../H24Assistant';
 import { ChatButton } from '../chat/ChatButton';
 import { eventService } from '@/services/events/EventService';
@@ -31,7 +31,7 @@ export const H24AssistantBar: React.FC<H24AssistantBarProps> = ({
   const [isChatOpen, setIsChatOpen] = useState(false);
   const assistantRef = useRef<H24AssistantHandle>(null);
   const { networkData, currentUser } = useNetworkData();
-  const { unreadCount, highPriorityCount } = useAlerts();
+  const { unreadCount, highPriorityCount } = useAlertsProvider();
   
   const selectedHospitalId = networkData?.hospitals[0]?.id || '';
   const userId = currentUser?.id || 'current-user';
@@ -117,7 +117,7 @@ export const FloatingAssistantButton: React.FC<{
 }) => {
   const assistantRef = useRef<H24AssistantHandle>(null);
   const { networkData, currentUser } = useNetworkData();
-  const { unreadCount } = useAlerts();
+  const { unreadCount } = useAlertsProvider();
   
   const selectedHospitalId = networkData?.hospitals[0]?.id || '';
   const userId = currentUser?.id || 'current-user';

@@ -5,7 +5,7 @@ import { MessageCircle, Bell, Ambulance, Layers, Clock, Sparkles } from 'lucide-
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
 import { useStaffData } from '@/services/hooks/staffs/useStaffData';
 import { useAmbulanceData } from '@/services/hooks/ambulance/useAmbulanceData';
-import { useAlerts } from '../providers/alerts/AlertsProvider';
+import { useAlertsProvider } from '../providers/alerts/AlertsProvider';
 import { IChatContact, IMessage } from '@/types/chat-types';
 
 import { ChatModal } from './ChatModal';
@@ -47,7 +47,7 @@ export const ChatButton: React.FC<ChatButtonProps> = ({
   const messageEndRef = useRef<HTMLDivElement>(null);
   const { networkData } = useNetworkData();
   const { staffData } = useStaffData(networkData?.hospitals[0]?.id || '');
-  const { unreadCount } = useAlerts();
+  const { unreadCount } = useAlertsProvider();
   
   const selectedHospitalId = networkData?.hospitals[0]?.id || 'RD4H-SP-ITAIM';
 

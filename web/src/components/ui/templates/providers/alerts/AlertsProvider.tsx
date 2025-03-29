@@ -23,7 +23,7 @@ interface AlertsContextType {
 export const AlertsContext = createContext<AlertsContextType | undefined>(undefined);
 
 // Hook para usar o contexto de alertas
-export const useAlerts = () => {
+export const useAlertsProvider = () => {
   const context = useContext(AlertsContext);
   if (!context) {
     throw new Error('useAlerts must be used within an AlertsProvider');

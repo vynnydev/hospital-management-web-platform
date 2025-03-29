@@ -23,11 +23,12 @@ import {
   Share2,
   Trash2,
   MoreHorizontal,
-  ExternalLink
+  ExternalLink,
+  Server
 } from 'lucide-react';
 import { Button } from '@/components/ui/organisms/button';
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
-import { useAlerts } from '../providers/alerts/AlertsProvider';
+import { useAlertsProvider } from '../providers/alerts/AlertsProvider';
 import { IAlert, TAlertStatus, TAlertType } from '@/types/alert-types';
 
 interface AlertDetailProps {
@@ -45,7 +46,7 @@ export const AlertDetail: React.FC<AlertDetailProps> = ({
   onSelectHospital,
   showHospitalInfo = true
 }) => {
-  const { updateAlertStatus } = useAlerts();
+  const { updateAlertStatus } = useAlertsProvider();
   const { networkData } = useNetworkData();
 
   if (!alert) {
@@ -145,6 +146,12 @@ export const AlertDetail: React.FC<AlertDetailProps> = ({
       bgColor: 'bg-rose-100',
       darkBgColor: 'dark:bg-rose-900/30',
       textColor: 'text-rose-600 dark:text-rose-400'
+    },
+    'system': {
+      icon: Server,
+      bgColor: '',
+      darkBgColor: '',
+      textColor: ''
     }
   };
 
@@ -199,7 +206,8 @@ export const AlertDetail: React.FC<AlertDetailProps> = ({
     'warning': 'Atenção',
     'info': 'Informação',
     'success': 'Sucesso', 
-    'error': 'Erro'
+    'error': 'Erro',
+    'system': 'Sistema'
   };
 
   // Formatar a data completa do alerta

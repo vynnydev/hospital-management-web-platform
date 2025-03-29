@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { AlertToChatIntegration } from './AlertToChatIntegration';
 import { ChatNotificationData, ChatNotificationsContainer } from './ChatNotification';
 import { Bell, MessageCircle } from 'lucide-react';
-import { useAlerts } from '../../../providers/alerts/AlertsProvider';
+import { useAlertsProvider } from '../../../providers/alerts/AlertsProvider';
 import { AlertBanner } from '../../../alerts/AlertBanner';
 import { AlertsPanel } from '../../../alerts/AlertsPanel';
 import { IAlert } from '@/types/alert-types';
@@ -53,7 +53,7 @@ export const AlertsChatManager: React.FC<AlertsChatManagerProps> = ({
   showNotifications = true,
   className = ''
 }) => {
-  const { alerts, unreadCount, highPriorityCount } = useAlerts();
+  const { alerts, unreadCount, highPriorityCount } = useAlertsProvider();
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [chatGroups, setChatGroups] = useState<ChatGroup[]>([]);
   const [notifications, setNotifications] = useState<ChatNotificationData[]>([]);
@@ -279,7 +279,7 @@ export const AlertsBadge: React.FC<{
   onClick,
   className = ''
 }) => {
-  const { unreadCount, highPriorityCount } = useAlerts();
+  const { unreadCount, highPriorityCount } = useAlertsProvider();
   
   if (unreadCount === 0) {
     return (

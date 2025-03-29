@@ -28,12 +28,6 @@ export interface IEventType {
     id: string;
     name: string;
 }
-  
-export interface IAlertTemplate {
-    id: string;
-    name: string;
-    description: string;
-}
 
 export interface ITemplate {
     id: string;

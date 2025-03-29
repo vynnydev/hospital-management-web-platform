@@ -2,25 +2,34 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect, useRef } from 'react';
 import { 
+  AlertCircle,
   AlertTriangle, 
   Ambulance, 
+  Bed, 
   Bell, 
   Bot, 
+  CheckCircle, 
   CheckCircle2, 
   ChevronRight, 
   Clock, 
+  Cpu, 
   Heart, 
+  Info, 
   Paperclip, 
+  Server, 
+  Settings, 
   Sparkles, 
   User, 
-  Users
+  UserCog, 
+  Users,
+  XCircle
 } from 'lucide-react';
 import Image from 'next/image';
 import { ScrollArea } from '@/components/ui/organisms/scroll-area';
 import { Button } from '@/components/ui/organisms/button';
 import type { IMessage, IAttachment } from '@/types/app-types';
 import type { IAppUser } from '@/types/auth-types';
-import { useAlerts } from '../providers/alerts/AlertsProvider';
+import { useAlertsProvider } from '../providers/alerts/AlertsProvider';
 import { IAlert, TAlertType } from '@/types/alert-types';
 
 interface MessageThreadWithAlertsProps {
@@ -56,30 +65,57 @@ export const MessageThreadWithAlerts: React.FC<MessageThreadWithAlertsProps> = (
   const messageEndRef = useRef<HTMLDivElement>(null);
   
   // Obter alertas do contexto
-  const { alerts, markAsRead, updateAlertStatus } = useAlerts();
+  const { alerts, markAsRead, updateAlertStatus } = useAlertsProvider();
   
   // Ícones por tipo de alerta
   const alertIcons: Record<TAlertType, React.FC<any>> = {
     'ambulance': Ambulance,
     'patient-arrival': Users,
     'resource': Bell,
-    'emergency': AlertTriangle
+    'emergency': AlertTriangle,
+    'occupancy': Bed,
+    'staff': UserCog,
+    'operational': Settings,
+    'equipment': Cpu,
+    'warning': AlertCircle,
+    'info': Info,
+    'success': CheckCircle,
+    'error': XCircle,
+    'system': Server
   };
-  
+
   // Cores por tipo de alerta
   const alertColors: Record<TAlertType, string> = {
     'ambulance': 'from-blue-600 to-blue-700',
     'patient-arrival': 'from-green-600 to-green-700',
     'resource': 'from-amber-600 to-amber-700',
-    'emergency': 'from-red-600 to-red-700'
+    'emergency': 'from-red-600 to-red-700',
+    'occupancy': 'from-purple-600 to-purple-700',
+    'staff': 'from-indigo-600 to-indigo-700',
+    'operational': 'from-teal-600 to-teal-700',
+    'equipment': 'from-cyan-600 to-cyan-700',
+    'warning': 'from-yellow-600 to-yellow-700',
+    'info': 'from-sky-600 to-sky-700',
+    'success': 'from-emerald-600 to-emerald-700',
+    'error': 'from-rose-600 to-rose-700',
+    'system': 'from-gray-600 to-gray-700'
   };
-  
+
   // Cores para o modo escuro
   const darkAlertColors: Record<TAlertType, string> = {
     'ambulance': 'dark:from-blue-700 dark:to-blue-800',
     'patient-arrival': 'dark:from-green-700 dark:to-green-800',
     'resource': 'dark:from-amber-700 dark:to-amber-800',
-    'emergency': 'dark:from-red-700 dark:to-red-800'
+    'emergency': 'dark:from-red-700 dark:to-red-800',
+    'occupancy': 'dark:from-purple-700 dark:to-purple-800',
+    'staff': 'dark:from-indigo-700 dark:to-indigo-800',
+    'operational': 'dark:from-teal-700 dark:to-teal-800',
+    'equipment': 'dark:from-cyan-700 dark:to-cyan-800',
+    'warning': 'dark:from-yellow-700 dark:to-yellow-800',
+    'info': 'dark:from-sky-700 dark:to-sky-800',
+    'success': 'dark:from-emerald-700 dark:to-emerald-800',
+    'error': 'dark:from-rose-700 dark:to-rose-800',
+    'system': 'dark:from-gray-700 dark:to-gray-800'
   };
   
   // Integrar alertas às mensagens de chat

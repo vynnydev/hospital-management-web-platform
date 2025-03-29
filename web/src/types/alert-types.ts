@@ -2,9 +2,11 @@
 
 import { IMessage } from "./app-types";
 import { IAppUser } from "./auth-types";
+import { TNotificationChannel } from "./notification-settings-types";
 
 // Tipos para o sistema de alertas
 export type TAlertPriority = 'high' | 'medium' | 'low' | 'critical';
+
 export type TAlertType = 
   'ambulance' | 
   'patient-arrival' | 
@@ -17,9 +19,17 @@ export type TAlertType =
   'warning' | 
   'info' | 
   'success' | 
-  'error';
+  'error' |
+  'system';
 export type TAlertStatus = 'pending' | 'acknowledged' | 'resolved' | 'dismissed';
+
 export type TUserRole = 'doctor' | 'nurse' | 'attendant' | 'admin' | 'system' | 'ai';
+
+// Severidade de Alertas (para códigos de cores)
+export type TAlertSeverity = 'info' | 'warning' | 'critical' | 'emergency';
+
+// Condição para disparar alertas
+export type TAlertCondition = 'greater' | 'less' | 'equal' | 'between';
 
 // Interface para alertas
 export interface IAlert {
@@ -76,4 +86,41 @@ export interface IExtendedMessage extends IMessage {
     type: string;
     size: number;
   }[];
+}
+
+export interface IAlertCondition {
+  type: TAlertCondition;
+  threshold: number;
+  thresholdSecondary?: number; // Para condição "between"
+  persistence: number; // Tempo em minutos que a condição deve persistir
+}
+
+export interface IAlertTemplate {
+  id: string;
+  name: string;
+  description: string;
+  type: TAlertType;
+  priority: TAlertPriority;
+  condition: IAlertCondition;
+  message: string;
+  severity: TAlertSeverity;
+  channels: TNotificationChannel[];
+}
+
+// Interface para filtros de alertas
+export interface IAlertFilters {
+  type?: TAlertType | 'all';
+  priority?: TAlertPriority | 'all';
+  status?: TAlertStatus | 'all';
+  hospitalId?: string;
+  read?: boolean;
+  startDate?: Date;
+  endDate?: Date;
+}
+
+// Interface para contagem de alertas não lidos
+export interface IUnreadAlertCount {
+  total: number;
+  highPriority: number;
+  byType: Record<TAlertType, number>;
 }

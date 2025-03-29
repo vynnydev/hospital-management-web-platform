@@ -33,7 +33,7 @@ import {
 import { TAlertPriority, TAlertType } from '@/types/alert-types';
 import { INetworkData } from '@/types/hospital-network-types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/organisms/tabs";
-import { useAlerts } from '../providers/alerts/AlertsProvider';
+import { useAlertsProvider } from '../providers/alerts/AlertsProvider';
 import { Separator } from '../../organisms/Separator';
 
 interface MetricsAlertsIntegrationProps {
@@ -72,18 +72,22 @@ const conditionMap = {
 
 // Mapear tipos de alerta para ícones e cores
 const alertTypeMap: Record<TAlertType, { icon: React.ReactNode; color: string }> = {
-    'ambulance': { icon: <Ambulance className="h-4 w-4" />, color: 'text-red-500 bg-red-950' },
-    'patient-arrival': { icon: <User className="h-4 w-4" />, color: 'text-blue-500 bg-blue-950' },
-    'resource': { icon: <Package className="h-4 w-4" />, color: 'text-amber-500 bg-amber-950' },
-    'emergency': { icon: <AlertTriangle className="h-4 w-4" />, color: 'text-red-600 bg-red-950' },
-    'occupancy': { icon: <Bed className="h-4 w-4" />, color: 'text-red-500 bg-red-950' },
-    'staff': { icon: <Users className="h-4 w-4" />, color: 'text-amber-500 bg-amber-950' },
-    'operational': { icon: <Settings className="h-4 w-4" />, color: 'text-purple-500 bg-purple-950' },
-    'equipment': { icon: <Wrench className="h-4 w-4" />, color: 'text-blue-500 bg-blue-950' },
-    'warning': { icon: <AlertTriangle className="h-4 w-4" />, color: 'text-amber-500 bg-amber-950' },
-    'info': { icon: <Info className="h-4 w-4" />, color: 'text-blue-500 bg-blue-950' },
-    'success': { icon: <CheckCircle className="h-4 w-4" />, color: 'text-green-500 bg-green-950' },
-    'error': { icon: <XCircle className="h-4 w-4" />, color: 'text-red-500 bg-red-950' }
+  'ambulance': { icon: <Ambulance className="h-4 w-4" />, color: 'text-red-500 bg-red-950' },
+  'patient-arrival': { icon: <User className="h-4 w-4" />, color: 'text-blue-500 bg-blue-950' },
+  'resource': { icon: <Package className="h-4 w-4" />, color: 'text-amber-500 bg-amber-950' },
+  'emergency': { icon: <AlertTriangle className="h-4 w-4" />, color: 'text-red-600 bg-red-950' },
+  'occupancy': { icon: <Bed className="h-4 w-4" />, color: 'text-red-500 bg-red-950' },
+  'staff': { icon: <Users className="h-4 w-4" />, color: 'text-amber-500 bg-amber-950' },
+  'operational': { icon: <Settings className="h-4 w-4" />, color: 'text-purple-500 bg-purple-950' },
+  'equipment': { icon: <Wrench className="h-4 w-4" />, color: 'text-blue-500 bg-blue-950' },
+  'warning': { icon: <AlertTriangle className="h-4 w-4" />, color: 'text-amber-500 bg-amber-950' },
+  'info': { icon: <Info className="h-4 w-4" />, color: 'text-blue-500 bg-blue-950' },
+  'success': { icon: <CheckCircle className="h-4 w-4" />, color: 'text-green-500 bg-green-950' },
+  'error': { icon: <XCircle className="h-4 w-4" />, color: 'text-red-500 bg-red-950' },
+  'system': {
+    icon: undefined,
+    color: ''
+  }
 };
 
 export const MetricsAlertsIntegration: React.FC<MetricsAlertsIntegrationProps> = ({
@@ -99,7 +103,7 @@ export const MetricsAlertsIntegration: React.FC<MetricsAlertsIntegrationProps> =
     getFilteredAlerts,
     updateAlertStatus,
     markAsRead
-  } = useAlerts();
+  } = useAlertsProvider();
   
   // Estado para regras de alerta
   const [alertRules, setAlertRules] = useState<IAlertRule[]>([

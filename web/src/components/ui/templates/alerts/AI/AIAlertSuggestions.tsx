@@ -15,7 +15,7 @@ import { ScrollArea } from '@/components/ui/organisms/scroll-area';
 import { Button } from '@/components/ui/organisms/button';
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
 import type { IHospital } from '@/types/hospital-network-types';
-import { useAlerts } from '../../providers/alerts/AlertsProvider';
+import { useAlertsProvider } from '../../providers/alerts/AlertsProvider';
 import { IAlert, TAlertType } from '@/types/alert-types';
 
 interface AIAlertSuggestionsProps {
@@ -47,7 +47,7 @@ export const AIAlertSuggestions: React.FC<AIAlertSuggestionsProps> = ({
   const [loading, setLoading] = useState(true);
   const [suggestions, setSuggestions] = useState<AISuggestion[]>([]);
   const [selectedSuggestion, setSelectedSuggestion] = useState<AISuggestion | null>(null);
-  const { addCustomAlert } = useAlerts();
+  const { addCustomAlert } = useAlertsProvider();
   const { networkData } = useNetworkData();
 
   // Simular a busca de sugestões da IA

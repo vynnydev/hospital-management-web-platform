@@ -14,7 +14,7 @@ import {
 import { ScrollArea } from '@/components/ui/organisms/scroll-area';
 import { Button } from '@/components/ui/organisms/button';
 import type { IHospital } from '@/types/hospital-network-types';
-import { useAlerts } from '../providers/alerts/AlertsProvider';
+import { useAlertsProvider } from '../providers/alerts/AlertsProvider';
 import { TAlertPriority, TAlertType } from '@/types/alert-types';
 
 interface CreateAlertFormProps {
@@ -30,7 +30,7 @@ export const CreateAlertForm: React.FC<CreateAlertFormProps> = ({
   onCancel,
   onSuccess
 }) => {
-  const { sendAlertToHospitals } = useAlerts();
+  const { sendAlertToHospitals } = useAlertsProvider();
   
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
@@ -133,7 +133,8 @@ export const CreateAlertForm: React.FC<CreateAlertFormProps> = ({
     warning: [],
     info: [],
     success: [],
-    error: []
+    error: [],
+    system: []
   };
 
   // Validação do formulário

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Bell, AlertCircle } from 'lucide-react';
-import { useAlerts } from '../providers/alerts/AlertsProvider';
+import { useAlertsProvider } from '../providers/alerts/AlertsProvider';
 
 interface AlertsIndicatorProps {
   onClick?: () => void;
@@ -19,7 +19,7 @@ export const AlertsIndicator: React.FC<AlertsIndicatorProps> = ({
   size = 'md',
   className = ''
 }) => {
-  const { unreadCount, highPriorityCount } = useAlerts();
+  const { unreadCount, highPriorityCount } = useAlertsProvider();
   
   // Se não houver alertas não lidos, não mostrar nada
   if (unreadCount === 0) {
@@ -89,7 +89,7 @@ export const AlertsIndicator: React.FC<AlertsIndicatorProps> = ({
 
 // Este é um componente simples que mostra apenas um dot vermelho para indicar alertas
 export const AlertsDot: React.FC<{ className?: string }> = ({ className = '' }) => {
-  const { unreadCount, highPriorityCount } = useAlerts();
+  const { unreadCount, highPriorityCount } = useAlertsProvider();
   
   if (unreadCount === 0) {
     return null;

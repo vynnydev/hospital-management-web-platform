@@ -6,7 +6,7 @@ import { Sparkles, X, Minimize2, BellRing } from 'lucide-react';
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
 import { useStaffData } from '@/services/hooks/staffs/useStaffData';
 import { useAmbulanceData } from '@/services/hooks/ambulance/useAmbulanceData';
-import { useAlerts } from './providers/alerts/AlertsProvider';
+import { useAlertsProvider } from './providers/alerts/AlertsProvider';
 import { motion, AnimatePresence } from 'framer-motion';
 import { IRecommendation, IStatistics } from '@/types/ai-assistant-types';
 import { eventService } from '@/services/events/EventService';
@@ -63,7 +63,7 @@ export const H24Assistant = forwardRef<H24AssistantHandle, H24AssistantProps>(({
     const { networkData, currentUser } = useNetworkData();
     const { staffData } = useStaffData(hospitalId || (networkData?.hospitals[0]?.id || ''));
     const { ambulanceData } = useAmbulanceData(hospitalId || (networkData?.hospitals[0]?.id || ''));
-    const { alerts, unreadCount, highPriorityCount, getFilteredAlerts } = useAlerts();
+    const { alerts, unreadCount, highPriorityCount, getFilteredAlerts } = useAlertsProvider();
     
     const selectedHospitalId = hospitalId || networkData?.hospitals[0]?.id || 'RD4H-SP-ITAIM';
     const hospital = networkData?.hospitals.find(h => h.id === selectedHospitalId);

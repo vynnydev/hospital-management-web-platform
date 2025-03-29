@@ -21,7 +21,7 @@ import { workflowTemplates } from '@/utils/workflowTemplates';
 import { TemplatesSidebar } from './TemplatesSidebar';
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
 import { useAmbulanceData } from '@/services/hooks/ambulance/useAmbulanceData';
-import { AlertsProvider, useAlerts } from '@/components/ui/templates/providers/alerts/AlertsProvider';
+import { useAlertsProvider } from '@/components/ui/templates/providers/alerts/AlertsProvider';
 import { useStaffData } from '@/services/hooks/staffs/useStaffData';
 import { SmartTemplateRecommendations } from '@/components/ui/templates/process-templates/SmartTemplateRecommendations';
 import { EnhancedTemplateCarousel } from '@/components/ui/templates/process-templates/EnhancedTemplateCarousel';
@@ -54,7 +54,7 @@ export const WorkflowTab = () => {
 
   // Hooks para obter dados do sistema para as recomendações inteligentes
   const { networkData, currentUser } = useNetworkData();
-  const { alerts, getFilteredAlerts } = useAlerts();
+  const { alerts, getFilteredAlerts } = useAlertsProvider();
   const ambulanceData = useAmbulanceData(currentUser?.hospitalId || null);
 
   const { 

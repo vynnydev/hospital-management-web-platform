@@ -5,7 +5,7 @@ import {
   Sparkles, 
   AlertCircle
 } from 'lucide-react';
-import { useAlerts } from '../providers/alerts/AlertsProvider';
+import { useAlertsProvider } from '../providers/alerts/AlertsProvider';
 import { INetworkData } from '@/types/hospital-network-types';
 import { 
   Tabs, 
@@ -87,7 +87,7 @@ export const AIMetricsGenerator: React.FC<IAIMetricsGeneratorProps> = ({
   } | null>(null);
   
   // Acesso ao contexto de alertas
-  const { addCustomAlert } = useAlerts();
+  const { addCustomAlert } = useAlertsProvider();
 
   // Função para mostrar uma notificação
   const showNotification = (type: 'success' | 'info' | 'warning' | 'error', message: string) => {

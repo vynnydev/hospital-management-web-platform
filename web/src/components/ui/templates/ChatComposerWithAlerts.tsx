@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/organisms/button';
 import type { IAppUser } from '@/types/auth-types';
-import { useAlerts } from '@/components/ui/templates/providers/alerts/AlertsProvider';
+import { useAlertsProvider } from '@/components/ui/templates/providers/alerts/AlertsProvider';
 
 interface ChatComposerWithAlertsProps {
   onSendMessage: (message: string, attachments?: File[]) => void;
@@ -41,7 +41,7 @@ export const ChatComposerWithAlerts: React.FC<ChatComposerWithAlertsProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  const { alerts } = useAlerts();
+  const { alerts } = useAlertsProvider();
   
   // Auto-expand textarea
   useEffect(() => {

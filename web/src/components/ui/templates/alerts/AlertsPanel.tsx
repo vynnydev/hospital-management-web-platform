@@ -18,7 +18,7 @@ import {
   Share2,
   MessageSquare
 } from 'lucide-react';
-import { useAlerts } from '../providers/alerts/AlertsProvider';
+import { useAlertsProvider } from '../providers/alerts/AlertsProvider';
 import { IAlert, TAlertPriority, TAlertType } from '@/types/alert-types';
 
 // Props para o componente de painel de alertas
@@ -205,7 +205,7 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({
     markAllAsRead, 
     dismissAlert, 
     getFilteredAlerts 
-  } = useAlerts();
+  } = useAlertsProvider();
   
   const [activeFilter, setActiveFilter] = useState<TAlertType | 'all'>('all');
   const [activePriority, setActivePriority] = useState<TAlertPriority | 'all'>('all');

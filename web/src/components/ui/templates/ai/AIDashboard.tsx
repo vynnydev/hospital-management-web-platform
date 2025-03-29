@@ -15,7 +15,7 @@ import {
   Check,
   X
 } from 'lucide-react';
-import { useAlerts } from '../providers/alerts/AlertsProvider';
+import { useAlertsProvider } from '../providers/alerts/AlertsProvider';
 import { useStaffData } from '@/services/hooks/staffs/useStaffData';
 import { IntelligentRecommendations } from './IntelligentRecommendations';
 import { PredictiveAnalysis } from './PredictiveAnalysis';
@@ -37,7 +37,7 @@ export const AIDashboard: React.FC<AIDashboardProps> = ({ preSelectedHospitalId,
   const [isHospitalSelectorOpen, setIsHospitalSelectorOpen] = useState(false);
   
   const { networkData, loading: networkLoading } = useNetworkData();
-  const { alerts, highPriorityCount } = useAlerts();
+  const { alerts, highPriorityCount } = useAlertsProvider();
   const { ambulanceData } = useAmbulanceData(selectedHospitalId);
   const { staffData } = useStaffData(selectedHospitalId ? selectedHospitalId : '');
   

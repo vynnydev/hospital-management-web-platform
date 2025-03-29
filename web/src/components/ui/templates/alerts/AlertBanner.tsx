@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AlertTriangle, X, ChevronLeft, ChevronRight, MessageSquare } from 'lucide-react';
-import { useAlerts } from '../providers/alerts/AlertsProvider';
+import { useAlertsProvider } from '../providers/alerts/AlertsProvider';
 import { IAlert } from '@/types/alert-types';
 
 
@@ -20,7 +20,7 @@ export const AlertBanner: React.FC<AlertBannerProps> = ({
   autoHideAfter = 0,  // 0 = não ocultar automaticamente
   showOnlyPriority = ['high']
 }) => {
-  const { alerts, markAsRead, dismissAlert } = useAlerts();
+  const { alerts, markAsRead, dismissAlert } = useAlertsProvider();
   const [isVisible, setIsVisible] = useState(true);
   const [activeAlertIndex, setActiveAlertIndex] = useState(0);
   const [autoHideTimeoutId, setAutoHideTimeoutId] = useState<NodeJS.Timeout | null>(null);

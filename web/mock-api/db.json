@@ -2312,40 +2312,202 @@
   },
   "alerts": [
     {
-      "id": "alert-001",
-      "type": "mass_casualty",
-      "severity": "high",
-      "location": {
-        "lat": -23.5558,
-        "lng": -46.6396,
-        "address": "Av. Paulista, São Paulo, SP"
-      },
-      "estimatedVictims": 15,
-      "timestamp": "2025-02-19T14:30:00Z",
-      "status": "active",
-      "respondingUnits": [
-        "ambulance-3",
-        "ambulance-7",
-        "helicopter-1"
-      ]
+      "id": "alert-1",
+      "title": "Ocupação UTI crítica",
+      "message": "A taxa de ocupação da UTI atingiu 95%, acima do limite seguro de 90%.",
+      "type": "resource",
+      "priority": "high",
+      "timestamp": "2025-03-28T14:35:00Z",
+      "read": false,
+      "status": "pending",
+      "actionRequired": true,
+      "hospitalId": "hospital-001",
+      "metadata": {
+        "departmentId": "UTI",
+        "currentValue": 95,
+        "threshold": 90
+      }
     },
     {
-      "id": "alert-002",
-      "type": "natural_disaster",
-      "severity": "medium",
-      "location": {
-        "lat": -22.9129,
-        "lng": -43.2003,
-        "address": "Tijuca, Rio de Janeiro, RJ"
-      },
-      "estimatedVictims": 8,
-      "timestamp": "2025-02-19T15:15:00Z",
+      "id": "alert-2",
+      "title": "Escassez de equipe de enfermagem",
+      "message": "A razão enfermeiro/paciente está abaixo do recomendado no turno noturno.",
+      "type": "resource",
+      "priority": "medium",
+      "timestamp": "2025-03-28T10:22:00Z",
+      "read": true,
+      "status": "acknowledged",
+      "actionRequired": true,
+      "hospitalId": "hospital-001",
+      "metadata": {
+        "departmentId": "Enfermaria",
+        "shift": "Noite",
+        "currentRatio": 1.15,
+        "recommendedRatio": 1.5
+      }
+    },
+    {
+      "id": "alert-3",
+      "title": "Ambulância com manutenção atrasada",
+      "message": "A ambulância AMB-1234 está com a manutenção preventiva atrasada em 7 dias.",
+      "type": "ambulance",
+      "priority": "medium",
+      "timestamp": "2025-03-27T18:05:00Z",
+      "read": false,
       "status": "pending",
-      "respondingUnits": [
-        "ambulance-12"
-      ]
+      "actionRequired": true,
+      "hospitalId": "hospital-001",
+      "metadata": {
+        "ambulanceId": "AMB-1234",
+        "daysOverdue": 7,
+        "lastMaintenance": "2025-01-15"
+      }
+    },
+    {
+      "id": "alert-4",
+      "title": "Paciente com sinais vitais alterados",
+      "message": "O paciente João Silva no leito UTI-101 apresenta alterações nos sinais vitais.",
+      "type": "patient-arrival",
+      "priority": "high",
+      "timestamp": "2025-03-28T13:45:00Z", 
+      "read": false,
+      "status": "pending",
+      "actionRequired": true,
+      "hospitalId": "hospital-001",
+      "metadata": {
+        "patientId": "P001",
+        "bedId": "UTI-101",
+        "vitalSigns": {
+          "bloodPressure": "150/90",
+          "heartRate": 110,
+          "temperature": 38.2
+        }
+      }
+    },
+    {
+      "id": "alert-5",
+      "title": "Nova mensagem de médico",
+      "message": "Dr. Carlos Silveira enviou uma mensagem sobre o paciente Maria Santos.",
+      "type": "emergency",
+      "priority": "low",
+      "timestamp": "2025-03-28T12:15:00Z",
+      "read": true,
+      "status": "acknowledged",
+      "actionRequired": false,
+      "hospitalId": "hospital-001",
+      "metadata": {
+        "staffId": "D002",
+        "patientId": "P002",
+        "subject": "Revisão de medicação"
+      }
     }
   ],
+  "alert-templates": [
+    {
+      "id": "template-1",
+      "name": "Ocupação Crítica",
+      "description": "Alerta quando ocupação ultrapassa 90% da capacidade",
+      "type": "resource",
+      "priority": "high",
+      "condition": {
+        "type": "greater",
+        "threshold": 90,
+        "persistence": 15
+      },
+      "message": "Alerta: A taxa de ocupação ultrapassou [valor]%. É recomendado revisar o plano de contingência.",
+      "severity": "warning",
+      "channels": ["email", "sms", "dashboard", "app"]
+    },
+    {
+      "id": "template-2",
+      "name": "Tempo de Espera Elevado",
+      "description": "Notificação quando tempo médio de espera ultrapassa 45 minutos",
+      "type": "resource",
+      "priority": "medium",
+      "condition": {
+        "type": "greater",
+        "threshold": 45,
+        "persistence": 10
+      },
+      "message": "Alerta: O tempo médio de espera chegou a [valor] minutos, acima do limite de [limite] minutos.",
+      "severity": "info",
+      "channels": ["dashboard", "app"]
+    },
+    {
+      "id": "template-3",
+      "name": "Estoque Baixo",
+      "description": "Alerta para medicamentos ou materiais com estoque abaixo do mínimo",
+      "type": "resource",
+      "priority": "medium",
+      "condition": {
+        "type": "less",
+        "threshold": 10,
+        "persistence": 0
+      },
+      "message": "Alerta: Estoque do item [item] está em [valor]%, abaixo do mínimo de [limite]%.",
+      "severity": "warning",
+      "channels": ["email", "dashboard", "app"]
+    }
+  ],
+  "notification-channels": [
+    {
+      "id": "email",
+      "name": "Email",
+      "enabled": true,
+      "config": {
+        "sendInterval": 5,
+        "batchNotifications": true
+      }
+    },
+    {
+      "id": "sms",
+      "name": "SMS",
+      "enabled": true,
+      "config": {
+        "sendInterval": 5,
+        "batchNotifications": false
+      }
+    },
+    {
+      "id": "dashboard",
+      "name": "Dashboard",
+      "enabled": true,
+      "config": {
+        "sound": true,
+        "desktop": true
+      }
+    },
+    {
+      "id": "app",
+      "name": "Aplicativo",
+      "enabled": true,
+      "config": {
+        "pushNotifications": true
+      }
+    }
+  ],
+  "notification-settings": {
+    "emails": ["coordenacao@hospital.com", "plantao@hospital.com"],
+    "phones": ["+55 11 98765-4321", "+55 11 91234-5678"],
+    "repeatInterval": 30,
+    "defaultChannels": ["email", "dashboard"],
+    "highPriorityChannels": ["email", "sms", "dashboard", "app"],
+    "silentHours": {
+      "enabled": false,
+      "start": "22:00",
+      "end": "06:00"
+    }
+  },
+  "alerts/unread/count": {
+    "total": 3,
+    "highPriority": 2,
+    "byType": {
+      "resource": 1,
+      "ambulance": 1,
+      "patient-arrival": 1,
+      "emergency": 0
+    }
+  },
   "resourceDeployment": {
     "availableAmbulances": 14,
     "availableHelicopters": 2,
