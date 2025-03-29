@@ -17,7 +17,8 @@ import {
   ChevronUp
 } from 'lucide-react';
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
-import { Alert, useAlerts } from '../../../providers/alerts/AlertsProvider';
+import { useAlertsProvider } from '../../../providers/alerts/AlertsProvider';
+import { IAlert } from '@/types/alert-types';
 
 interface ResourceMonitorProps {
   hospitalId: string;
@@ -51,7 +52,7 @@ export const ResourceMonitor: React.FC<ResourceMonitorProps> = ({
   className = ''
 }) => {
   const { networkData } = useNetworkData();
-  const { addCustomAlert } = useAlerts();
+  const { addCustomAlert } = useAlertsProvider();
   
   const [loading, setLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
@@ -185,7 +186,7 @@ export const ResourceMonitor: React.FC<ResourceMonitorProps> = ({
       // Verificar recursos críticos e criar alertas
       Object.values(mockResourcesData).flat().forEach(resource => {
         if (resource.status === 'critical') {
-          const newAlert: Omit<Alert, 'id' | 'timestamp' | 'read'> = {
+          const newAlert: Omit<IAlert, 'id' | 'timestamp' | 'read'> = {
             type: 'resource',
             title: `${resource.name} em estado crítico`,
             message: `${resource.name} em ${resource.department}: ${resource.current} de ${resource.total} ${resource.unit} disponíveis.`,
@@ -197,7 +198,8 @@ export const ResourceMonitor: React.FC<ResourceMonitorProps> = ({
               department: resource.department,
               current: resource.current,
               total: resource.total
-            }
+            },
+            status: 'pending'
           };
           
           addCustomAlert(newAlert);

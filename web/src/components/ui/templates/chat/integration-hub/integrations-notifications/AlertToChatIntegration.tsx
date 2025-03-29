@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect } from 'react';
-import { Alert, useAlerts } from '../../../providers/alerts/AlertsProvider';
-
+import { useAlertsProvider } from '../../../providers/alerts/AlertsProvider';
+import { IAlert } from '@/types/alert-types';
 
 interface AlertToChatIntegrationProps {
   hospitalId: string;
@@ -21,7 +21,7 @@ export const AlertToChatIntegration: React.FC<AlertToChatIntegrationProps> = ({
   createChat,
   autoCreateChatForPriority = ['high']
 }) => {
-  const { alerts, markAsRead } = useAlerts();
+  const { alerts, markAsRead } = useAlertsProvider();
   
   // Monitorar alertas de alta prioridade e criar chats automaticamente
   useEffect(() => {
@@ -40,7 +40,7 @@ export const AlertToChatIntegration: React.FC<AlertToChatIntegrationProps> = ({
   }, [alerts, autoCreateChatForPriority]);
   
   // Função para criar um chat a partir de um alerta
-  const createChatForAlert = (alert: Alert) => {
+  const createChatForAlert = (alert: IAlert) => {
     // Determinar participantes com base no tipo de alerta
     const participants = getRelevantParticipantsForAlert(alert);
     
@@ -65,7 +65,7 @@ export const AlertToChatIntegration: React.FC<AlertToChatIntegrationProps> = ({
   };
   
   // Determinar participantes relevantes com base no tipo de alerta
-  const getRelevantParticipantsForAlert = (alert: Alert): string[] => {
+  const getRelevantParticipantsForAlert = (alert: IAlert): string[] => {
     // Em um sistema real, esta função usaria lógica de regras de negócio 
     // para determinar quem deve ser incluído no chat
     
@@ -97,7 +97,7 @@ export const AlertToChatIntegration: React.FC<AlertToChatIntegrationProps> = ({
   };
   
   // Criar título para o chat com base no tipo de alerta
-  const getChatTitleForAlert = (alert: Alert): string => {
+  const getChatTitleForAlert = (alert: IAlert): string => {
     switch (alert.type) {
       case 'ambulance':
         return `🚑 Ambulância ${alert.metadata?.ambulanceId || ''}: ${alert.title}`;
@@ -117,7 +117,7 @@ export const AlertToChatIntegration: React.FC<AlertToChatIntegrationProps> = ({
   };
   
   // Criar mensagem inicial para o chat com base no tipo de alerta
-  const getInitialMessageForAlert = (alert: Alert): string => {
+  const getInitialMessageForAlert = (alert: IAlert): string => {
     const timestamp = alert.timestamp.toLocaleString();
     
     let message = `[Sistema] Alerta automático criado em ${timestamp}.\n\n`;
@@ -186,9 +186,9 @@ export const useAlertToChatIntegration = ({
   hospitalId: string;
   createChat: (title: string, initialMessage: string, participants: string[], metadata?: Record<string, any>) => void;
 }) => {
-  const { markAsRead } = useAlerts();
+  const { markAsRead } = useAlertsProvider();
   
-  const createChatFromAlert = (alert: Alert) => {
+  const createChatFromAlert = (alert: IAlert) => {
     // Determinar participantes com base no tipo de alerta
     const participants = getRelevantParticipantsForAlert(alert);
     
@@ -216,7 +216,7 @@ export const useAlertToChatIntegration = ({
   };
   
   // Funções auxiliares (idênticas às do componente)
-  const getRelevantParticipantsForAlert = (alert: Alert): string[] => {
+  const getRelevantParticipantsForAlert = (alert: IAlert): string[] => {
     switch (alert.type) {
       case 'ambulance':
         return ['emergency-team', 'ambulance-control', 'reception'];
@@ -241,7 +241,7 @@ export const useAlertToChatIntegration = ({
     }
   };
   
-  const getChatTitleForAlert = (alert: Alert): string => {
+  const getChatTitleForAlert = (alert: IAlert): string => {
     switch (alert.type) {
       case 'ambulance':
         return `🚑 Ambulância ${alert.metadata?.ambulanceId || ''}: ${alert.title}`;
@@ -260,7 +260,7 @@ export const useAlertToChatIntegration = ({
     }
   };
   
-  const getInitialMessageForAlert = (alert: Alert): string => {
+  const getInitialMessageForAlert = (alert: IAlert): string => {
     const timestamp = alert.timestamp.toLocaleString();
     
     let message = `[Sistema] Alerta automático criado em ${timestamp}.\n\n`;

@@ -6,7 +6,7 @@ import { AlertList } from './AlertList';
 import { AlertDetail } from './AlertDetail';
 import { Button } from '@/components/ui/organisms/button';
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
-import { AlertsProvider, useAlerts } from '../providers/alerts/AlertsProvider';
+import { AlertsProvider, useAlertsProvider } from '../providers/alerts/AlertsProvider';
 import { IAlert } from '@/types/alert-types';
 
 interface AlertCenterProps {
@@ -23,7 +23,7 @@ const AlertCenterContent: React.FC<Omit<AlertCenterProps, 'hospitalId'>> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedAlert, setSelectedAlert] = useState<IAlert | null>(null);
-  const { alerts, unreadCount, markAllAsRead } = useAlerts();
+  const { alerts, unreadCount, markAllAsRead } = useAlertsProvider();
   const { currentUser } = useNetworkData();
   
   // Fechar painel ao clicar fora

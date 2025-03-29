@@ -15,7 +15,8 @@ import {
   Route
 } from 'lucide-react';
 import { useAmbulanceData } from '@/services/hooks/ambulance/useAmbulanceData';
-import { Alert, useAlerts } from '../../../providers/alerts/AlertsProvider';
+import { useAlertsProvider } from '../../../providers/alerts/AlertsProvider';
+import { IAlert } from '@/types/alert-types';
 
 interface AmbulanceLiveTrackerProps {
   hospitalId: string;
@@ -32,7 +33,7 @@ export const AmbulanceLiveTracker: React.FC<AmbulanceLiveTrackerProps> = ({
   className = ''
 }) => {
   const { ambulanceData, activeRoutes, updateRouteStatus, getAmbulanceById } = useAmbulanceData(hospitalId);
-  const { addCustomAlert } = useAlerts();
+  const { addCustomAlert } = useAlertsProvider();
   
   const [loading, setLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
@@ -110,7 +111,7 @@ export const AmbulanceLiveTracker: React.FC<AmbulanceLiveTrackerProps> = ({
     if (!route) return;
     
     // Criar um alerta de chegada de paciente
-    const newAlert: Omit<Alert, 'id' | 'timestamp' | 'read'> = {
+    const newAlert: Omit<IAlert, 'id' | 'timestamp' | 'read'> = {
       type: 'patient-arrival',
       title: 'Paciente chegou ao hospital',
       message: `Ambulância ${ambulanceId} chegou com ${route.patient?.name || 'paciente'} (${route.patient?.condition || 'condição não especificada'}).`,

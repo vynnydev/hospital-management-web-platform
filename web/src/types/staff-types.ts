@@ -115,3 +115,25 @@ export const initialStaffDepartmentMetrics: IDepartmentalStaffMetrics = {
     night: 0
   }
 };
+
+export interface IStaffMember {
+  id: string;
+  name?: string;
+  role?: string;
+  department?: string;
+  specialties?: string[];
+  status?: string;
+  availability?: {
+    days: string[];
+    shift: string;
+  };
+  hospitalId?: string;
+  email?: string;
+  phone?: string;
+  position?: string;
+  profileImage?: string;
+  licenseNumber?: string;
+  startDate?: string;
+  teamIds?: string[];
+  isActive?: boolean;
+}
