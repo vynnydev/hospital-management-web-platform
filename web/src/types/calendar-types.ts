@@ -3,6 +3,7 @@ export interface ICalendarEvent {
   id: string;
   title: string;
   date: string;
+  day: number;
   startTime: string;
   endTime?: string;
   duration?: number;

@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/organisms/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/organisms/select';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/organisms/card';
@@ -10,21 +10,11 @@ import {
   endOfWeek, 
   eachDayOfInterval, 
   isSameMonth, 
-  format,
   isSameDay
 } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from '@/components/ui/organisms/tooltip';
 import { Badge } from '@/components/ui/organisms/badge';
-
-interface ICalendarEvent {
-  id: string;
-  title: string;
-  day: number;
-  type: string;
-  priority?: string;
-  status?: string;
-}
+import { ICalendarEvent } from '@/types/calendar-types';
 
 interface MonthlyCalendarProps {
   month: string;

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useCalendarEvents } from '@/services/hooks/calendar/useCalendarEvents';
 import { useCalendarNotifications } from '@/services/hooks/calendar/useCalendarNotifications';
 import { useStaffData } from '@/services/hooks/staffs/useStaffData';

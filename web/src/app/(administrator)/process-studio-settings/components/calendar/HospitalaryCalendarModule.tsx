@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { MonthlyCalendar } from './MonthlyCalendar';
-import { EventsList } from './EventsList';
+import { EventsList, IEvent } from './EventsList';
 import { EventForm } from './EventForm';
 import { CalendarFilters } from './CalendarFilters';
-import { format, parseISO, addMonths, subMonths, startOfMonth } from 'date-fns';
+import { format, parseISO, addMonths, subMonths } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { useStaffData } from '@/services/hooks/staffs/useStaffData';
 import { useCalendarEvents } from '@/services/hooks/calendar/useCalendarEvents';
@@ -22,7 +24,11 @@ export const HospitalaryCalendarModule: React.FC = () => {
   const [selectedEventTypes, setSelectedEventTypes] = useState<string[]>([]);
 
   // Hooks personalizados para buscar dados
-  const { staffTeams, staffSchedule, loading: isLoadingStaff } = useStaffData();
+  const staffDataResult = useStaffData();
+  const staffTeams = staffDataResult.staffData?.staffTeams;
+  const staffSchedule = staffDataResult.staffData?.staffSchedule;
+  const isLoadingStaff = staffDataResult.loading;
+
   const { 
     events, 
     addEvent, 
@@ -51,7 +57,10 @@ export const HospitalaryCalendarModule: React.FC = () => {
     id: event.id,
     title: event.title,
     day: parseInt(format(parseISO(event.date), 'd')),
-    type: event.type
+    type: event.type,
+    date: event.date,
+    startTime: event.startTime,
+    department: event.department
   }));
 
   // Próximos eventos para a lista lateral
@@ -137,7 +146,7 @@ export const HospitalaryCalendarModule: React.FC = () => {
     if (departments.length > 0 && selectedDepartments.length === 0) {
       setSelectedDepartments(departments.map(dept => dept.id));
     }
-  }, [departments]);
+  }, [departments, selectedDepartments.length]);
 
   // Carregar dados de agendamentos em staffSchedule para o calendário
   useEffect(() => {
