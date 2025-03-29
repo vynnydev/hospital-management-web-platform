@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from 'react';
-import { Bell, AlertTriangle } from 'lucide-react';
+import { Bell } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/organisms/card';
 import { Button } from '@/components/ui/organisms/button';
 import { Input } from '@/components/ui/organisms/input';

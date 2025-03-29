@@ -16,6 +16,7 @@ export interface ICalendarEvent {
   recurrencePattern?: string;
   createdBy?: string;
   status?: string;
+  priority?: string;
 }
 
 export interface IEventType {

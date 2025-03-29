@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { TabsContent } from '@/components/ui/organisms/tabs';
 import { AlertEditor } from './AlertEditor';
