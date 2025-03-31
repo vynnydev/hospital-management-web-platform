@@ -4358,5 +4358,330 @@
         "type": "meeting"
       }
     }
-  ]
+  ],
+  "connectors": [
+    {
+      "id": "emr",
+      "name": "Sistema de Prontuário Eletrônico",
+      "type": "api",
+      "iconType": "database",
+      "status": "connected",
+      "lastSync": "2025-02-24T08:45:00Z",
+      "connectionDetails": {
+        "url": "https://api.prontuario.example.com/v1",
+        "authMethod": "oauth",
+        "credentials": {
+          "clientId": "client-123",
+          "clientSecret": "********"
+        },
+        "syncInterval": "hour"
+      },
+      "metadata": {
+        "description": "Sistema principal de prontuário eletrônico do hospital",
+        "version": "2.1",
+        "department": "TI Clínico",
+        "priority": "alta"
+      }
+    },
+    {
+      "id": "lab",
+      "name": "Sistema de Laboratório",
+      "type": "api",
+      "iconType": "server",
+      "status": "connected",
+      "lastSync": "2025-02-24T07:30:00Z",
+      "connectionDetails": {
+        "url": "https://api.laboratorio.example.com/v2",
+        "authMethod": "apikey",
+        "credentials": {
+          "apiKey": "********"
+        },
+        "syncInterval": "minute"
+      },
+      "metadata": {
+        "description": "Sistema de exames laboratoriais",
+        "version": "3.0",
+        "department": "Laboratório",
+        "priority": "média"
+      }
+    },
+    {
+      "id": "pharmacy",
+      "name": "Sistema de Farmácia",
+      "type": "api",
+      "iconType": "server",
+      "status": "connected",
+      "lastSync": "2025-02-24T06:15:00Z",
+      "connectionDetails": {
+        "url": "https://api.farmacia.example.com/v1",
+        "authMethod": "basic",
+        "credentials": {
+          "username": "admin",
+          "password": "********"
+        },
+        "syncInterval": "hour"
+      },
+      "metadata": {
+        "description": "Sistema de gerenciamento de medicamentos e farmácia",
+        "version": "1.8",
+        "department": "Farmácia",
+        "priority": "média"
+      }
+    },
+    {
+      "id": "billing",
+      "name": "Sistema de Faturamento",
+      "type": "api",
+      "iconType": "billing",
+      "status": "error",
+      "lastSync": "2025-02-23T18:20:00Z",
+      "connectionDetails": {
+        "url": "https://api.faturamento.example.com/v3",
+        "authMethod": "oauth",
+        "credentials": {
+          "clientId": "billing-123",
+          "clientSecret": "********"
+        },
+        "syncInterval": "day"
+      },
+      "metadata": {
+        "description": "Sistema de faturamento de convênios e particular",
+        "version": "3.2",
+        "department": "Financeiro",
+        "priority": "alta",
+        "errorDetails": "Falha na autenticação OAuth - token expirado"
+      }
+    },
+    {
+      "id": "hr",
+      "name": "Sistema de RH",
+      "type": "api",
+      "iconType": "users",
+      "status": "pending",
+      "lastSync": null,
+      "connectionDetails": {
+        "url": "https://api.rh.example.com/v1",
+        "authMethod": "oauth",
+        "credentials": {},
+        "syncInterval": "manual"
+      },
+      "metadata": {
+        "description": "Sistema de recursos humanos",
+        "version": "2.0",
+        "department": "RH",
+        "priority": "baixa"
+      }
+    }
+  ],
+  "sync-history": [
+    {
+      "id": "sync-001",
+      "connectorId": "emr",
+      "connectorName": "Sistema de Prontuário Eletrônico",
+      "timestamp": "2025-02-24T08:45:00Z",
+      "status": "success",
+      "recordCount": 358,
+      "duration": 65,
+      "dataVolume": 5621478
+    },
+    {
+      "id": "sync-002",
+      "connectorId": "lab",
+      "connectorName": "Sistema de Laboratório",
+      "timestamp": "2025-02-24T07:30:00Z",
+      "status": "success",
+      "recordCount": 127,
+      "duration": 42,
+      "dataVolume": 2345982
+    },
+    {
+      "id": "sync-003",
+      "connectorId": "pharmacy",
+      "connectorName": "Sistema de Farmácia",
+      "timestamp": "2025-02-24T06:15:00Z",
+      "status": "success",
+      "recordCount": 205,
+      "duration": 38,
+      "dataVolume": 1873241
+    },
+    {
+      "id": "sync-004",
+      "connectorId": "billing",
+      "connectorName": "Sistema de Faturamento",
+      "timestamp": "2025-02-23T18:20:00Z",
+      "status": "error",
+      "duration": 12,
+      "dataVolume": 0,
+      "errorDetails": "Falha na autenticação OAuth - token expirado"
+    },
+    {
+      "id": "sync-005",
+      "connectorId": "emr",
+      "connectorName": "Sistema de Prontuário Eletrônico",
+      "timestamp": "2025-02-23T08:45:00Z",
+      "status": "success",
+      "recordCount": 412,
+      "duration": 78,
+      "dataVolume": 7821435
+    },
+    {
+      "id": "sync-006",
+      "connectorId": "lab",
+      "connectorName": "Sistema de Laboratório",
+      "timestamp": "2025-02-23T07:30:00Z",
+      "status": "success",
+      "recordCount": 98,
+      "duration": 31,
+      "dataVolume": 1567432
+    }
+  ],
+  "connectorTypes": [
+    {
+      "id": "ehr",
+      "name": "Prontuário Eletrônico",
+      "description": "Conecta com sistemas de prontuário eletrônico via API REST",
+      "icon": "database"
+    },
+    {
+      "id": "lab",
+      "name": "Sistema de Laboratório",
+      "description": "Integração com sistemas de exames laboratoriais",
+      "icon": "server"
+    },
+    {
+      "id": "pharmacy",
+      "name": "Sistema de Farmácia",
+      "description": "Conecta com sistemas de gestão de medicamentos e farmácia",
+      "icon": "server"
+    },
+    {
+      "id": "billing",
+      "name": "Sistema de Faturamento",
+      "description": "Integração com sistemas de faturamento hospitalar",
+      "icon": "billing"
+    },
+    {
+      "id": "hr",
+      "name": "Sistema de RH",
+      "description": "Conecta com sistemas de gestão de recursos humanos",
+      "icon": "users"
+    },
+    {
+      "id": "imaging",
+      "name": "Sistema de Imagens",
+      "description": "Integração com PACS e outros sistemas de imagem",
+      "icon": "image"
+    },
+    {
+      "id": "scheduling",
+      "name": "Agendamento",
+      "description": "Conecta com sistemas de agendamento de consultas",
+      "icon": "calendar"
+    }
+  ],
+  "request": {
+    "sourceFields": [
+      "id_paciente", "nome_paciente", "data_nascimento", "sexo", 
+      "codigo_exame", "data_realizacao", "resultado_valor", "observacoes"
+    ],
+    "targetFields": [
+      "patientId", "patientName", "birthDate", "gender", 
+      "testCode", "testDate", "resultValue", "notes"
+    ],
+    "sampleData": {
+      "id_paciente": "P12345",
+      "nome_paciente": "João Silva",
+      "data_nascimento": "1980-05-15",
+      "sexo": "M",
+      "codigo_exame": "HEM001",
+      "data_realizacao": "2025-02-20",
+      "resultado_valor": "14.5",
+      "observacoes": "Paciente em jejum de 8h"
+    }
+  },
+  "response": {
+    "success": true,
+    "data": {
+      "mappings": [
+        {
+          "sourceField": "id_paciente",
+          "targetField": "patientId",
+          "confidence": 0.95,
+          "explanation": "Ambos os campos se referem ao identificador único do paciente no sistema."
+        },
+        {
+          "sourceField": "nome_paciente",
+          "targetField": "patientName",
+          "confidence": 0.97,
+          "explanation": "Ambos os campos armazenam o nome completo do paciente."
+        },
+        {
+          "sourceField": "data_nascimento",
+          "targetField": "birthDate",
+          "confidence": 0.98,
+          "explanation": "Ambos os campos armazenam a data de nascimento do paciente."
+        },
+        {
+          "sourceField": "sexo",
+          "targetField": "gender",
+          "confidence": 0.94,
+          "explanation": "Ambos os campos armazenam o sexo/gênero do paciente."
+        },
+        {
+          "sourceField": "codigo_exame",
+          "targetField": "testCode",
+          "confidence": 0.92,
+          "explanation": "Ambos os campos se referem ao código identificador do exame."
+        },
+        {
+          "sourceField": "data_realizacao",
+          "targetField": "testDate",
+          "confidence": 0.96,
+          "explanation": "Ambos os campos armazenam a data de realização do exame."
+        },
+        {
+          "sourceField": "resultado_valor",
+          "targetField": "resultValue",
+          "confidence": 0.93,
+          "explanation": "Ambos os campos armazenam o valor numérico do resultado do exame."
+        },
+        {
+          "sourceField": "observacoes",
+          "targetField": "notes",
+          "confidence": 0.88,
+          "explanation": "Ambos os campos armazenam notas ou observações adicionais sobre o exame."
+        }
+      ],
+      "transformations": [
+        {
+          "sourceField": "data_nascimento",
+          "targetField": "birthDate",
+          "transformation": "formatDateISO",
+          "explanation": "A data de nascimento deve ser formatada no padrão ISO (YYYY-MM-DD)."
+        },
+        {
+          "sourceField": "data_realizacao",
+          "targetField": "testDate",
+          "transformation": "formatDateISO",
+          "explanation": "A data do exame deve ser formatada no padrão ISO (YYYY-MM-DD)."
+        },
+        {
+          "sourceField": "sexo",
+          "targetField": "gender",
+          "transformation": "convertGender",
+          "explanation": "O valor 'M' deve ser convertido para 'male' e 'F' para 'female' conforme padrão FHIR."
+        }
+      ]
+    },
+    "message": "Mapeamento de campos gerado com sucesso."
+  },
+  "connectors-stats": {
+    "activeConnections": 3,
+    "dailyTransfers": 128,
+    "dataVolume": "14.2 MB",
+    "failures": 3,
+    "successRate": 97.4,
+    "averageSyncTime": 45,
+    "uptime": "99.8%"
+  }
 }
