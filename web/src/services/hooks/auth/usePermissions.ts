@@ -27,10 +27,10 @@ export function usePermissions() {
     };
   }, []);
 
-  const checkPermission = useCallback((
-    permission: TPermission,
-    hospitalId?: string
-  ) => authService.checkPermission(permission, hospitalId), []);
+  // const checkPermission = useCallback((
+  //   permission: TPermission,
+  //   hospitalId?: string
+  // ) => authService.checkPermission(permission, hospitalId), []);
 
   const canAccessHospital = useCallback(
     (hospitalId: string) => authService.canAccessHospital(hospitalId),
@@ -46,7 +46,7 @@ export function usePermissions() {
   return {
     permissions,
     loading,
-    checkPermission,
+    // checkPermission,
     canAccessHospital,
     hasAnyPermission,
     isAdmin: permissions.includes('VIEW_ALL_HOSPITALS'),

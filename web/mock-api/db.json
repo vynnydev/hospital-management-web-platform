@@ -147,8 +147,14 @@
       "password": "123",
       "profileImage": "",
       "permissions": [
-        "VIEW_PATIENT_RECORDS"
+        "NURSE_ACCESS",
+        "ADMINISTER_MEDICATION",
+        "RECORD_VITALS",
+        "VIEW_PATIENT_RECORDS_NURSE"
       ],
+      "nursingLicense": "COREN-SP-123456",
+      "department": "Emergência",
+      "shift": "manhã",
       "hospitalId": "RD4H-SP-ITAIM"
     },
     {
@@ -185,59 +191,249 @@
       ],
       "department": "Agendamento",
       "hospitalId": "RD4H-SP-ITAIM"
+    }
+  ],
+  "permissions": [
+    {
+      "id": "VIEW_ALL_HOSPITALS",
+      "name": "Visualizar Todos os Hospitais",
+      "description": "Permite ao usuário visualizar informações de todos os hospitais da rede.",
+      "category": "Administração"
     },
     {
-      "id": "ATD003",
-      "name": "Amanda Ferreira",
-      "email": "amanda.ferreira@4health.com",
-      "role": "atendente",
-      "password": "123",
-      "profileImage": "",
-      "permissions": [
-        "ATTENDANT_ACCESS",
-        "SCHEDULE_MANAGEMENT",
-        "PATIENT_REGISTRATION",
-        "VIEW_BASIC_PATIENT_INFO",
-        "MANAGE_APPOINTMENTS",
-        "GENERATE_REPORTS"
-      ],
-      "department": "Atendimento Prioritário",
-      "hospitalId": "RD4H-SP-ITAIM"
+      "id": "VIEW_SINGLE_HOSPITAL",
+      "name": "Visualizar Hospital Específico",
+      "description": "Permite ao usuário visualizar informações apenas do hospital ao qual está vinculado.",
+      "category": "Administração"
     },
     {
-      "id": "ATD004",
-      "name": "Bruno Costa",
-      "email": "bruno.costa@4health.com",
-      "role": "atendente",
-      "password": "123",
-      "profileImage": "",
-      "permissions": [
-        "ATTENDANT_ACCESS",
-        "PATIENT_REGISTRATION",
-        "VIEW_BASIC_PATIENT_INFO",
-        "MANAGE_APPOINTMENTS"
-      ],
-      "department": "Pronto Atendimento",
-      "hospitalId": "RD4H-SP-MORUMBI"
+      "id": "DOCTOR_ACCESS",
+      "name": "Acesso de Médico",
+      "description": "Permite acesso às funcionalidades básicas do módulo médico.",
+      "category": "Médicos"
     },
     {
-      "id": "ATD005",
-      "name": "Carolina Mendes",
-      "email": "carolina.mendes@4health.com",
-      "role": "atendente",
-      "password": "123",
-      "profileImage": "",
-      "permissions": [
-        "ATTENDANT_ACCESS",
-        "SCHEDULE_MANAGEMENT",
-        "PATIENT_REGISTRATION",
-        "VIEW_BASIC_PATIENT_INFO",
-        "MANAGE_APPOINTMENTS",
-        "VIEW_DOCTOR_SCHEDULE",
-        "GENERATE_REPORTS"
-      ],
-      "department": "Recepção Principal",
-      "hospitalId": "RD4H-SP-MORUMBI"
+      "id": "PRESCRIBE_MEDICATION",
+      "name": "Prescrever Medicação",
+      "description": "Permite ao médico prescrever medicamentos para pacientes.",
+      "category": "Médicos"
+    },
+    {
+      "id": "VIEW_PATIENT_RECORDS",
+      "name": "Visualizar Prontuários",
+      "description": "Permite visualizar os prontuários completos dos pacientes.",
+      "category": "Médicos"
+    },
+    {
+      "id": "USE_AI_DIAGNOSIS",
+      "name": "Usar Diagnóstico por IA",
+      "description": "Permite utilizar ferramentas de IA para auxílio no diagnóstico.",
+      "category": "Médicos"
+    },
+    {
+      "id": "APPROVE_AI_PRESCRIPTIONS",
+      "name": "Aprovar Prescrições de IA",
+      "description": "Permite ao médico aprovar prescrições sugeridas pela IA.",
+      "category": "Médicos"
+    },
+    {
+      "id": "PATIENT_ACCESS",
+      "name": "Acesso de Paciente",
+      "description": "Permite acesso às funcionalidades básicas do módulo de paciente.",
+      "category": "Pacientes"
+    },
+    {
+      "id": "SCHEDULE_APPOINTMENTS",
+      "name": "Agendar Consultas",
+      "description": "Permite ao paciente agendar consultas pelo sistema.",
+      "category": "Pacientes"
+    },
+    {
+      "id": "VIEW_OWN_RECORDS",
+      "name": "Visualizar Próprio Prontuário",
+      "description": "Permite ao paciente visualizar seu próprio prontuário.",
+      "category": "Pacientes"
+    },
+    {
+      "id": "REQUEST_TELEMEDICINE",
+      "name": "Solicitar Telemedicina",
+      "description": "Permite ao paciente solicitar consultas por telemedicina.",
+      "category": "Pacientes"
+    },
+    {
+      "id": "NURSE_ACCESS",
+      "name": "Acesso de Enfermeiro",
+      "description": "Permite acesso às funcionalidades básicas do módulo de enfermagem.",
+      "category": "Enfermagem"
+    },
+    {
+      "id": "ADMINISTER_MEDICATION",
+      "name": "Administrar Medicação",
+      "description": "Permite ao enfermeiro registrar a administração de medicamentos.",
+      "category": "Enfermagem"
+    },
+    {
+      "id": "RECORD_VITALS",
+      "name": "Registrar Sinais Vitais",
+      "description": "Permite registrar sinais vitais dos pacientes.",
+      "category": "Enfermagem"
+    },
+    {
+      "id": "MANAGE_BEDS",
+      "name": "Gerenciar Leitos",
+      "description": "Permite gerenciar a ocupação de leitos hospitalares.",
+      "category": "Enfermagem"
+    },
+    {
+      "id": "VIEW_PATIENT_RECORDS_NURSE",
+      "name": "Visualizar Prontuários (Enfermagem)",
+      "description": "Permite ao enfermeiro visualizar prontuários de pacientes.",
+      "category": "Enfermagem"
+    },
+    {
+      "id": "ASSIGN_TASKS",
+      "name": "Atribuir Tarefas",
+      "description": "Permite atribuir tarefas a outros enfermeiros.",
+      "category": "Enfermagem"
+    },
+    {
+      "id": "ATTENDANT_ACCESS",
+      "name": "Acesso de Atendente",
+      "description": "Permite acesso às funcionalidades básicas do módulo de atendimento.",
+      "category": "Atendimento"
+    },
+    {
+      "id": "SCHEDULE_MANAGEMENT",
+      "name": "Gerenciar Agendamentos",
+      "description": "Permite gerenciar o calendário de agendamentos.",
+      "category": "Atendimento"
+    },
+    {
+      "id": "PATIENT_REGISTRATION",
+      "name": "Cadastro de Pacientes",
+      "description": "Permite cadastrar novos pacientes no sistema.",
+      "category": "Atendimento"
+    },
+    {
+      "id": "VIEW_BASIC_PATIENT_INFO",
+      "name": "Visualizar Informações Básicas",
+      "description": "Permite visualizar informações básicas dos pacientes.",
+      "category": "Atendimento"
+    },
+    {
+      "id": "MANAGE_APPOINTMENTS",
+      "name": "Gerenciar Consultas",
+      "description": "Permite gerenciar as consultas agendadas.",
+      "category": "Atendimento"
+    },
+    {
+      "id": "VIEW_DOCTOR_SCHEDULE",
+      "name": "Visualizar Agenda Médica",
+      "description": "Permite visualizar a agenda dos médicos.",
+      "category": "Atendimento"
+    },
+    {
+      "id": "GENERATE_REPORTS",
+      "name": "Gerar Relatórios",
+      "description": "Permite gerar relatórios de atendimento.",
+      "category": "Atendimento"
+    }
+  ],
+  "userLogs": [
+    {
+      "id": "LOG001",
+      "userId": "USR001",
+      "action": "LOGIN",
+      "timestamp": "2023-08-10T08:30:15Z",
+      "details": {
+        "ip": "192.168.1.100",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+      }
+    },
+    {
+      "id": "LOG002",
+      "userId": "DR001",
+      "action": "PATIENT_RECORD_ACCESS",
+      "timestamp": "2023-08-10T09:15:20Z",
+      "details": {
+        "patientId": "PAT001",
+        "recordType": "full"
+      }
+    },
+    {
+      "id": "LOG003",
+      "userId": "ENF001",
+      "action": "MEDICATION_ADMINISTERED",
+      "timestamp": "2023-08-10T10:45:30Z",
+      "details": {
+        "patientId": "PAT002",
+        "medicationId": "MED123",
+        "dose": "10mg"
+      }
+    }
+  ],
+  "roles": [
+    {
+      "id": "administrador",
+      "name": "Administrador",
+      "description": "Responsável pela administração do sistema e configurações gerais."
+    },
+    {
+      "id": "médico",
+      "name": "Médico",
+      "description": "Profissional médico que atende pacientes e prescreve tratamentos."
+    },
+    {
+      "id": "enfermeiro",
+      "name": "Enfermeiro",
+      "description": "Profissional de enfermagem que executa cuidados e administra medicações."
+    },
+    {
+      "id": "atendente",
+      "name": "Atendente",
+      "description": "Profissional responsável pelo atendimento inicial e agendamento."
+    },
+    {
+      "id": "paciente",
+      "name": "Paciente",
+      "description": "Usuário que recebe atendimento médico na instituição."
+    }
+  ],
+  "specialties": [
+    {
+      "id": "cardiologia",
+      "name": "Cardiologia",
+      "description": "Especialidade médica que trata doenças relacionadas ao coração e ao sistema circulatório."
+    },
+    {
+      "id": "dermatologia",
+      "name": "Dermatologia",
+      "description": "Especialidade médica focada no diagnóstico e tratamento de condições da pele."
+    },
+    {
+      "id": "neurologia",
+      "name": "Neurologia",
+      "description": "Especialidade médica que trata distúrbios do sistema nervoso."
+    },
+    {
+      "id": "ortopedia",
+      "name": "Ortopedia",
+      "description": "Especialidade médica focada no diagnóstico e tratamento de condições do sistema musculoesquelético."
+    },
+    {
+      "id": "pediatria",
+      "name": "Pediatria",
+      "description": "Especialidade médica dedicada ao cuidado de crianças e adolescentes."
+    },
+    {
+      "id": "ginecologia",
+      "name": "Ginecologia",
+      "description": "Especialidade médica que trata da saúde do sistema reprodutor feminino."
+    },
+    {
+      "id": "clinico_geral",
+      "name": "Clínico Geral",
+      "description": "Médico generalista que trata uma ampla variedade de condições de saúde."
     }
   ],
   "consultations": [
@@ -1418,6 +1614,54 @@
           }
         }
       }
+    }
+  ],
+  "hospitals-informations": [
+    {
+      "id": "RD4H-SP-ITAIM",
+      "name": "Hospital 4Health Itaim",
+      "address": "Rua João Cachoeira, 1000",
+      "city": "São Paulo",
+      "state": "SP",
+      "postalCode": "04535-010",
+      "phone": "(11) 3500-5000",
+      "email": "contato.itaim@4health.com",
+      "type": "geral",
+      "beds": 250,
+      "active": true,
+      "createdAt": "2020-01-01T00:00:00Z",
+      "updatedAt": "2023-05-15T10:30:00Z"
+    },
+    {
+      "id": "RD4H-SP-MORUMBI",
+      "name": "Hospital 4Health Morumbi",
+      "address": "Av. Giovanni Gronchi, 5000",
+      "city": "São Paulo",
+      "state": "SP",
+      "postalCode": "05724-003",
+      "phone": "(11) 3600-6000",
+      "email": "contato.morumbi@4health.com",
+      "type": "geral",
+      "beds": 300,
+      "active": true,
+      "createdAt": "2021-03-10T00:00:00Z",
+      "updatedAt": "2023-06-20T14:15:00Z"
+    },
+    {
+      "id": "RD4H-RJ-BARRA",
+      "name": "Hospital 4Health Barra",
+      "address": "Av. Ayrton Senna, 3000",
+      "city": "Rio de Janeiro",
+      "state": "RJ",
+      "postalCode": "22775-904",
+      "phone": "(21) 2700-7000",
+      "email": "contato.barra@4health.com",
+      "type": "especializado",
+      "specialty": "Cardiologia",
+      "beds": 180,
+      "active": true,
+      "createdAt": "2022-01-20T00:00:00Z",
+      "updatedAt": "2023-07-05T09:45:00Z"
     }
   ],
   "patients": [

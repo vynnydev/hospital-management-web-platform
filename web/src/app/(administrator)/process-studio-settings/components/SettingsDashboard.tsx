@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/organisms/tabs';
 import { Card, CardContent } from '@/components/ui/organisms/card';
 import { Button } from '@/components/ui/organisms/button';
-import { Settings2, FileText, BarChart2, Bot, Bell, Calendar, Link } from 'lucide-react';
+import { Settings2, FileText, BarChart2, Bot, Bell, Calendar, Link, UserIcon } from 'lucide-react';
 import { WorkflowTab } from './workflow/WorkflowTab';
 import { AnalyticsTab } from './analytics/AnalyticsTab';
 import { AIGenerativeTab } from './ai-generative/AIGenerativeTab';
@@ -11,6 +11,8 @@ import { CalendarTab } from './calendar/CalendarTab';
 import { ConnectionsTab } from './connections/ConnectionsTab';
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
 import { AlertsProvider } from '@/components/ui/templates/providers/alerts/AlertsProvider';
+import { UserManagement } from '@/components/ui/templates/UserManagement';
+import { cn } from '@/lib/utils';
 
 export const SettingsDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState('workflow');
@@ -22,7 +24,8 @@ export const SettingsDashboard: React.FC = () => {
     { id: 'ai_assistant', label: 'IA Generativa', icon: Bot },
     { id: 'notifications', label: 'Sistema de Notificações', icon: Bell },
     { id: 'calendar', label: 'Calendário Hospitalar', icon: Calendar },
-    { id: 'connections', label: 'Conexões de Sistemas', icon: Link }
+    { id: 'connections', label: 'Conexões de Sistemas', icon: Link },
+    { id: 'user-management', label: 'Gerenciador de Usuários', icon: UserIcon }
   ];
 
   return (
@@ -47,14 +50,19 @@ export const SettingsDashboard: React.FC = () => {
                 <button
                   key={item.id}
                   onClick={() => setActiveTab(item.id)}
-                  className={`flex items-center px-4 py-2 rounded-full transition-all ${
-                    isActive 
-                    ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900' 
-                    : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800'
-                  }`}
+                  className={cn(
+                      'w-36 text-sm font-medium rounded-full px-2 py-2 transition-all duration-300 ease-in-out relative',
+                      'hover:bg-white/20 hover:text-white',
+                      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-400',
+                      isActive 
+                          ? 'text-white bg-white/20' 
+                          : 'text-white/60'
+                  )}
                 >
-                  <Icon className="h-4 w-4 mr-2" />
-                  <span>{item.label}</span>
+                  <span className="flex items-center justify-center ml-2">
+                      {Icon && <Icon className="mr-2 h-6 w-6" />}
+                      {item.label}
+                  </span>
                 </button>
               );
             })}
@@ -120,6 +128,14 @@ export const SettingsDashboard: React.FC = () => {
             <Card className="h-full">
               <CardContent className="p-0 h-full">
                 <ConnectionsTab />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="user-management" className="space-y-4">
+            <Card className="h-full">
+              <CardContent className="p-0 h-full">
+                <UserManagement />
               </CardContent>
             </Card>
           </TabsContent>

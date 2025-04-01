@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import api from "@/services/api";
 import connectorService from "@/services/general/connectors/ConnectorService";
 import { IApiResponse, ISyncHistoryItem } from "@/types/connectors-types";

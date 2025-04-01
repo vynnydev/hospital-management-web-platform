@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import { Bell, Check, Archive, AlertCircle, Info, CheckCircle, Clock, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/organisms/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/organisms/card';
 import { Badge } from '@/components/ui/organisms/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/organisms/tabs';
-import { format, formatDistance, parseISO } from 'date-fns';
+import { formatDistance, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { useCalendarNotifications } from '@/services/hooks/calendar/useCalendarNotifications';
 

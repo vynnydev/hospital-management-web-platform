@@ -115,8 +115,8 @@ export const AmbulanceLiveTracker: React.FC<AmbulanceLiveTrackerProps> = ({
       type: 'patient-arrival',
       title: 'Paciente chegou ao hospital',
       message: `Ambulância ${ambulanceId} chegou com ${route.patient?.name || 'paciente'} (${route.patient?.condition || 'condição não especificada'}).`,
-      priority: route.patient?.emergencyLevel === 'critical' || route.patient?.emergencyLevel === 'high' 
-        ? 'high' 
+      priority: route.patient?.emergencyLevel === 'critical' || route.patient?.emergencyLevel === 'high'
+        ? 'high'
         : route.patient?.emergencyLevel === 'medium' ? 'medium' : 'low',
       actionRequired: true,
       metadata: {
@@ -125,7 +125,8 @@ export const AmbulanceLiveTracker: React.FC<AmbulanceLiveTrackerProps> = ({
         routeId: routeId,
         condition: route.patient?.condition,
         emergencyLevel: route.patient?.emergencyLevel
-      }
+      },
+      status: 'pending'
     };
     
     addCustomAlert(newAlert);

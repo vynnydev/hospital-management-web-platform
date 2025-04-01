@@ -7,7 +7,7 @@ import { IAlert } from '@/types/alert-types';
 interface AlertToChatIntegrationProps {
   hospitalId: string;
   createChat: (title: string, initialMessage: string, participants: string[], metadata?: Record<string, any>) => void;
-  autoCreateChatForPriority?: ('high' | 'medium' | 'low')[];
+  autoCreateChatForPriority?: ('high' | 'medium' | 'low' | 'critical')[];
 }
 
 /**
