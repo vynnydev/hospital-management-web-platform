@@ -6,7 +6,7 @@ import { useTheme } from 'next-themes'
 import { Container } from "@/components/ui/atoms/Container"
 import { FaCircleArrowLeft } from "react-icons/fa6"
 
-import { MenuItem } from "@/utils/types/maps"
+import { MenuItem } from "@/types/maps"
 import { HomeHeader } from "@/components/ui/organisms/HomeHeader"
 import { FooterApplication } from '@/components/ui/templates/FooterApplication'
 import CheckoutButton from '@/components/ui/payments/CheckoutButton'

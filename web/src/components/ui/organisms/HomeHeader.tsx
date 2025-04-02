@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { BaseComponent, MenuItem, Role } from '@/utils/types/maps'
+import { BaseComponent, MenuItem, Role } from '@/types/maps'
 import { Brand } from '../atoms/Brand'
 import { Container } from '../atoms/Container'
 import { Button } from '../atoms/Button'

@@ -28,7 +28,10 @@ export type TPermission =
   | 'VIEW_BASIC_PATIENT_INFO'
   | 'MANAGE_APPOINTMENTS'
   | 'VIEW_DOCTOR_SCHEDULE'
-  | 'GENERATE_REPORTS';
+  | 'GENERATE_REPORTS'
+  // Permissões para financiamento
+  | 'MANAGE_FINANCIAL_SETTINGS'
+  | 'MANAGE_NETWORK_SETTINGS'
 
 export type TRole = 
   // Funções existentes

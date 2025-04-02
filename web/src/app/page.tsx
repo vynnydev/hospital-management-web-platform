@@ -3,7 +3,7 @@ import { Home } from '@/components/ui/templates/Home'
 
 import { Container } from "@/components/ui/atoms/Container"
 
-import { MenuItem } from "@/utils/types/maps"
+import { MenuItem } from "@/types/maps"
 import { HomeHeader } from "@/components/ui/organisms/HomeHeader"
 
 const MENUITEMS: MenuItem[] = [

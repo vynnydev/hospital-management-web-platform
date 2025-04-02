@@ -239,7 +239,8 @@ export const useStaffData = (selectedHospitalId?: string, selectedDate?: Date) =
       duration: task.estimatedDuration,
       durationType: 'minute',
       isRecurring: !!task.recurrence,
-      recurrencePattern: task.recurrence
+      recurrencePattern: task.recurrence,
+      day: 1
     }));
   }, [getAllScheduledTasks]);
 
@@ -269,7 +270,8 @@ export const useStaffData = (selectedHospitalId?: string, selectedDate?: Date) =
             location: hospitalId,
             attendees: shift.staff,
             status: shift.status,
-            priority: 'medium'
+            priority: 'medium',
+            day: 1
           });
         }
       });

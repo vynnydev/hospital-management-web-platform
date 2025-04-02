@@ -1,6 +1,6 @@
 'use client';
 
-import { Role } from '@/utils/types/maps'
+import { Role } from '@/types/maps'
 import { BrandIcon } from './BrandIcon'
 import { useEffect, useState } from 'react';
 

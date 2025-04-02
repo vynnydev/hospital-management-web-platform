@@ -4927,5 +4927,482 @@
     "successRate": 97.4,
     "averageSyncTime": 45,
     "uptime": "99.8%"
+  },
+  "financeSettings": {
+    "networkDefaults": {
+      "currency": {
+        "code": "BRL",
+        "symbol": "R$",
+        "decimalSeparator": ",",
+        "thousandsSeparator": ".",
+        "decimalPlaces": 2,
+        "symbolPosition": "before"
+      },
+      "tax": {
+        "vatEnabled": true,
+        "vatRate": 5,
+        "additionalTaxes": [
+          {
+            "name": "COFINS",
+            "rate": 3,
+            "appliesTo": ["consultations", "procedures"]
+          },
+          {
+            "name": "PIS",
+            "rate": 0.65,
+            "appliesTo": ["consultations", "procedures", "hospitalization"]
+          }
+        ],
+        "taxExemptions": [
+          {
+            "name": "Isenção para Entidades Filantrópicas",
+            "code": "EX-FILAN-001",
+            "description": "Isenção fiscal para entidades filantrópicas de saúde"
+          }
+        ]
+      },
+      "patientBilling": {
+        "defaultBillingCycle": "monthly",
+        "acceptedPaymentMethods": ["credit_card", "debit_card", "insurance", "bank_transfer", "pix"],
+        "defaultPaymentTerms": 30,
+        "automaticBillingEnabled": true,
+        "sendPaymentReminders": true,
+        "discountSettings": {
+          "earlyPaymentDiscountEnabled": true,
+          "earlyPaymentDiscountRate": 5,
+          "earlyPaymentDaysThreshold": 10,
+          "volumeDiscountEnabled": true,
+          "volumeDiscountThresholds": [
+            { "amount": 5000, "discountRate": 5 },
+            { "amount": 10000, "discountRate": 10 },
+            { "amount": 20000, "discountRate": 15 }
+          ]
+        },
+        "defaultInsuranceBillingEnabled": true
+      },
+      "budget": {
+        "fiscalYearStart": {
+          "month": 1,
+          "day": 1
+        },
+        "defaultDepartmentalAllocations": [
+          { "departmentId": "UTI", "percentage": 30 },
+          { "departmentId": "Enfermaria", "percentage": 25 },
+          { "departmentId": "Centro Cirúrgico", "percentage": 20 },
+          { "departmentId": "Ambulatório", "percentage": 15 },
+          { "departmentId": "Administrativo", "percentage": 10 }
+        ],
+        "budgetApprovalWorkflow": [
+          { "role": "Gerente Financeiro", "order": 1 },
+          { "role": "Diretor Administrativo", "order": 2 },
+          { "role": "Diretor Executivo", "order": 3 }
+        ],
+        "budgetReviewFrequency": "quarterly",
+        "thresholdForAlerts": {
+          "underBudget": 15,
+          "overBudget": 10
+        }
+      },
+      "serviceCost": {
+        "calculateAutomatically": true,
+        "defaultMarkupPercentage": 30,
+        "costUpdateFrequency": "monthly",
+        "includedOverheadPercentage": 15,
+        "customPricingEnabled": true
+      },
+      "financialReports": {
+        "defaultReportTypes": ["monthly", "quarterly", "annual"],
+        "automaticReportGeneration": true,
+        "recipientEmails": ["financeiro@hospital.com", "diretoria@hospital.com"],
+        "exportFormats": ["pdf", "excel"],
+        "includedMetrics": ["revenue", "expenses", "margin", "cashflow"],
+        "retentionPeriod": 60
+      },
+      "insurance": {
+        "providers": [
+          {
+            "id": "conv-001",
+            "name": "Unimed",
+            "contractCode": "UNI-12345",
+            "billingCode": "BILL-UNI-001",
+            "contactInfo": {
+              "email": "faturamento@unimed.com.br",
+              "phone": "(11) 3333-4444"
+            },
+            "servicesMap": [
+              {
+                "serviceCode": "CONS-001",
+                "coveragePercentage": 80,
+                "requiresPreAuthorization": false,
+                "maxAllowedAmount": 250
+              },
+              {
+                "serviceCode": "PROC-122",
+                "coveragePercentage": 70,
+                "requiresPreAuthorization": true,
+                "maxAllowedAmount": 5000
+              }
+            ],
+            "submissionMethod": "electronic",
+            "paymentTerms": 45
+          }
+        ],
+        "defaultProvider": "conv-001"
+      },
+      "auditSettings": {
+        "internalAuditFrequency": "quarterly",
+        "externalAuditRequired": true,
+        "externalAuditFrequency": "annual",
+        "auditTrailRetention": 24,
+        "responsibleRoles": ["Auditor Interno", "Gerente Financeiro"]
+      },
+      "integrations": {
+        "enabled": true,
+        "systems": [
+          {
+            "id": "sys-001",
+            "name": "Sistema Contábil ERP",
+            "type": "accounting",
+            "apiEndpoint": "https://api.contabil.com.br/v1",
+            "apiKey": "api_key_12345",
+            "refreshToken": "refresh_token_12345",
+            "syncFrequency": "daily",
+            "lastSync": "2025-04-01T08:00:00Z",
+            "mappedFields": {
+              "invoice": "fatura",
+              "patient": "paciente",
+              "service": "servico"
+            }
+          }
+        ]
+      },
+      "lastUpdated": "2025-04-01T10:00:00Z",
+      "updatedBy": "admin"
+    },
+    "settings": {
+      "hospital-001": {
+        "currency": {
+          "decimalPlaces": 3
+        },
+        "patientBilling": {
+          "defaultPaymentTerms": 45
+        },
+        "lastUpdated": "2025-04-01T11:30:00Z",
+        "updatedBy": "john.doe"
+      }
+    }
+  },
+  "financePriceTables": {
+    "tables": [
+      {
+        "id": "price-table-001",
+        "name": "Tabela Padrão de Procedimentos",
+        "description": "Tabela de preços padrão para procedimentos e consultas",
+        "isDefault": true,
+        "validFrom": "2025-01-01",
+        "validUntil": null,
+        "insuranceProviderId": null,
+        "items": [
+          {
+            "id": "item-001",
+            "code": "CONS-001",
+            "name": "Consulta Médica Básica",
+            "description": "Consulta inicial com médico generalista",
+            "category": "consultas",
+            "unitPrice": 250.00,
+            "customMarkup": null,
+            "taxIncluded": true,
+            "effectiveTaxRate": 5.0
+          },
+          {
+            "id": "item-002",
+            "code": "CONS-002",
+            "name": "Consulta Médica Especializada",
+            "description": "Consulta com médico especialista",
+            "category": "consultas",
+            "unitPrice": 350.00,
+            "customMarkup": null,
+            "taxIncluded": true,
+            "effectiveTaxRate": 5.0
+          }
+        ]
+      }
+    ]
+  },
+  "financeBillingModels": {
+    "models": [
+      {
+        "id": "billing-model-001",
+        "name": "Faturamento Diário Padrão",
+        "description": "Modelo de faturamento baseado em diárias hospitalares",
+        "type": "daily",
+        "isDefault": true,
+        "applicableAreas": ["inpatient", "icu"],
+        "rules": {
+          "dailyRates": {
+            "enabled": true,
+            "includesBasicMedication": true,
+            "includesNursing": true,
+            "bedTypes": {
+              "standard": 500.00,
+              "semiprivate": 750.00,
+              "private": 1200.00,
+              "luxury": 2000.00,
+              "icu": 3500.00
+            }
+          },
+          "procedureBased": {
+            "enabled": true,
+            "priceTableId": "price-table-001",
+            "comboProcedureDiscounts": []
+          },
+          "packages": {
+            "enabled": false,
+            "definitions": []
+          }
+        },
+        "customFields": {}
+      }
+    ]
+  },
+  "financeIntegrationStatus": {
+    "id": "sys-001",
+    "name": "Sistema Contábil ERP",
+    "status": "active",
+    "lastSync": "2025-04-01T08:00:00Z",
+    "nextScheduledSync": "2025-04-02T08:00:00Z",
+    "errorCount": 0,
+    "syncHistory": [
+      {
+        "timestamp": "2025-04-01T08:00:00Z",
+        "status": "success",
+        "recordsProcessed": 156,
+        "errorDetails": null
+      },
+      {
+        "timestamp": "2025-03-31T08:00:00Z",
+        "status": "success",
+        "recordsProcessed": 142,
+        "errorDetails": null
+      }
+    ],
+    "connectionHealth": 100,
+    "credentials": {
+      "valid": true,
+      "expiry": "2025-10-01T00:00:00Z"
+    }
+  },
+  "financeReportTemplates": {
+    "templates": [
+      {
+        "id": "report-001",
+        "name": "Relatório Financeiro Mensal",
+        "description": "Relatório padrão de resultados financeiros mensais",
+        "type": "financial",
+        "format": "pdf",
+        "periodicity": "monthly",
+        "sections": [
+          {
+            "id": "section-001",
+            "title": "Resumo Executivo",
+            "type": "summary",
+            "dataSource": "financial_data",
+            "columns": ["metric", "value", "comparison"],
+            "chartType": null,
+            "sortBy": null,
+            "filters": null
+          },
+          {
+            "id": "section-002",
+            "title": "Receita por Departamento",
+            "type": "chart",
+            "dataSource": "department_revenue",
+            "columns": ["department", "revenue"],
+            "chartType": "bar",
+            "sortBy": "revenue",
+            "filters": null
+          }
+        ],
+        "recipients": ["diretoria@hospital.com"],
+        "scheduledDelivery": {
+          "enabled": true,
+          "dayOfMonth": 5,
+          "dayOfWeek": null,
+          "time": "08:00"
+        }
+      }
+    ]
+  },
+  "financeDashboard": {
+    "summary": {
+      "totalRevenue": 1254789.56,
+      "totalExpenses": 980456.32,
+      "grossMargin": 274333.24,
+      "grossMarginPercentage": 21.86,
+      "periodComparison": {
+        "revenue": { "value": 7.2, "trend": "up" },
+        "expenses": { "value": 3.5, "trend": "up" },
+        "margin": { "value": 18.6, "trend": "up" }
+      },
+      "cashPosition": 340125.89,
+      "accountsReceivable": 285690.45,
+      "accountsPayable": 175320.78,
+      "lastUpdated": "2025-04-01T10:30:00Z"
+    },
+    "departments": [
+      {
+        "id": "UTI",
+        "name": "Unidade de Terapia Intensiva",
+        "revenue": 425690.32,
+        "expenses": 385420.45,
+        "margin": 40269.87,
+        "marginPercentage": 9.46,
+        "budget": {
+          "allocated": 400000.00,
+          "consumed": 385420.45,
+          "remaining": 14579.55,
+          "status": "on_track"
+        }
+      },
+      {
+        "id": "Centro Cirúrgico",
+        "name": "Centro Cirúrgico",
+        "revenue": 358945.67,
+        "expenses": 298567.23,
+        "margin": 60378.44,
+        "marginPercentage": 16.82,
+        "budget": {
+          "allocated": 300000.00,
+          "consumed": 298567.23,
+          "remaining": 1432.77,
+          "status": "warning"
+        }
+      }
+    ],
+    "alerts": [
+      {
+        "id": "alert-001",
+        "type": "budget",
+        "severity": "warning",
+        "message": "Centro Cirúrgico próximo de atingir limite orçamentário",
+        "details": "99.5% do orçamento consumido com 25 dias restantes no período",
+        "timestamp": "2025-04-01T09:15:00Z",
+        "actionRequired": true
+      }
+    ]
+  },
+  "financeAuditLogs": {
+    "logs": [
+      {
+        "id": "log-001",
+        "timestamp": "2025-04-01T10:30:45Z",
+        "userId": "john.doe",
+        "userName": "John Doe",
+        "action": "update",
+        "entity": "finance_settings",
+        "entityId": "hospital-001",
+        "changes": [
+          {
+            "field": "patientBilling.defaultPaymentTerms",
+            "oldValue": 30,
+            "newValue": 45
+          }
+        ],
+        "ipAddress": "192.168.1.100",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+      }
+    ],
+    "pagination": {
+      "totalRecords": 152,
+      "page": 1,
+      "perPage": 50,
+      "totalPages": 4
+    }
+  },
+  "financeAnalyticsPredictions": {
+    "cashFlow": {
+      "predicted": [
+        { "date": "2025-05-01", "inflow": 1280000, "outflow": 995000 },
+        { "date": "2025-06-01", "inflow": 1310000, "outflow": 1010000 },
+        { "date": "2025-07-01", "inflow": 1345000, "outflow": 1025000 }
+      ],
+      "accuracy": 92.5,
+      "factors": [
+        { "name": "Sazonalidade", "impact": "positive", "value": 5.2 },
+        { "name": "Tendência histórica", "impact": "positive", "value": 3.8 }
+      ]
+    },
+    "pricing": {
+      "recommendations": [
+        { 
+          "itemId": "CONS-002", 
+          "currentPrice": 350.00, 
+          "recommendedPrice": 375.00,
+          "potentialRevenueIncrease": 8750.00,
+          "confidence": 85
+        }
+      ]
+    },
+    "budgetRecommendations": {
+      "departments": [
+        {
+          "id": "Centro Cirúrgico",
+          "currentAllocation": 20,
+          "recommendedAllocation": 23.5,
+          "reason": "Aumento de demanda projetado em 15% para o próximo trimestre"
+        }
+      ]
+    }
+  },
+  "financeInvoices": {
+    "invoices": [
+      {
+        "id": "INV-001-2025",
+        "patient": {
+          "id": "PAT-12345",
+          "name": "João Silva"
+        },
+        "hospital": {
+          "id": "hospital-001",
+          "name": "Hospital Central"
+        },
+        "issueDate": "2025-04-01",
+        "dueDate": "2025-05-01",
+        "status": "pending",
+        "totalAmount": 3575.50,
+        "items": [
+          {
+            "code": "CONS-001",
+            "description": "Consulta Médica Básica",
+            "quantity": 1,
+            "unitPrice": 250.00,
+            "totalPrice": 250.00,
+            "taxAmount": 12.50
+          },
+          {
+            "code": "PROC-001",
+            "description": "Radiografia Simples",
+            "quantity": 2,
+            "unitPrice": 180.00,
+            "totalPrice": 360.00,
+            "taxAmount": 18.00
+          }
+        ],
+        "payments": [],
+        "insuranceProvider": {
+          "id": "conv-001",
+          "name": "Unimed",
+          "coverage": 80
+        },
+        "patientResponsibility": 715.10,
+        "insuranceResponsibility": 2860.40
+      }
+    ],
+    "pagination": {
+      "totalRecords": 325,
+      "page": 1,
+      "perPage": 50,
+      "totalPages": 7
+    }
   }
 }
