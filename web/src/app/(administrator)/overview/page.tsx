@@ -49,7 +49,6 @@ const Overview: React.FC = () => {
     staffData
   } = useStaffData();
 
-  
   const {
     ambulanceData
   } = useAmbulanceData(selectedHospital);

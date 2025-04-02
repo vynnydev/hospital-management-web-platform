@@ -18,6 +18,8 @@ import { TransferSection } from '@/components/ui/templates/patient-monitoring-da
 import { calculateStats } from '@/utils/patient-monitoring-dashboard/calculateStats';
 import { DashboardConfigProvider } from '../context/patient-monitoring-dashboard/DashboardConfigContext';
 import { NotificationProvider } from '../context/patient-monitoring-dashboard/NotificationContext';
+import { authService } from '@/services/auth/AuthService';
+import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
 
 interface PatientMonitoringDashboardProps {
   selectedHospitalId: string;
@@ -35,11 +37,32 @@ export const PatientMonitoringDashboard: React.FC<PatientMonitoringDashboardProp
   ambulanceData,
 }) => {
   // Estados para filtros e seleção
+  const { currentUser } = useNetworkData()
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
   const [departmentFilter, setDepartmentFilter] = useState<string>('all');
   const [advancedFilters, setAdvancedFilters] = useState<Record<string, any>>({});
+
+  // Tipo de usuário e autenticação
+  const [userType, setUserType] = useState<'admin' | 'doctor' | 'patient' | 'nurse' | 'attendant' | null>(null)
+  const user = authService.getCurrentUser()
+
+  useEffect(() => {
+    // Determinar o tipo de usuário logado
+    if (user) {
+        if (authService.isDoctor()) {
+            setUserType('doctor')
+        } else if (authService.isNurse()) {
+            setUserType('nurse')
+        } else {
+            setUserType('admin')
+        }
+    }
+  }, [user])
   
+  // Seleciona o hospital atual (se aplicável)
+  const selectedHospital = networkData?.hospitals?.find(h => h.id === currentUser?.hospitalId)
+
   // Estados para configuração da visualização
   const [isRealTimeMode, setIsRealTimeMode] = useState<boolean>(true);
   const [refreshInterval, setRefreshInterval] = useState<number>(30);
@@ -260,10 +283,28 @@ export const PatientMonitoringDashboard: React.FC<PatientMonitoringDashboardProp
     handleRefresh
   };
 
+  const getDespartmentByUserType = () => {
+    switch (userType) {
+        case 'doctor':
+            return user?.specialization 
+                ? `${user.specialization}`
+                : 'Médico'
+        case 'nurse':
+            return user?.specialization 
+                ? `${user?.specialization}`
+                : 'Enfermagem'
+        case 'admin':
+          return selectedHospital 
+              ? `${selectedHospital.name || 'Hospital'}`
+              : 'Visão Geral da Rede'
+    }
+  }
+
   return (
     <DashboardConfigProvider value={dashboardConfig}>
       <NotificationProvider>
         <div className="p-6 space-y-6 bg-gray-50 dark:bg-gray-900 rounded-lg shadow-md text-gray-800 dark:text-gray-100">
+          <p className='text-2xl py-4 px-6'>Gerenciamento de Pacientes - {getDespartmentByUserType()}</p>
           <DashboardHeader 
             hospitals={hospitals}
             departments={departments}
