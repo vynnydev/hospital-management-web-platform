@@ -290,8 +290,8 @@ export const PatientMonitoringDashboard: React.FC<PatientMonitoringDashboardProp
                 ? `${user.specialization}`
                 : 'Médico'
         case 'nurse':
-            return user?.specialization 
-                ? `${user?.specialization}`
+            return user?.department 
+                ? `${user?.department}`
                 : 'Enfermagem'
         case 'admin':
           return selectedHospital 
