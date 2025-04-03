@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
 import { useFinanceData } from '@/services/hooks/finance/useFinanceData';
@@ -58,13 +60,13 @@ import { useToast } from '@/components/ui/hooks/use-toast';
 import { IFinanceSettings } from '@/types/finance-types';
 
 // Importar componentes das abas
-import { CurrencySettings } from './CurrencySettings';
-import { FinancialReportsSettings } from './FinancialReportsSettings';
-import { BillingSettings } from './BillingSettings';
-import { TaxSettings } from './TaxSettings';
-import { BudgetSettings } from './BudgetSettings';
-import { InsuranceSettings } from './InsuranceSettings';
-import { IntegrationSettings } from './IntegrationSettings';
+import { CurrencySettings } from './finance/CurrencySettings';
+import { FinancialReportsSettings } from './finance/FinancialReportsSettings';
+import { BillingSettings } from './finance/BillingSettings';
+import { TaxSettings } from './finance/TaxSettings';
+import { BudgetSettings } from './finance/BudgetSettings';
+import { InsuranceSettings } from './finance/InsuranceSettings';
+import { IntegrationSettings } from './finance/IntegrationSettings';
 
 export const FinanceSettingsTab: React.FC = () => {
   const { networkData, currentUser } = useNetworkData();
@@ -315,13 +317,6 @@ export const FinanceSettingsTab: React.FC = () => {
         <Card className="mb-6">
           <CardContent className="pt-6">
             <div className="flex justify-between items-center">
-              <div className="space-y-1">
-                <h3 className="text-lg font-medium">Gerenciamento de Configurações</h3>
-                <p className="text-sm text-muted-foreground">
-                  Gerencie como as configurações financeiras são aplicadas para este hospital.
-                </p>
-              </div>
-              
               <div className="flex space-x-2">
                 <Dialog>
                   <DialogTrigger asChild>

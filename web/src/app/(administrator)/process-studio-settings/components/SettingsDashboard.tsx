@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/organisms/tabs';
 import { Card, CardContent } from '@/components/ui/organisms/card';
 import { Button } from '@/components/ui/organisms/button';
-import { Settings2, FileText, BarChart2, Bot, Bell, Calendar, Link, UserIcon, CreditCard } from 'lucide-react';
+import { Settings2, FileText, BarChart2, Bot, Bell, Calendar, Link, UserIcon, CreditCard, Shield } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { WorkflowTab } from './workflow/WorkflowTab';
 import { AnalyticsTab } from './analytics/AnalyticsTab';
 import { AIGenerativeTab } from './ai-generative/AIGenerativeTab';
@@ -12,8 +13,8 @@ import { ConnectionsTab } from './connections/ConnectionsTab';
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
 import { AlertsProvider } from '@/components/ui/templates/providers/alerts/AlertsProvider';
 import { UserManagement } from '@/components/ui/templates/UserManagement';
-import { cn } from '@/lib/utils';
-import { FinanceSettingsTab } from '@/components/ui/templates/finance/FinanceSettingsTab';
+import { FinanceSettingsTab } from '@/components/ui/templates/FinanceSettingsTab';
+import { SecurityComplianceTab } from '@/components/ui/templates/SecurityComplianceTab';
 
 export const SettingsDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState('workflow');
@@ -28,6 +29,7 @@ export const SettingsDashboard: React.FC = () => {
     { id: 'connections', label: 'Conexões Externas', icon: Link },
     { id: 'user-management', label: 'Gerenciador de Usuários', icon: UserIcon },
     { id: 'finance', label: 'Configurações Financeiras', icon: CreditCard },
+    { id: 'security-compliance', label: 'Segurança & Compliance', icon: Shield },
   ];
 
   return (
@@ -146,6 +148,14 @@ export const SettingsDashboard: React.FC = () => {
             <Card className="h-full">
               <CardContent className="p-0 h-full">
                 <FinanceSettingsTab />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="security-compliance" className="space-y-4">
+            <Card className="h-full">
+              <CardContent className="p-0 h-full">
+                <SecurityComplianceTab />
               </CardContent>
             </Card>
           </TabsContent>

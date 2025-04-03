@@ -5404,5 +5404,430 @@
       "perPage": 50,
       "totalPages": 7
     }
+  },
+  "config": {
+    "passwordPolicies": [
+      {
+        "id": "PP001",
+        "name": "Política Padrão",
+        "minLength": 12,
+        "requireUppercase": true,
+        "requireLowercase": true,
+        "requireNumbers": true,
+        "requireSpecialChars": true,
+        "prohibitCommonWords": true,
+        "prohibitSequential": true,
+        "prohibitContextual": true,
+        "passwordExpiration": 90,
+        "historyCount": 5,
+        "maxLoginAttempts": 5,
+        "lockoutDuration": 30,
+        "isDefault": true,
+        "createdAt": "2025-01-15T10:30:00Z",
+        "updatedAt": "2025-03-20T14:45:00Z",
+        "roleApplicability": ["ADMIN", "DOCTOR", "NURSE"]
+      }
+    ],
+    "mfaConfig": {
+      "id": "MFA001",
+      "enabled": true,
+      "requiredForRoles": ["ADMIN", "DOCTOR"],
+      "allowedMethods": ["app", "sms", "email"],
+      "graceLogins": 3,
+      "rememberDeviceDays": 30,
+      "createdAt": "2025-02-01T09:00:00Z",
+      "updatedAt": "2025-04-10T11:20:00Z"
+    },
+    "sessionConfig": {
+      "id": "SC001",
+      "sessionTimeout": 30,
+      "extendOnActivity": true,
+      "singleSession": true,
+      "enforceSingleDevice": false,
+      "forceReauthForSensitive": true,
+      "createdAt": "2025-01-20T15:30:00Z",
+      "updatedAt": "2025-03-15T16:45:00Z"
+    },
+    "logRetentionPolicy": {
+      "id": "LRP001",
+      "retentionPeriod": 365,
+      "archiveAfter": 180,
+      "logCategories": ["authentication", "data_access", "system_config"],
+      "createdAt": "2025-02-10T08:00:00Z",
+      "updatedAt": "2025-04-05T13:15:00Z"
+    },
+    "logExportConfig": {
+      "id": "LEC001", 
+      "enabled": true,
+      "format": "json",
+      "destination": "sftp",
+      "destinationConfig": {
+        "host": "logs.4health.com",
+        "port": 22,
+        "username": "loguser"
+      },
+      "frequency": "daily",
+      "includeCategories": ["authentication", "security_alert"],
+      "createdAt": "2025-03-01T10:00:00Z",
+      "updatedAt": "2025-04-15T09:30:00Z"
+    },
+    "complianceConfigs": [
+      {
+        "id": "CC001",
+        "regulation": "HIPAA",
+        "enabled": true,
+        "enforcementLevel": "strict",
+        "lastAudit": "2025-02-15T14:00:00Z",
+        "nextAuditDue": "2025-08-15T14:00:00Z",
+        "requirementsStatus": {
+          "total": 50,
+          "compliant": 45,
+          "nonCompliant": 3,
+          "inProgress": 2
+        },
+        "dataRetentionPolicy": {
+          "patientData": 7,
+          "operationalData": 10,
+          "auditLogs": 5
+        },
+        "createdAt": "2025-01-10T11:00:00Z",
+        "updatedAt": "2025-04-01T16:20:00Z"
+      }
+    ],
+    "consentConfig": {
+      "id": "CONSENT001",
+      "consentCategories": [
+        {
+          "id": "CC001",
+          "name": "Tratamento de Dados Pessoais",
+          "description": "Consentimento para uso de dados pessoais",
+          "required": true,
+          "defaultState": true,
+          "appliesTo": ["patient", "staff"]
+        }
+      ],
+      "consentFormVersion": "1.2",
+      "lastUpdated": "2025-03-15T09:00:00Z",
+      "requireRenewalAfter": 365,
+      "notifyBeforeExpiration": 30,
+      "trackingMethod": "digital_signature",
+      "createdAt": "2025-01-05T14:30:00Z",
+      "updatedAt": "2025-04-10T10:45:00Z"
+    },
+    "accessControlConfig": {
+      "id": "ACC001",
+      "enforceIPRestriction": true,
+      "allowedIPs": ["192.168.1.0/24", "10.0.0.0/16"],
+      "allowedTimeWindows": [
+        {
+          "dayOfWeek": [1,2,3,4,5],
+          "startTime": "08:00",
+          "endTime": "20:00"
+        }
+      ],
+      "enforceDeviceRestriction": true,
+      "trustedDevices": true,
+      "maxDevicesPerUser": 3,
+      "geofencing": true,
+      "allowedLocations": [
+        {
+          "name": "Hospital Itaim",
+          "coordinates": {
+            "latitude": -23.5882,
+            "longitude": -46.6863,
+            "radius": 500
+          }
+        }
+      ],
+      "createdAt": "2025-02-05T13:00:00Z",
+      "updatedAt": "2025-04-12T15:30:00Z"
+    },
+    "apiSecurityConfig": {
+      "id": "APISEC001",
+      "authMethod": "jwt",
+      "tokenExpiration": 60,
+      "rateLimiting": {
+        "enabled": true,
+        "requestsPerMinute": 100,
+        "burstLimit": 200
+      },
+      "ipWhitelisting": {
+        "enabled": true,
+        "allowedIPs": ["192.168.1.10", "10.0.0.5"]
+      },
+      "webhookConfig": {
+        "enabled": true,
+        "signingSecret": true,
+        "retryPolicy": true
+      },
+      "createdAt": "2025-01-25T11:15:00Z",
+      "updatedAt": "2025-04-08T16:00:00Z"
+    },
+    "threatMonitoring": {
+      "id": "TM001",
+      "enabled": true,
+      "monitoringServices": {
+        "darkWeb": true,
+        "malwareDetection": true,
+        "intrusionDetection": true,
+        "anomalyDetection": true,
+        "honeypots": false
+      },
+      "alertThresholds": {
+        "anomalyScore": 70,
+        "failedLoginCount": 5,
+        "dataExfiltrationSize": 100
+      },
+      "responsePolicies": {
+        "autoBlockIPs": true,
+        "autoLockAccounts": true,
+        "notifySecurityTeam": true
+      },
+      "createdAt": "2025-02-20T10:30:00Z",
+      "updatedAt": "2025-04-15T14:15:00Z"
+    }
+  },
+  "vulnerability-scans": [
+    {
+      "id": "VS001",
+      "scanDate": "2025-04-10T09:00:00Z",
+      "scanType": "automated",
+      "scanTool": "OpenVAS",
+      "conductedBy": "Security Team",
+      "findings": [
+        {
+          "id": "F001",
+          "severity": "medium",
+          "category": "Web Application",
+          "description": "Potencial vulnerabilidade de injeção SQL",
+          "affectedComponent": "Módulo de Autenticação",
+          "status": "open",
+          "remediation": "Atualizar validação de entrada",
+          "fixDueDate": "2025-05-10T23:59:59Z",
+          "assignedTo": "João Silva"
+        }
+      ],
+      "summary": {
+        "total": 10,
+        "critical": 0,
+        "high": 2,
+        "medium": 5,
+        "low": 3,
+        "fixed": 0
+      },
+      "reportUrl": "https://security.4health.com/reports/VS001.pdf"
+    }
+  ],
+  "threat-monitoring": {
+    "currentStatus": {
+      "anomalyDetectionScore": 45,
+      "activeAlerts": 3,
+      "recentIntrusionAttempts": 12,
+      "lastScan": "2025-04-15T16:30:00Z"
+    },
+    "recentIncidents": [
+      {
+        "id": "INC001",
+        "type": "Suspicious Login",
+        "timestamp": "2025-04-14T22:15:00Z",
+        "sourceIP": "203.0.113.45",
+        "details": "Múltiplas tentativas de login falhadas"
+      }
+    ]
+  },
+  "compliance/report": {
+    "regulation": "HIPAA",
+    "complianceScore": 92,
+    "lastAssessmentDate": "2025-03-15T10:00:00Z",
+    "nonComplianceAreas": [
+      {
+        "area": "Data Privacy",
+        "severity": "low",
+        "description": "Necessidade de atualização da política de consentimento"
+      }
+    ]
+  },
+  "audit-logs": {
+    "logs": [
+      {
+        "id": "AL001",
+        "timestamp": "2025-04-15T14:30:00Z",
+        "userId": "ADMIN001",
+        "userName": "Admin Principal",
+        "userRole": "administrador",
+        "action": "Atualização de Configuração de Segurança",
+        "resource": "Política de Senhas",
+        "resourceId": "PP001",
+        "resourceType": "Configuração de Segurança",
+        "details": "Modificação nos requisitos de complexidade de senha",
+        "ipAddress": "192.168.1.100",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+        "sessionId": "SES12345",
+        "result": "success",
+        "severity": "info",
+        "category": "system_config"
+      }
+    ],
+    "page": 1,
+    "perPage": 20,
+    "totalItems": 150,
+    "totalPages": 8
+  },
+  "password-policy": {
+    "id": "PP002",
+    "name": "Política Avançada",
+    "minLength": 16,
+    "requireUppercase": true,
+    "requireLowercase": true,
+    "requireNumbers": true,
+    "requireSpecialChars": true,
+    "prohibitCommonWords": true,
+    "prohibitSequential": true,
+    "prohibitContextual": true,
+    "passwordExpiration": 60,
+    "historyCount": 10,
+    "maxLoginAttempts": 3,
+    "lockoutDuration": 60,
+    "isDefault": false,
+    "createdAt": "2025-04-01T09:00:00Z",
+    "updatedAt": "2025-04-15T14:30:00Z",
+    "roleApplicability": ["ADMIN"]
+  },
+  "mfa-config": {
+    "enabled": true,
+    "requiredForRoles": ["ADMIN", "DOCTOR"],
+    "allowedMethods": ["app", "hardware"],
+    "graceLogins": 2,
+    "rememberDeviceDays": 45,
+    "createdAt": "2025-03-15T10:00:00Z",
+    "updatedAt": "2025-04-10T16:45:00Z"
+  },
+  "session-config": {
+    "sessionTimeout": 45,
+    "extendOnActivity": true,
+    "singleSession": true,
+    "enforceSingleDevice": true,
+    "forceReauthForSensitive": true,
+    "createdAt": "2025-02-20T14:30:00Z",
+    "updatedAt": "2025-04-05T11:15:00Z"
+  },
+  "consent-config": {
+    "consentCategories": [
+      {
+        "id": "CC002",
+        "name": "Compartilhamento de Dados Médicos",
+        "description": "Consentimento para compartilhamento de informações médicas",
+        "required": false,
+        "defaultState": false,
+        "appliesTo": ["patient"]
+      }
+    ],
+    "consentFormVersion": "1.3",
+    "lastUpdated": "2025-04-01T09:30:00Z",
+    "requireRenewalAfter": 180,
+    "notifyBeforeExpiration": 15,
+    "trackingMethod": "biometric",
+    "createdAt": "2025-03-10T15:00:00Z",
+    "updatedAt": "2025-04-15T10:45:00Z"
+  },
+  "rbac-policy": [
+    {
+      "id": "RBAC001",
+      "name": "Política de Acesso Administrador",
+      "description": "Permissões completas para administradores de sistema",
+      "roleId": "ADMIN",
+      "permissions": [
+        {
+          "resource": "users",
+          "scope": "system",
+          "actions": ["view", "create", "edit", "delete"],
+          "conditions": {
+            "time": {
+              "start": "08:00",
+              "end": "20:00"
+            }
+          }
+        }
+      ],
+      "createdAt": "2025-02-15T11:00:00Z",
+      "updatedAt": "2025-04-10T15:30:00Z",
+      "createdBy": "ADMIN001"
+    }
+  ],
+  "log-export": {
+    "enabled": true,
+    "format": "csv",
+    "destination": "s3",
+    "destinationConfig": {
+      "bucket": "4health-logs",
+      "region": "sa-east-1"
+    },
+    "frequency": "weekly",
+    "includeCategories": ["authentication", "data_access"],
+          "createdAt": "2025-03-05T10:00:00Z",
+      "updatedAt": "2025-04-15T14:45:00Z"
+  },
+  "access-control": {
+    "id": "AC002",
+    "enforceIPRestriction": true,
+    "allowedIPs": ["10.0.0.0/16", "192.168.100.0/24"],
+    "allowedTimeWindows": [
+      {
+        "dayOfWeek": [1,2,3,4,5],
+        "startTime": "07:00",
+        "endTime": "21:00"
+      }
+    ],
+    "enforceDeviceRestriction": true,
+    "trustedDevices": true,
+    "maxDevicesPerUser": 2,
+    "geofencing": true,
+    "allowedLocations": [
+      {
+        "name": "Hospital Morumbi",
+        "coordinates": {
+          "latitude": -23.6074,
+          "longitude": -46.6931,
+          "radius": 750
+        }
+      }
+    ],
+    "createdAt": "2025-03-20T13:30:00Z",
+    "updatedAt": "2025-04-16T16:15:00Z"
+  },
+  "log-retention": {
+    "id": "LR002",
+    "retentionPeriod": 540,
+    "archiveAfter": 365,
+    "logCategories": [
+      "authentication", 
+      "data_access", 
+      "system_config", 
+      "patient_data", 
+      "admin_action"
+    ],
+    "createdAt": "2025-03-10T09:45:00Z",
+    "updatedAt": "2025-04-14T11:20:00Z"
+  },
+  "api-security": {
+    "id": "API002",
+    "authMethod": "oauth",
+    "tokenExpiration": 30,
+    "rateLimiting": {
+      "enabled": true,
+      "requestsPerMinute": 150,
+      "burstLimit": 300
+    },
+    "ipWhitelisting": {
+      "enabled": true,
+      "allowedIPs": ["172.16.0.0/16", "10.10.0.0/24"]
+    },
+    "webhookConfig": {
+      "enabled": true,
+      "signingSecret": true,
+      "retryPolicy": true
+    },
+    "createdAt": "2025-03-15T15:00:00Z",
+    "updatedAt": "2025-04-17T10:30:00Z"
   }
 }
