@@ -38,23 +38,34 @@ const indicatorVariants = cva("h-full w-full flex-1 transition-all", {
   },
 })
 
-// Definindo a interface ProgressProps
+// Expandindo a interface ProgressProps para incluir indicatorClassName
 interface ProgressProps 
   extends React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root>,
-    VariantProps<typeof progressVariants> {}
+    VariantProps<typeof progressVariants> {
+  value?: number
+  indicatorClassName?: string
+}
 
-type ProgressRef = any;    
-
-// Corrigindo o forwardRef com uma arrow function adequada
-const Progress = React.forwardRef<ProgressRef, ProgressProps>(
-  ({ className, value, variant, ...props }, ref) => (
+// Corrigindo o forwardRef para suportar indicatorClassName
+const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
+  ({ 
+    className, 
+    value, 
+    variant, 
+    indicatorClassName, 
+    ...props 
+  }, ref) => (
     <ProgressPrimitive.Root
       ref={ref}
+      value={value}
       className={cn(progressVariants({ variant }), className)}
       {...props}
     >
       <ProgressPrimitive.Indicator
-        className={cn(indicatorVariants({ variant }))}
+        className={cn(
+          indicatorVariants({ variant }), 
+          indicatorClassName
+        )}
         style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
       />
     </ProgressPrimitive.Root>
@@ -62,6 +73,6 @@ const Progress = React.forwardRef<ProgressRef, ProgressProps>(
 );
 
 // Adicionando o displayName
-Progress.displayName = ProgressPrimitive.Root.displayName;
+Progress.displayName = "Progress";
 
 export { Progress }
