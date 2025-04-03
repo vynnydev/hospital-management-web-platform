@@ -146,30 +146,30 @@ export const IPRestrictionPanel: React.FC<IPRestrictionPanelProps> = ({
           </div>
           <div className="flex items-center gap-2">
             <span className="text-sm font-medium">
-              {config.enforceIPRestriction ? 'Ativado' : 'Desativado'}
+              {config?.enforceIPRestriction ? 'Ativado' : 'Desativado'}
             </span>
             <Switch
-              checked={config.enforceIPRestriction}
+              checked={config?.enforceIPRestriction}
               onCheckedChange={handleToggleIPRestriction}
             />
           </div>
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        {!config.enforceIPRestriction && (
-          <div className="flex items-start space-x-2 p-4 bg-yellow-50 border border-yellow-200 rounded-md">
-            <AlertCircle className="h-5 w-5 text-yellow-600 mt-0.5" />
-            <div>
-              <h4 className="font-medium text-yellow-800">Restrições de IP desativadas</h4>
-              <p className="text-sm text-yellow-700">
-                Quando ativado, o acesso ao sistema será permitido apenas a partir dos endereços IP específicos definidos abaixo.
-                Isso aumenta significativamente a segurança, mas requer configuração cuidadosa.
-              </p>
+        {config && !config.enforceIPRestriction && (
+            <div className="flex items-start space-x-2 p-4 bg-yellow-50 border border-yellow-200 rounded-md">
+                <AlertCircle className="h-5 w-5 text-yellow-600 mt-0.5" />
+                <div>
+                <h4 className="font-medium text-yellow-800">Restrições de IP desativadas</h4>
+                <p className="text-sm text-yellow-700">
+                    Quando ativado, o acesso ao sistema será permitido apenas a partir dos endereços IP específicos definidos abaixo.
+                    Isso aumenta significativamente a segurança, mas requer configuração cuidadosa.
+                </p>
+                </div>
             </div>
-          </div>
         )}
         
-        <div className={!config.enforceIPRestriction ? 'opacity-50 pointer-events-none' : ''}>
+        <div className={config && !config.enforceIPRestriction ? 'opacity-50 pointer-events-none' : ''}>
           <div className="flex justify-between items-center mb-2">
             <h3 className="text-sm font-medium">IPs Permitidos</h3>
             <Dialog open={showAddIPDialog} onOpenChange={setShowAddIPDialog}>
@@ -178,7 +178,7 @@ export const IPRestrictionPanel: React.FC<IPRestrictionPanelProps> = ({
                   variant="outline" 
                   size="sm"
                   className="flex items-center gap-1"
-                  disabled={!config.enforceIPRestriction}
+                  disabled={config && !config.enforceIPRestriction}
                 >
                   <PlusCircle className="h-3.5 w-3.5" />
                   <span>Adicionar IP</span>
@@ -232,7 +232,7 @@ export const IPRestrictionPanel: React.FC<IPRestrictionPanelProps> = ({
             </Dialog>
           </div>
           
-          {(config.allowedIPs || []).length === 0 ? (
+          {(config && config.allowedIPs || []).length === 0 ? (
             <div className="border rounded-md p-6 text-center">
               <Globe className="h-8 w-8 text-gray-300 mx-auto mb-2" />
               <h3 className="text-sm font-medium mb-1">Nenhum IP permitido configurado</h3>
@@ -399,11 +399,11 @@ export const IPRestrictionPanel: React.FC<IPRestrictionPanelProps> = ({
 
       <CardFooter className="flex justify-between border-t pt-4">
         <div className="flex items-center text-sm text-gray-500">
-          {config.enforceIPRestriction ? (
+          {config && config.enforceIPRestriction ? (
             <>
               <Info className="h-4 w-4 mr-1" />
               <span>
-                {(config.allowedIPs || []).length} {(config.allowedIPs || []).length === 1 ? 'IP permitido' : 'IPs permitidos'}
+                {(config && config.allowedIPs || []).length} {(config && config.allowedIPs || []).length === 1 ? 'IP permitido' : 'IPs permitidos'}
               </span>
             </>
           ) : (

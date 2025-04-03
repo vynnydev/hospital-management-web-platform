@@ -57,47 +57,49 @@ export const InsuranceSettings: React.FC<InsuranceSettingsProps> = ({
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center">
+    <Card className="bg-white dark:bg-gray-800 shadow-md">
+      <CardHeader className="bg-gray-50 dark:bg-gray-800/80 border-b border-gray-100 dark:border-gray-700">
+        <CardTitle className="flex items-center text-gray-800 dark:text-gray-100">
           <Link className="h-5 w-5 mr-2 text-blue-600 dark:text-blue-400" />
           Integração com Convênios Médicos
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-gray-500 dark:text-gray-400">
           Configure a integração com operadoras de planos de saúde e convênios médicos.
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="grid grid-cols-2 gap-6 mb-6">
+      <CardContent className="space-y-6 pt-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div className="space-y-2">
-            <Label htmlFor="defaultProvider">Convênio Padrão</Label>
+            <Label htmlFor="defaultProvider" className="text-gray-700 dark:text-gray-300">Convênio Padrão</Label>
             <Select 
               value={settings.defaultProvider} 
               onValueChange={(value) => onSettingChange('insurance.defaultProvider', value)}
             >
-              <SelectTrigger id="defaultProvider">
-                <SelectValue placeholder="Selecionar convênio padrão" />
+              <SelectTrigger id="defaultProvider" className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600">
+                <SelectValue placeholder="Selecionar convênio padrão" className="text-gray-800 dark:text-gray-200" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600">
                 {settings.providers.map((provider) => (
-                  <SelectItem key={provider.id} value={provider.id}>{provider.name}</SelectItem>
+                  <SelectItem key={provider.id} value={provider.id} className="text-gray-800 dark:text-gray-200">
+                    {provider.name}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
         </div>
         
-        <Separator />
+        <Separator className="bg-gray-200 dark:bg-gray-600" />
         
-        <h4 className="font-medium mb-4">Convênios Cadastrados</h4>
+        <h4 className="font-medium mb-4 text-gray-800 dark:text-gray-200">Convênios Cadastrados</h4>
         
-        <ScrollArea className="h-[300px] rounded-md border">
+        <ScrollArea className="h-[300px] rounded-md border border-gray-200 dark:border-gray-700">
           <div className="p-4 space-y-4">
             {settings.providers.map((provider, index) => (
-              <div key={provider.id} className="rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+              <div key={provider.id} className="rounded-lg border border-gray-200 dark:border-gray-700 p-4 bg-white dark:bg-gray-800/50">
                 <div className="flex justify-between items-start mb-4">
                   <div>
-                    <h5 className="font-medium">{provider.name}</h5>
+                    <h5 className="font-medium text-gray-800 dark:text-gray-200">{provider.name}</h5>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
                       Código do Contrato: {provider.contractCode}
                     </p>
@@ -106,6 +108,7 @@ export const InsuranceSettings: React.FC<InsuranceSettingsProps> = ({
                     <Button 
                       variant="outline" 
                       size="sm"
+                      className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20"
                       onClick={() => {
                         // Implementar lógica de edição mais detalhada em um diálogo
                         // Por enquanto, apenas um placeholder
@@ -116,7 +119,7 @@ export const InsuranceSettings: React.FC<InsuranceSettingsProps> = ({
                     <Button 
                       variant="outline" 
                       size="sm"
-                      className="text-red-600 border-red-200 hover:bg-red-50 dark:text-red-400 dark:border-red-900 dark:hover:bg-red-900/20"
+                      className="bg-white dark:bg-gray-700 text-red-600 border-red-200 hover:bg-red-50 dark:text-red-400 dark:border-red-900 dark:hover:bg-red-900/20"
                       onClick={() => handleRemoveProvider(index)}
                     >
                       Remover
@@ -124,37 +127,37 @@ export const InsuranceSettings: React.FC<InsuranceSettingsProps> = ({
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                  <div className="text-gray-700 dark:text-gray-300">
                     <span className="font-medium">Contato:</span> {provider.contactInfo.email}
                   </div>
-                  <div>
+                  <div className="text-gray-700 dark:text-gray-300">
                     <span className="font-medium">Telefone:</span> {provider.contactInfo.phone}
                   </div>
-                  <div>
+                  <div className="text-gray-700 dark:text-gray-300">
                     <span className="font-medium">Método de Envio:</span> {provider.submissionMethod === 'electronic' ? 'Eletrônico' : 'Manual'}
                   </div>
-                  <div>
+                  <div className="text-gray-700 dark:text-gray-300">
                     <span className="font-medium">Prazo de Pagamento:</span> {provider.paymentTerms} dias
                   </div>
                 </div>
                 
-                <Separator className="my-4" />
+                <Separator className="my-4 bg-gray-200 dark:bg-gray-600" />
                 
                 <div>
-                  <h6 className="text-sm font-medium mb-2">Cobertura de Serviços</h6>
+                  <h6 className="text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Cobertura de Serviços</h6>
                   <div className="space-y-2">
                     {provider.servicesMap.slice(0, 3).map((service) => (
-                      <div key={service.serviceCode} className="flex justify-between text-xs p-2 bg-gray-50 dark:bg-gray-800 rounded">
+                      <div key={service.serviceCode} className="flex justify-between text-xs p-2 bg-gray-50 dark:bg-gray-700 rounded">
                         <div>
-                          <span className="font-medium">{service.serviceCode}</span>
+                          <span className="font-medium text-gray-800 dark:text-gray-200">{service.serviceCode}</span>
                           {service.requiresPreAuthorization && (
                             <Badge variant="outline" className="ml-2 text-amber-600 bg-amber-50 border-amber-200 dark:bg-amber-900/20 dark:border-amber-800 dark:text-amber-400">
                               Pré-autorização
                             </Badge>
                           )}
                         </div>
-                        <div>
+                        <div className="text-gray-700 dark:text-gray-300">
                           <span>Cobertura: {service.coveragePercentage}%</span>
                           <span className="ml-2">Máx: {service.maxAllowedAmount.toLocaleString('pt-BR', {
                             style: 'currency',
@@ -165,7 +168,11 @@ export const InsuranceSettings: React.FC<InsuranceSettingsProps> = ({
                     ))}
                     
                     {provider.servicesMap.length > 3 && (
-                      <Button variant="link" size="sm" className="text-xs mt-1">
+                      <Button 
+                        variant="link" 
+                        size="sm" 
+                        className="text-xs mt-1 text-blue-600 dark:text-blue-400"
+                      >
                         Ver todos os {provider.servicesMap.length} serviços...
                       </Button>
                     )}
@@ -177,7 +184,7 @@ export const InsuranceSettings: React.FC<InsuranceSettingsProps> = ({
         </ScrollArea>
         
         <Button 
-          className="mt-4 w-full"
+          className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-600"
           onClick={handleAddProvider}
         >
           Adicionar Novo Convênio

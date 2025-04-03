@@ -129,17 +129,17 @@ export const IntegrationSettings: React.FC<IntegrationSettingsProps> = ({
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center">
+    <Card className="bg-white dark:bg-gray-800 shadow-md">
+      <CardHeader className="bg-gray-50 dark:bg-gray-800/80 border-b border-gray-100 dark:border-gray-700">
+        <CardTitle className="flex items-center text-gray-800 dark:text-gray-100">
           <Database className="h-5 w-5 mr-2 text-blue-600 dark:text-blue-400" />
           Integrações com Sistemas Externos
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-gray-500 dark:text-gray-400">
           Configure integrações com sistemas financeiros externos como ERPs, sistemas contábeis e bancários.
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-6 pt-6">
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center space-x-2">
             <Switch 
@@ -147,7 +147,7 @@ export const IntegrationSettings: React.FC<IntegrationSettingsProps> = ({
               checked={settings.enabled}
               onCheckedChange={handleEnabledChange}
             />
-            <Label htmlFor="integrationsEnabled" className="font-medium">
+            <Label htmlFor="integrationsEnabled" className="font-medium text-gray-700 dark:text-gray-300">
               Habilitar Integrações
             </Label>
           </div>
@@ -157,7 +157,7 @@ export const IntegrationSettings: React.FC<IntegrationSettingsProps> = ({
             size="sm"
             disabled={!settings.enabled}
             onClick={handleAddSystem}
-            className="flex items-center"
+            className="flex items-center bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20"
           >
             <Plus className="h-4 w-4 mr-1" />
             Adicionar Sistema
@@ -169,29 +169,32 @@ export const IntegrationSettings: React.FC<IntegrationSettingsProps> = ({
             {settings.systems.length === 0 ? (
               <div className="border border-dashed border-gray-300 dark:border-gray-600 rounded-md p-8 text-center">
                 <Database className="h-10 w-10 mx-auto text-gray-400 dark:text-gray-500 mb-3" />
-                <h3 className="text-lg font-medium mb-2">Nenhuma integração configurada</h3>
+                <h3 className="text-lg font-medium mb-2 text-gray-800 dark:text-gray-200">Nenhuma integração configurada</h3>
                 <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto mb-4">
                   Adicione sistemas externos para sincronizar dados financeiros automaticamente.
                 </p>
-                <Button onClick={handleAddSystem}>
+                <Button 
+                  onClick={handleAddSystem}
+                  className="bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-600"
+                >
                   <Plus className="h-4 w-4 mr-1" />
                   Adicionar Sistema
                 </Button>
               </div>
             ) : (
-              <ScrollArea className="h-[400px] rounded-md border">
+              <ScrollArea className="h-[400px] rounded-md border border-gray-200 dark:border-gray-700">
                 <div className="p-4 space-y-6">
                   {settings.systems.map((system, index) => (
-                    <div key={system.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                    <div key={system.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-white dark:bg-gray-800/50">
                       <div className="flex justify-between items-start mb-4">
                         <div>
                           <div className="flex items-center">
-                            <h3 className="text-lg font-medium mr-2">{system.name}</h3>
+                            <h3 className="text-lg font-medium mr-2 text-gray-800 dark:text-gray-200">{system.name}</h3>
                             <Badge className={getSystemTypeBadgeColor(system.type)}>
                               {getSystemTypeText(system.type)}
                             </Badge>
                           </div>
-                          <p className="text-sm text-muted-foreground mt-1 flex items-center">
+                          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 flex items-center">
                             <ExternalLink className="h-3.5 w-3.5 mr-1 opacity-70" />
                             {system.apiEndpoint}
                           </p>
@@ -201,7 +204,7 @@ export const IntegrationSettings: React.FC<IntegrationSettingsProps> = ({
                           <Button 
                             variant="outline" 
                             size="sm"
-                            className="flex items-center"
+                            className="flex items-center bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20"
                           >
                             <RefreshCw className="h-3.5 w-3.5 mr-1" />
                             Sincronizar
@@ -209,99 +212,111 @@ export const IntegrationSettings: React.FC<IntegrationSettingsProps> = ({
                           <Button 
                             variant="outline" 
                             size="sm"
-                            className="flex items-center"
+                            className="flex items-center bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 hover:bg-red-50 dark:hover:bg-red-900/20"
                             onClick={() => handleRemoveSystem(index)}
                           >
-                            <Trash2 className="h-3.5 w-3.5 mr-1 text-red-500" />
+                            <Trash2 className="h-3.5 w-3.5 mr-1 text-red-500 dark:text-red-400" />
                             Remover
                           </Button>
                         </div>
                       </div>
                       
-                      <div className="grid grid-cols-2 gap-4 mb-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div className="space-y-2">
-                          <Label htmlFor={`system-name-${index}`} className="text-xs">Nome</Label>
+                          <Label htmlFor={`system-name-${index}`} className="text-xs text-gray-500 dark:text-gray-400">Nome</Label>
                           <Input 
                             id={`system-name-${index}`}
                             value={system.name}
                             onChange={(e) => handleUpdateSystem(index, 'name', e.target.value)}
+                            className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200"
                           />
                         </div>
                         
                         <div className="space-y-2">
-                          <Label htmlFor={`system-type-${index}`} className="text-xs">Tipo</Label>
+                          <Label htmlFor={`system-type-${index}`} className="text-xs text-gray-500 dark:text-gray-400">Tipo</Label>
                           <Select 
                             value={system.type} 
                             onValueChange={(value) => handleUpdateSystem(index, 'type', value)}
                           >
-                            <SelectTrigger id={`system-type-${index}`}>
-                              <SelectValue placeholder="Selecionar tipo" />
+                            <SelectTrigger id={`system-type-${index}`} className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600">
+                              <SelectValue placeholder="Selecionar tipo" className="text-gray-800 dark:text-gray-200" />
                             </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="erp">ERP</SelectItem>
-                              <SelectItem value="accounting">Sistema Contábil</SelectItem>
-                              <SelectItem value="payment_processor">Processador de Pagamentos</SelectItem>
-                              <SelectItem value="tax_system">Sistema Fiscal</SelectItem>
-                              <SelectItem value="banking">Sistema Bancário</SelectItem>
+                            <SelectContent className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600">
+                              <SelectItem value="erp" className="text-gray-800 dark:text-gray-200">ERP</SelectItem>
+                              <SelectItem value="accounting" className="text-gray-800 dark:text-gray-200">Sistema Contábil</SelectItem>
+                              <SelectItem value="payment_processor" className="text-gray-800 dark:text-gray-200">Processador de Pagamentos</SelectItem>
+                              <SelectItem value="tax_system" className="text-gray-800 dark:text-gray-200">Sistema Fiscal</SelectItem>
+                              <SelectItem value="banking" className="text-gray-800 dark:text-gray-200">Sistema Bancário</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
                         
                         <div className="space-y-2">
-                          <Label htmlFor={`system-api-endpoint-${index}`} className="text-xs">URL da API</Label>
+                          <Label htmlFor={`system-api-endpoint-${index}`} className="text-xs text-gray-500 dark:text-gray-400">URL da API</Label>
                           <Input 
                             id={`system-api-endpoint-${index}`}
                             value={system.apiEndpoint}
                             onChange={(e) => handleUpdateSystem(index, 'apiEndpoint', e.target.value)}
+                            className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200"
                           />
                         </div>
                         
                         <div className="space-y-2">
-                          <Label htmlFor={`system-sync-frequency-${index}`} className="text-xs">Frequência de Sincronização</Label>
+                          <Label htmlFor={`system-sync-frequency-${index}`} className="text-xs text-gray-500 dark:text-gray-400">Frequência de Sincronização</Label>
                           <Select 
                             value={system.syncFrequency} 
                             onValueChange={(value) => handleUpdateSystem(index, 'syncFrequency', value)}
                           >
-                            <SelectTrigger id={`system-sync-frequency-${index}`}>
-                              <SelectValue placeholder="Selecionar frequência" />
+                            <SelectTrigger id={`system-sync-frequency-${index}`} className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600">
+                              <SelectValue placeholder="Selecionar frequência" className="text-gray-800 dark:text-gray-200" />
                             </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="realtime">Tempo Real</SelectItem>
-                              <SelectItem value="hourly">A cada hora</SelectItem>
-                              <SelectItem value="daily">Diariamente</SelectItem>
-                              <SelectItem value="weekly">Semanalmente</SelectItem>
+                            <SelectContent className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600">
+                              <SelectItem value="realtime" className="text-gray-800 dark:text-gray-200">Tempo Real</SelectItem>
+                              <SelectItem value="hourly" className="text-gray-800 dark:text-gray-200">A cada hora</SelectItem>
+                              <SelectItem value="daily" className="text-gray-800 dark:text-gray-200">Diariamente</SelectItem>
+                              <SelectItem value="weekly" className="text-gray-800 dark:text-gray-200">Semanalmente</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
                       </div>
                       
                       <div className="space-y-3">
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div className="space-y-2">
-                            <Label htmlFor={`system-api-key-${index}`} className="text-xs">Chave da API</Label>
+                            <Label htmlFor={`system-api-key-${index}`} className="text-xs text-gray-500 dark:text-gray-400">Chave da API</Label>
                             <div className="relative">
                               <Input 
                                 id={`system-api-key-${index}`}
                                 type="password"
                                 value={system.apiKey}
                                 onChange={(e) => handleUpdateSystem(index, 'apiKey', e.target.value)}
+                                className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200 pr-10"
                               />
-                              <Button variant="ghost" size="sm" className="absolute right-0 top-0 h-full">
+                              <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                className="absolute right-0 top-0 h-full text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                              >
                                 <EditIcon className="h-3.5 w-3.5" />
                               </Button>
                             </div>
                           </div>
                           
                           <div className="space-y-2">
-                            <Label htmlFor={`system-refresh-token-${index}`} className="text-xs">Token de Atualização</Label>
+                            <Label htmlFor={`system-refresh-token-${index}`} className="text-xs text-gray-500 dark:text-gray-400">Token de Atualização</Label>
                             <div className="relative">
                               <Input 
                                 id={`system-refresh-token-${index}`}
                                 type="password"
                                 value={system.refreshToken}
                                 onChange={(e) => handleUpdateSystem(index, 'refreshToken', e.target.value)}
+                                className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200 pr-10"
                               />
-                              <Button variant="ghost" size="sm" className="absolute right-0 top-0 h-full">
+                              <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                className="absolute right-0 top-0 h-full text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                              >
                                 <EditIcon className="h-3.5 w-3.5" />
                               </Button>
                             </div>
@@ -310,9 +325,9 @@ export const IntegrationSettings: React.FC<IntegrationSettingsProps> = ({
                         
                         <div className="flex items-center justify-between pt-3 border-t border-gray-200 dark:border-gray-700 text-sm">
                           <div className="flex items-center">
-                            <Clock className="h-3.5 w-3.5 mr-1 text-muted-foreground" />
-                            <span className="text-muted-foreground">Última sincronização:</span>
-                            <span className="ml-1 font-medium">{formatLastSync(system.lastSync)}</span>
+                            <Clock className="h-3.5 w-3.5 mr-1 text-gray-500 dark:text-gray-400" />
+                            <span className="text-gray-500 dark:text-gray-400">Última sincronização:</span>
+                            <span className="ml-1 font-medium text-gray-700 dark:text-gray-300">{formatLastSync(system.lastSync)}</span>
                           </div>
                           
                           <Badge className={getSyncFrequencyBadgeColor(system.syncFrequency)}>
@@ -345,11 +360,14 @@ export const IntegrationSettings: React.FC<IntegrationSettingsProps> = ({
         ) : (
           <div className="border border-dashed border-gray-300 dark:border-gray-600 rounded-md p-8 text-center">
             <AlertTriangle className="h-10 w-10 mx-auto text-amber-500 mb-3" />
-            <h3 className="text-lg font-medium mb-2">Integrações Desabilitadas</h3>
+            <h3 className="text-lg font-medium mb-2 text-gray-800 dark:text-gray-200">Integrações Desabilitadas</h3>
             <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto mb-4">
               As integrações com sistemas externos estão atualmente desabilitadas. Habilite-as para sincronizar dados financeiros automaticamente.
             </p>
-            <Button onClick={() => handleEnabledChange(true)}>
+            <Button 
+              onClick={() => handleEnabledChange(true)}
+              className="bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-600"
+            >
               Habilitar Integrações
             </Button>
           </div>

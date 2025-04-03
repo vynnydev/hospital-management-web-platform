@@ -200,18 +200,18 @@ export const SecurityAlertsTab = () => {
           </Button>
           
           <Select
-            value={statusFilter}
+            value={statusFilter || undefined} // Converte string vazia para undefined
             onValueChange={setStatusFilter}
-          >
+            >
             <SelectTrigger className="w-[160px]">
-              <SelectValue placeholder="Todos os status" />
+                <SelectValue placeholder="Todos os status" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Todos os status</SelectItem>
-              <SelectItem value="new">Novos</SelectItem>
-              <SelectItem value="investigating">Em investigação</SelectItem>
-              <SelectItem value="resolved">Resolvidos</SelectItem>
-              <SelectItem value="false_positive">Falsos positivos</SelectItem>
+                <SelectItem value="all">Todos os status</SelectItem>
+                <SelectItem value="new">Novos</SelectItem>
+                <SelectItem value="investigating">Em investigação</SelectItem>
+                <SelectItem value="resolved">Resolvidos</SelectItem>
+                <SelectItem value="false_positive">Falsos positivos</SelectItem>
             </SelectContent>
           </Select>
         </div>

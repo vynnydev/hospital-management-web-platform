@@ -232,7 +232,7 @@ export const RBAConfigPanel: React.FC<RBAConfigPanelProps> = ({
         </div>
       </CardHeader>
       <CardContent>
-        {policies.length === 0 ? (
+        {!policies || policies.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-10 text-center">
             <Users className="h-12 w-12 text-gray-300 mb-3" />
             <h3 className="text-lg font-medium">Nenhuma política RBAC configurada</h3>
@@ -512,7 +512,7 @@ export const RBAConfigPanel: React.FC<RBAConfigPanelProps> = ({
       <CardFooter className="flex justify-between border-t pt-4">
         <div className="flex items-center text-sm text-gray-500">
           <Info className="h-4 w-4 mr-1" />
-          <span>Total: {policies.length} políticas</span>
+          <span>Total: {policies?.length} políticas</span>
         </div>
       </CardFooter>
     </Card>

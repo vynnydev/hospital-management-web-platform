@@ -227,7 +227,7 @@ export const FinanceSettingsTab: React.FC = () => {
       <div className="flex items-center justify-center h-full p-8">
         <div className="flex flex-col items-center">
           <RefreshCcw className="h-12 w-12 text-blue-600 dark:text-blue-400 animate-spin mb-4" />
-          <h3 className="text-lg font-medium mb-2">Carregando configurações financeiras</h3>
+          <h3 className="text-lg font-medium mb-2 text-gray-800 dark:text-gray-200">Carregando configurações financeiras</h3>
           <p className="text-gray-500 dark:text-gray-400">Aguarde enquanto carregamos os dados...</p>
         </div>
       </div>
@@ -250,14 +250,16 @@ export const FinanceSettingsTab: React.FC = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight flex items-center">
+          <h2 className="text-2xl font-bold tracking-tight flex items-center text-gray-800 dark:text-gray-100">
             <DollarSign className="h-6 w-6 mr-2 text-blue-600 dark:text-blue-400" />
             Configurações Financeiras
             {isDefaultsMode && (
-              <Badge className="ml-2 bg-indigo-600 hover:bg-indigo-700">Configurações Padrão da Rede</Badge>
+              <Badge className="ml-2 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600">
+                Configurações Padrão da Rede
+              </Badge>
             )}
           </h2>
-          <p className="text-muted-foreground">
+          <p className="text-gray-500 dark:text-gray-400">
             Gerencie todas as configurações financeiras para sua operação hospitalar.
           </p>
         </div>
@@ -269,12 +271,12 @@ export const FinanceSettingsTab: React.FC = () => {
                 value={selectedHospitalId}
                 onValueChange={setSelectedHospitalId}
               >
-                <SelectTrigger className="w-[240px]">
-                  <SelectValue placeholder="Selecionar hospital" />
+                <SelectTrigger className="w-[240px] bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600">
+                  <SelectValue placeholder="Selecionar hospital" className="text-gray-800 dark:text-gray-200" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600">
                   {networkData?.hospitals.map(hospital => (
-                    <SelectItem key={hospital.id} value={hospital.id}>
+                    <SelectItem key={hospital.id} value={hospital.id} className="text-gray-800 dark:text-gray-200">
                       <div className="flex items-center">
                         <Building2 className="h-4 w-4 mr-2 text-blue-600 dark:text-blue-400" />
                         {hospital.name}
@@ -295,7 +297,7 @@ export const FinanceSettingsTab: React.FC = () => {
           <Button 
             variant={isDefaultsMode ? "default" : "outline"} 
             onClick={toggleDefaultsMode}
-            className="flex items-center"
+            className={`flex items-center ${isDefaultsMode ? 'bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-700 dark:hover:bg-blue-800' : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600'}`}
           >
             <Globe className="h-4 w-4 mr-2" />
             {isDefaultsMode ? "Ver Hospital Específico" : "Ver Padrões da Rede"}
@@ -304,7 +306,7 @@ export const FinanceSettingsTab: React.FC = () => {
           {unsavedChanges && (
             <Button 
               onClick={saveSettings} 
-              className="bg-green-600 hover:bg-green-700 text-white"
+              className="bg-green-600 hover:bg-green-700 text-white dark:bg-green-500 dark:hover:bg-green-600"
             >
               <Save className="h-4 w-4 mr-2" />
               Salvar Alterações
@@ -314,41 +316,50 @@ export const FinanceSettingsTab: React.FC = () => {
       </div>
       
       {!isDefaultsMode && (
-        <Card className="mb-6">
+        <Card className="mb-6 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm">
           <CardContent className="pt-6">
             <div className="flex justify-between items-center">
               <div className="flex space-x-2">
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button variant="outline" className="flex items-center">
+                    <Button 
+                      variant="outline" 
+                      className="flex items-center bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                    >
                       <Link className="h-4 w-4 mr-2" />
                       Aplicar para Rede
                     </Button>
                   </DialogTrigger>
-                  <DialogContent>
+                  <DialogContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                     <DialogHeader>
-                      <DialogTitle>Aplicar configurações à rede</DialogTitle>
-                      <DialogDescription>
+                      <DialogTitle className="text-gray-800 dark:text-gray-100">Aplicar configurações à rede</DialogTitle>
+                      <DialogDescription className="text-gray-500 dark:text-gray-400">
                         Esta ação substituirá as configurações padrão da rede pelas configurações deste hospital.
                         Outros hospitais que usam o padrão da rede serão afetados.
                       </DialogDescription>
                     </DialogHeader>
                     <div className="py-6">
-                      <Alert variant="warning" className="mb-4">
-                        <AlertTriangle className="h-4 w-4" />
-                        <AlertTitle>Atenção</AlertTitle>
-                        <AlertDescription>
+                      <Alert variant="warning" className="mb-4 border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20">
+                        <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                        <AlertTitle className="text-amber-800 dark:text-amber-300">Atenção</AlertTitle>
+                        <AlertDescription className="text-amber-700 dark:text-amber-400">
                           Esta ação não pode ser desfeita. Certifique-se de que as configurações deste hospital
                           são adequadas para toda a rede hospitalar.
                         </AlertDescription>
                       </Alert>
                     </div>
                     <DialogFooter>
-                      <Button variant="outline" type="button">Cancelar</Button>
+                      <Button 
+                        variant="outline" 
+                        type="button"
+                        className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
+                      >
+                        Cancelar
+                      </Button>
                       <Button 
                         onClick={handleApplyToNetwork}
                         disabled={isApplyingToNetwork}
-                        className="bg-amber-600 hover:bg-amber-700 text-white"
+                        className="bg-amber-600 hover:bg-amber-700 text-white dark:bg-amber-500 dark:hover:bg-amber-600"
                       >
                         {isApplyingToNetwork ? (
                           <>
@@ -368,33 +379,42 @@ export const FinanceSettingsTab: React.FC = () => {
                 
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button variant="outline" className="flex items-center text-red-600 border-red-200 hover:bg-red-50 dark:text-red-400 dark:border-red-900 dark:hover:bg-red-900/20">
+                    <Button 
+                      variant="outline" 
+                      className="flex items-center text-red-600 border-red-200 hover:bg-red-50 dark:text-red-400 dark:border-red-900 dark:hover:bg-red-900/20 bg-white dark:bg-gray-700"
+                    >
                       <RefreshCcw className="h-4 w-4 mr-2" />
                       Resetar Configurações
                     </Button>
                   </DialogTrigger>
-                  <DialogContent>
+                  <DialogContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                     <DialogHeader>
-                      <DialogTitle>Resetar para padrões da rede</DialogTitle>
-                      <DialogDescription>
+                      <DialogTitle className="text-gray-800 dark:text-gray-100">Resetar para padrões da rede</DialogTitle>
+                      <DialogDescription className="text-gray-500 dark:text-gray-400">
                         Esta ação removerá todas as configurações personalizadas deste hospital,
                         fazendo com que ele utilize o padrão da rede.
                       </DialogDescription>
                     </DialogHeader>
                     <div className="py-6">
-                      <Alert variant="destructive" className="mb-4">
-                        <AlertTriangle className="h-4 w-4" />
-                        <AlertTitle>Atenção</AlertTitle>
-                        <AlertDescription>
+                      <Alert variant="destructive" className="mb-4 border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20">
+                        <AlertTriangle className="h-4 w-4 text-red-600 dark:text-red-400" />
+                        <AlertTitle className="text-red-800 dark:text-red-300">Atenção</AlertTitle>
+                        <AlertDescription className="text-red-700 dark:text-red-400">
                           Esta ação não pode ser desfeita. Todas as configurações personalizadas serão perdidas.
                         </AlertDescription>
                       </Alert>
                     </div>
                     <DialogFooter>
-                      <Button variant="outline" type="button">Cancelar</Button>
+                      <Button 
+                        variant="outline" 
+                        type="button"
+                        className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
+                      >
+                        Cancelar
+                      </Button>
                       <Button 
                         onClick={handleResetToDefaults}
-                        variant="destructive"
+                        className="bg-red-600 hover:bg-red-700 text-white dark:bg-red-500 dark:hover:bg-red-600"
                       >
                         <RefreshCcw className="h-4 w-4 mr-2" />
                         Confirmar Reset
@@ -410,10 +430,10 @@ export const FinanceSettingsTab: React.FC = () => {
       
       {/* Diálogo para salvar alterações não salvas */}
       <Dialog open={showSavePrompt} onOpenChange={setShowSavePrompt}>
-        <DialogContent>
+        <DialogContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
           <DialogHeader>
-            <DialogTitle>Alterações não salvas</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-gray-800 dark:text-gray-100">Alterações não salvas</DialogTitle>
+            <DialogDescription className="text-gray-500 dark:text-gray-400">
               Você tem alterações não salvas que serão perdidas. O que deseja fazer?
             </DialogDescription>
           </DialogHeader>
@@ -426,6 +446,7 @@ export const FinanceSettingsTab: React.FC = () => {
                 setCurrentEdits({});
                 setUnsavedChanges(false);
               }}
+              className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
             >
               Descartar alterações
             </Button>
@@ -435,6 +456,7 @@ export const FinanceSettingsTab: React.FC = () => {
                 setShowSavePrompt(false);
                 setIsDefaultsMode(!isDefaultsMode);
               }}
+              className="bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-600"
             >
               Salvar e continuar
             </Button>
@@ -442,83 +464,132 @@ export const FinanceSettingsTab: React.FC = () => {
         </DialogContent>
       </Dialog>
       
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid grid-cols-6 mb-8">
-          <TabsTrigger value="general" className="flex items-center">
-            <Settings className="h-4 w-4 mr-2" />
-            Geral
-          </TabsTrigger>
-          <TabsTrigger value="billing" className="flex items-center">
-            <CreditCard className="h-4 w-4 mr-2" />
-            Faturamento
-          </TabsTrigger>
-          <TabsTrigger value="tax" className="flex items-center">
-            <Percent className="h-4 w-4 mr-2" />
-            Impostos
-          </TabsTrigger>
-          <TabsTrigger value="budget" className="flex items-center">
-            <PieChart className="h-4 w-4 mr-2" />
-            Orçamento
-          </TabsTrigger>
-          <TabsTrigger value="insurance" className="flex items-center">
-            <Shield className="h-4 w-4 mr-2" />
-            Seguros
-          </TabsTrigger>
-          <TabsTrigger value="integrations" className="flex items-center">
-            <Database className="h-4 w-4 mr-2" />
-            Integrações
-          </TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="general" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <CurrencySettings 
-              settings={{...settings.currency, ...currentEdits.currency}}
-              onSettingChange={updateLocalEdits} 
-            />
-            <FinancialReportsSettings 
-              settings={{...settings.financialReports, ...currentEdits.financialReports}} 
-              onSettingChange={updateLocalEdits} 
-            />
+      <div className="w-full bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        {/* Tabs navigation - estilizado com bordas suaves e highlight ativo */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <div className="bg-gray-50 dark:bg-gray-800/80 border-b border-gray-200 dark:border-gray-700">
+            <TabsList className="grid grid-cols-6 w-full bg-transparent h-auto p-0">
+              <TabsTrigger 
+                value="general" 
+                className={`flex items-center justify-center py-4 px-2 border-b-2 transition-all ${
+                  activeTab === 'general' 
+                    ? 'border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 font-medium' 
+                    : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
+                }`}
+              >
+                <Settings className="h-4 w-4 mr-2" />
+                Geral
+              </TabsTrigger>
+              <TabsTrigger 
+                value="billing" 
+                className={`flex items-center justify-center py-4 px-2 border-b-2 transition-all ${
+                  activeTab === 'billing' 
+                    ? 'border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 font-medium' 
+                    : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
+                }`}
+              >
+                <CreditCard className="h-4 w-4 mr-2" />
+                Faturamento
+              </TabsTrigger>
+              <TabsTrigger 
+                value="tax" 
+                className={`flex items-center justify-center py-4 px-2 border-b-2 transition-all ${
+                  activeTab === 'tax' 
+                    ? 'border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 font-medium' 
+                    : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
+                }`}
+              >
+                <Percent className="h-4 w-4 mr-2" />
+                Impostos
+              </TabsTrigger>
+              <TabsTrigger 
+                value="budget" 
+                className={`flex items-center justify-center py-4 px-2 border-b-2 transition-all ${
+                  activeTab === 'budget' 
+                    ? 'border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 font-medium' 
+                    : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
+                }`}
+              >
+                <PieChart className="h-4 w-4 mr-2" />
+                Orçamento
+              </TabsTrigger>
+              <TabsTrigger 
+                value="insurance" 
+                className={`flex items-center justify-center py-4 px-2 border-b-2 transition-all ${
+                  activeTab === 'insurance' 
+                    ? 'border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 font-medium' 
+                    : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
+                }`}
+              >
+                <Shield className="h-4 w-4 mr-2" />
+                Seguros
+              </TabsTrigger>
+              <TabsTrigger 
+                value="integrations" 
+                className={`flex items-center justify-center py-4 px-2 border-b-2 transition-all ${
+                  activeTab === 'integrations' 
+                    ? 'border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 font-medium' 
+                    : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
+                }`}
+              >
+                <Database className="h-4 w-4 mr-2" />
+                Integrações
+              </TabsTrigger>
+            </TabsList>
           </div>
-        </TabsContent>
-        
-        <TabsContent value="billing" className="space-y-4">
-          <BillingSettings 
-            billingSettings={{...settings.patientBilling, ...currentEdits.patientBilling}}
-            costSettings={{...settings.serviceCost, ...currentEdits.serviceCost}}
-            onSettingChange={updateLocalEdits} 
-          />
-        </TabsContent>
-        
-        <TabsContent value="tax" className="space-y-4">
-          <TaxSettings 
-            settings={{...settings.tax, ...currentEdits.tax}} 
-            onSettingChange={updateLocalEdits} 
-          />
-        </TabsContent>
-        
-        <TabsContent value="budget" className="space-y-4">
-          <BudgetSettings 
-            settings={{...settings.budget, ...currentEdits.budget}} 
-            onSettingChange={updateLocalEdits} 
-          />
-        </TabsContent>
-        
-        <TabsContent value="insurance" className="space-y-4">
-          <InsuranceSettings 
-            settings={{...settings.insurance, ...currentEdits.insurance}} 
-            onSettingChange={updateLocalEdits} 
-          />
-        </TabsContent>
-        
-        <TabsContent value="integrations" className="space-y-4">
-          <IntegrationSettings 
-            settings={{...settings.integrations, ...currentEdits.integrations}} 
-            onSettingChange={updateLocalEdits} 
-          />
-        </TabsContent>
-      </Tabs>
+          
+          <div className="p-6">
+            <TabsContent value="general" className="space-y-4 mt-0">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <CurrencySettings 
+                  settings={{...settings.currency, ...currentEdits.currency}}
+                  onSettingChange={updateLocalEdits} 
+                />
+                <FinancialReportsSettings 
+                  settings={{...settings.financialReports, ...currentEdits.financialReports}} 
+                  onSettingChange={updateLocalEdits} 
+                />
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="billing" className="space-y-4 mt-0">
+              <BillingSettings 
+                billingSettings={{...settings.patientBilling, ...currentEdits.patientBilling}}
+                costSettings={{...settings.serviceCost, ...currentEdits.serviceCost}}
+                onSettingChange={updateLocalEdits} 
+              />
+            </TabsContent>
+            
+            <TabsContent value="tax" className="space-y-4 mt-0">
+              <TaxSettings 
+                settings={{...settings.tax, ...currentEdits.tax}} 
+                onSettingChange={updateLocalEdits} 
+              />
+            </TabsContent>
+            
+            <TabsContent value="budget" className="space-y-4 mt-0">
+              <BudgetSettings 
+                settings={{...settings.budget, ...currentEdits.budget}} 
+                onSettingChange={updateLocalEdits} 
+              />
+            </TabsContent>
+            
+            <TabsContent value="insurance" className="space-y-4 mt-0">
+              <InsuranceSettings 
+                settings={{...settings.insurance, ...currentEdits.insurance}} 
+                onSettingChange={updateLocalEdits} 
+              />
+            </TabsContent>
+            
+            <TabsContent value="integrations" className="space-y-4 mt-0">
+              <IntegrationSettings 
+                settings={{...settings.integrations, ...currentEdits.integrations}} 
+                onSettingChange={updateLocalEdits} 
+              />
+            </TabsContent>
+          </div>
+        </Tabs>
+      </div>
     </div>
   );
 };
