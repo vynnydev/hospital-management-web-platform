@@ -469,7 +469,7 @@ export const FinanceSettingsTab: React.FC = () => {
         {/* Tabs navigation - estilizado com bordas suaves e highlight ativo */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="bg-gray-50 dark:bg-gray-800/80 border-b border-gray-200 dark:border-gray-700">
-            <TabsList className="grid grid-cols-6 w-full bg-transparent h-auto p-0">
+            <TabsList className="grid grid-cols-7 w-full bg-transparent h-auto p-0">
               <TabsTrigger 
                 value="general" 
                 className={`flex items-center justify-center py-4 px-2 border-b-2 transition-all ${
