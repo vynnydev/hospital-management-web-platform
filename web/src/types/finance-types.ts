@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type TCurrencyCode = 'BRL' | 'USD' | 'EUR' | 'GBP';
 export type TBillingCycle = 'daily' | 'weekly' | 'monthly' | 'procedure';
 export type TPaymentMethod = 'cash' | 'credit_card' | 'debit_card' | 'insurance' | 'bank_transfer' | 'pix';
@@ -140,6 +141,63 @@ export interface IFinancialIntegrationSettings {
   }>;
 }
 
+// Tipos para configurações de transações
+export type TTransactionCategory = 'revenue' | 'expense' | 'refund' | 'adjustment';
+export type TTransactionApprovalLevel = 'none' | 'low' | 'medium' | 'high';
+export type TTransactionAlertType = 'unusual_amount' | 'multiple_transactions' | 'high_risk' | 'out_of_policy';
+
+export interface ITransactionAlertRule {
+  id: string;
+  category: TTransactionCategory;
+  condition: {
+    type: 'amount_threshold' | 'frequency' | 'department';
+    value: number | string;
+    comparison: 'gt' | 'lt' | 'eq' | 'between';
+  };
+  action: 'notify' | 'block' | 'require_approval';
+  notificationChannels: Array<'email' | 'sms' | 'system_alert'>;
+  notificationRecipients: string[]; // User IDs or email addresses
+}
+
+export interface ITransactionWorkflowStep {
+  role: string;
+  approvalThreshold: TTransactionApprovalLevel;
+  requiredSignatures: number;
+}
+
+export interface ITransactionSettings {
+  approvalWorkflow: {
+    enabled: boolean;
+    steps: ITransactionWorkflowStep[];
+    defaultApprovalLevel: TTransactionApprovalLevel;
+  };
+  alertRules: ITransactionAlertRule[];
+  transactionLimits: {
+    dailyLimit: number;
+    monthlyLimit: number;
+    individualTransactionLimit: number;
+  };
+  categorization: {
+    autoCategorizationEnabled: boolean;
+    defaultCategories: TTransactionCategory[];
+    customCategories: string[];
+  };
+  reconciliation: {
+    automaticReconciliationEnabled: boolean;
+    toleranceThreshold: number; // percentage
+    autoResolveEnabled: boolean;
+  };
+  documentRetention: {
+    period: number; // months
+    archivalFormat: 'pdf' | 'xml' | 'csv';
+  };
+  internationalTransactions: {
+    allowed: boolean;
+    requiredDocumentation: string[];
+    additionalApprovalRequired: boolean;
+  };
+}
+
 // Interface principal para configurações financeiras
 export interface IFinanceSettings {
   currency: ICurrencySettings;
@@ -151,7 +209,7 @@ export interface IFinanceSettings {
   insurance: IInsuranceRules;
   auditSettings: IFinancialAuditSettings;
   integrations: IFinancialIntegrationSettings;
-  lastUpdated: string;
+  transactions: any; // Deve ser uma interface chamada ITransactionSettings
   updatedBy: string;
 }
 

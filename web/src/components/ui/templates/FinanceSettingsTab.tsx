@@ -67,6 +67,7 @@ import { TaxSettings } from './finance/TaxSettings';
 import { BudgetSettings } from './finance/BudgetSettings';
 import { InsuranceSettings } from './finance/InsuranceSettings';
 import { IntegrationSettings } from './finance/IntegrationSettings';
+import { PaymentManager } from './PaymentManager';
 
 export const FinanceSettingsTab: React.FC = () => {
   const { networkData, currentUser } = useNetworkData();
@@ -535,6 +536,17 @@ export const FinanceSettingsTab: React.FC = () => {
                 <Database className="h-4 w-4 mr-2" />
                 Integrações
               </TabsTrigger>
+              <TabsTrigger 
+                value="transactions" 
+                className={`flex items-center justify-center py-4 px-2 border-b-2 transition-all ${
+                  activeTab === 'transactions' 
+                    ? 'border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 font-medium' 
+                    : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
+                }`}
+              >
+                <Database className="h-4 w-4 mr-2" />
+                Transações
+              </TabsTrigger>
             </TabsList>
           </div>
           
@@ -586,6 +598,10 @@ export const FinanceSettingsTab: React.FC = () => {
                 settings={{...settings.integrations, ...currentEdits.integrations}} 
                 onSettingChange={updateLocalEdits} 
               />
+            </TabsContent>
+
+            <TabsContent value="transactions" className="space-y-4 mt-0">
+              <PaymentManager userId={currentUser ? currentUser?.id : ''} />
             </TabsContent>
           </div>
         </Tabs>

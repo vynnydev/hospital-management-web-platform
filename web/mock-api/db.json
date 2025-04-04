@@ -6260,5 +6260,602 @@
     },
     "createdAt": "2025-03-15T15:00:00Z",
     "updatedAt": "2025-04-17T10:30:00Z"
+  },
+  "payment-cards": [
+    {
+      "id": "card-001",
+      "cardNumber": "**** **** **** 4582",
+      "cardHolderName": "Hospital São Lucas",
+      "expiryDate": "09/26",
+      "cardType": "corporate",
+      "cardBrand": "mastercard",
+      "lastFourDigits": "4582",
+      "billingAddress": {
+        "street": "Avenida Principal",
+        "number": "1500",
+        "complement": "Torre Corporativa",
+        "neighborhood": "Centro Médico",
+        "city": "São Paulo",
+        "state": "SP",
+        "zipCode": "04555-000",
+        "country": "Brasil"
+      },
+      "isDefault": true,
+      "status": "active",
+      "securitySettings": {
+        "requiresPin": true,
+        "requires2FA": true,
+        "allowOnlineTransactions": true,
+        "allowInternationalTransactions": false,
+        "transactionApprovalThreshold": 5000,
+        "allowedApprovers": ["user-001", "user-002", "user-004"],
+        "maxDailyTransactionAmount": 15000,
+        "maxMonthlyTransactionAmount": 100000
+      },
+      "issuedAt": "2023-05-15T10:30:00Z",
+      "updatedAt": "2025-03-10T14:45:00Z",
+      "departmentId": "dept-001",
+      "departmentName": "Administração",
+      "usageRestrictions": {
+        "allowedCategories": ["medical_supplies", "pharmaceuticals", "equipment", "office_supplies", "utilities"],
+        "restrictedMerchants": [],
+        "allowedDaysOfWeek": [1, 2, 3, 4, 5]
+      },
+      "creditLimit": 50000,
+      "availableBalance": 32450.75,
+      "cardImage": "/assets/cards/corporate-mastercard.svg",
+      "colorScheme": "gradient-blue"
+    },
+    {
+      "id": "card-002",
+      "cardNumber": "**** **** **** 7791",
+      "cardHolderName": "Farmácia Central",
+      "expiryDate": "11/27",
+      "cardType": "corporate",
+      "cardBrand": "visa",
+      "lastFourDigits": "7791",
+      "isDefault": false,
+      "status": "active",
+      "securitySettings": {
+        "requiresPin": true,
+        "requires2FA": true,
+        "allowOnlineTransactions": true,
+        "allowInternationalTransactions": false,
+        "transactionApprovalThreshold": 3000,
+        "allowedApprovers": ["user-001", "user-003"],
+        "maxDailyTransactionAmount": 10000,
+        "maxMonthlyTransactionAmount": 50000
+      },
+      "issuedAt": "2023-06-20T09:15:00Z",
+      "updatedAt": "2025-02-15T11:20:00Z",
+      "departmentId": "dept-003",
+      "departmentName": "Farmácia",
+      "usageRestrictions": {
+        "allowedCategories": ["pharmaceuticals"],
+        "restrictedMerchants": [],
+        "allowedDaysOfWeek": [1, 2, 3, 4, 5, 6]
+      },
+      "creditLimit": 30000,
+      "availableBalance": 25678.92,
+      "cardImage": "/assets/cards/corporate-visa.svg",
+      "colorScheme": "gradient-green"
+    },
+    {
+      "id": "card-003",
+      "cardNumber": "**** **** **** 3507",
+      "cardHolderName": "Suprimentos Médicos",
+      "expiryDate": "02/27",
+      "cardType": "corporate",
+      "cardBrand": "mastercard",
+      "lastFourDigits": "3507",
+      "isDefault": false,
+      "status": "active",
+      "securitySettings": {
+        "requiresPin": true,
+        "requires2FA": true,
+        "allowOnlineTransactions": true,
+        "allowInternationalTransactions": true,
+        "transactionApprovalThreshold": 10000,
+        "allowedApprovers": ["user-001", "user-002"],
+        "maxDailyTransactionAmount": 25000,
+        "maxMonthlyTransactionAmount": 150000
+      },
+      "issuedAt": "2023-04-10T14:30:00Z",
+      "updatedAt": "2025-01-20T10:10:00Z",
+      "departmentId": "dept-002",
+      "departmentName": "Suprimentos",
+      "usageRestrictions": {
+        "allowedCategories": ["medical_supplies", "equipment"],
+        "restrictedMerchants": [],
+        "allowedDaysOfWeek": [1, 2, 3, 4, 5]
+      },
+      "creditLimit": 75000,
+      "availableBalance": 42189.50,
+      "cardImage": "/assets/cards/corporate-mastercard.svg",
+      "colorScheme": "gradient-blue"
+    },
+    {
+      "id": "card-004",
+      "cardNumber": "**** **** **** 6190",
+      "cardHolderName": "Departamento de TI",
+      "expiryDate": "08/28",
+      "cardType": "virtual",
+      "cardBrand": "visa",
+      "lastFourDigits": "6190",
+      "isDefault": false,
+      "status": "active",
+      "securitySettings": {
+        "requiresPin": false,
+        "requires2FA": true,
+        "allowOnlineTransactions": true,
+        "allowInternationalTransactions": false,
+        "transactionApprovalThreshold": 2000,
+        "allowedApprovers": ["user-001", "user-004"],
+        "maxDailyTransactionAmount": 5000,
+        "maxMonthlyTransactionAmount": 20000
+      },
+      "issuedAt": "2024-02-05T16:45:00Z",
+      "updatedAt": "2025-02-05T16:45:00Z",
+      "departmentId": "dept-004",
+      "departmentName": "Tecnologia",
+      "usageRestrictions": {
+        "allowedCategories": ["software", "equipment"],
+        "restrictedMerchants": [],
+        "allowedDaysOfWeek": [1, 2, 3, 4, 5]
+      },
+      "creditLimit": 20000,
+      "availableBalance": 18750.25,
+      "cardImage": "/assets/cards/virtual-visa.svg",
+      "colorScheme": "gradient-purple"
+    }
+  ],
+  "transactions": [
+    {
+      "id": "trans-001",
+      "cardId": "card-001",
+      "amount": 2450.75,
+      "currency": "BRL",
+      "merchant": "Distribuidora Médica Nacional",
+      "merchantCategory": "Medical Supplies",
+      "timestamp": "2025-04-01T10:25:30Z",
+      "status": "completed",
+      "description": "Aquisição de materiais hospitalares",
+      "referenceNumber": "REF12345678",
+      "paymentMethod": "online",
+      "category": "medical_supplies",
+      "receiptUrl": "/receipts/trans-001.pdf",
+      "authorizedBy": "user-002",
+      "notes": "Compra aprovada para reposição de estoque",
+      "tags": ["regular", "bulk"],
+      "departmentId": "dept-001",
+      "location": "São Paulo, Brasil",
+      "ipAddress": "192.168.10.15"
+    },
+    {
+      "id": "trans-002",
+      "cardId": "card-003",
+      "amount": 15890.00,
+      "currency": "BRL",
+      "merchant": "MedEquip Importações",
+      "merchantCategory": "Medical Equipment",
+      "timestamp": "2025-03-28T14:15:10Z",
+      "status": "completed",
+      "description": "Equipamentos de monitoramento para UTI",
+      "referenceNumber": "REF98765432",
+      "paymentMethod": "online",
+      "category": "equipment",
+      "receiptUrl": "/receipts/trans-002.pdf",
+      "authorizedBy": "user-001",
+      "departmentId": "dept-002",
+      "location": "São Paulo, Brasil",
+      "ipAddress": "192.168.10.22"
+    },
+    {
+      "id": "trans-003",
+      "cardId": "card-002",
+      "amount": 4350.25,
+      "currency": "BRL",
+      "merchant": "Pharma Distribuidora",
+      "merchantCategory": "Pharmaceuticals",
+      "timestamp": "2025-03-25T09:30:45Z",
+      "status": "completed",
+      "description": "Medicamentos para setor oncológico",
+      "referenceNumber": "REF56781234",
+      "paymentMethod": "online",
+      "category": "pharmaceuticals",
+      "receiptUrl": "/receipts/trans-003.pdf",
+      "authorizedBy": "user-003",
+      "departmentId": "dept-003",
+      "location": "São Paulo, Brasil",
+      "ipAddress": "192.168.10.18"
+    },
+    {
+      "id": "trans-004",
+      "cardId": "card-004",
+      "amount": 1299.90,
+      "currency": "BRL",
+      "merchant": "TechSupply",
+      "merchantCategory": "IT Services",
+      "timestamp": "2025-04-02T11:45:20Z",
+      "status": "completed",
+      "description": "Licenças de software para segurança",
+      "referenceNumber": "REF45678912",
+      "paymentMethod": "online",
+      "category": "software",
+      "receiptUrl": "/receipts/trans-004.pdf",
+      "authorizedBy": "user-004",
+      "departmentId": "dept-004",
+      "location": "São Paulo, Brasil",
+      "ipAddress": "192.168.10.30"
+    },
+    {
+      "id": "trans-005",
+      "cardId": "card-001",
+      "amount": 7850.00,
+      "currency": "BRL",
+      "merchant": "Global Medical Supplies",
+      "merchantCategory": "Medical Supplies",
+      "timestamp": "2025-04-03T15:20:10Z",
+      "status": "requires_approval",
+      "description": "Equipamentos de proteção individual",
+      "referenceNumber": "REF23456789",
+      "paymentMethod": "online",
+      "category": "medical_supplies",
+      "departmentId": "dept-001",
+      "location": "São Paulo, Brasil",
+      "ipAddress": "192.168.10.15"
+    },
+    {
+      "id": "trans-006",
+      "cardId": "card-002",
+      "amount": 12500.00,
+      "currency": "BRL",
+      "merchant": "PharmaWholesale International",
+      "merchantCategory": "Pharmaceuticals",
+      "timestamp": "2025-04-02T10:10:30Z",
+      "status": "requires_approval",
+      "description": "Medicamentos importados para tratamento especializado",
+      "referenceNumber": "REF34567891",
+      "paymentMethod": "online",
+      "category": "pharmaceuticals",
+      "departmentId": "dept-003",
+      "location": "São Paulo, Brasil",
+      "ipAddress": "192.168.10.18"
+    }
+  ],
+  "approval-requests": [
+    {
+      "id": "apr-001",
+      "transactionId": "trans-005",
+      "requestedAt": "2025-04-03T15:21:00Z",
+      "requestedBy": "user-005",
+      "status": "pending",
+      "urgency": "medium",
+      "expiresAt": "2025-04-05T15:21:00Z"
+    },
+    {
+      "id": "apr-002",
+      "transactionId": "trans-006",
+      "requestedAt": "2025-04-02T10:11:00Z",
+      "requestedBy": "user-006",
+      "status": "pending",
+      "urgency": "high",
+      "expiresAt": "2025-04-04T10:11:00Z"
+    }
+  ],
+  "payment-audit-logs": [
+    {
+      "id": "log-001",
+      "timestamp": "2025-04-03T15:22:10Z",
+      "userId": "user-005",
+      "userName": "Maria Santos",
+      "userRole": "cardholder",
+      "action": "create",
+      "resource": "Solicitação de Aprovação",
+      "resourceId": "apr-001",
+      "resourceType": "approval",
+      "details": "Solicitação de aprovação para transação de R$ 7.850,00",
+      "ipAddress": "192.168.10.15",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "sessionId": "SES56789",
+      "result": "success",
+      "severity": "info",
+      "category": "payment"
+    },
+    {
+      "id": "log-002",
+      "timestamp": "2025-04-02T10:12:00Z",
+      "userId": "user-006",
+      "userName": "João Silva",
+      "userRole": "cardholder",
+      "action": "create",
+      "resource": "Solicitação de Aprovação",
+      "resourceId": "apr-002",
+      "resourceType": "approval",
+      "details": "Solicitação de aprovação para transação de R$ 12.500,00",
+      "ipAddress": "192.168.10.18",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)",
+      "sessionId": "SES67890",
+      "result": "success",
+      "severity": "info",
+      "category": "payment"
+    },
+    {
+      "id": "log-003",
+      "timestamp": "2025-04-01T10:26:30Z",
+      "userId": "user-002",
+      "userName": "Ana Oliveira",
+      "userRole": "approver",
+      "action": "approve",
+      "resource": "Transação",
+      "resourceId": "trans-001",
+      "resourceType": "transaction",
+      "details": "Aprovação de transação de R$ 2.450,75",
+      "ipAddress": "192.168.10.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "sessionId": "SES12345",
+      "result": "success",
+      "severity": "info",
+      "category": "payment"
+    },
+    {
+      "id": "log-004",
+      "timestamp": "2025-04-03T08:30:15Z",
+      "userId": "user-001",
+      "userName": "Carlos Mendes",
+      "userRole": "admin",
+      "action": "update",
+      "resource": "Configurações do Cartão",
+      "resourceId": "card-001",
+      "resourceType": "security_setting",
+      "details": "Alteração do limite de aprovação automática",
+      "ipAddress": "192.168.10.10",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "sessionId": "SES23456",
+      "result": "success",
+      "severity": "info",
+      "category": "configuration",
+      "before": "{\"transactionApprovalThreshold\": 3000}",
+      "after": "{\"transactionApprovalThreshold\": 5000}"
+    }
+  ],
+  "payment-stats": {
+    "totalTransactions": 150,
+    "totalAmount": 1234567.89,
+    "averageTransactionAmount": 8230.45,
+    "transactionsByCategory": {
+      "medical_supplies": 45,
+      "pharmaceuticals": 35,
+      "equipment": 30,
+      "office_supplies": 20,
+      "software": 15,
+      "utilities": 5
+    },
+    "transactionsByCard": {
+      "card-001": 50,
+      "card-002": 40,
+      "card-003": 35,
+      "card-004": 25
+    },
+    "pendingApprovals": 2,
+    "declinedTransactions": 3,
+    "monthlySpending": [
+      {
+        "month": 1,
+        "year": 2025,
+        "amount": 254678.50,
+        "transactionCount": 32
+      },
+      {
+        "month": 2,
+        "year": 2025,
+        "amount": 312456.75,
+        "transactionCount": 38
+      },
+      {
+        "month": 3,
+        "year": 2025,
+        "amount": 289754.20,
+        "transactionCount": 35
+      },
+      {
+        "month": 4,
+        "year": 2025,
+        "amount": 78456.25,
+        "transactionCount": 12
+      }
+    ]
+  },
+  "payment-access": [
+    {
+      "userId": "user-001",
+      "userName": "Carlos Mendes",
+      "role": "admin",
+      "permissions": [
+        "view_cards",
+        "manage_cards",
+        "view_transactions",
+        "approve_transactions",
+        "export_data",
+        "manage_settings",
+        "manage_users",
+        "view_reports"
+      ],
+      "cardVisibility": "all",
+      "transactionVisibility": "all"
+    },
+    {
+      "userId": "user-002",
+      "userName": "Ana Oliveira",
+      "role": "approver",
+      "permissions": [
+        "view_cards",
+        "view_transactions",
+        "approve_transactions",
+        "view_reports"
+      ],
+      "cardVisibility": "all",
+      "transactionVisibility": "all",
+      "approvalThreshold": 20000
+    },
+    {
+      "userId": "user-003",
+      "userName": "Pedro Almeida",
+      "role": "approver",
+      "permissions": [
+        "view_cards",
+        "view_transactions",
+        "approve_transactions",
+        "view_reports"
+      ],
+      "cardVisibility": "department",
+      "transactionVisibility": "department",
+      "allowedDepartmentIds": ["dept-003"],
+      "approvalThreshold": 10000
+    },
+    {
+      "userId": "user-004",
+      "userName": "Fernanda Costa",
+      "role": "manager",
+      "permissions": [
+        "view_cards",
+        "manage_cards",
+        "view_transactions",
+        "approve_transactions",
+        "export_data",
+        "view_reports"
+      ],
+      "cardVisibility": "department",
+      "transactionVisibility": "department",
+      "allowedDepartmentIds": ["dept-001", "dept-004"],
+      "approvalThreshold": 15000
+    },
+    {
+      "userId": "user-005",
+      "userName": "Maria Santos",
+      "role": "cardholder",
+      "permissions": [
+        "view_cards",
+        "view_transactions"
+      ],
+      "cardVisibility": "assigned",
+      "transactionVisibility": "own",
+      "allowedCardIds": ["card-001"]
+    },
+    {
+      "userId": "user-006",
+      "userName": "João Silva",
+      "role": "cardholder",
+      "permissions": [
+        "view_cards",
+        "view_transactions"
+      ],
+      "cardVisibility": "assigned",
+      "transactionVisibility": "own",
+      "allowedCardIds": ["card-002"]
+    },
+    {
+      "userId": "user-007",
+      "userName": "Luciana Ferreira",
+      "role": "accountant",
+      "permissions": [
+        "view_cards",
+        "view_transactions",
+        "export_data",
+        "view_reports"
+      ],
+      "cardVisibility": "all",
+      "transactionVisibility": "all"
+    }
+  ],
+  "departments-payments": [
+    {
+      "id": "dept-001",
+      "name": "Administração",
+      "code": "ADM",
+      "budgetCategory": "administrative",
+      "parentDepartmentId": null,
+      "manager": "user-004",
+      "costCenter": "CC-001"
+    },
+    {
+      "id": "dept-002",
+      "name": "Suprimentos",
+      "code": "SUP",
+      "budgetCategory": "operational",
+      "parentDepartmentId": null,
+      "manager": "user-008",
+      "costCenter": "CC-002"
+    },
+    {
+      "id": "dept-003",
+      "name": "Farmácia",
+      "code": "FAR",
+      "budgetCategory": "medical",
+      "parentDepartmentId": null,
+      "manager": "user-003",
+      "costCenter": "CC-003"
+    },
+    {
+      "id": "dept-004",
+      "name": "Tecnologia",
+      "code": "TEC",
+      "budgetCategory": "administrative",
+      "parentDepartmentId": "dept-001",
+      "manager": "user-004",
+      "costCenter": "CC-004"
+    }
+  ],
+  "security-settings": {
+    "passwordPolicy": {
+      "minimumLength": 12,
+      "requireUppercase": true,
+      "requireLowercase": true,
+      "requireNumbers": true,
+      "requireSpecialChars": true,
+      "passwordExpiryDays": 90,
+      "preventPasswordReuse": 5,
+      "lockoutThreshold": 5,
+      "lockoutDurationMinutes": 30
+    },
+    "twoFactorAuthentication": {
+      "requiredForAdmins": true,
+      "requiredForApprovers": true,
+      "requiredForCardholders": true,
+      "allowedMethods": ["app", "sms", "email"],
+      "defaultMethod": "app",
+      "rememberDeviceDays": 30
+    },
+    "sessionSettings": {
+      "idleTimeoutMinutes": 15,
+      "maxSessionDurationHours": 12,
+      "enforceSingleSession": true
+    },
+    "accessControls": {
+      "allowedIpRanges": [
+        "192.168.0.0/16",
+        "10.0.0.0/8"
+      ],
+      "restrictedCountries": [],
+      "workingHours": {
+        "enabled": false,
+        "startTime": "08:00",
+        "endTime": "18:00",
+        "workingDays": [1, 2, 3, 4, 5]
+      }
+    },
+    "auditSettings": {
+      "retentionPeriodDays": 365,
+      "highSeverityAlertEmails": [
+        "security@hospital.com",
+        "admin@hospital.com"
+      ],
+      "enableRealTimeAlerts": true
+    },
+    "encryptionSettings": {
+      "cardDataEncryptionEnabled": true,
+      "dataAtRestEncryptionEnabled": true,
+      "secureDataTransferEnabled": true
+    }
   }
 }
