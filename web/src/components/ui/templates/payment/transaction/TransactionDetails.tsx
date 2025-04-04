@@ -34,17 +34,23 @@ import {
   TransactionStatus, 
   IPaymentCard,
   ExpenseCategory,
-  PaymentMethod
+  PaymentMethod,
+  IPaymentAccess
 } from '@/types/payment-types';
 
-interface TransactionDetailProps {
-  transaction: ITransaction;
-  card: IPaymentCard | undefined;
+export interface TransactionDetailProps {
+  transaction: ITransaction | null;
+  onBack: () => void;
+  onGetReceipt: (transactionId: string) => Promise<void>;
+  onDisputeTransaction: (initialTransactions: ITransaction) => void;
+  getTransactionDetails: (transactionId: string) => Promise<ITransaction | null>;
+  userAccess: IPaymentAccess | null;
+  cards: IPaymentCard[];
 }
 
 export const TransactionDetails: React.FC<TransactionDetailProps> = ({ 
   transaction, 
-  card 
+  cards
 }) => {
   // Função para obter a classe de cor do badge de status
   const getStatusBadgeClass = (status: TransactionStatus) => {
@@ -149,16 +155,20 @@ export const TransactionDetails: React.FC<TransactionDetailProps> = ({
               <div>
                 <CardTitle className="text-lg flex items-center text-gray-800 dark:text-gray-200">
                   <Store className="h-5 w-5 mr-2 text-blue-600 dark:text-blue-400" />
-                  {transaction.merchant}
+                  {transaction ? transaction.merchant : ''} 
                 </CardTitle>
                 <CardDescription className="text-gray-500 dark:text-gray-400">
-                  {transaction.merchantCategory}
+                  {transaction ? transaction.merchantCategory  : ''}
                 </CardDescription>
               </div>
-              <Badge className={`inline-flex items-center ${getStatusBadgeClass(transaction.status)}`}>
-                {getStatusIcon(transaction.status)}
-                <span className="ml-1">{getStatusLabel(transaction.status)}</span>
-              </Badge>
+              {transaction && (
+                <Badge className={`inline-flex items-center ${getStatusBadgeClass(transaction.status)}`}>
+                  <Badge className={`inline-flex items-center ${getStatusBadgeClass(transaction.status)}`}>
+                    {getStatusIcon(transaction.status)}
+                    <span className="ml-1">{getStatusLabel(transaction.status)}</span>
+                  </Badge>
+                </Badge>
+              )}
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -168,28 +178,28 @@ export const TransactionDetails: React.FC<TransactionDetailProps> = ({
                 <div>
                   <p className="text-sm text-gray-500 dark:text-gray-400">Descrição</p>
                   <p className="text-gray-800 dark:text-gray-200 font-medium">
-                    {transaction.description || 'Sem descrição'}
+                    {transaction && transaction.description || 'Sem descrição'}
                   </p>
                 </div>
                 
                 <div>
                   <p className="text-sm text-gray-500 dark:text-gray-400">Número de Referência</p>
                   <p className="text-gray-800 dark:text-gray-200 font-medium">
-                    {transaction.referenceNumber}
+                    {transaction && transaction.referenceNumber}
                   </p>
                 </div>
                 
                 <div>
                   <p className="text-sm text-gray-500 dark:text-gray-400">Data e Hora</p>
                   <p className="text-gray-800 dark:text-gray-200 font-medium">
-                    {new Date(transaction.timestamp).toLocaleString('pt-BR')}
+                    {transaction?.timestamp ? new Date(transaction.timestamp).toLocaleString('pt-BR') : 'Data não disponível'}
                   </p>
                 </div>
                 
                 <div>
                   <p className="text-sm text-gray-500 dark:text-gray-400">Método de Pagamento</p>
                   <p className="text-gray-800 dark:text-gray-200 font-medium">
-                    {formatPaymentMethod(transaction.paymentMethod)}
+                    {transaction ? formatPaymentMethod(transaction.paymentMethod) : 'Método de pagamento não disponível'}
                   </p>
                 </div>
                 
@@ -197,11 +207,11 @@ export const TransactionDetails: React.FC<TransactionDetailProps> = ({
                   <p className="text-sm text-gray-500 dark:text-gray-400">Categoria</p>
                   <Badge variant="outline" className="mt-1 border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200">
                     <ShoppingBag className="h-3.5 w-3.5 mr-1 text-blue-600 dark:text-blue-400" />
-                    {formatCategory(transaction.category)}
+                    {transaction ? formatCategory(transaction.category) : 'Categoria não disponível'}
                   </Badge>
                 </div>
                 
-                {transaction.location && (
+                {transaction && transaction.location && (
                   <div>
                     <p className="text-sm text-gray-500 dark:text-gray-400">Local</p>
                     <p className="text-gray-800 dark:text-gray-200 font-medium flex items-center">
@@ -215,7 +225,7 @@ export const TransactionDetails: React.FC<TransactionDetailProps> = ({
             
             <Separator className="my-4 bg-gray-200 dark:bg-gray-700" />
             
-            {transaction.notes && (
+            {transaction && transaction.notes && (
               <div>
                 <h4 className="text-sm font-medium mb-2 text-gray-500 dark:text-gray-400">Notas</h4>
                 <p className="text-gray-800 dark:text-gray-200 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-md">
@@ -224,7 +234,7 @@ export const TransactionDetails: React.FC<TransactionDetailProps> = ({
               </div>
             )}
             
-            {transaction.tags && transaction.tags.length > 0 && (
+            {transaction && transaction.tags && transaction.tags.length > 0 && (
               <div>
                 <h4 className="text-sm font-medium mb-2 text-gray-500 dark:text-gray-400">Tags</h4>
                 <div className="flex flex-wrap gap-2">
@@ -242,7 +252,7 @@ export const TransactionDetails: React.FC<TransactionDetailProps> = ({
               </div>
             )}
             
-            {transaction.authorizedBy && (
+            {transaction && transaction.authorizedBy && (
               <div>
                 <h4 className="text-sm font-medium mb-2 text-gray-500 dark:text-gray-400">Autorizado por</h4>
                 <div className="flex items-center p-2 bg-gray-50 dark:bg-gray-700/50 rounded-md">
@@ -267,27 +277,27 @@ export const TransactionDetails: React.FC<TransactionDetailProps> = ({
             <div>
               <h4 className="text-sm font-medium mb-2 text-gray-500 dark:text-gray-400">Valor</h4>
               <div className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-                R$ {transaction.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                R$ {transaction && transaction.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                 <span className="ml-2 text-sm font-normal text-gray-500 dark:text-gray-400">
-                  {transaction.currency}
+                  {transaction && transaction.currency}
                 </span>
               </div>
             </div>
             
             <div>
               <h4 className="text-sm font-medium mb-2 text-gray-500 dark:text-gray-400">Cartão Utilizado</h4>
-              {card ? (
+              {cards && cards.length > 0 ? (
                 <div className="p-3 bg-gray-50 dark:bg-gray-700/50 rounded-md space-y-2">
                   <p className="text-gray-800 dark:text-gray-200 font-medium">
-                    {card.cardHolderName}
+                    {cards[0].cardHolderName}
                   </p>
                   <p className="text-gray-500 dark:text-gray-400">
-                    **** **** **** {card.lastFourDigits}
+                    **** **** **** {cards[0].lastFourDigits}
                   </p>
-                  {card.departmentName && (
+                  {cards[0].departmentName && (
                     <div className="flex items-center text-gray-500 dark:text-gray-400">
                       <Building className="h-3.5 w-3.5 mr-1" />
-                      <span>{card.departmentName}</span>
+                      <span>{cards[0].departmentName}</span>
                     </div>
                   )}
                 </div>
@@ -298,7 +308,7 @@ export const TransactionDetails: React.FC<TransactionDetailProps> = ({
               )}
             </div>
             
-            {transaction.departmentId && (
+            {transaction && transaction.departmentId && (
               <div>
                 <h4 className="text-sm font-medium mb-2 text-gray-500 dark:text-gray-400">Departamento</h4>
                 <div className="flex items-center p-2 bg-gray-50 dark:bg-gray-700/50 rounded-md">
@@ -310,7 +320,7 @@ export const TransactionDetails: React.FC<TransactionDetailProps> = ({
               </div>
             )}
             
-            {transaction.receiptUrl && (
+            {transaction && transaction.receiptUrl && (
               <div>
                 <h4 className="text-sm font-medium mb-2 text-gray-500 dark:text-gray-400">Comprovante</h4>
                 <Button
@@ -327,7 +337,7 @@ export const TransactionDetails: React.FC<TransactionDetailProps> = ({
       </div>
       
       {/* Mostrar caixa de alerta contextual com base no status */}
-      {transaction.status === 'requires_approval' && (
+      {transaction && transaction.status === 'requires_approval' && (
         <div className="p-4 border border-orange-200 dark:border-orange-800 bg-orange-50 dark:bg-orange-900/20 rounded-md">
           <div className="flex">
             <AlertTriangle className="h-5 w-5 mr-2 text-orange-600 dark:text-orange-400" />
@@ -341,7 +351,7 @@ export const TransactionDetails: React.FC<TransactionDetailProps> = ({
         </div>
       )}
       
-      {transaction.status === 'disputed' && (
+      {transaction && transaction.status === 'disputed' && (
         <div className="p-4 border border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-900/20 rounded-md">
           <div className="flex">
             <AlertTriangle className="h-5 w-5 mr-2 text-indigo-600 dark:text-indigo-400" />
@@ -355,7 +365,7 @@ export const TransactionDetails: React.FC<TransactionDetailProps> = ({
         </div>
       )}
       
-      {transaction.status === 'declined' && (
+      {transaction && transaction.status === 'declined' && (
         <div className="p-4 border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 rounded-md">
           <div className="flex">
             <XCircle className="h-5 w-5 mr-2 text-red-600 dark:text-red-400" />
@@ -369,7 +379,7 @@ export const TransactionDetails: React.FC<TransactionDetailProps> = ({
         </div>
       )}
       
-      {transaction.status === 'refunded' && (
+      {transaction && transaction.status === 'refunded' && (
         <div className="p-4 border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 rounded-md">
           <div className="flex">
             <ArrowDown className="h-5 w-5 mr-2 text-amber-600 dark:text-amber-400" />
@@ -384,7 +394,7 @@ export const TransactionDetails: React.FC<TransactionDetailProps> = ({
       )}
       
       <div className="flex justify-between">
-        {transaction.receiptUrl && (
+        {transaction && transaction.receiptUrl && (
           <Button
             variant="outline"
             className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"

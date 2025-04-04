@@ -270,7 +270,7 @@ export const TransactionApproval: React.FC<TransactionApprovalProps> = ({
       
       <div className="space-y-4">
         {sortedApprovals.map((approval) => {
-          const transaction = approval.transactionId;
+          const transaction = approval.transaction;
           const urgency = formatUrgency(approval.urgency);
           const isExpanded = expandedApprovalId === approval.id;
           

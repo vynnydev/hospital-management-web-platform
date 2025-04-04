@@ -233,7 +233,7 @@ export const PaymentHistory: React.FC<PaymentHistoryProps> = ({
             currentFilters={filters}
             onApplyFilters={handleFilterChange}
             onClearFilters={clearFilters}
-            cards={cards}
+            cards={[cards[0]]}
           />
         </Card>
       )}
@@ -303,12 +303,13 @@ export const PaymentHistory: React.FC<PaymentHistoryProps> = ({
           <TabsContent value="details" className="m-0">
             {selectedTransactionId && (
               <TransactionDetails 
-                transactionId={selectedTransactionId}
+                transaction={transactions?.find((t) => t.id === selectedTransactionId) || null}
                 onBack={() => setActiveTab('list')}
                 onGetReceipt={handleGetReceipt}
-                onDisputeTransaction={(initialTransactions) => setDisputeTransaction(initialTransactions)}
+                onDisputeTransaction={(initialTransactions: ITransaction) => setDisputeTransaction(initialTransactions)}
                 getTransactionDetails={getTransactionDetails}
                 userAccess={userAccess}
+                cards={cards}
               />
             )}
           </TabsContent>

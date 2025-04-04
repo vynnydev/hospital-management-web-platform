@@ -5,7 +5,8 @@ import {
   AuditAction, 
   ResourceType, 
   Severity, 
-  AuditCategory 
+  AuditCategory, 
+  ICardSecurityAlert
 } from '@/types/payment-types';
 
 // Serviços de segurança
@@ -149,7 +150,7 @@ export const securityService = {
       const response = await api.patch(`/payment-cards/${cardId}/security`, settings);
       
       // Log da ação de alteração das configurações de segurança
-      await this.logAction({
+      await securityService.logAction({
         userId,
         action: 'update',
         resource: 'Configurações de Segurança do Cartão',
@@ -255,7 +256,44 @@ export const securityService = {
       console.error('Error verifying security challenge:', error);
       return false;
     }
-  }
+  },
+
+  getCardSecurityAlerts: async (cardId: string): Promise<ICardSecurityAlert[]> => {
+    try {
+      const response = await api.get(`/payment-cards/${cardId}/security-alerts`);
+      
+      // Log the action of checking security alerts
+      await securityService.logAction({
+        userId: 'system', // or pass actual user ID if available
+        action: 'view',
+        resource: 'Alertas de Segurança do Cartão',
+        resourceId: cardId,
+        resourceType: 'card',
+        details: 'Verificação de alertas de segurança',
+        severity: 'info',
+        category: 'security'
+      });
+      
+      return response.data || [];
+    } catch (error) {
+      console.error(`Error fetching security alerts for card ${cardId}:`, error);
+      
+      // Log the error
+      await securityService.logAction({
+        userId: 'system', // or pass actual user ID if available
+        action: 'view',
+        resource: 'Alertas de Segurança do Cartão',
+        resourceId: cardId,
+        resourceType: 'card',
+        details: 'Falha ao verificar alertas de segurança',
+        severity: 'warning',
+        category: 'security',
+        result: 'failure'
+      });
+      
+      return []; // Return empty array in case of error
+    }
+  },
 };
 
 // Função auxiliar para determinar a categoria da ação de auditoria

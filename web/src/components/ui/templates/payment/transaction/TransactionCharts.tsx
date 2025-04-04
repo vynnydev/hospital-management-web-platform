@@ -90,7 +90,7 @@ export const TransactionCharts: React.FC<TransactionChartsProps> = ({
   };
   
   // Carregar dados de categoria
-  const loadCategoryData = async () => {
+  const loadCategoryData = React.useCallback(async () => {
     setLoading(true);
     try {
       const data = await getTransactionsByCategoryChart(
@@ -114,10 +114,10 @@ export const TransactionCharts: React.FC<TransactionChartsProps> = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [dateRange, selectedCardIds, getTransactionsByCategoryChart]);
   
   // Carregar dados mensais
-  const loadMonthlyData = async () => {
+  const loadMonthlyData = React.useCallback(async () => {
     setLoading(true);
     try {
       const data = await getTransactionsByMonthChart(
@@ -139,7 +139,7 @@ export const TransactionCharts: React.FC<TransactionChartsProps> = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedYear, selectedCardIds, getTransactionsByMonthChart]);
   
   // Atualizar dados quando os filtros mudarem
   useEffect(() => {
@@ -148,7 +148,7 @@ export const TransactionCharts: React.FC<TransactionChartsProps> = ({
     } else if (activeTab === 'byMonth') {
       loadMonthlyData();
     }
-  }, [activeTab, selectedCardIds, selectedYear, dateRange]);
+  }, [activeTab, selectedCardIds, selectedYear, dateRange, loadCategoryData, loadMonthlyData]);
   
   // Alternar seleção de cartão
   const toggleCardSelection = (cardId: string) => {

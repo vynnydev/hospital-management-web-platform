@@ -22,6 +22,7 @@ export interface IPaymentCard {
     availableBalance?: number;
     cardImage?: string; // URL da imagem do cartão
     colorScheme?: string; // Para estilização visual do cartão
+    allowEmergencyOverride?: boolean;
   }
   
   // Tipos de cartão
@@ -159,16 +160,38 @@ export interface IPaymentCard {
   export interface IApprovalRequest {
     id: string;
     transactionId: string;
+    transaction: {
+      id: string;
+      merchant: string;
+      description?: string;
+      amount: number;
+      timestamp: string;
+      cardId: string;
+      category: ExpenseCategory;
+      departmentId?: string;
+      referenceNumber: string;
+      location?: string;
+      notes?: string;
+      // Add any other properties used in the component
+      ipAddress?: string;
+      paymentMethod?: PaymentMethod;
+      status?: TransactionStatus;
+    };
     requestedAt: string; // ISO date
-    requestedBy: string; // ID do usuário
+    requestedBy: string; // User ID or name
     status: ApprovalStatus;
-    approvedBy?: string; // ID do usuário
-    approvedAt?: string; // ISO date
-    rejectedBy?: string; // ID do usuário
-    rejectedAt?: string; // ISO date
+    approvedBy?: string;
+    approvedAt?: string;
+    rejectedBy?: string;
+    rejectedAt?: string;
     reason?: string;
     urgency: ApprovalUrgency;
     expiresAt: string; // ISO date
+    
+    // Additional properties that might be used
+    urgencyClass?: string;
+    icon?: React.ReactNode;
+    label?: string;
   }
   
   // Status de aprovação
@@ -326,4 +349,19 @@ export interface IPaymentCard {
     MANAGE_SETTINGS = "manage_settings",
     MANAGE_USERS = "manage_users",
     VIEW_REPORTS = "view_reports"
+  }
+
+  export interface ICardSecurityAlert {
+    id: string;
+    type: 'suspicious_activity' | 'limit_exceeded' | 'geographic_anomaly' | 'unusual_transaction' | 'security_breach';
+    severity: 'low' | 'medium' | 'high' | 'critical';
+    description: string;
+    timestamp: string;
+    details?: {
+      location?: string;
+      amount?: number;
+      transactionId?: string;
+      ipAddress?: string;
+    };
+    recommended_action?: string;
   }

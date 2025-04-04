@@ -107,7 +107,7 @@ export const AddEditCard: React.FC<AddEditCardProps> = ({ cardData, onSubmit }) 
   
   // Validar formulário
   const validateForm = (): boolean => {
-    const newErrors = validateCardData(formData);
+    const { errors: newErrors } = validateCardData(formData);
     setErrors(newErrors);
     setValidationKey(Object.keys(newErrors)[0] || null);
     

@@ -50,7 +50,16 @@ export const CardDepartmentInfo: React.FC<CardDepartmentInfoProps> = ({
   const [filteredDepartments, setFilteredDepartments] = useState(mockDepartments);
   
   // Endereço de cobrança
-  const billingAddress = formData.billingAddress || {};
+  const billingAddress: {
+    street?: string;
+    number?: string;
+    complement?: string;
+    neighborhood?: string;
+    city?: string;
+    state?: string;
+    zipCode?: string;
+    country?: string;
+  } = formData.billingAddress || {};
   
   // Filtrar departamentos com base na busca
   useEffect(() => {

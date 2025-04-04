@@ -56,11 +56,19 @@ export const useTransactionHistory = ({
       }
       
       // Carregar transações da API
-      const response: IPaginatedResponse<ITransaction> = await paymentService.getTransactions(
+      const rawResponse = await paymentService.getTransactions(
         page,
         perPage,
         currentFilters
       );
+
+      const response: IPaginatedResponse<ITransaction> = {
+        data: rawResponse.transactions,
+        totalItems: rawResponse.total,
+        page: rawResponse.page,
+        perPage: rawResponse.perPage,
+        totalPages: rawResponse.totalPages,
+      };
       
       setTransactions(response.data);
       setTotalTransactions(response.totalItems);
@@ -234,8 +242,7 @@ export const useTransactionHistory = ({
       const success = await paymentService.disputeTransaction(
         transactionId,
         userId,
-        reason,
-        details
+        reason
       );
       
       if (success) {
