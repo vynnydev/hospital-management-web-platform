@@ -46,6 +46,18 @@ export interface TransactionDetailProps {
   getTransactionDetails: (transactionId: string) => Promise<ITransaction | null>;
   userAccess: IPaymentAccess | null;
   cards: IPaymentCard[];
+  isOpen: boolean;
+  onClose: () => void;
+  onDownloadReceipt: () => Promise<void>;
+  onAddNote: () => void;
+  onAddTag: () => void;
+  onDispute: () => void;
+  onFlagAsSuspicious: () => void;
+  onCheckSecurityAlerts: () => Promise<void>;
+  onBlockCard?: () => void;
+  canManageSecurity: boolean;
+  formatDate: (dateString: string) => string;
+  formatTime?: (dateString: string) => string;
 }
 
 export const TransactionDetails: React.FC<TransactionDetailProps> = ({ 

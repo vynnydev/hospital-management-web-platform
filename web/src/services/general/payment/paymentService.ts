@@ -10,7 +10,8 @@ import {
   IPaginatedResponse,
   IAuditLog,
   IGeographicRestriction,
-  ICardSecuritySettings
+  ICardSecuritySettings,
+  ExpenseCategory
 } from '@/types/payment-types';
 import { ISecurityAlert } from '@/types/security-compliance-types';
 
@@ -277,23 +278,13 @@ export const paymentService = {
     }
   },
 
-    // Buscar transações com paginação e filtros
-    getTransactions: async (
-        page = 1, 
-        perPage = 20, 
-        filters?: ITransactionFilters
-      ): Promise<{
-        transactions: ITransaction[];
-        total: number;
-        page: number;
-        perPage: number;
-        totalPages: number;
-      }> => {
+  getTransactions: async (userId: number, options: { page: number; pageSize: number; filters: ITransactionFilters; sortBy: string; sortOrder: 'asc' | 'desc'; }): Promise<IPaginatedResponse<ITransaction>> => {
+        const { page, pageSize, filters, sortBy, sortOrder } = options;
         try {
           // Construir query string com filtros
           const queryParams = new URLSearchParams();
           queryParams.append('page', page.toString());
-          queryParams.append('perPage', perPage.toString());
+          queryParams.append('perPage', pageSize.toString());
     
           // Adicionar filtros se existirem
           if (filters) {
@@ -375,7 +366,7 @@ export const paymentService = {
     
       // Contestar uma transação
       disputeTransaction: async (
-transactionId: string, reason: string, details: string ): Promise<boolean> => {
+          transactionId: string, reason: string, details: string ): Promise<boolean> => {
         try {
           await api.post(`/transactions/${transactionId}/dispute`, {
             reason,
@@ -460,5 +451,195 @@ transactionId: string, reason: string, details: string ): Promise<boolean> => {
           console.error(`Error regenerating PIN for card ${cardId}:`, error);
           throw new Error('Não foi possível regenerar o PIN do cartão');
         }
+  },
+
+    // Adicionar nota a uma transação
+  addTransactionNote: async (
+    transactionId: string, 
+    note: string, 
+    userId: string
+  ): Promise<boolean> => {
+    try {
+      const response = await fetch(`/api/transactions/${transactionId}/notes`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          note,
+          userId,
+          timestamp: new Date().toISOString()
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
       }
+
+      return true;
+    } catch (error) {
+      console.error('Error adding transaction note:', error);
+      throw new Error('Não foi possível adicionar a nota à transação');
+    }
+  },
+
+  // Adicionar tag a uma transação
+  addTransactionTag: async (
+    transactionId: string, 
+    tag: string, 
+    userId: string
+  ): Promise<boolean> => {
+    try {
+      const response = await fetch(`/api/transactions/${transactionId}/tags`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          tag,
+          userId,
+          timestamp: new Date().toISOString()
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+
+      return true;
+    } catch (error) {
+      console.error('Error adding transaction tag:', error);
+      throw new Error('Não foi possível adicionar a tag à transação');
+    }
+  },
+
+  // Atualizar categoria de uma transação
+  updateTransactionCategory: async (
+    transactionId: string, 
+    category: ExpenseCategory, 
+    userId: string
+  ): Promise<boolean> => {
+    try {
+      const response = await fetch(`/api/transactions/${transactionId}/category`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          category,
+          userId,
+          timestamp: new Date().toISOString()
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+
+      return true;
+    } catch (error) {
+      console.error('Error updating transaction category:', error);
+      throw new Error('Não foi possível atualizar a categoria da transação');
+    }
+  },
+
+  // Obter estatísticas de transações
+  getTransactionStats: async (filters?: ITransactionFilters) => {
+    try {
+      // Construir query string com os filtros
+      const queryParams = new URLSearchParams();
+      if (filters) {
+        if (filters.startDate) queryParams.append('startDate', filters.startDate);
+        if (filters.endDate) queryParams.append('endDate', filters.endDate);
+        if (filters.cardIds && filters.cardIds.length > 0) {
+          filters.cardIds.forEach(id => queryParams.append('cardId', id));
+        }
+        if (filters.categories && filters.categories.length > 0) {
+          filters.categories.forEach(category => queryParams.append('category', category));
+        }
+        if (filters.departmentIds && filters.departmentIds.length > 0) {
+          filters.departmentIds.forEach(dept => queryParams.append('departmentId', dept));
+        }
+      }
+
+      const response = await fetch(`/api/transactions/stats?${queryParams.toString()}`);
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return {
+        totalTransactions: data.totalTransactions,
+        totalAmount: data.totalAmount,
+        averageTransactionAmount: data.averageTransactionAmount,
+        transactionsByCategory: data.transactionsByCategory,
+        transactionsByCard: data.transactionsByCard,
+        pendingApprovals: data.pendingApprovals,
+        declinedTransactions: data.declinedTransactions,
+        monthlySpending: data.monthlySpending,
+        // Estatísticas adicionais
+        recentTrends: {
+          amountChange: data.recentTrends?.amountChange || 0,
+          countChange: data.recentTrends?.countChange || 0,
+          period: data.recentTrends?.period || '30d'
+        },
+        // Distribuição por tipo de despesa
+        expenseDistribution: data.expenseDistribution || {},
+        // Principais comerciantes
+        topMerchants: data.topMerchants || []
+      };
+    } catch (error) {
+      console.error('Error getting transaction stats:', error);
+      throw new Error('Não foi possível obter as estatísticas de transações');
+    }
+  },
+
+  // Função para marcar uma transação como suspeita
+  flagSuspiciousTransaction: async (
+    transactionId: string, 
+    reason: string, 
+    userId: string
+  ): Promise<boolean> => {
+    try {
+      const response = await fetch(`/api/transactions/${transactionId}/flag-suspicious`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          reason,
+          reportedBy: userId,
+          timestamp: new Date().toISOString(),
+          severity: 'high'
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+
+      // Adicionar entrada de log de auditoria para este evento
+      await fetch('/api/audit-logs', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId,
+          action: 'flag',
+          resource: 'Transação',
+          resourceId: transactionId,
+          resourceType: 'transaction',
+          details: `Transação marcada como suspeita: ${reason}`,
+          severity: 'warning',
+          category: 'security'
+        }),
+      });
+
+      return true;
+    } catch (error) {
+      console.error('Error flagging suspicious transaction:', error);
+      throw new Error('Não foi possível marcar a transação como suspeita');
+    }
+  }
 };

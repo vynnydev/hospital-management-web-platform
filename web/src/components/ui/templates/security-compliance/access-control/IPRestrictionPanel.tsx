@@ -17,6 +17,9 @@ interface IPRestrictionPanelProps {
   accessControlConfig: IAccessControlConfig;
   updateAccessControlConfig: (config: IAccessControlConfig) => Promise<any>;
   loading: boolean;
+  ipRestriction: boolean;
+  allowedIPs: string[] | undefined;
+  onChange: (enforceIPRestriction: boolean, allowedIPs: string[]) => void;
 }
 
 export const IPRestrictionPanel: React.FC<IPRestrictionPanelProps> = ({

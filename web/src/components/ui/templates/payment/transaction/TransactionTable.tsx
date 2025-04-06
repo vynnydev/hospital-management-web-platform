@@ -56,9 +56,11 @@ import { ptBR } from 'date-fns/locale';
 interface TransactionTableProps {
   transactions: ITransaction[];
   loading: boolean;
-  onViewDetails: (transactionId: string) => void;
+  onViewDetails: (transactionId: string) => Promise<void>;
+  onDownloadReceipt?: (transactionId: string) => Promise<void>;
   onGetReceipt: (transactionId: string) => void;
   onDisputeTransaction: (transaction: ITransaction) => void;
+  onNextPage: () => Promise<void>;
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
@@ -232,7 +234,7 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({
                     <p>Carregando transações...</p>
                   </TableCell>
                 </TableRow>
-              ) : transactions.length === 0 ? (
+              ) : transactions?.length === 0 ? (
                 <TableRow className="border-gray-200 dark:border-gray-700">
                   <TableCell colSpan={7} className="text-center py-8 text-gray-500 dark:text-gray-400">
                     <FileText className="h-6 w-6 mx-auto mb-2" />
@@ -240,7 +242,7 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({
                   </TableCell>
                 </TableRow>
               ) : (
-                transactions.map((transaction) => (
+                transactions && transactions.map((transaction) => (
                   <TableRow 
                     key={transaction.id} 
                     className="border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"

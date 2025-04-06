@@ -35,6 +35,11 @@ import { PaymentHistory } from './payment/PaymentHistory';
 import { TransactionApproval } from './payment/TransactionApproval';
 import { AddEditCard } from './payment/AddEditCard';
 import { IPaymentCard, ITransaction, ITransactionFilters, PaymentPermission } from '@/types/payment-types';
+import { MainHeader } from './payment/MainHeader';
+import { PendingApprovalsAlert } from './payment/PendingApprovalsAlert';
+import { LoadingIndicator } from './payment/LoadingIndicator';
+import { ErrorMessage } from './payment/ErrorMessage';
+import { authService } from '@/services/auth/AuthService';
 
 interface PaymentManagerProps {
   userId: string;
@@ -48,6 +53,8 @@ export const PaymentManager: React.FC<PaymentManagerProps> = ({ userId }) => {
   const [transactionFilters, setTransactionFilters] = useState<ITransactionFilters>({});
   
   const { toast } = useToast();
+  const user = authService.getCurrentUser();
+  const isAuthenticated = authService.isAuthenticated();
   
   const {
     cards,
@@ -58,7 +65,6 @@ export const PaymentManager: React.FC<PaymentManagerProps> = ({ userId }) => {
     error,
     userAccess,
     paymentStats,
-    isAuthenticated,
     getCardDetails,
     addCard,
     updateCard,
@@ -67,7 +73,6 @@ export const PaymentManager: React.FC<PaymentManagerProps> = ({ userId }) => {
     loadPendingApprovals,
     approveTransaction,
     rejectTransaction,
-    logout
   } = usePaymentData(userId);
 
   // Efeito para carregar detalhes do cartão quando selecionado
@@ -132,270 +137,248 @@ export const PaymentManager: React.FC<PaymentManagerProps> = ({ userId }) => {
   
   // Handler para sair do sistema de pagamentos
   const handleLogout = async () => {
-    const success = await logout();
+    await authService.logout();
     
-    if (success) {
-      toast({
-        title: "Sessão encerrada",
-        description: "Você saiu do sistema de gerenciamento de pagamentos.",
-        variant: "default",
-      });
-    }
+    toast({
+      title: "Sessão encerrada",
+      description: "Você saiu do sistema de gerenciamento de pagamentos.",
+      variant: "default",
+    });
   };
   
-  // Conteúdo principal do gerenciador de pagamentos
-  const PaymentManagerContent = () => {
-    if (loading) {
-      return (
-        <div className="flex items-center justify-center h-64">
-          <div className="flex flex-col items-center">
-            <RefreshCw className="h-10 w-10 text-blue-600 dark:text-blue-400 animate-spin mb-4" />
-            <p className="text-gray-600 dark:text-gray-400">Carregando informações...</p>
-          </div>
-        </div>
-      );
-    }
-    
-    if (error) {
-      return (
-        <Alert variant="destructive" className="my-4 bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800">
-          <AlertTriangle className="h-4 w-4 text-red-600 dark:text-red-400" />
-          <AlertTitle className="text-red-800 dark:text-red-300">Erro</AlertTitle>
-          <AlertDescription className="text-red-700 dark:text-red-400">{error}</AlertDescription>
-        </Alert>
-      );
-    }
-    
-    // Se estiver adicionando ou editando um cartão
-    if (isAddingCard) {
-      return (
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Adicionar Novo Cartão</h2>
-            <Button 
-              variant="outline" 
-              onClick={() => setIsAddingCard(false)}
-              className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
-            >
-              Cancelar
-            </Button>
-          </div>
-          <Separator className="my-4 bg-gray-200 dark:bg-gray-600" />
-          <AddEditCard onSubmit={handleAddCard} />
-        </div>
-      );
-    }
-    
-    if (isEditingCard && selectedCard) {
-      return (
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Editar Cartão</h2>
-            <Button 
-              variant="outline" 
-              onClick={() => setIsEditingCard(false)}
-              className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
-            >
-              Cancelar
-            </Button>
-          </div>
-          <Separator className="my-4 bg-gray-200 dark:bg-gray-600" />
-          <AddEditCard cardData={selectedCard} onSubmit={(data) => handleEditCard(selectedCard.id, data)} />
-        </div>
-      );
-    }
-    
-    // Interface principal
-    return (
-      <div className="space-y-6">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight text-gray-800 dark:text-gray-100">
-              Gerenciamento de Pagamentos
-            </h1>
-            <p className="text-gray-500 dark:text-gray-400">
-              Gerencie os cartões e transações do hospital de forma segura
-            </p>
-          </div>
+  // Renderizar o componente de adição de cartão
+  const renderAddCardForm = () => (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Adicionar Novo Cartão</h2>
+        <Button 
+          variant="outline" 
+          onClick={() => setIsAddingCard(false)}
+          className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
+        >
+          Cancelar
+        </Button>
+      </div>
+      <Separator className="my-4 bg-gray-200 dark:bg-gray-600" />
+      <AddEditCard onSubmit={handleAddCard} />
+    </div>
+  );
+  
+  // Renderizar o componente de edição de cartão
+  const renderEditCardForm = () => (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Editar Cartão</h2>
+        <Button 
+          variant="outline" 
+          onClick={() => setIsEditingCard(false)}
+          className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
+        >
+          Cancelar
+        </Button>
+      </div>
+      <Separator className="my-4 bg-gray-200 dark:bg-gray-600" />
+      {selectedCard && <AddEditCard cardData={selectedCard} onSubmit={(data) => handleEditCard(selectedCard.id, data)} />}
+    </div>
+  );
+  
+  // Renderizar a interface principal com abas
+  const renderMainInterface = () => (
+    <div className="space-y-6">
+      <MainHeader 
+        onAddCard={() => setIsAddingCard(true)}
+        onLogout={handleLogout}
+        canManageCards={userAccess?.permissions.includes('manage_cards' as PaymentPermission) || false}
+      />
+      
+      {pendingApprovals?.length > 0 && userAccess?.permissions.includes('approve_transactions' as PaymentPermission) && (
+        <PendingApprovalsAlert 
+          pendingCount={pendingApprovals.length} 
+          onViewApprovals={() => setActiveTab('approvals')}
+        />
+      )}
+      
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsNavigation 
+            activeTab={activeTab}
+            selectedCard={selectedCard !== null}
+            pendingApprovals={pendingApprovals}
+            userAccess={userAccess}
+          />
           
-          <div className="flex space-x-2">
-            {userAccess?.permissions.includes('manage_cards' as PaymentPermission) && (
-              <Button 
-                onClick={() => setIsAddingCard(true)}
-                className="bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-600"
-              >
-                <PlusCircle className="h-4 w-4 mr-1" />
-                Novo Cartão
-              </Button>
-            )}
+          <div className="p-6">
+            <TabsContent value="cards" className="mt-0">
+              <CardsList 
+                cards={cards} 
+                onSelectCard={handleSelectCard} 
+                onUpdateStatus={updateCardStatus}
+                userAccess={userAccess}
+              />
+            </TabsContent>
             
-            <Button 
-              variant="outline" 
-              onClick={handleLogout}
-              className="bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
-            >
-              <LogOut className="h-4 w-4 mr-1" />
-              Sair
-            </Button>
-          </div>
-        </div>
-        
-        {pendingApprovals?.length > 0 && userAccess?.permissions.includes('approve_transactions' as PaymentPermission) && (
-          <Alert className="bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800">
-            <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-            <AlertTitle className="text-amber-800 dark:text-amber-300">Aprovações Pendentes</AlertTitle>
-            <AlertDescription className="text-amber-700 dark:text-amber-400">
-              Existem {pendingApprovals.length} transações aguardando sua aprovação.
-              <Button
-                variant="link"
-                onClick={() => setActiveTab('approvals')}
-                className="text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 p-0 h-auto"
-              >
-                Ver agora
-              </Button>
-            </AlertDescription>
-          </Alert>
-        )}
-        
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-          <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <div className="bg-gray-50 dark:bg-gray-800/80 border-b border-gray-200 dark:border-gray-700">
-              <TabsList className="p-0 bg-transparent h-auto">
-                <TabsTrigger 
-                  value="cards" 
-                  className={`py-4 px-6 rounded-none border-b-2 ${
-                    activeTab === 'cards' 
-                      ? 'border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 font-medium' 
-                      : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
-                  }`}
-                >
-                  <CreditCard className="h-4 w-4 mr-2" />
-                  Cartões
-                </TabsTrigger>
-                
-                {selectedCard && (
-                  <TabsTrigger 
-                    value="card-details" 
-                    className={`py-4 px-6 rounded-none border-b-2 ${
-                      activeTab === 'card-details' 
-                        ? 'border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 font-medium' 
-                        : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
-                    }`}
-                  >
-                    <CreditCard className="h-4 w-4 mr-2" />
-                    Detalhes do Cartão
-                  </TabsTrigger>
-                )}
-                
-                <TabsTrigger 
-                  value="transactions" 
-                  className={`py-4 px-6 rounded-none border-b-2 ${
-                    activeTab === 'transactions' 
-                      ? 'border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 font-medium' 
-                      : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
-                  }`}
-                >
-                  <Clock className="h-4 w-4 mr-2" />
-                  Histórico
-                </TabsTrigger>
-                
-                {userAccess?.permissions.includes('approve_transactions' as PaymentPermission) && (
-                  <TabsTrigger 
-                    value="approvals" 
-                    className={`py-4 px-6 rounded-none border-b-2 ${
-                      activeTab === 'approvals' 
-                        ? 'border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 font-medium' 
-                        : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
-                    }`}
-                  >
-                    <Shield className="h-4 w-4 mr-2" />
-                    Aprovações
-                    {pendingApprovals?.length > 0 && (
-                      <Badge className="ml-2 bg-red-600 text-white dark:bg-red-500">
-                        {pendingApprovals.length}
-                      </Badge>
-                    )}
-                  </TabsTrigger>
-                )}
-                
-                {userAccess?.permissions.includes('view_reports' as PaymentPermission) && (
-                  <TabsTrigger 
-                    value="reports" 
-                    className={`py-4 px-6 rounded-none border-b-2 ${
-                      activeTab === 'reports' 
-                        ? 'border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 font-medium' 
-                        : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
-                    }`}
-                  >
-                    <BarChart3 className="h-4 w-4 mr-2" />
-                    Relatórios
-                  </TabsTrigger>
-                )}
-              </TabsList>
-            </div>
-            
-            <div className="p-6">
-              <TabsContent value="cards" className="mt-0">
-                <CardsList 
-                  cards={cards} 
-                  onSelectCard={handleSelectCard} 
+            <TabsContent value="card-details" className="mt-0">
+              {selectedCard ? (
+                <CardDetails 
+                  card={selectedCard} 
+                  onEdit={() => setIsEditingCard(true)}
                   onUpdateStatus={updateCardStatus}
                   userAccess={userAccess}
                 />
-              </TabsContent>
-              
-              <TabsContent value="card-details" className="mt-0">
-                {selectedCard ? (
-                  <CardDetails 
-                    card={selectedCard} 
-                    onEdit={() => setIsEditingCard(true)}
-                    onUpdateStatus={updateCardStatus}
-                    userAccess={userAccess}
-                  />
-                ) : (
-                  <div className="text-center py-8">
-                    <p className="text-gray-500 dark:text-gray-400">Selecione um cartão para ver os detalhes</p>
-                  </div>
-                )}
-              </TabsContent>
-              
-              <TabsContent value="transactions" className="mt-0">
-                <PaymentHistory 
-                  transactions={transactions}
-                  onFilter={handleFilterTransactions}
-                  cards={cards}
-                  filters={transactionFilters}
-                  userAccess={userAccess}
-                />
-              </TabsContent>
-              
-              <TabsContent value="approvals" className="mt-0">
-                <TransactionApproval 
-                  approvals={pendingApprovals}
-                  onApprove={approveTransaction}
-                  onReject={rejectTransaction}
-                  userAccess={userAccess}
-                />
-              </TabsContent>
-              
-              <TabsContent value="reports" className="mt-0">
+              ) : (
                 <div className="text-center py-8">
-                  <p className="text-gray-500 dark:text-gray-400">Relatórios em desenvolvimento</p>
+                  <p className="text-gray-500 dark:text-gray-400">Selecione um cartão para ver os detalhes</p>
                 </div>
-              </TabsContent>
-            </div>
-          </Tabs>
-        </div>
+              )}
+            </TabsContent>
+            
+            <TabsContent value="transactions" className="mt-0">
+              <PaymentHistory 
+                transactions={transactions}
+                onFilter={handleFilterTransactions}
+                cards={cards}
+                filters={transactionFilters}
+                userAccess={userAccess}
+              />
+            </TabsContent>
+            
+            <TabsContent value="approvals" className="mt-0">
+              <TransactionApproval 
+                approvals={pendingApprovals}
+                onApprove={approveTransaction}
+                onReject={rejectTransaction}
+                userAccess={userAccess}
+              />
+            </TabsContent>
+            
+            <TabsContent value="reports" className="mt-0">
+              <div className="text-center py-8">
+                <p className="text-gray-500 dark:text-gray-400">Relatórios em desenvolvimento</p>
+              </div>
+            </TabsContent>
+          </div>
+        </Tabs>
       </div>
-    );
+    </div>
+  );
+  
+  // Conteúdo principal do gerenciador de pagamentos
+  const PaymentManagerContent = () => {
+    // if (loading) {
+    //   return <LoadingIndicator />;
+    // }
+    
+    if (error) {
+      return <ErrorMessage error={error} />;
+    }
+    
+    if (isAddingCard) {
+      return renderAddCardForm();
+    }
+    
+    if (isEditingCard && selectedCard) {
+      return renderEditCardForm();
+    }
+    
+    return renderMainInterface();
   };
   
   // Renderização final com camada de segurança
   return (
-    <SecurityLayer userId={userId}>
-      <div className="container py-6">
-        <PaymentManagerContent />
-      </div>
-    </SecurityLayer>
+    <div className="container py-6">
+      <PaymentManagerContent />
+    </div>
+  );
+};
+
+// Componente para a navegação por abas
+interface TabsNavigationProps {
+  activeTab: string;
+  selectedCard: boolean;
+  pendingApprovals: any[] | null;
+  userAccess: any | null;
+}
+
+const TabsNavigation: React.FC<TabsNavigationProps> = ({ 
+  activeTab, 
+  selectedCard, 
+  pendingApprovals, 
+  userAccess 
+}) => {
+  return (
+    <div className="bg-gray-50 dark:bg-gray-800/80 border-b border-gray-200 dark:border-gray-700">
+      <TabsList className="p-0 bg-transparent h-auto">
+        <TabsTrigger 
+          value="cards" 
+          className={`py-4 px-6 rounded-none border-b-2 ${
+            activeTab === 'cards' 
+              ? 'border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 font-medium' 
+              : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
+          }`}
+        >
+          <CreditCard className="h-4 w-4 mr-2" />
+          Cartões
+        </TabsTrigger>
+        
+        {selectedCard && (
+          <TabsTrigger 
+            value="card-details" 
+            className={`py-4 px-6 rounded-none border-b-2 ${
+              activeTab === 'card-details' 
+                ? 'border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 font-medium' 
+                : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
+            }`}
+          >
+            <CreditCard className="h-4 w-4 mr-2" />
+            Detalhes do Cartão
+          </TabsTrigger>
+        )}
+        
+        <TabsTrigger 
+          value="transactions" 
+          className={`py-4 px-6 rounded-none border-b-2 ${
+            activeTab === 'transactions' 
+              ? 'border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 font-medium' 
+              : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
+          }`}
+        >
+          <Clock className="h-4 w-4 mr-2" />
+          Histórico
+        </TabsTrigger>
+        
+        {userAccess?.permissions.includes('approve_transactions' as PaymentPermission) && (
+          <TabsTrigger 
+            value="approvals" 
+            className={`py-4 px-6 rounded-none border-b-2 ${
+              activeTab === 'approvals' 
+                ? 'border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 font-medium' 
+                : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
+            }`}
+          >
+            <Shield className="h-4 w-4 mr-2" />
+            Aprovações
+            {(pendingApprovals?.length ?? 0) > 0 && (
+              <Badge className="ml-2 bg-red-600 text-white dark:bg-red-500">
+                {pendingApprovals?.length ?? 0}
+              </Badge>
+            )}
+          </TabsTrigger>
+        )}
+        
+        {userAccess?.permissions.includes('view_reports' as PaymentPermission) && (
+          <TabsTrigger 
+            value="reports" 
+            className={`py-4 px-6 rounded-none border-b-2 ${
+              activeTab === 'reports' 
+                ? 'border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 font-medium' 
+                : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
+            }`}
+          >
+            <BarChart3 className="h-4 w-4 mr-2" />
+            Relatórios
+          </TabsTrigger>
+        )}
+      </TabsList>
+    </div>
   );
 };

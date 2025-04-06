@@ -111,10 +111,22 @@ export const APISecurityTab: React.FC = () => {
 
         <TabsContent value="webhooks" className="mt-4">
           <WebhookSecurityPanel 
-            config={apiSecurityConfig} 
+            config={apiSecurityConfig}
             onSave={handleSaveConfig}
-            loading={loading}
-          />
+            loading={loading} webhookConfig={{
+              enabled: true,
+              signingSecret: false,
+              signingKey: '', // Provide a default value or remove this line if not needed
+              retryPolicy: false,
+              maxRetries: 3, // Provide a default value or adjust as needed
+              retryDelay: 5000, // Provide a default value in milliseconds or adjust as needed
+              allowedIps: [], // Provide an empty array or a valid list of IPs
+              ipRestriction: false, // Set a default value or adjust as needed
+              endpoints: [],
+              securityLevel: 'high'
+            }} updateWebhookConfig={function (config: any): Promise<any> {
+              throw new Error('Function not implemented.');
+            } }          />
         </TabsContent>
       </Tabs>
 

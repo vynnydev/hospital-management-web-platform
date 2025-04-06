@@ -44,6 +44,10 @@ interface GeofencingPanelProps {
   onSaveLocation: (location: Omit<ILocation, 'id' | 'createdAt'>) => Promise<void>;
   onUpdateLocation: (location: ILocation) => Promise<void>;
   onDeleteLocation: (locationId: string) => Promise<void>;
+  geofencing: boolean;
+  allowedLocations: { name: string; coordinates: { latitude: number; longitude: number; radius: number; }; }[] | undefined;
+  onChange: (geofencing: boolean, allowedLocations: { name: string; coordinates: { latitude: number; longitude: number; radius: number; }; }[]) => void;
+  onSave: () => Promise<void>;
   loading: boolean;
 }
 

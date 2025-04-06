@@ -41,6 +41,7 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/components/ui/hooks/use-toast';
 import { usePaymentData } from '@/services/hooks/payment/usePaymentData';
+import { authService } from '@/services/auth/AuthService';
 
 interface SecurityLayerProps {
   userId: string;
@@ -68,14 +69,15 @@ export const SecurityLayer: React.FC<SecurityLayerProps> = ({
   const [showHelpDialog, setShowHelpDialog] = useState(false);
   
   const { toast } = useToast();
+
+  const isAuthenticated = authService.isAuthenticated();
   
   const { 
-    isAuthenticated, 
-    authenticate, 
-    checkIfTwoFactorRequired,
     loading,
     error
   } = usePaymentData(userId);
+
+  console.log("ESTÁ AUTENTICADO PARA VERIFICAR AS TRANSAÇÕES?", isAuthenticated);
   
   // Verificar se a autenticação biométrica está disponível
   useEffect(() => {
@@ -97,15 +99,7 @@ export const SecurityLayer: React.FC<SecurityLayerProps> = ({
     checkBiometricAvailability();
   }, [allowBiometric]);
   
-  // Verificar se 2FA é necessário
-  useEffect(() => {
-    const checkTwoFactorAuth = async () => {
-      const required = await checkIfTwoFactorRequired();
-      setIs2FARequired(required);
-    };
-    
-    checkTwoFactorAuth();
-  }, [checkIfTwoFactorRequired]);
+  // Verificar se 2FA é necessário - Desenvolver funcionalidade
   
   // Atualizar contador de tempo de bloqueio
   useEffect(() => {
@@ -183,7 +177,7 @@ export const SecurityLayer: React.FC<SecurityLayerProps> = ({
     } else {
       // Se 2FA não é necessário, tenta autenticar apenas com senha
       try {
-        const success = await authenticate(password);
+        const success = await authService.authenticate(password);
         
         if (!success) {
           // Incrementa contador de tentativas falhas
@@ -233,7 +227,7 @@ export const SecurityLayer: React.FC<SecurityLayerProps> = ({
     }
     
     try {
-      const success = await authenticate(password, twoFactorCode);
+      const success = await authService.authenticateWith2FA(password, twoFactorCode);
       
       if (!success) {
         // Incrementa contador de tentativas falhas
@@ -280,7 +274,7 @@ export const SecurityLayer: React.FC<SecurityLayerProps> = ({
       
       // Simulação de autenticação biométrica
       setTimeout(async () => {
-        const success = await authenticate("biometric_auth");
+        const success = await authService.authenticate("biometric_auth");
         
         if (success) {
           toast({

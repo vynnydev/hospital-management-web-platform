@@ -3548,6 +3548,21 @@
         "label": "Processos Ativos",
         "value": "3 processos"
       }
+    },
+    {
+      "id": "custom-metric-1743795116091",
+      "title": "Taxa de Ocupação UTI",
+      "subtitle": "Ocupação atual dos leitos",
+      "description": "Métrica gerada pela IA para monitorar a ocupação da UTI em tempo real",
+      "type": "main",
+      "cardType": "critical-hospital",
+      "additionalInfo": {
+        "label": "Taxa Atual",
+        "value": "87%"
+      },
+      "createdBy": "ai",
+      "createdAt": "2025-04-04T19:31:56.091Z",
+      "isCustom": true
     }
   ],
   "panelMetrics": {
@@ -6288,7 +6303,11 @@
         "allowOnlineTransactions": true,
         "allowInternationalTransactions": false,
         "transactionApprovalThreshold": 5000,
-        "allowedApprovers": ["user-001", "user-002", "user-004"],
+        "allowedApprovers": [
+          "user-001",
+          "user-002",
+          "user-004"
+        ],
         "maxDailyTransactionAmount": 15000,
         "maxMonthlyTransactionAmount": 100000
       },
@@ -6297,9 +6316,21 @@
       "departmentId": "dept-001",
       "departmentName": "Administração",
       "usageRestrictions": {
-        "allowedCategories": ["medical_supplies", "pharmaceuticals", "equipment", "office_supplies", "utilities"],
+        "allowedCategories": [
+          "medical_supplies",
+          "pharmaceuticals",
+          "equipment",
+          "office_supplies",
+          "utilities"
+        ],
         "restrictedMerchants": [],
-        "allowedDaysOfWeek": [1, 2, 3, 4, 5]
+        "allowedDaysOfWeek": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
       },
       "creditLimit": 50000,
       "availableBalance": 32450.75,
@@ -6322,7 +6353,10 @@
         "allowOnlineTransactions": true,
         "allowInternationalTransactions": false,
         "transactionApprovalThreshold": 3000,
-        "allowedApprovers": ["user-001", "user-003"],
+        "allowedApprovers": [
+          "user-001",
+          "user-003"
+        ],
         "maxDailyTransactionAmount": 10000,
         "maxMonthlyTransactionAmount": 50000
       },
@@ -6331,9 +6365,18 @@
       "departmentId": "dept-003",
       "departmentName": "Farmácia",
       "usageRestrictions": {
-        "allowedCategories": ["pharmaceuticals"],
+        "allowedCategories": [
+          "pharmaceuticals"
+        ],
         "restrictedMerchants": [],
-        "allowedDaysOfWeek": [1, 2, 3, 4, 5, 6]
+        "allowedDaysOfWeek": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
       },
       "creditLimit": 30000,
       "availableBalance": 25678.92,
@@ -6356,7 +6399,10 @@
         "allowOnlineTransactions": true,
         "allowInternationalTransactions": true,
         "transactionApprovalThreshold": 10000,
-        "allowedApprovers": ["user-001", "user-002"],
+        "allowedApprovers": [
+          "user-001",
+          "user-002"
+        ],
         "maxDailyTransactionAmount": 25000,
         "maxMonthlyTransactionAmount": 150000
       },
@@ -6365,12 +6411,21 @@
       "departmentId": "dept-002",
       "departmentName": "Suprimentos",
       "usageRestrictions": {
-        "allowedCategories": ["medical_supplies", "equipment"],
+        "allowedCategories": [
+          "medical_supplies",
+          "equipment"
+        ],
         "restrictedMerchants": [],
-        "allowedDaysOfWeek": [1, 2, 3, 4, 5]
+        "allowedDaysOfWeek": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
       },
       "creditLimit": 75000,
-      "availableBalance": 42189.50,
+      "availableBalance": 42189.5,
       "cardImage": "/assets/cards/corporate-mastercard.svg",
       "colorScheme": "gradient-blue"
     },
@@ -6390,7 +6445,10 @@
         "allowOnlineTransactions": true,
         "allowInternationalTransactions": false,
         "transactionApprovalThreshold": 2000,
-        "allowedApprovers": ["user-001", "user-004"],
+        "allowedApprovers": [
+          "user-001",
+          "user-004"
+        ],
         "maxDailyTransactionAmount": 5000,
         "maxMonthlyTransactionAmount": 20000
       },
@@ -6399,9 +6457,18 @@
       "departmentId": "dept-004",
       "departmentName": "Tecnologia",
       "usageRestrictions": {
-        "allowedCategories": ["software", "equipment"],
+        "allowedCategories": [
+          "software",
+          "equipment"
+        ],
         "restrictedMerchants": [],
-        "allowedDaysOfWeek": [1, 2, 3, 4, 5]
+        "allowedDaysOfWeek": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
       },
       "creditLimit": 20000,
       "availableBalance": 18750.25,
@@ -6426,7 +6493,10 @@
       "receiptUrl": "/receipts/trans-001.pdf",
       "authorizedBy": "user-002",
       "notes": "Compra aprovada para reposição de estoque",
-      "tags": ["regular", "bulk"],
+      "tags": [
+        "regular",
+        "bulk"
+      ],
       "departmentId": "dept-001",
       "location": "São Paulo, Brasil",
       "ipAddress": "192.168.10.15"
@@ -6434,7 +6504,7 @@
     {
       "id": "trans-002",
       "cardId": "card-003",
-      "amount": 15890.00,
+      "amount": 15890,
       "currency": "BRL",
       "merchant": "MedEquip Importações",
       "merchantCategory": "Medical Equipment",
@@ -6472,7 +6542,7 @@
     {
       "id": "trans-004",
       "cardId": "card-004",
-      "amount": 1299.90,
+      "amount": 1299.9,
       "currency": "BRL",
       "merchant": "TechSupply",
       "merchantCategory": "IT Services",
@@ -6491,7 +6561,7 @@
     {
       "id": "trans-005",
       "cardId": "card-001",
-      "amount": 7850.00,
+      "amount": 7850,
       "currency": "BRL",
       "merchant": "Global Medical Supplies",
       "merchantCategory": "Medical Supplies",
@@ -6508,7 +6578,7 @@
     {
       "id": "trans-006",
       "cardId": "card-002",
-      "amount": 12500.00,
+      "amount": 12500,
       "currency": "BRL",
       "merchant": "PharmaWholesale International",
       "merchantCategory": "Pharmaceuticals",
@@ -6643,7 +6713,7 @@
       {
         "month": 1,
         "year": 2025,
-        "amount": 254678.50,
+        "amount": 254678.5,
         "transactionCount": 32
       },
       {
@@ -6655,7 +6725,7 @@
       {
         "month": 3,
         "year": 2025,
-        "amount": 289754.20,
+        "amount": 289754.2,
         "transactionCount": 35
       },
       {
@@ -6682,7 +6752,8 @@
         "view_reports"
       ],
       "cardVisibility": "all",
-      "transactionVisibility": "all"
+      "transactionVisibility": "all",
+      "id": "bf6a"
     },
     {
       "userId": "user-002",
@@ -6696,7 +6767,8 @@
       ],
       "cardVisibility": "all",
       "transactionVisibility": "all",
-      "approvalThreshold": 20000
+      "approvalThreshold": 20000,
+      "id": "5c75"
     },
     {
       "userId": "user-003",
@@ -6710,8 +6782,11 @@
       ],
       "cardVisibility": "department",
       "transactionVisibility": "department",
-      "allowedDepartmentIds": ["dept-003"],
-      "approvalThreshold": 10000
+      "allowedDepartmentIds": [
+        "dept-003"
+      ],
+      "approvalThreshold": 10000,
+      "id": "4987"
     },
     {
       "userId": "user-004",
@@ -6727,8 +6802,12 @@
       ],
       "cardVisibility": "department",
       "transactionVisibility": "department",
-      "allowedDepartmentIds": ["dept-001", "dept-004"],
-      "approvalThreshold": 15000
+      "allowedDepartmentIds": [
+        "dept-001",
+        "dept-004"
+      ],
+      "approvalThreshold": 15000,
+      "id": "282d"
     },
     {
       "userId": "user-005",
@@ -6740,7 +6819,10 @@
       ],
       "cardVisibility": "assigned",
       "transactionVisibility": "own",
-      "allowedCardIds": ["card-001"]
+      "allowedCardIds": [
+        "card-001"
+      ],
+      "id": "045e"
     },
     {
       "userId": "user-006",
@@ -6752,7 +6834,10 @@
       ],
       "cardVisibility": "assigned",
       "transactionVisibility": "own",
-      "allowedCardIds": ["card-002"]
+      "allowedCardIds": [
+        "card-002"
+      ],
+      "id": "a1be"
     },
     {
       "userId": "user-007",
@@ -6765,7 +6850,8 @@
         "view_reports"
       ],
       "cardVisibility": "all",
-      "transactionVisibility": "all"
+      "transactionVisibility": "all",
+      "id": "6b3f"
     }
   ],
   "departments-payments": [
@@ -6822,7 +6908,11 @@
       "requiredForAdmins": true,
       "requiredForApprovers": true,
       "requiredForCardholders": true,
-      "allowedMethods": ["app", "sms", "email"],
+      "allowedMethods": [
+        "app",
+        "sms",
+        "email"
+      ],
       "defaultMethod": "app",
       "rememberDeviceDays": 30
     },
@@ -6841,7 +6931,13 @@
         "enabled": false,
         "startTime": "08:00",
         "endTime": "18:00",
-        "workingDays": [1, 2, 3, 4, 5]
+        "workingDays": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
       }
     },
     "auditSettings": {

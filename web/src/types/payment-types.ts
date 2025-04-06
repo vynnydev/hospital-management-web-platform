@@ -301,6 +301,7 @@ export interface IPaymentCard {
     perPage: number;
     totalItems: number;
     totalPages: number;
+    total: number;
   }
   
   // Filtros de transação

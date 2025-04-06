@@ -44,6 +44,14 @@ interface TransactionFiltersProps {
   onApplyFilters: (filters: ITransactionFilters) => void;
   onClearFilters: () => void;
   cards: IPaymentCard[];
+  isOpen: boolean; // Added the missing isOpen property
+  onClose: () => void;
+  filters: ITransactionFilters;
+  onChange: React.Dispatch<React.SetStateAction<ITransactionFilters>>;
+  onApply: () => void;
+  onClear: () => void;
+  dateRange: { from: Date | undefined; to: Date | undefined };
+  onDateRangeChange: React.Dispatch<React.SetStateAction<{ from: Date | undefined; to: Date | undefined }>>;
 }
 
 export const TransactionFilters: React.FC<TransactionFiltersProps> = ({

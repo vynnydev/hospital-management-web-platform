@@ -14,6 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/organi
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/organisms/alert';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/organisms/accordion';
 import { Badge } from '@/components/ui/organisms/badge';
+import { IAPISecurityConfig } from '@/types/security-compliance-types';
 
 interface WebhookSecurityPanelProps {
   webhookConfig: {
@@ -35,6 +36,8 @@ interface WebhookSecurityPanelProps {
     securityLevel: 'basic' | 'standard' | 'high';
   };
   updateWebhookConfig: (config: any) => Promise<any>;
+  config: IAPISecurityConfig;
+  onSave: (updatedConfig: any) => Promise<boolean>;
   loading: boolean;
 }
 

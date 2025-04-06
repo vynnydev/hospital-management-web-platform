@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/organisms/card';
 import { Button } from '@/components/ui/organisms/button';
@@ -8,7 +9,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/organisms/a
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/organisms/select';
 import { useToast } from '@/components/ui/hooks/use-toast';
 import { useSecurityCompliance } from '@/services/hooks/security-compliance/useSecurityCompliance';
-import { IAccessControlConfig } from '@/types/security-compliance-types';
+import { IAccessControlConfig, IRBAPolicy } from '@/types/security-compliance-types';
 import { 
   Shield, 
   Clock, 
@@ -117,36 +118,42 @@ export const AccessControlTab = () => {
 
         <TabsContent value="rbac" className="space-y-4 mt-4">
           <RBAConfigPanel 
-            rbaPolicies={securityData?.rbaPolicy || []}
+            policies={securityData?.rbaPolicy || []}
             updateRBAPolicy={updateRBAPolicy}
-            loading={loading}
+            loading={loading} roles={[]} 
+            resources={[]} 
+            createRBAPolicy={[]} 
+            deleteRBAPolicy={[]}          
           />
         </TabsContent>
 
         <TabsContent value="ip-time" className="space-y-4 mt-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <IPRestrictionPanel 
               ipRestriction={config.enforceIPRestriction}
               allowedIPs={config.allowedIPs}
-              onChange={(enforceIPRestriction, allowedIPs) => {
-                setConfig({
-                  ...config,
-                  enforceIPRestriction,
-                  allowedIPs
-                });
+              onChange={(enforceIPRestriction: boolean, allowedIPs: string[]) => {
+              setConfig({
+                ...config,
+                enforceIPRestriction,
+                allowedIPs
+              });
               }}
+              accessControlConfig={config}
+              updateAccessControlConfig={updateAccessControlConfig}
+              loading={loading}
             />
             
             <TimeWindowsPanel 
-              timeWindows={config.allowedTimeWindows}
-              onChange={(allowedTimeWindows) => {
-                setConfig({
-                  ...config,
-                  allowedTimeWindows
-                });
+              timeWindows={config.allowedTimeWindows || []}
+              onChange={(allowedTimeWindows: string[]) => {
+              setConfig({
+                ...config,
+                allowedTimeWindows
+              });
               }}
             />
-          </div>
+            </div>
           
           <div className="flex justify-end mt-4">
             <Button onClick={handleSave} disabled={isSaving || loading}>
@@ -308,16 +315,47 @@ export const AccessControlTab = () => {
 
         <TabsContent value="location" className="space-y-4 mt-4">
           <GeofencingPanel 
-            geofencing={config.geofencing}
-            allowedLocations={config.allowedLocations}
-            onChange={(geofencing, allowedLocations) => {
+            geofencingEnabled={config.geofencing}
+            locations={config.allowedLocations || []}
+            onChange={(updatedConfig) => {
               setConfig({
                 ...config,
-                geofencing,
-                allowedLocations
+                ...(typeof updatedConfig === 'object' && updatedConfig !== null ? updatedConfig : {}),
               });
             }}
-            onSave={handleSave}
+            onUpdateLocation={(updatedLocation) => {
+              return Promise.resolve().then(() => {
+                setConfig({
+                  ...config,
+                  allowedLocations: (config.allowedLocations || []).map((loc) =>
+                    loc.name === updatedLocation.name ? updatedLocation : loc
+                  ),
+                });
+              });
+            }}
+            onToggleGeofencing={(enabled) => {
+              setConfig({
+                ...config,
+                geofencing: enabled,
+              });
+            }}
+            onSave={(location) => {
+              setConfig({
+                ...config,
+                allowedLocations: [...(config.allowedLocations || []), location],
+              });
+              return Promise.resolve();
+            }}
+            onDeleteLocation={(locationName) => {
+              return Promise.resolve().then(() => {
+                setConfig({
+                  ...config,
+                  allowedLocations: (config.allowedLocations || []).filter(
+                    (loc) => loc.name !== locationName
+                  ),
+                });
+              });
+            }}
             loading={loading || isSaving}
           />
         </TabsContent>

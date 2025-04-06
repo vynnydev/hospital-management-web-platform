@@ -15,6 +15,7 @@ import {
 import { paymentService } from '@/services/general/payment/paymentService';
 import { securityService } from '@/services/general/payment/security/securityService';
 import { useToast } from '@/components/ui/hooks/use-toast';
+import { authService } from '@/services/auth/AuthService';
 
 export const usePaymentData = (userId: string) => {
   const [cards, setCards] = useState<IPaymentCard[]>([]);
@@ -26,7 +27,8 @@ export const usePaymentData = (userId: string) => {
   const [userAccess, setUserAccess] = useState<IPaymentAccess | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+
+  const [isAuthenticated, setIsAuthenticated] = useState(authService.isAuthenticated());
   
   const { toast } = useToast();
 
@@ -463,121 +465,6 @@ export const usePaymentData = (userId: string) => {
     }
   }, [userAccess, userId, loadTransactions, toast]);
 
-  // Verificação de autenticação e carregamento inicial
-  const authenticate = useCallback(async (password: string, secondFactorCode?: string) => {
-    try {
-      setLoading(true);
-      const isAuthenticated = await securityService.authenticateForPayments(
-        userId, 
-        password, 
-        secondFactorCode
-      );
-      
-      if (isAuthenticated) {
-        setIsAuthenticated(true);
-        
-        // Registra a ação para auditoria
-        await securityService.logAction({
-          userId,
-          action: 'login',
-          resource: 'Sistema de Pagamentos',
-          resourceId: 'payment_system',
-          resourceType: 'system',
-          details: 'Login bem-sucedido no sistema de pagamentos'
-        });
-        
-        // Carrega os dados do usuário
-        const access = await loadUserAccess();
-        
-        if (access) {
-          // Carrega os dados iniciais
-          await Promise.all([
-            loadCards(),
-            loadTransactions(),
-            access.permissions.includes('approve_transactions' as PaymentPermission) && loadPendingApprovals(),
-            access.permissions.includes('view_reports' as PaymentPermission) && loadPaymentStats()
-          ]);
-        }
-        
-        return true;
-      } else {
-        setError('Credenciais inválidas');
-        
-        // Registra a ação para auditoria
-        await securityService.logAction({
-          userId,
-          action: 'failed_login',
-          resource: 'Sistema de Pagamentos',
-          resourceId: 'payment_system',
-          resourceType: 'system',
-          details: 'Tentativa de login malsucedida no sistema de pagamentos',
-          severity: 'warning'
-        });
-        
-        toast({
-          title: "Erro de autenticação",
-          description: "Credenciais inválidas. Tente novamente.",
-          variant: "destructive",
-        });
-        
-        return false;
-      }
-    } catch (err) {
-      console.error('Erro na autenticação:', err);
-      setError('Erro durante a autenticação');
-      toast({
-        title: "Erro",
-        description: "Ocorreu um erro durante a autenticação. Tente novamente mais tarde.",
-        variant: "destructive",
-      });
-      return false;
-    } finally {
-      setLoading(false);
-    }
-  }, [userId, loadUserAccess, loadCards, loadTransactions, loadPendingApprovals, loadPaymentStats, toast]);
-
-  // Verificar se a autenticação de dois fatores é necessária
-  const checkIfTwoFactorRequired = useCallback(async () => {
-    try {
-      return await securityService.isTwoFactorRequired(userId);
-    } catch (err) {
-      console.error('Erro ao verificar 2FA:', err);
-      return true; // Por segurança, retorna true em caso de erro
-    }
-  }, [userId]);
-
-  // Logout do sistema de pagamentos
-  const logout = useCallback(async () => {
-    try {
-      await securityService.logoutFromPayments(userId);
-      
-      // Registra a ação para auditoria
-      await securityService.logAction({
-        userId,
-        action: 'logout',
-        resource: 'Sistema de Pagamentos',
-        resourceId: 'payment_system',
-        resourceType: 'system',
-        details: 'Logout do sistema de pagamentos'
-      });
-      
-      // Limpa os estados
-      setIsAuthenticated(false);
-      setCards([]);
-      setSelectedCard(null);
-      setTransactions([]);
-      setPendingApprovals([]);
-      setAuditLogs([]);
-      setPaymentStats(null);
-      setUserAccess(null);
-      
-      return true;
-    } catch (err) {
-      console.error('Erro ao fazer logout:', err);
-      return false;
-    }
-  }, [userId]);
-
   // Exportar dados de transações
   const exportTransactions = useCallback(async (format: 'csv' | 'excel' | 'pdf', filters?: ITransactionFilters) => {
     if (!userAccess || !userAccess.permissions.includes('export_data' as PaymentPermission)) {
@@ -650,7 +537,6 @@ export const usePaymentData = (userId: string) => {
     userAccess,
     loading,
     error,
-    isAuthenticated,
     getCardDetails,
     addCard,
     updateCard,
@@ -660,9 +546,6 @@ export const usePaymentData = (userId: string) => {
     loadAuditLogs,
     approveTransaction,
     rejectTransaction,
-    authenticate,
-    checkIfTwoFactorRequired,
-    logout,
     exportTransactions
   };
 };
