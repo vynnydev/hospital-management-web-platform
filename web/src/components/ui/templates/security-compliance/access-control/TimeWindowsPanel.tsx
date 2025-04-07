@@ -11,19 +11,20 @@ import { Clock, PlusCircle, Trash2, Info } from 'lucide-react';
 import { Checkbox } from '@/components/ui/organisms/checkbox';
 import { useToast } from '@/components/ui/hooks/use-toast';
 
-interface TimeWindow {
+interface ITimeWindows {
+  dayOfWeek: number[];
+  startTime: string;
+  endTime: string;
   id: string;
-  dayOfWeek: number[]; // 0-6 (dom-sáb)
-  startTime: string; // HH:MM
-  endTime: string; // HH:MM
-  roles?: string[]; // which roles this applies to (if empty, applies to all)
+  roles?: string[];
 }
 
 interface TimeWindowsPanelProps {
   enabled: boolean;
-  timeWindows: TimeWindow[];
+  timeWindows: ITimeWindows[];
+  onChange: (allowedTimeWindows: { dayOfWeek: number[]; startTime: string; endTime: string }[]) => void;
   onToggleEnabled: (enabled: boolean) => void;
-  onUpdateTimeWindows: (timeWindows: TimeWindow[]) => void;
+  onUpdateTimeWindows: (timeWindows: ITimeWindows[]) => void;
   loading: boolean;
 }
 
@@ -34,7 +35,7 @@ export const TimeWindowsPanel: React.FC<TimeWindowsPanelProps> = ({
   onUpdateTimeWindows,
   loading 
 }) => {
-  const [windows, setWindows] = useState<TimeWindow[]>(timeWindows);
+  const [windows, setWindows] = useState<ITimeWindows[]>(timeWindows);
   const { toast } = useToast();
   
   // Helper to get day name
@@ -45,7 +46,7 @@ export const TimeWindowsPanel: React.FC<TimeWindowsPanelProps> = ({
 
   // Add a new time window
   const handleAddWindow = () => {
-    const newWindow: TimeWindow = {
+    const newWindow: ITimeWindows = {
       id: `tw-${Date.now()}`,
       dayOfWeek: [1, 2, 3, 4, 5], // Mon-Fri by default
       startTime: '08:00',
@@ -77,7 +78,7 @@ export const TimeWindowsPanel: React.FC<TimeWindowsPanelProps> = ({
   };
 
   // Update a time window
-  const handleUpdateWindow = (id: string, field: keyof TimeWindow, value: any) => {
+  const handleUpdateWindow = (id: string, field: keyof ITimeWindows, value: any) => {
     const updatedWindows = windows.map(window => {
       if (window.id === id) {
         return { ...window, [field]: value };
@@ -105,27 +106,28 @@ export const TimeWindowsPanel: React.FC<TimeWindowsPanelProps> = ({
   };
 
   return (
-    <Card className="w-full">
+    <Card className="w-full border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
       <CardHeader className="pb-3">
         <div className="flex justify-between items-center">
           <div>
-            <CardTitle className="text-lg flex items-center gap-2">
-              <Clock className="h-5 w-5" />
+            <CardTitle className="text-lg flex items-center gap-2 text-gray-900 dark:text-white">
+              <Clock className="h-5 w-5 text-primary dark:text-primary-400" />
               Janelas de Tempo
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-gray-500 dark:text-gray-400">
               Defina horários específicos em que o acesso ao sistema é permitido
             </CardDescription>
           </div>
           
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium">
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
               {enabled ? 'Habilitado' : 'Desabilitado'}
             </span>
             <Switch 
               checked={enabled} 
               onCheckedChange={onToggleEnabled}
               aria-label="Ativar restrição de janelas de tempo"
+              className="bg-gray-200 dark:bg-gray-700 data-[state=checked]:bg-primary dark:data-[state=checked]:bg-primary-400"
             />
           </div>
         </div>
@@ -135,12 +137,12 @@ export const TimeWindowsPanel: React.FC<TimeWindowsPanelProps> = ({
         <div className={enabled ? '' : 'opacity-50 pointer-events-none'}>
           {windows.length === 0 ? (
             <div className="text-center py-6">
-              <p className="text-sm text-gray-500 mb-4">
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
                 Nenhuma janela de tempo configurada. Os usuários podem fazer login a qualquer momento.
               </p>
               <Button 
                 onClick={handleAddWindow} 
-                className="mt-2"
+                className="mt-2 bg-primary hover:bg-primary/90 text-white dark:bg-primary dark:hover:bg-primary/90 dark:text-white"
               >
                 <PlusCircle className="h-4 w-4 mr-2" />
                 Adicionar Janela de Tempo
@@ -149,23 +151,24 @@ export const TimeWindowsPanel: React.FC<TimeWindowsPanelProps> = ({
           ) : (
             <div className="space-y-6">
               {windows.map((window, index) => (
-                <div key={window.id} className="border rounded-md p-4 space-y-4">
+                <div key={window.id} className="border border-gray-200 dark:border-gray-700 rounded-md p-4 space-y-4 bg-white dark:bg-gray-900">
                   <div className="flex justify-between items-center">
-                    <h4 className="font-medium">
+                    <h4 className="font-medium text-gray-900 dark:text-white">
                       Janela #{index + 1}
                     </h4>
                     <Button
                       variant="ghost"
                       size="icon"
                       onClick={() => handleRemoveWindow(window.id)}
+                      className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
                     >
-                      <Trash2 className="h-4 w-4 text-destructive" />
+                      <Trash2 className="h-4 w-4 text-red-500 dark:text-red-400" />
                     </Button>
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label className="text-sm font-medium">Dias da semana</Label>
+                      <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">Dias da semana</Label>
                       <div className="grid grid-cols-4 gap-2">
                         {[0, 1, 2, 3, 4, 5, 6].map(day => (
                           <div key={day} className="flex items-center space-x-2">
@@ -175,10 +178,11 @@ export const TimeWindowsPanel: React.FC<TimeWindowsPanelProps> = ({
                               onCheckedChange={(checked) => 
                                 handleToggleDay(window.id, day, checked === true)
                               }
+                              className="text-primary dark:text-primary-400 border-gray-300 dark:border-gray-600"
                             />
                             <Label 
                               htmlFor={`day-${window.id}-${day}`}
-                              className="text-sm font-normal"
+                              className="text-sm font-normal text-gray-700 dark:text-gray-300"
                             >
                               {getDayName(day).substring(0, 3)}
                             </Label>
@@ -188,12 +192,12 @@ export const TimeWindowsPanel: React.FC<TimeWindowsPanelProps> = ({
                     </div>
                     
                     <div className="space-y-2">
-                      <Label className="text-sm font-medium">Horário</Label>
+                      <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">Horário</Label>
                       <div className="grid grid-cols-2 gap-2">
                         <div>
                           <Label 
                             htmlFor={`start-time-${window.id}`} 
-                            className="text-xs"
+                            className="text-xs text-gray-600 dark:text-gray-400"
                           >
                             Início
                           </Label>
@@ -204,12 +208,13 @@ export const TimeWindowsPanel: React.FC<TimeWindowsPanelProps> = ({
                             onChange={(e) => 
                               handleUpdateWindow(window.id, 'startTime', e.target.value)
                             }
+                            className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
                           />
                         </div>
                         <div>
                           <Label 
                             htmlFor={`end-time-${window.id}`} 
-                            className="text-xs"
+                            className="text-xs text-gray-600 dark:text-gray-400"
                           >
                             Fim
                           </Label>
@@ -220,6 +225,7 @@ export const TimeWindowsPanel: React.FC<TimeWindowsPanelProps> = ({
                             onChange={(e) => 
                               handleUpdateWindow(window.id, 'endTime', e.target.value)
                             }
+                            className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
                           />
                         </div>
                       </div>
@@ -227,7 +233,7 @@ export const TimeWindowsPanel: React.FC<TimeWindowsPanelProps> = ({
                   </div>
                   
                   <div className="space-y-2">
-                    <Label className="text-sm font-medium">Aplicar a</Label>
+                    <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">Aplicar a</Label>
                     <Select
                       value={window.roles?.length ? 'custom' : 'all'}
                       onValueChange={(value) => {
@@ -238,12 +244,12 @@ export const TimeWindowsPanel: React.FC<TimeWindowsPanelProps> = ({
                         }
                       }}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white">
                         <SelectValue placeholder="Selecione os papéis" />
                       </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">Todos os usuários</SelectItem>
-                        <SelectItem value="custom">Papéis específicos</SelectItem>
+                      <SelectContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                        <SelectItem value="all" className="text-gray-900 dark:text-white">Todos os usuários</SelectItem>
+                        <SelectItem value="custom" className="text-gray-900 dark:text-white">Papéis específicos</SelectItem>
                       </SelectContent>
                     </Select>
                     
@@ -271,10 +277,11 @@ export const TimeWindowsPanel: React.FC<TimeWindowsPanelProps> = ({
                                     );
                                   }
                                 }}
+                                className="text-primary dark:text-primary-400 border-gray-300 dark:border-gray-600"
                               />
                               <Label 
                                 htmlFor={`role-${window.id}-${role}`}
-                                className="text-sm font-normal"
+                                className="text-sm font-normal text-gray-700 dark:text-gray-300"
                               >
                                 {role}
                               </Label>
@@ -288,9 +295,9 @@ export const TimeWindowsPanel: React.FC<TimeWindowsPanelProps> = ({
                   <div className="flex items-center mt-2">
                     <Badge 
                       variant="outline" 
-                      className="flex items-center gap-1 text-xs font-normal"
+                      className="flex items-center gap-1 text-xs font-normal border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300"
                     >
-                      <Info className="h-3 w-3" />
+                      <Info className="h-3 w-3 text-blue-500 dark:text-blue-400" />
                       {window.dayOfWeek.length === 7 
                         ? 'Todos os dias' 
                         : window.dayOfWeek.map(d => getDayName(d).substring(0, 3)).join(', ')
@@ -303,7 +310,7 @@ export const TimeWindowsPanel: React.FC<TimeWindowsPanelProps> = ({
               <Button 
                 variant="outline" 
                 onClick={handleAddWindow}
-                className="w-full"
+                className="w-full border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
               >
                 <PlusCircle className="h-4 w-4 mr-2" />
                 Adicionar outra janela de tempo
@@ -313,11 +320,11 @@ export const TimeWindowsPanel: React.FC<TimeWindowsPanelProps> = ({
         </div>
         
         {enabled && windows.length > 0 && (
-          <div className="flex items-start p-4 bg-amber-50 rounded-md border border-amber-200">
-            <Info className="h-5 w-5 text-amber-500 mr-2 flex-shrink-0 mt-0.5" />
-            <div className="text-sm text-amber-800">
+          <div className="flex items-start p-4 bg-amber-50 dark:bg-amber-900/20 rounded-md border border-amber-200 dark:border-amber-800">
+            <Info className="h-5 w-5 text-amber-500 dark:text-amber-400 mr-2 flex-shrink-0 mt-0.5" />
+            <div className="text-sm text-amber-800 dark:text-amber-300">
               <p className="font-medium">Atenção:</p>
-              <p className="text-xs">
+              <p className="text-xs text-amber-700 dark:text-amber-400">
                 Fora dos horários definidos, os usuários não conseguirão fazer login no sistema. 
                 Certifique-se de configurar janelas de tempo que cubram todas as necessidades operacionais, 
                 incluindo emergências e plantões.
@@ -327,11 +334,14 @@ export const TimeWindowsPanel: React.FC<TimeWindowsPanelProps> = ({
         )}
       </CardContent>
       
-      <CardFooter className="flex justify-between border-t pt-4">
-        <div className="text-xs text-gray-500">
+      <CardFooter className="flex justify-between border-t border-gray-200 dark:border-gray-700 pt-4">
+        <div className="text-xs text-gray-500 dark:text-gray-400">
           Última atualização: {new Date().toLocaleDateString()}
         </div>
-        <Button disabled={!enabled || loading}>
+        <Button 
+          disabled={!enabled || loading}
+          className="bg-primary hover:bg-primary/90 text-white dark:bg-primary dark:hover:bg-primary/90 dark:text-white disabled:bg-gray-200 dark:disabled:bg-gray-800 disabled:text-gray-500 dark:disabled:text-gray-500"
+        >
           Salvar Alterações
         </Button>
       </CardFooter>

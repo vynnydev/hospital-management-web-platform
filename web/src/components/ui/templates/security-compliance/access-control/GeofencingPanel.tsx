@@ -169,26 +169,27 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
   };
 
   return (
-    <Card className="w-full">
+    <Card className="w-full border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
       <CardHeader>
         <div className="flex justify-between items-center">
           <div>
-            <CardTitle className="flex items-center gap-2">
-              <MapPin className="h-5 w-5" />
+            <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
+              <MapPin className="h-5 w-5 text-primary dark:text-primary-400" />
               Geofencing
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-gray-500 dark:text-gray-400">
               Restrinja o acesso com base na localização geográfica
             </CardDescription>
           </div>
           
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium">
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
               {geofencingEnabled ? 'Ativado' : 'Desativado'}
             </span>
             <Switch
               checked={geofencingEnabled}
               onCheckedChange={onToggleGeofencing}
+              className="bg-gray-200 dark:bg-gray-700 data-[state=checked]:bg-primary dark:data-[state=checked]:bg-primary-400"
             />
           </div>
         </div>
@@ -196,22 +197,25 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
       
       <CardContent className="space-y-4">
         {!geofencingEnabled ? (
-          <Alert variant="default">
-            <Info className="h-4 w-4" />
-            <AlertTitle>Geofencing desativado</AlertTitle>
-            <AlertDescription>
+          <Alert variant="default" className="bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
+            <Info className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+            <AlertTitle className="text-blue-700 dark:text-blue-300">Geofencing desativado</AlertTitle>
+            <AlertDescription className="text-blue-600 dark:text-blue-400">
               Habilite o geofencing para restringir o acesso ao sistema com base na localização geográfica do usuário.
               Isso pode aumentar significativamente a segurança, especialmente para acesso a dados sensíveis.
             </AlertDescription>
           </Alert>
         ) : locations.length === 0 ? (
           <div className="text-center py-8">
-            <MapPin className="h-12 w-12 mx-auto text-gray-300 mb-4" />
-            <h3 className="text-lg font-medium">Nenhuma localização configurada</h3>
-            <p className="text-sm text-gray-500 mt-2 mb-4">
+            <MapPin className="h-12 w-12 mx-auto text-gray-300 dark:text-gray-600 mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white">Nenhuma localização configurada</h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 mb-4">
               Adicione uma ou mais localizações permitidas para começar a usar o geofencing.
             </p>
-            <Button onClick={() => setShowAddDialog(true)}>
+            <Button 
+              onClick={() => setShowAddDialog(true)}
+              className="bg-primary hover:bg-primary/90 text-white dark:bg-primary dark:hover:bg-primary/90 dark:text-white"
+            >
               <Plus className="h-4 w-4 mr-2" />
               Adicionar Localização
             </Button>
@@ -219,53 +223,57 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
         ) : (
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <h3 className="text-sm font-medium">Localizações permitidas</h3>
-              <Button size="sm" onClick={() => setShowAddDialog(true)}>
+              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Localizações permitidas</h3>
+              <Button 
+                size="sm" 
+                onClick={() => setShowAddDialog(true)}
+                className="bg-primary hover:bg-primary/90 text-white dark:bg-primary dark:hover:bg-primary/90 dark:text-white"
+              >
                 <Plus className="h-4 w-4 mr-1" />
                 Adicionar
               </Button>
             </div>
             
-            <div className="border rounded-md overflow-hidden">
+            <div className="border rounded-md overflow-hidden border-gray-200 dark:border-gray-700">
               <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Nome</TableHead>
-                    <TableHead className="hidden md:table-cell">Tipo</TableHead>
-                    <TableHead className="hidden lg:table-cell">Coordenadas</TableHead>
-                    <TableHead className="hidden sm:table-cell">Raio</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead className="text-right">Ações</TableHead>
+                <TableHeader className="bg-gray-50 dark:bg-gray-800/50">
+                  <TableRow className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800/50">
+                    <TableHead className="text-gray-700 dark:text-gray-300">Nome</TableHead>
+                    <TableHead className="hidden md:table-cell text-gray-700 dark:text-gray-300">Tipo</TableHead>
+                    <TableHead className="hidden lg:table-cell text-gray-700 dark:text-gray-300">Coordenadas</TableHead>
+                    <TableHead className="hidden sm:table-cell text-gray-700 dark:text-gray-300">Raio</TableHead>
+                    <TableHead className="text-gray-700 dark:text-gray-300">Status</TableHead>
+                    <TableHead className="text-right text-gray-700 dark:text-gray-300">Ações</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {locations.map((location) => (
-                    <TableRow key={location.id}>
-                      <TableCell className="font-medium">
+                    <TableRow key={location.id} className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                      <TableCell className="font-medium text-gray-900 dark:text-white">
                         {location.name}
                         {location.default && (
-                          <Badge variant="secondary" className="ml-2">Padrão</Badge>
+                          <Badge variant="secondary" className="ml-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700">Padrão</Badge>
                         )}
                       </TableCell>
-                      <TableCell className="hidden md:table-cell">
+                      <TableCell className="hidden md:table-cell text-gray-700 dark:text-gray-300">
                         {location.type === 'hospital' && 'Hospital'}
                         {location.type === 'clinic' && 'Clínica'}
                         {location.type === 'custom' && 'Personalizado'}
                       </TableCell>
-                      <TableCell className="hidden lg:table-cell font-mono text-xs">
+                      <TableCell className="hidden lg:table-cell font-mono text-xs text-gray-700 dark:text-gray-300">
                         {formatCoordinates(
                           location.coordinates.latitude,
                           location.coordinates.longitude
                         )}
                       </TableCell>
-                      <TableCell className="hidden sm:table-cell">
+                      <TableCell className="hidden sm:table-cell text-gray-700 dark:text-gray-300">
                         {formatRadius(location.coordinates.radius)}
                       </TableCell>
                       <TableCell>
                         {location.enabled ? (
-                          <Badge variant="success" className="bg-green-100 text-green-800">Ativo</Badge>
+                          <Badge variant="success" className="bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300 border-green-200 dark:border-green-800">Ativo</Badge>
                         ) : (
-                          <Badge variant="secondary" className="bg-gray-100 text-gray-800">Inativo</Badge>
+                          <Badge variant="secondary" className="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300 border-gray-200 dark:border-gray-700">Inativo</Badge>
                         )}
                       </TableCell>
                       <TableCell className="text-right">
@@ -274,6 +282,7 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
                             variant="ghost"
                             size="icon"
                             onClick={() => handleEditLocation(location)}
+                            className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
                           >
                             <Edit2 className="h-4 w-4" />
                           </Button>
@@ -283,6 +292,7 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
                               variant="ghost"
                               size="icon"
                               onClick={() => handleDeleteLocation(location.id)}
+                              className="text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400"
                             >
                               <Trash2 className="h-4 w-4" />
                             </Button>
@@ -295,10 +305,10 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
               </Table>
             </div>
             
-            <Alert>
-              <AlertTriangle className="h-4 w-4" />
-              <AlertTitle>Importante</AlertTitle>
-              <AlertDescription>
+            <Alert className="bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800">
+              <AlertTriangle className="h-4 w-4 text-amber-500 dark:text-amber-400" />
+              <AlertTitle className="text-amber-800 dark:text-amber-300">Importante</AlertTitle>
+              <AlertDescription className="text-amber-700 dark:text-amber-400">
                 O geofencing depende da precisão do GPS do dispositivo ou do IP do usuário. 
                 Fatores ambientais ou uso de VPNs podem afetar a precisão da detecção de localização.
               </AlertDescription>
@@ -308,11 +318,15 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
       </CardContent>
       
       {geofencingEnabled && locations.length > 0 && (
-        <CardFooter className="flex justify-between">
-          <div className="text-xs text-gray-500">
+        <CardFooter className="flex justify-between border-t border-gray-200 dark:border-gray-700 pt-4">
+          <div className="text-xs text-gray-500 dark:text-gray-400">
             Total: {locations.length} localizações configuradas
           </div>
-          <Button variant="outline" size="sm">
+          <Button 
+            variant="outline" 
+            size="sm"
+            className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+          >
             Testar Minha Localização
           </Button>
         </CardFooter>
@@ -320,30 +334,30 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
 
       {/* Add Location Dialog */}
       <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
-        <DialogContent className="sm:max-w-[500px]">
+        <DialogContent className="sm:max-w-[500px] bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
           <DialogHeader>
-            <DialogTitle>Adicionar Nova Localização</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-gray-900 dark:text-white">Adicionar Nova Localização</DialogTitle>
+            <DialogDescription className="text-gray-500 dark:text-gray-400">
               Adicione uma nova área geográfica permitida para acesso ao sistema.
             </DialogDescription>
           </DialogHeader>
           
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="name" className="text-right">
+              <Label htmlFor="name" className="text-right text-gray-700 dark:text-gray-300">
                 Nome
               </Label>
               <Input
                 id="name"
                 placeholder="Ex: Sede Principal"
-                className="col-span-3"
+                className="col-span-3 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
                 value={newLocation.name}
                 onChange={(e) => setNewLocation({ ...newLocation, name: e.target.value })}
               />
             </div>
             
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="type" className="text-right">
+              <Label htmlFor="type" className="text-right text-gray-700 dark:text-gray-300">
                 Tipo
               </Label>
               <Select
@@ -352,19 +366,19 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
                   setNewLocation({ ...newLocation, type: value })
                 }
               >
-                <SelectTrigger className="col-span-3">
+                <SelectTrigger className="col-span-3 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white">
                   <SelectValue placeholder="Selecione o tipo" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="hospital">Hospital</SelectItem>
-                  <SelectItem value="clinic">Clínica</SelectItem>
-                  <SelectItem value="custom">Personalizado</SelectItem>
+                <SelectContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                  <SelectItem value="hospital" className="text-gray-900 dark:text-white">Hospital</SelectItem>
+                  <SelectItem value="clinic" className="text-gray-900 dark:text-white">Clínica</SelectItem>
+                  <SelectItem value="custom" className="text-gray-900 dark:text-white">Personalizado</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="latitude" className="text-right">
+              <Label htmlFor="latitude" className="text-right text-gray-700 dark:text-gray-300">
                 Latitude
               </Label>
               <Input
@@ -372,7 +386,7 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
                 type="number"
                 step="0.000001"
                 placeholder="Ex: -23.5505"
-                className="col-span-3"
+                className="col-span-3 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
                 value={newLocation.coordinates.latitude || ''}
                 onChange={(e) => setNewLocation({
                   ...newLocation,
@@ -385,7 +399,7 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
             </div>
             
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="longitude" className="text-right">
+              <Label htmlFor="longitude" className="text-right text-gray-700 dark:text-gray-300">
                 Longitude
               </Label>
               <Input
@@ -393,7 +407,7 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
                 type="number"
                 step="0.000001"
                 placeholder="Ex: -46.6333"
-                className="col-span-3"
+                className="col-span-3 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
                 value={newLocation.coordinates.longitude || ''}
                 onChange={(e) => setNewLocation({
                   ...newLocation,
@@ -406,7 +420,7 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
             </div>
             
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="radius" className="text-right">
+              <Label htmlFor="radius" className="text-right text-gray-700 dark:text-gray-300">
                 Raio (metros)
               </Label>
               <Input
@@ -415,7 +429,7 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
                 min="50"
                 max="10000"
                 placeholder="Ex: 500"
-                className="col-span-3"
+                className="col-span-3 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
                 value={newLocation.coordinates.radius || ''}
                 onChange={(e) => setNewLocation({
                   ...newLocation,
@@ -428,7 +442,7 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
             </div>
             
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="location-enabled" className="text-right">
+              <Label htmlFor="location-enabled" className="text-right text-gray-700 dark:text-gray-300">
                 Ativo
               </Label>
               <div className="flex items-center space-x-2 col-span-3">
@@ -439,18 +453,19 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
                     ...newLocation,
                     enabled: checked
                   })}
+                  className="bg-gray-200 dark:bg-gray-700 data-[state=checked]:bg-primary dark:data-[state=checked]:bg-primary-400"
                 />
-                <Label htmlFor="location-enabled">
+                <Label htmlFor="location-enabled" className="text-gray-900 dark:text-white">
                   {newLocation.enabled ? 'Ativado' : 'Desativado'}
                 </Label>
               </div>
             </div>
             
             <div className="col-span-4">
-              <Alert variant="default" className="mt-2">
-                <Locate className="h-4 w-4" />
-                <AlertTitle>Dica</AlertTitle>
-                <AlertDescription className="text-xs">
+              <Alert variant="default" className="mt-2 bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
+                <Locate className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                <AlertTitle className="text-blue-700 dark:text-blue-300">Dica</AlertTitle>
+                <AlertDescription className="text-xs text-blue-600 dark:text-blue-400">
                   Use o botão abaixo para obter as coordenadas atuais ou use um serviço de mapas para encontrar a latitude e longitude exatas da localização desejada.
                 </AlertDescription>
               </Alert>
@@ -485,6 +500,7 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
                   });
                 });
               }}
+              className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
             >
               <Globe className="h-4 w-4 mr-1" />
               Usar Localização Atual
@@ -496,13 +512,14 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
                   setShowAddDialog(false);
                   resetNewLocation();
                 }}
-                className="mr-2"
+                className="mr-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
               >
                 Cancelar
               </Button>
               <Button 
                 onClick={handleAddLocation}
                 disabled={!newLocation.name || loading}
+                className="bg-primary hover:bg-primary/90 text-white dark:bg-primary dark:hover:bg-primary/90 dark:text-white disabled:bg-gray-200 dark:disabled:bg-gray-800 disabled:text-gray-500 dark:disabled:text-gray-500"
               >
                 Adicionar
               </Button>
@@ -513,10 +530,10 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
 
       {/* Edit Location Dialog */}
       <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
-        <DialogContent className="sm:max-w-[500px]">
+        <DialogContent className="sm:max-w-[500px] bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
           <DialogHeader>
-            <DialogTitle>Editar Localização</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-gray-900 dark:text-white">Editar Localização</DialogTitle>
+            <DialogDescription className="text-gray-500 dark:text-gray-400">
               Atualize as informações da área geográfica selecionada.
             </DialogDescription>
           </DialogHeader>
@@ -524,13 +541,13 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
           {selectedLocation && (
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="edit-name" className="text-right">
+                <Label htmlFor="edit-name" className="text-right text-gray-700 dark:text-gray-300">
                   Nome
                 </Label>
                 <Input
                   id="edit-name"
                   placeholder="Ex: Sede Principal"
-                  className="col-span-3"
+                  className="col-span-3 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white disabled:bg-gray-100 dark:disabled:bg-gray-800 disabled:text-gray-500 dark:disabled:text-gray-500"
                   value={selectedLocation.name}
                   onChange={(e) => setSelectedLocation({ 
                     ...selectedLocation, 
@@ -541,7 +558,7 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
               </div>
               
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="edit-type" className="text-right">
+                <Label htmlFor="edit-type" className="text-right text-gray-700 dark:text-gray-300">
                   Tipo
                 </Label>
                 <Select
@@ -551,19 +568,19 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
                   }
                   disabled={selectedLocation.default}
                 >
-                  <SelectTrigger className="col-span-3">
+                  <SelectTrigger className="col-span-3 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white disabled:bg-gray-100 dark:disabled:bg-gray-800 disabled:text-gray-500 dark:disabled:text-gray-500">
                     <SelectValue placeholder="Selecione o tipo" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="hospital">Hospital</SelectItem>
-                    <SelectItem value="clinic">Clínica</SelectItem>
-                    <SelectItem value="custom">Personalizado</SelectItem>
+                  <SelectContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                    <SelectItem value="hospital" className="text-gray-900 dark:text-white">Hospital</SelectItem>
+                    <SelectItem value="clinic" className="text-gray-900 dark:text-white">Clínica</SelectItem>
+                    <SelectItem value="custom" className="text-gray-900 dark:text-white">Personalizado</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="edit-latitude" className="text-right">
+                <Label htmlFor="edit-latitude" className="text-right text-gray-700 dark:text-gray-300">
                   Latitude
                 </Label>
                 <Input
@@ -571,7 +588,7 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
                   type="number"
                   step="0.000001"
                   placeholder="Ex: -23.5505"
-                  className="col-span-3"
+                  className="col-span-3 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
                   value={selectedLocation.coordinates.latitude || ''}
                   onChange={(e) => setSelectedLocation({
                     ...selectedLocation,
@@ -584,7 +601,7 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
               </div>
               
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="edit-longitude" className="text-right">
+                <Label htmlFor="edit-longitude" className="text-right text-gray-700 dark:text-gray-300">
                   Longitude
                 </Label>
                 <Input
@@ -592,7 +609,7 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
                   type="number"
                   step="0.000001"
                   placeholder="Ex: -46.6333"
-                  className="col-span-3"
+                  className="col-span-3 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
                   value={selectedLocation.coordinates.longitude || ''}
                   onChange={(e) => setSelectedLocation({
                     ...selectedLocation,
@@ -605,7 +622,7 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
               </div>
               
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="edit-radius" className="text-right">
+                <Label htmlFor="edit-radius" className="text-right text-gray-700 dark:text-gray-300">
                   Raio (metros)
                 </Label>
                 <Input
@@ -614,7 +631,7 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
                   min="50"
                   max="10000"
                   placeholder="Ex: 500"
-                  className="col-span-3"
+                  className="col-span-3 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
                   value={selectedLocation.coordinates.radius || ''}
                   onChange={(e) => setSelectedLocation({
                     ...selectedLocation,
@@ -627,7 +644,7 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
               </div>
               
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="edit-location-enabled" className="text-right">
+                <Label htmlFor="edit-location-enabled" className="text-right text-gray-700 dark:text-gray-300">
                   Ativo
                 </Label>
                 <div className="flex items-center space-x-2 col-span-3">
@@ -638,12 +655,13 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
                       ...selectedLocation,
                       enabled: checked
                     })}
+                    className="bg-gray-200 dark:bg-gray-700 data-[state=checked]:bg-primary dark:data-[state=checked]:bg-primary-400"
                   />
-                  <Label htmlFor="edit-location-enabled">
+                  <Label htmlFor="edit-location-enabled" className="text-gray-900 dark:text-white">
                     {selectedLocation.enabled ? 'Ativado' : 'Desativado'}
                   </Label>
                 </div>
-              </div>
+                </div>
             </div>
           )}
           
@@ -654,12 +672,14 @@ export const GeofencingPanel: React.FC<GeofencingPanelProps> = ({
                 setShowEditDialog(false);
                 setSelectedLocation(null);
               }}
+              className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
             >
               Cancelar
             </Button>
             <Button 
               onClick={handleUpdateLocation}
               disabled={!selectedLocation?.name || loading}
+              className="bg-primary hover:bg-primary/90 text-white dark:bg-primary dark:hover:bg-primary/90 dark:text-white disabled:bg-gray-200 dark:disabled:bg-gray-800 disabled:text-gray-500 dark:disabled:text-gray-500"
             >
               Salvar Alterações
             </Button>

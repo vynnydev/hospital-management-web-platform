@@ -131,11 +131,11 @@ export const AccessControlTab = () => {
           <RBAConfigPanel 
             policies={securityData?.rbaPolicy || []}
             updateRBAPolicy={updateRBAPolicy}
+            createRBAPolicy={(policy) => Promise.resolve()} // Replace with actual implementation
+            deleteRBAPolicy={(policyId) => Promise.resolve()} // Replace with actual implementation
             loading={loading} 
             roles={[]} 
-            resources={[]} 
-            createRBAPolicy={[]} 
-            deleteRBAPolicy={[]}          
+            resources={[]}         
           />
         </TabsContent>
 
@@ -157,15 +157,36 @@ export const AccessControlTab = () => {
             />
             
             <TimeWindowsPanel 
-              timeWindows={config.allowedTimeWindows || []}
-              onChange={(allowedTimeWindows: string[]) => {
+              timeWindows={(config.allowedTimeWindows || []).map((window, index) => ({
+                id: `time-window-${index}`,
+                ...window,
+              }))}
+              enabled={true} // or set based on your logic
+              onToggleEnabled={(enabled) => {
                 setConfig({
                   ...config,
-                  allowedTimeWindows
+                  // Removed invalid property 'enabled'
                 });
               }}
-            />
-          </div>
+              onUpdateTimeWindows={(updatedTimeWindows) => {
+                setConfig({
+                  ...config,
+                  allowedTimeWindows: updatedTimeWindows,
+                });
+                }}
+                onChange={(allowedTimeWindows: { dayOfWeek: number[]; startTime: string; endTime: string }[]) => {
+                setConfig({
+                  ...config,
+                  allowedTimeWindows: allowedTimeWindows.map((timeWindow) => ({
+                  dayOfWeek: timeWindow.dayOfWeek, // Example: Replace with actual dayOfWeek data
+                  startTime: timeWindow.startTime, // Ensure timeWindow has startTime
+                  endTime: timeWindow.endTime, // Ensure timeWindow has endTime
+                  }))
+                });
+                }}
+                loading={loading}
+              />
+              </div>
           
           <div className="flex justify-end mt-4">
             <Button 
@@ -357,10 +378,10 @@ export const AccessControlTab = () => {
             allowedLocations={config.allowedLocations || []}
             locations={(config.allowedLocations || []).map(location => ({
               ...location,
-              id: location.id || 'default-id',
-              type: location.type || 'default-type',
-              enabled: location.enabled ?? true,
-              createdAt: location.createdAt || new Date().toISOString(),
+              id: location.name || 'default-id',
+              type: 'custom', // Use one of the allowed values: "hospital", "clinic", or "custom"
+              enabled: true, // Default value since 'enabled' does not exist on the location object
+              createdAt: new Date().toISOString(),
             }))}
             onChange={(updatedConfig) => {
               setConfig({

@@ -28,7 +28,6 @@ import {
 import { useToast } from '@/components/ui/hooks/use-toast';
 import { usePaymentData } from '@/services/hooks/payment/usePaymentData';
 
-import { SecurityLayer } from './payment/SecurityLayer';
 import { CardsList } from './payment/CardsList';
 import { CardDetails } from './payment/CardDetails';
 import { PaymentHistory } from './payment/PaymentHistory';
