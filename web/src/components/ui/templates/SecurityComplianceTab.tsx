@@ -38,7 +38,7 @@ export const SecurityComplianceTab = () => {
 
   if (error) {
     return (
-      <Card className="w-full border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-sm">
+      <Card className="w-full border border-gray-200 dark:border-gray-700 shadow-sm">
         <CardHeader>
           <CardTitle className="text-red-500 dark:text-red-400">Erro ao carregar configurações de segurança</CardTitle>
         </CardHeader>
@@ -53,90 +53,145 @@ export const SecurityComplianceTab = () => {
   }
 
   return (
-    <div className="w-full space-y-4 bg-white dark:bg-gray-900">
-      <div>
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Segurança e Compliance</h2>
+    <div className="w-full space-y-4 mb-4">
+      <div className='flex flex-col items-center justify-center text-center mb-6'>
+        <div className='flex flex-row'>
+          <Shield className="h-6 w-6 text-blue-600 dark:text-blue-400 mr-2 mt-1" />
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Segurança e Compliance</h2>
+        </div>
         <p className="text-gray-500 dark:text-gray-400">
           Gerencie as configurações de segurança, auditoria e conformidade regulatória.
         </p>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid grid-cols-3 md:grid-cols-9 mb-4 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
-          <TabsTrigger value="password-policies" className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-primary dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-primary-400">
-            <Lock size={16} />
-            <span className="hidden md:inline">Senhas</span>
-          </TabsTrigger>
-          <TabsTrigger value="authentication" className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-primary dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-primary-400">
-            <Key size={16} />
-            <span className="hidden md:inline">Autenticação</span>
-          </TabsTrigger>
-          <TabsTrigger value="audit-logs" className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-primary dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-primary-400">
-            <FileText size={16} />
-            <span className="hidden md:inline">Auditoria</span>
-          </TabsTrigger>
-          <TabsTrigger value="compliance" className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-primary dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-primary-400">
-            <FileCheck size={16} />
-            <span className="hidden md:inline">Compliance</span>
-          </TabsTrigger>
-          <TabsTrigger value="security-alerts" className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-primary dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-primary-400">
-            <AlertTriangle size={16} />
-            <span className="hidden md:inline">Alertas</span>
-          </TabsTrigger>
-          <TabsTrigger value="vulnerability-scan" className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-primary dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-primary-400">
-            <Activity size={16} />
-            <span className="hidden md:inline">Vulnerabilidades</span>
-          </TabsTrigger>
-          <TabsTrigger value="access-control" className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-primary dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-primary-400">
-            <Users size={16} />
-            <span className="hidden md:inline">Acesso</span>
-          </TabsTrigger>
-          <TabsTrigger value="data-protection" className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-primary dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-primary-400">
-            <Database size={16} />
-            <span className="hidden md:inline">Dados</span>
-          </TabsTrigger>
-          <TabsTrigger value="api-security" className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-primary dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-primary-400">
-            <Shield size={16} />
-            <span className="hidden md:inline">API</span>
-          </TabsTrigger>
-        </TabsList>
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <div className="bg-gray-50 dark:bg-gray-800/80 border-b border-gray-200 dark:border-gray-700">
+            <TabsList className="grid grid-cols-3 md:grid-cols-9 bg-gray-100 dark:bg-gray-800 rounded-lg p-1 h-auto">
+              <TabsTrigger value="password-policies"
+                className={`py-4 px-6 rounded-none border-b-2 ${
+                  activeTab === 'password-policies' 
+                    ? 'border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 font-medium' 
+                    : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
+                }`}>
+                  <Lock size={16} />
+                  <span className="hidden md:inline">Senhas</span>
+              </TabsTrigger>
+              <TabsTrigger value="authentication"            
+                className={`py-4 px-6 rounded-none border-b-2 ${
+                  activeTab === 'authentication' 
+                    ? 'border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 font-medium' 
+                    : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
+                }`}>
+                  <Key size={16} />
+                  <span className="hidden md:inline">Autenticação</span>
+              </TabsTrigger>
+              <TabsTrigger value="audit-logs"            
+                className={`py-4 px-6 rounded-none border-b-2 ${
+                  activeTab === 'audit-logs' 
+                    ? 'border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 font-medium' 
+                    : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
+                }`}>
+                  <FileText size={16} />
+                  <span className="hidden md:inline">Auditoria</span>
+              </TabsTrigger>
+              <TabsTrigger value="compliance"            
+                className={`py-4 px-6 rounded-none border-b-2 ${
+                  activeTab === 'compliance' 
+                    ? 'border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 font-medium' 
+                    : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
+                }`}>
+                  <FileCheck size={16} />
+                  <span className="hidden md:inline">Compliance</span>
+              </TabsTrigger>
+              <TabsTrigger value="security-alerts"            
+                className={`py-4 px-6 rounded-none border-b-2 ${
+                  activeTab === 'security-alerts' 
+                    ? 'border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 font-medium' 
+                    : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
+                }`}>
+                  <AlertTriangle size={16} />
+                  <span className="hidden md:inline">Alertas</span>
+              </TabsTrigger>
+              <TabsTrigger value="vulnerability-scan"            className={`py-4 px-6 rounded-none border-b-2 ${
+                  activeTab === 'vulnerability-scan' 
+                    ? 'border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 font-medium' 
+                    : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
+                }`}>
+                <Activity size={16} />
+                <span className="hidden md:inline">Vulnerabilidades</span>
+              </TabsTrigger>
+              <TabsTrigger value="access-control"            
+                className={`py-4 px-6 rounded-none border-b-2 ${
+                  activeTab === 'access-control' 
+                    ? 'border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 font-medium' 
+                    : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
+                }`}>
+                  <Users size={16} />
+                  <span className="hidden md:inline">Acesso</span>
+              </TabsTrigger>
+              <TabsTrigger value="data-protection"            
+                className={`py-4 px-6 rounded-none border-b-2 ${
+                  activeTab === 'data-protection' 
+                    ? 'border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 font-medium' 
+                    : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
+                }`}>
+                  <Database size={16} />
+                  <span className="hidden md:inline">Dados</span>
+              </TabsTrigger>
+              <TabsTrigger value="api-security"            
+                className={`py-4 px-6 rounded-none border-b-2 ${
+                  activeTab === 'api-security' 
+                    ? 'border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 font-medium' 
+                    : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
+                }`}>
+                  <Shield size={16} />
+                  <span className="hidden md:inline">API</span>
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
-        <TabsContent value="password-policies" className="space-y-4">
-          <PasswordPoliciesTab />
-        </TabsContent>
+          <div className="px-6 py-4">
+            <TabsContent value="password-policies" className="space-y-4">
+              <PasswordPoliciesTab />
+            </TabsContent>
 
-        <TabsContent value="authentication" className="space-y-4">
-          <AuthenticationTab />
-        </TabsContent>
+            <TabsContent value="authentication" className="space-y-4">
+              <AuthenticationTab />
+            </TabsContent>
 
-        <TabsContent value="audit-logs" className="space-y-4">
-          <AuditLogsTab />
-        </TabsContent>
+            <TabsContent value="audit-logs" className="space-y-4">
+              <AuditLogsTab />
+            </TabsContent>
 
-        <TabsContent value="compliance" className="space-y-4">
-          <ComplianceTab />
-        </TabsContent>
+            <TabsContent value="compliance" className="space-y-4">
+              <ComplianceTab />
+            </TabsContent>
 
-        <TabsContent value="security-alerts" className="space-y-4">
-          <SecurityAlertsTab />
-        </TabsContent>
+            <TabsContent value="security-alerts" className="space-y-4">
+              <SecurityAlertsTab />
+            </TabsContent>
 
-        <TabsContent value="vulnerability-scan" className="space-y-4">
-          <VulnerabilityScanTab />
-        </TabsContent>
+            <TabsContent value="vulnerability-scan" className="space-y-4">
+              <VulnerabilityScanTab />
+            </TabsContent>
 
-        <TabsContent value="access-control" className="space-y-4">
-          <AccessControlTab />
-        </TabsContent>
+            <TabsContent value="access-control" className="space-y-4">
+              <AccessControlTab />
+            </TabsContent>
 
-        <TabsContent value="data-protection" className="space-y-4">
-          <DataProtectionTab />
-        </TabsContent>
+            <TabsContent value="data-protection" className="space-y-4">
+              <DataProtectionTab />
+            </TabsContent>
 
-        <TabsContent value="api-security" className="space-y-4">
-          <APISecurityTab />
-        </TabsContent>
-      </Tabs>
+            <TabsContent value="api-security" className="space-y-4">
+              <APISecurityTab />
+            </TabsContent>
+          </div>
+
+        </Tabs>
+      </div>
+
     </div>
   );
 };
