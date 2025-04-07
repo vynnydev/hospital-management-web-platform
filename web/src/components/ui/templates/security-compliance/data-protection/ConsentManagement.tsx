@@ -182,13 +182,13 @@ export const ConsentManagement: React.FC<ConsentManagementProps> = ({
 
   return (
     <div className="space-y-4">
-      <Card>
+      <Card className="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <UserCheck className="h-5 w-5" />
+          <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
+            <UserCheck className="h-5 w-5 text-primary dark:text-primary-400" />
             Gestão de Consentimento
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-gray-500 dark:text-gray-400">
             Configure as categorias e políticas de consentimento para uso de dados
           </CardDescription>
         </CardHeader>
@@ -196,11 +196,11 @@ export const ConsentManagement: React.FC<ConsentManagementProps> = ({
         <CardContent className="space-y-6">
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <h3 className="text-sm font-semibold">Categorias de Consentimento</h3>
+              <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Categorias de Consentimento</h3>
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="gap-2" 
+                className="gap-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800" 
                 onClick={addNewCategory}
               >
                 <Plus className="h-4 w-4" />
@@ -209,37 +209,40 @@ export const ConsentManagement: React.FC<ConsentManagementProps> = ({
             </div>
             
             <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Nome</TableHead>
-                  <TableHead>Obrigatório</TableHead>
-                  <TableHead>Estado Padrão</TableHead>
-                  <TableHead>Aplica-se a</TableHead>
-                  <TableHead className="text-right">Ações</TableHead>
+              <TableHeader className="bg-gray-50 dark:bg-gray-800/50">
+                <TableRow className="border-gray-200 dark:border-gray-700">
+                  <TableHead className="text-gray-700 dark:text-gray-300">Nome</TableHead>
+                  <TableHead className="text-gray-700 dark:text-gray-300">Obrigatório</TableHead>
+                  <TableHead className="text-gray-700 dark:text-gray-300">Estado Padrão</TableHead>
+                  <TableHead className="text-gray-700 dark:text-gray-300">Aplica-se a</TableHead>
+                  <TableHead className="text-right text-gray-700 dark:text-gray-300">Ações</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {config.consentCategories.map(category => (
-                  <TableRow key={category.id}>
+                  <TableRow 
+                    key={category.id} 
+                    className="border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                  >
                     <TableCell>
-                      <div className="font-medium">{category.name}</div>
-                      <div className="text-xs text-gray-500">{category.description}</div>
+                      <div className="font-medium text-gray-900 dark:text-white">{category.name}</div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">{category.description}</div>
                     </TableCell>
                     <TableCell>
                       {category.required ? (
-                        <Badge className="bg-green-100 text-green-800">Obrigatório</Badge>
+                        <Badge className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 border-green-200 dark:border-green-800">Obrigatório</Badge>
                       ) : (
-                        <Badge variant="outline">Opcional</Badge>
+                        <Badge variant="outline" className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300">Opcional</Badge>
                       )}
                     </TableCell>
                     <TableCell>
                       {category.defaultState ? (
-                        <Badge className="bg-blue-100 text-blue-800">Habilitado</Badge>
+                        <Badge className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 border-blue-200 dark:border-blue-800">Habilitado</Badge>
                       ) : (
-                        <Badge variant="outline">Desabilitado</Badge>
+                        <Badge variant="outline" className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300">Desabilitado</Badge>
                       )}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="text-gray-700 dark:text-gray-300">
                       {getApplicableToLabels(category.appliesTo)}
                     </TableCell>
                     <TableCell className="text-right">
@@ -248,6 +251,7 @@ export const ConsentManagement: React.FC<ConsentManagementProps> = ({
                           variant="ghost" 
                           size="icon"
                           onClick={() => editCategory(category)}
+                          className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
                         >
                           <Edit className="h-4 w-4" />
                         </Button>
@@ -256,6 +260,7 @@ export const ConsentManagement: React.FC<ConsentManagementProps> = ({
                             variant="ghost" 
                             size="icon"
                             onClick={() => deleteCategory(category.id)}
+                            className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
@@ -268,11 +273,11 @@ export const ConsentManagement: React.FC<ConsentManagementProps> = ({
             </Table>
           </div>
           
-          <Separator />
+          <Separator className="bg-gray-200 dark:bg-gray-700" />
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="consentFormVersion">Versão do Formulário de Consentimento</Label>
+              <Label htmlFor="consentFormVersion" className="text-gray-700 dark:text-gray-300">Versão do Formulário de Consentimento</Label>
               <div className="flex gap-2">
                 <Input 
                   id="consentFormVersion" 
@@ -281,8 +286,12 @@ export const ConsentManagement: React.FC<ConsentManagementProps> = ({
                     ...config,
                     consentFormVersion: e.target.value
                   })}
+                  className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
                 />
-                <Button variant="outline" className="gap-2">
+                <Button 
+                  variant="outline" 
+                  className="gap-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                >
                   <FileText className="h-4 w-4" />
                   Visualizar
                 </Button>
@@ -290,13 +299,14 @@ export const ConsentManagement: React.FC<ConsentManagementProps> = ({
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="lastUpdated">Última Atualização</Label>
+              <Label htmlFor="lastUpdated" className="text-gray-700 dark:text-gray-300">Última Atualização</Label>
               <div className="flex items-center gap-2">
                 <Input 
                   id="lastUpdated" 
                   value={new Date(config.lastUpdated).toLocaleDateString()}
                   readOnly
                   disabled
+                  className="bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400"
                 />
                 <Button
                   variant="outline"
@@ -305,6 +315,7 @@ export const ConsentManagement: React.FC<ConsentManagementProps> = ({
                     lastUpdated: new Date().toISOString(),
                     consentFormVersion: parseFloat(config.consentFormVersion) + 0.1 + ''
                   })}
+                  className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                 >
                   <Calendar className="h-4 w-4 mr-2" />
                   Atualizar
@@ -313,11 +324,11 @@ export const ConsentManagement: React.FC<ConsentManagementProps> = ({
             </div>
           </div>
           
-          <Separator />
+          <Separator className="bg-gray-200 dark:bg-gray-700" />
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="requireRenewalAfter">Renovação Obrigatória após</Label>
+              <Label htmlFor="requireRenewalAfter" className="text-gray-700 dark:text-gray-300">Renovação Obrigatória após</Label>
               <div className="flex items-center gap-2">
                 <Input 
                   id="requireRenewalAfter" 
@@ -329,16 +340,17 @@ export const ConsentManagement: React.FC<ConsentManagementProps> = ({
                     ...config,
                     requireRenewalAfter: parseInt(e.target.value)
                   })}
+                  className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
                 />
-                <span className="text-sm">dias</span>
+                <span className="text-sm text-gray-700 dark:text-gray-300">dias</span>
               </div>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-500 dark:text-gray-400">
                 Número de dias após os quais o consentimento deve ser renovado (0 = sem renovação)
               </p>
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="notifyBeforeExpiration">Notificar antes da expiração</Label>
+              <Label htmlFor="notifyBeforeExpiration" className="text-gray-700 dark:text-gray-300">Notificar antes da expiração</Label>
               <div className="flex items-center gap-2">
                 <Input 
                   id="notifyBeforeExpiration" 
@@ -350,17 +362,18 @@ export const ConsentManagement: React.FC<ConsentManagementProps> = ({
                     ...config,
                     notifyBeforeExpiration: parseInt(e.target.value)
                   })}
+                  className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
                 />
-                <span className="text-sm">dias</span>
+                <span className="text-sm text-gray-700 dark:text-gray-300">dias</span>
               </div>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-500 dark:text-gray-400">
                 Número de dias antes da expiração para enviar notificações (0 = sem notificação)
               </p>
             </div>
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="trackingMethod">Método de Registro</Label>
+            <Label htmlFor="trackingMethod" className="text-gray-700 dark:text-gray-300">Método de Registro</Label>
             <Select
               value={config.trackingMethod}
               onValueChange={(value: 'digital_signature' | 'checkbox' | 'biometric') => 
@@ -370,24 +383,27 @@ export const ConsentManagement: React.FC<ConsentManagementProps> = ({
                 })
               }
             >
-              <SelectTrigger id="trackingMethod">
+              <SelectTrigger id="trackingMethod" className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white">
                 <SelectValue placeholder="Selecione um método" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="digital_signature">Assinatura Digital</SelectItem>
-                <SelectItem value="checkbox">Checkbox + Timestamp</SelectItem>
-                <SelectItem value="biometric">Biométrico</SelectItem>
+              <SelectContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                <SelectItem value="digital_signature" className="text-gray-900 dark:text-white">Assinatura Digital</SelectItem>
+                <SelectItem value="checkbox" className="text-gray-900 dark:text-white">Checkbox + Timestamp</SelectItem>
+                <SelectItem value="biometric" className="text-gray-900 dark:text-white">Biométrico</SelectItem>
               </SelectContent>
             </Select>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-gray-500 dark:text-gray-400">
               Método utilizado para registrar o consentimento do usuário
             </p>
           </div>
           
-          <Alert variant="default">
-            <Info className="h-4 w-4" />
-            <AlertTitle>Requisitos regulatórios</AlertTitle>
-            <AlertDescription>
+          <Alert 
+            variant="default"
+            className="bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800"
+          >
+            <Info className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+            <AlertTitle className="text-blue-800 dark:text-blue-300">Requisitos regulatórios</AlertTitle>
+            <AlertDescription className="text-blue-700 dark:text-blue-400">
               Conforme a LGPD, o consentimento deve ser livre, informado e inequívoco. 
               Mantenha registros detalhados de quando e como o consentimento foi obtido.
             </AlertDescription>
@@ -395,7 +411,7 @@ export const ConsentManagement: React.FC<ConsentManagementProps> = ({
         </CardContent>
         
         <CardFooter className="flex justify-between">
-          <div className="text-xs text-gray-500 flex items-center">
+          <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center">
             <ClipboardCheck className="h-3 w-3 mr-1" />
             <span>
               Última atualização: {new Date(config.updatedAt).toLocaleDateString()}
@@ -404,48 +420,52 @@ export const ConsentManagement: React.FC<ConsentManagementProps> = ({
           <Button 
             onClick={handleSave} 
             disabled={loading || isSaving}
+            className="bg-primary hover:bg-primary/90 text-white dark:bg-primary dark:hover:bg-primary/90 dark:text-white disabled:bg-gray-200 dark:disabled:bg-gray-800 disabled:text-gray-500 dark:disabled:text-gray-500"
           >
             Salvar Configurações
           </Button>
         </CardFooter>
       </Card>
       
-      <Card>
+      <Card className="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
         <CardHeader>
-          <CardTitle className="text-base">Estatísticas de Consentimento</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-base text-gray-900 dark:text-white">Estatísticas de Consentimento</CardTitle>
+          <CardDescription className="text-gray-500 dark:text-gray-400">
             Visão geral do status de consentimento dos usuários
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="p-4 bg-gray-50 rounded-lg">
-              <div className="text-sm text-gray-500 mb-1">Taxa de Consentimento</div>
-              <div className="text-2xl font-bold">98.2%</div>
-              <div className="text-xs text-gray-500">Assistência Médica</div>
+            <div className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+              <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">Taxa de Consentimento</div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-white">98.2%</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">Assistência Médica</div>
             </div>
             
-            <div className="p-4 bg-gray-50 rounded-lg">
-              <div className="text-sm text-gray-500 mb-1">Taxa de Consentimento</div>
-              <div className="text-2xl font-bold">82.5%</div>
-              <div className="text-xs text-gray-500">Pesquisa Acadêmica</div>
+            <div className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+              <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">Taxa de Consentimento</div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-white">82.5%</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">Pesquisa Acadêmica</div>
             </div>
             
-            <div className="p-4 bg-gray-50 rounded-lg">
-              <div className="text-sm text-gray-500 mb-1">Taxa de Consentimento</div>
-              <div className="text-2xl font-bold">46.3%</div>
-              <div className="text-xs text-gray-500">Marketing</div>
+            <div className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+              <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">Taxa de Consentimento</div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-white">46.3%</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">Marketing</div>
             </div>
             
-            <div className="p-4 bg-gray-50 rounded-lg">
-              <div className="text-sm text-gray-500 mb-1">Taxa de Consentimento</div>
-              <div className="text-2xl font-bold">38.9%</div>
-              <div className="text-xs text-gray-500">Compartilhamento</div>
+            <div className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+              <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">Taxa de Consentimento</div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-white">38.9%</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">Compartilhamento</div>
             </div>
           </div>
         </CardContent>
         <CardFooter>
-          <Button variant="outline" className="w-full">
+          <Button 
+            variant="outline" 
+            className="w-full border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+          >
             Ver Relatório Detalhado
           </Button>
         </CardFooter>
@@ -453,12 +473,12 @@ export const ConsentManagement: React.FC<ConsentManagementProps> = ({
       
       {/* Dialog para edição de categoria */}
       <Dialog open={!!editingCategory} onOpenChange={(open) => !open && setEditingCategory(null)}>
-        <DialogContent>
+        <DialogContent className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
           <DialogHeader>
-            <DialogTitle>
+            <DialogTitle className="text-gray-900 dark:text-white">
               {isNewCategory ? 'Nova Categoria de Consentimento' : 'Editar Categoria de Consentimento'}
             </DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="text-gray-500 dark:text-gray-400">
               Configure os detalhes desta categoria de consentimento
             </DialogDescription>
           </DialogHeader>
@@ -467,7 +487,7 @@ export const ConsentManagement: React.FC<ConsentManagementProps> = ({
             <div className="space-y-4 py-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="category-id">ID da Categoria</Label>
+                  <Label htmlFor="category-id" className="text-gray-700 dark:text-gray-300">ID da Categoria</Label>
                   <Input 
                     id="category-id" 
                     value={editingCategory.id} 
@@ -477,11 +497,12 @@ export const ConsentManagement: React.FC<ConsentManagementProps> = ({
                     })}
                     placeholder="ex: marketing-consent"
                     disabled={!isNewCategory}
+                    className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white disabled:bg-gray-100 dark:disabled:bg-gray-800/60 disabled:text-gray-500 dark:disabled:text-gray-500"
                   />
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="category-name">Nome da Categoria</Label>
+                  <Label htmlFor="category-name" className="text-gray-700 dark:text-gray-300">Nome da Categoria</Label>
                   <Input 
                     id="category-name" 
                     value={editingCategory.name} 
@@ -490,12 +511,13 @@ export const ConsentManagement: React.FC<ConsentManagementProps> = ({
                       name: e.target.value
                     })}
                     placeholder="ex: Marketing e Comunicações"
+                    className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
                   />
                 </div>
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="category-description">Descrição</Label>
+                <Label htmlFor="category-description" className="text-gray-700 dark:text-gray-300">Descrição</Label>
                 <Textarea 
                   id="category-description" 
                   value={editingCategory.description} 
@@ -505,15 +527,16 @@ export const ConsentManagement: React.FC<ConsentManagementProps> = ({
                   })}
                   placeholder="Descreva detalhadamente o propósito desta categoria de consentimento"
                   rows={3}
+                  className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white resize-none"
                 />
               </div>
               
-              <div className="flex items-center justify-between p-2 border rounded-md">
+              <div className="flex items-center justify-between p-2 border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800">
                 <div>
-                  <Label htmlFor="category-required" className="font-medium">
+                  <Label htmlFor="category-required" className="font-medium text-gray-900 dark:text-white">
                     Consentimento Obrigatório
                   </Label>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
                     Se ativado, o usuário não poderá recusar este consentimento
                   </p>
                 </div>
@@ -526,15 +549,16 @@ export const ConsentManagement: React.FC<ConsentManagementProps> = ({
                     // Se obrigatório, o estado padrão deve ser true
                     defaultState: checked ? true : editingCategory.defaultState
                   })}
+                  className="bg-gray-200 dark:bg-gray-700 data-[state=checked]:bg-primary dark:data-[state=checked]:bg-primary-400"
                 />
               </div>
               
-              <div className="flex items-center justify-between p-2 border rounded-md">
+              <div className="flex items-center justify-between p-2 border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800">
                 <div>
-                  <Label htmlFor="category-default" className="font-medium">
+                  <Label htmlFor="category-default" className="font-medium text-gray-900 dark:text-white">
                     Estado Padrão
                   </Label>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
                     Se ativado, o consentimento estará pré-selecionado
                   </p>
                 </div>
@@ -546,41 +570,47 @@ export const ConsentManagement: React.FC<ConsentManagementProps> = ({
                     ...editingCategory,
                     defaultState: checked
                   })}
+                  className="bg-gray-200 dark:bg-gray-700 data-[state=checked]:bg-primary dark:data-[state=checked]:bg-primary-400 disabled:opacity-50"
                 />
               </div>
               
               <div className="space-y-2">
-                <Label className="font-medium">Aplica-se a</Label>
+                <Label className="font-medium text-gray-900 dark:text-white">Aplica-se a</Label>
                 <div className="grid grid-cols-2 gap-2">
-                  <div className="flex items-center space-x-2 p-2 border rounded-md">
+                  <div className="flex items-center space-x-2 p-2 border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800">
                     <Switch
                       id="applies-to-patient"
                       checked={editingCategory.appliesTo.includes('patient')}
                       onCheckedChange={(checked) => 
                         handleCategoryAppliesToChange('patient', checked)
                       }
+                      className="bg-gray-200 dark:bg-gray-700 data-[state=checked]:bg-primary dark:data-[state=checked]:bg-primary-400"
                     />
-                    <Label htmlFor="applies-to-patient">Pacientes</Label>
+                    <Label htmlFor="applies-to-patient" className="text-gray-700 dark:text-gray-300">Pacientes</Label>
                   </div>
                   
-                  <div className="flex items-center space-x-2 p-2 border rounded-md">
+                  <div className="flex items-center space-x-2 p-2 border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800">
                     <Switch
                       id="applies-to-staff"
                       checked={editingCategory.appliesTo.includes('staff')}
                       onCheckedChange={(checked) => 
                         handleCategoryAppliesToChange('staff', checked)
                       }
+                      className="bg-gray-200 dark:bg-gray-700 data-[state=checked]:bg-primary dark:data-[state=checked]:bg-primary-400"
                     />
-                    <Label htmlFor="applies-to-staff">Funcionários</Label>
+                    <Label htmlFor="applies-to-staff" className="text-gray-700 dark:text-gray-300">Funcionários</Label>
                   </div>
                 </div>
               </div>
               
               {editingCategory.required && (
-                <Alert variant="warning">
-                  <AlertTriangle className="h-4 w-4" />
-                  <AlertTitle>Categoria obrigatória</AlertTitle>
-                  <AlertDescription>
+                <Alert 
+                  variant="warning"
+                  className="bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800"
+                >
+                  <AlertTriangle className="h-4 w-4 text-yellow-500 dark:text-yellow-400" />
+                  <AlertTitle className="text-yellow-800 dark:text-yellow-300">Categoria obrigatória</AlertTitle>
+                  <AlertDescription className="text-yellow-700 dark:text-yellow-400">
                     Categorias obrigatórias devem ser justificadas e documentadas, 
                     conforme a LGPD só devem ser usadas quando estritamente necessário 
                     para prestação do serviço.
@@ -594,10 +624,14 @@ export const ConsentManagement: React.FC<ConsentManagementProps> = ({
             <Button 
               variant="ghost" 
               onClick={() => setEditingCategory(null)}
+              className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
             >
               Cancelar
             </Button>
-            <Button onClick={saveCategory}>
+            <Button 
+              onClick={saveCategory}
+              className="bg-primary hover:bg-primary/90 text-white dark:bg-primary dark:hover:bg-primary/90 dark:text-white"
+            >
               {isNewCategory ? 'Criar Categoria' : 'Salvar Alterações'}
             </Button>
           </DialogFooter>

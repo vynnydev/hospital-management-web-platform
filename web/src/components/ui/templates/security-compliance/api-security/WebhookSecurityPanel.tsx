@@ -196,21 +196,21 @@ export const WebhookSecurityPanel: React.FC<WebhookSecurityPanelProps> = ({
   ];
 
   return (
-    <Card>
+    <Card className="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
       <CardHeader>
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
           <div>
-            <CardTitle className="flex items-center gap-2">
-              <Webhook className="h-5 w-5" />
+            <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
+              <Webhook className="h-5 w-5 text-primary dark:text-primary-400" />
               Segurança de Webhooks
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-gray-500 dark:text-gray-400">
               Configure a segurança para webhooks e notificações externas
             </CardDescription>
           </div>
           
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium">
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
               {config.enabled ? 'Ativado' : 'Desativado'}
             </span>
             <Switch
@@ -219,6 +219,7 @@ export const WebhookSecurityPanel: React.FC<WebhookSecurityPanelProps> = ({
                 ...config,
                 enabled: checked
               })}
+              className="bg-gray-200 dark:bg-gray-700 data-[state=checked]:bg-primary dark:data-[state=checked]:bg-primary-400"
             />
           </div>
         </div>
@@ -228,17 +229,17 @@ export const WebhookSecurityPanel: React.FC<WebhookSecurityPanelProps> = ({
         <div className={!config.enabled ? 'opacity-50 pointer-events-none' : ''}>
           <div className="space-y-4">
             <Tabs defaultValue="security" className="w-full">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="security">Segurança</TabsTrigger>
-                <TabsTrigger value="endpoints">Endpoints</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-2 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+                <TabsTrigger value="security" className="data-[state=active]:bg-white data-[state=active]:text-primary dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-primary-400">Segurança</TabsTrigger>
+                <TabsTrigger value="endpoints" className="data-[state=active]:bg-white data-[state=active]:text-primary dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-primary-400">Endpoints</TabsTrigger>
               </TabsList>
               
               <TabsContent value="security" className="space-y-4 pt-4">
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between p-2 border rounded-md">
+                  <div className="flex items-center justify-between p-2 border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800">
                     <div>
-                      <Label htmlFor="signingSecret" className="font-medium">Assinatura de Webhooks</Label>
-                      <p className="text-xs text-gray-500">
+                      <Label htmlFor="signingSecret" className="font-medium text-gray-900 dark:text-white">Assinatura de Webhooks</Label>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
                         Adiciona uma camada extra de segurança com assinatura HMAC para verificar a autenticidade dos webhooks
                       </p>
                     </div>
@@ -249,18 +250,20 @@ export const WebhookSecurityPanel: React.FC<WebhookSecurityPanelProps> = ({
                         ...config,
                         signingSecret: checked
                       })}
+                      className="bg-gray-200 dark:bg-gray-700 data-[state=checked]:bg-primary dark:data-[state=checked]:bg-primary-400"
                     />
                   </div>
                   
                   {config.signingSecret && (
-                    <div className="p-3 border rounded-md space-y-3">
+                    <div className="p-3 border border-gray-200 dark:border-gray-700 rounded-md space-y-3 bg-white dark:bg-gray-800">
                       <div className="flex items-center justify-between">
-                        <Label htmlFor="signingKey" className="font-medium">Chave de Assinatura</Label>
+                        <Label htmlFor="signingKey" className="font-medium text-gray-900 dark:text-white">Chave de Assinatura</Label>
                         <div className="flex gap-1">
                           <Button 
                             variant="outline" 
                             size="sm"
                             onClick={() => setShowSigningKey(!showSigningKey)}
+                            className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                           >
                             {showSigningKey ? <EyeOff size={14} /> : <Eye size={14} />}
                           </Button>
@@ -268,6 +271,7 @@ export const WebhookSecurityPanel: React.FC<WebhookSecurityPanelProps> = ({
                             variant="outline" 
                             size="sm"
                             onClick={handleCopySigningKey}
+                            className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                           >
                             <Copy size={14} />
                           </Button>
@@ -275,6 +279,7 @@ export const WebhookSecurityPanel: React.FC<WebhookSecurityPanelProps> = ({
                             variant="outline" 
                             size="sm"
                             onClick={handleGenerateSigningKey}
+                            className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                           >
                             <RefreshCw size={14} />
                           </Button>
@@ -291,25 +296,25 @@ export const WebhookSecurityPanel: React.FC<WebhookSecurityPanelProps> = ({
                           })}
                           type={showSigningKey ? "text" : "password"}
                           placeholder="Chave secreta para assinar webhooks"
-                          className="pr-24"
+                          className="pr-24 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
                         />
                       </div>
                       
-                      <Alert>
-                        <Info className="h-4 w-4" />
-                        <AlertTitle>Como verificar assinaturas</AlertTitle>
-                        <AlertDescription>
-                          Cada webhook incluirá um cabeçalho <code className="text-xs bg-gray-100 p-1 rounded">X-4Health-Signature</code> que é 
+                      <Alert className="bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
+                        <Info className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                        <AlertTitle className="text-blue-700 dark:text-blue-300">Como verificar assinaturas</AlertTitle>
+                        <AlertDescription className="text-blue-600 dark:text-blue-400">
+                          Cada webhook incluirá um cabeçalho <code className="text-xs bg-blue-100 dark:bg-blue-800 p-1 rounded text-blue-800 dark:text-blue-200">X-4Health-Signature</code> que é 
                           um HMAC SHA-256 do payload usando esta chave. Verifique este cabeçalho para autenticar os webhooks.
                         </AlertDescription>
                       </Alert>
                     </div>
                   )}
                   
-                  <div className="flex items-center justify-between p-2 border rounded-md">
+                  <div className="flex items-center justify-between p-2 border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800">
                     <div>
-                      <Label htmlFor="retryPolicy" className="font-medium">Política de Retry</Label>
-                      <p className="text-xs text-gray-500">
+                      <Label htmlFor="retryPolicy" className="font-medium text-gray-900 dark:text-white">Política de Retry</Label>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
                         Tenta reenviar webhooks automaticamente em caso de falha
                       </p>
                     </div>
@@ -320,13 +325,14 @@ export const WebhookSecurityPanel: React.FC<WebhookSecurityPanelProps> = ({
                         ...config,
                         retryPolicy: checked
                       })}
+                      className="bg-gray-200 dark:bg-gray-700 data-[state=checked]:bg-primary dark:data-[state=checked]:bg-primary-400"
                     />
                   </div>
                   
                   {config.retryPolicy && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-3 border rounded-md">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-3 border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800">
                       <div className="space-y-2">
-                        <Label htmlFor="maxRetries">Número máximo de tentativas</Label>
+                        <Label htmlFor="maxRetries" className="text-gray-700 dark:text-gray-300">Número máximo de tentativas</Label>
                         <Input
                           id="maxRetries"
                           type="number"
@@ -337,11 +343,12 @@ export const WebhookSecurityPanel: React.FC<WebhookSecurityPanelProps> = ({
                             ...config,
                             maxRetries: parseInt(e.target.value)
                           })}
+                          className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
                         />
                       </div>
                       
                       <div className="space-y-2">
-                        <Label htmlFor="retryDelay">Delay entre tentativas (segundos)</Label>
+                        <Label htmlFor="retryDelay" className="text-gray-700 dark:text-gray-300">Delay entre tentativas (segundos)</Label>
                         <Input
                           id="retryDelay"
                           type="number"
@@ -352,15 +359,16 @@ export const WebhookSecurityPanel: React.FC<WebhookSecurityPanelProps> = ({
                             ...config,
                             retryDelay: parseInt(e.target.value)
                           })}
+                          className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
                         />
                       </div>
                     </div>
                   )}
                   
-                  <div className="flex items-center justify-between p-2 border rounded-md">
+                  <div className="flex items-center justify-between p-2 border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800">
                     <div>
-                      <Label htmlFor="ipRestriction" className="font-medium">Restrição de IP</Label>
-                      <p className="text-xs text-gray-500">
+                      <Label htmlFor="ipRestriction" className="font-medium text-gray-900 dark:text-white">Restrição de IP</Label>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
                         Limita os IPs que podem receber webhooks
                       </p>
                     </div>
@@ -371,13 +379,14 @@ export const WebhookSecurityPanel: React.FC<WebhookSecurityPanelProps> = ({
                         ...config,
                         ipRestriction: checked
                       })}
+                      className="bg-gray-200 dark:bg-gray-700 data-[state=checked]:bg-primary dark:data-[state=checked]:bg-primary-400"
                     />
                   </div>
                   
                   {config.ipRestriction && (
-                    <div className="p-3 border rounded-md space-y-3">
+                    <div className="p-3 border border-gray-200 dark:border-gray-700 rounded-md space-y-3 bg-white dark:bg-gray-800">
                       <div className="space-y-2">
-                        <Label htmlFor="allowedIp">IPs permitidos</Label>
+                        <Label htmlFor="allowedIp" className="text-gray-700 dark:text-gray-300">IPs permitidos</Label>
                         <div className="flex gap-2">
                           <Input
                             id="allowedIp"
@@ -388,6 +397,7 @@ export const WebhookSecurityPanel: React.FC<WebhookSecurityPanelProps> = ({
                                 (e.target as HTMLInputElement).value = '';
                               }
                             }}
+                            className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
                           />
                           <Button 
                             variant="outline"
@@ -396,6 +406,7 @@ export const WebhookSecurityPanel: React.FC<WebhookSecurityPanelProps> = ({
                               handleAddIp(input.value);
                               input.value = '';
                             }}
+                            className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                           >
                             Adicionar
                           </Button>
@@ -404,12 +415,12 @@ export const WebhookSecurityPanel: React.FC<WebhookSecurityPanelProps> = ({
                       
                       <div className="flex flex-wrap gap-2">
                         {(config.allowedIps || []).map(ip => (
-                          <Badge key={ip} className="flex items-center gap-1">
+                          <Badge key={ip} className="flex items-center gap-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700">
                             {ip}
                             <Button
                               variant="ghost"
                               size="sm"
-                              className="h-4 w-4 p-0 rounded-full"
+                              className="h-4 w-4 p-0 rounded-full text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
                               onClick={() => handleRemoveIp(ip)}
                             >
                               ×
@@ -417,7 +428,7 @@ export const WebhookSecurityPanel: React.FC<WebhookSecurityPanelProps> = ({
                           </Badge>
                         ))}
                         {!(config.allowedIps || []).length && (
-                          <div className="text-xs text-gray-500">
+                          <div className="text-xs text-gray-500 dark:text-gray-400">
                             Nenhum IP adicionado. Adicione IPs para restringir o acesso.
                           </div>
                         )}
@@ -425,8 +436,8 @@ export const WebhookSecurityPanel: React.FC<WebhookSecurityPanelProps> = ({
                     </div>
                   )}
                   
-                  <div className="p-2 border rounded-md space-y-2">
-                    <Label htmlFor="securityLevel" className="font-medium">Nível de Segurança</Label>
+                  <div className="p-2 border border-gray-200 dark:border-gray-700 rounded-md space-y-2 bg-white dark:bg-gray-800">
+                    <Label htmlFor="securityLevel" className="font-medium text-gray-900 dark:text-white">Nível de Segurança</Label>
                     <Select
                       value={config.securityLevel || 'standard'}
                       onValueChange={(value: 'basic' | 'standard' | 'high') => setConfig({
@@ -434,17 +445,17 @@ export const WebhookSecurityPanel: React.FC<WebhookSecurityPanelProps> = ({
                         securityLevel: value
                       })}
                     >
-                      <SelectTrigger id="securityLevel">
+                      <SelectTrigger id="securityLevel" className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white">
                         <SelectValue placeholder="Selecione o nível de segurança" />
                       </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="basic">Básico</SelectItem>
-                        <SelectItem value="standard">Padrão</SelectItem>
-                        <SelectItem value="high">Alto</SelectItem>
+                      <SelectContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                        <SelectItem value="basic" className="text-gray-900 dark:text-white">Básico</SelectItem>
+                        <SelectItem value="standard" className="text-gray-900 dark:text-white">Padrão</SelectItem>
+                        <SelectItem value="high" className="text-gray-900 dark:text-white">Alto</SelectItem>
                       </SelectContent>
                     </Select>
                     
-                    <div className="text-xs p-2 bg-gray-50 rounded-md">
+                    <div className="text-xs p-2 bg-gray-50 dark:bg-gray-800/60 rounded-md text-gray-600 dark:text-gray-400">
                       {config.securityLevel === 'basic' && (
                         <p>Envio de dados básicos, sem filtros adicionais. Recomendado apenas para ambientes de teste.</p>
                       )}
@@ -461,42 +472,44 @@ export const WebhookSecurityPanel: React.FC<WebhookSecurityPanelProps> = ({
               
               <TabsContent value="endpoints" className="space-y-4 pt-4">
                 <div className="space-y-4">
-                  <div className="p-3 border rounded-md space-y-3">
-                    <h4 className="text-sm font-medium">Adicionar Novo Endpoint</h4>
+                  <div className="p-3 border border-gray-200 dark:border-gray-700 rounded-md space-y-3 bg-white dark:bg-gray-800">
+                    <h4 className="text-sm font-medium text-gray-900 dark:text-white">Adicionar Novo Endpoint</h4>
                     
                     <div className="space-y-2">
-                      <Label htmlFor="endpointUrl">URL do Webhook</Label>
+                      <Label htmlFor="endpointUrl" className="text-gray-700 dark:text-gray-300">URL do Webhook</Label>
                       <Input
                         id="endpointUrl"
                         placeholder="https://example.com/webhook"
                         value={endpointUrl}
                         onChange={(e) => setEndpointUrl(e.target.value)}
+                        className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
                       />
                     </div>
                     
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <Label className="text-sm font-medium">Eventos</Label>
-                        <Badge variant="outline">
+                        <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">Eventos</Label>
+                        <Badge variant="outline" className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300">
                           {selectedEvents.length} selecionados
                         </Badge>
                       </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 max-h-40 overflow-y-auto p-2 border rounded-md">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 max-h-40 overflow-y-auto p-2 border border-gray-200 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-800/50">
                         {availableEvents.map(event => (
                           <div key={event} className="flex items-center space-x-2">
                             <Checkbox
                               id={`event-${event}`}
                               checked={selectedEvents.includes(event)}
                               onCheckedChange={() => handleToggleEvent(event)}
+                              className="text-primary dark:text-primary-400 border-gray-300 dark:border-gray-600"
                             />
-                            <Label htmlFor={`event-${event}`} className="text-xs">{event}</Label>
+                            <Label htmlFor={`event-${event}`} className="text-xs text-gray-700 dark:text-gray-300">{event}</Label>
                           </div>
                         ))}
                       </div>
                     </div>
                     
                     <Button
-                      className="w-full"
+                      className="w-full bg-primary hover:bg-primary/90 text-white dark:bg-primary dark:hover:bg-primary/90 dark:text-white disabled:bg-gray-200 dark:disabled:bg-gray-800 disabled:text-gray-500 dark:disabled:text-gray-500"
                       disabled={!endpointUrl || selectedEvents.length === 0}
                       onClick={handleAddEndpoint}
                     >
@@ -505,29 +518,35 @@ export const WebhookSecurityPanel: React.FC<WebhookSecurityPanelProps> = ({
                   </div>
                   
                   <div className="space-y-3">
-                    <h4 className="text-sm font-medium">Endpoints Configurados</h4>
+                    <h4 className="text-sm font-medium text-gray-900 dark:text-white">Endpoints Configurados</h4>
                     
                     {config.endpoints.length === 0 ? (
-                      <div className="text-center p-6 border border-dashed rounded-md">
-                        <p className="text-sm text-gray-500">
+                      <div className="text-center p-6 border border-dashed border-gray-200 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-800/50">
+                        <p className="text-sm text-gray-500 dark:text-gray-400">
                           Nenhum endpoint configurado. Adicione um endpoint para começar a receber webhooks.
                         </p>
                       </div>
                     ) : (
                       <div className="space-y-2">
                         {config.endpoints.map(endpoint => (
-                          <div key={endpoint.id} className="p-3 border rounded-md">
+                          <div key={endpoint.id} className="p-3 border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800">
                             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
                               <div className="flex-1">
                                 <div className="flex items-center gap-2">
-                                  <h5 className="text-sm font-medium truncate">
+                                  <h5 className="text-sm font-medium truncate text-gray-900 dark:text-white">
                                     {endpoint.url}
                                   </h5>
-                                  <Badge variant={endpoint.active ? 'default' : 'secondary'}>
+                                  <Badge 
+                                    variant={endpoint.active ? 'default' : 'secondary'} 
+                                    className={endpoint.active 
+                                      ? "bg-primary dark:bg-primary-400 text-white" 
+                                      : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
+                                    }
+                                  >
                                     {endpoint.active ? 'Ativo' : 'Inativo'}
                                   </Badge>
                                 </div>
-                                <p className="text-xs text-gray-500">
+                                <p className="text-xs text-gray-500 dark:text-gray-400">
                                   Criado em: {new Date(endpoint.createdAt).toLocaleString()}
                                 </p>
                               </div>
@@ -536,12 +555,13 @@ export const WebhookSecurityPanel: React.FC<WebhookSecurityPanelProps> = ({
                                 <Switch
                                   checked={endpoint.active}
                                   onCheckedChange={(checked) => handleToggleEndpoint(endpoint.id, checked)}
+                                  className="bg-gray-200 dark:bg-gray-700 data-[state=checked]:bg-primary dark:data-[state=checked]:bg-primary-400"
                                 />
                                 <Button 
                                   variant="ghost"
                                   size="sm"
                                   onClick={() => handleDeleteEndpoint(endpoint.id)}
-                                  className="text-red-500 hover:text-red-700"
+                                  className="text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-600"
                                 >
                                   Remover
                                 </Button>
@@ -549,14 +569,14 @@ export const WebhookSecurityPanel: React.FC<WebhookSecurityPanelProps> = ({
                             </div>
                             
                             <Accordion type="single" collapsible className="w-full">
-                              <AccordionItem value="events">
-                                <AccordionTrigger className="text-xs">
+                              <AccordionItem value="events" className="border-b border-gray-200 dark:border-gray-700">
+                                <AccordionTrigger className="text-xs text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
                                   <span>{endpoint.events.length} eventos configurados</span>
                                 </AccordionTrigger>
-                                <AccordionContent>
+                                <AccordionContent className="text-gray-700 dark:text-gray-300">
                                   <div className="flex flex-wrap gap-1 p-2">
                                     {endpoint.events.map(event => (
-                                      <Badge key={event} variant="outline">
+                                      <Badge key={event} variant="outline" className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300">
                                         {event}
                                       </Badge>
                                     ))}
@@ -580,6 +600,7 @@ export const WebhookSecurityPanel: React.FC<WebhookSecurityPanelProps> = ({
         <Button 
           onClick={handleSave} 
           disabled={loading || isSaving || !config.enabled}
+          className="bg-primary hover:bg-primary/90 text-white dark:bg-primary dark:hover:bg-primary/90 dark:text-white disabled:bg-gray-200 dark:disabled:bg-gray-800 disabled:text-gray-500 dark:disabled:text-gray-500"
         >
           Salvar Configurações
         </Button>

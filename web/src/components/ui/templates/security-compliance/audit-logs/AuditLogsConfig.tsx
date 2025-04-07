@@ -20,8 +20,8 @@ export const AuditLogsConfig: React.FC<AuditLogsConfigProps> = ({
 }) => {
   return (
     <div className="space-y-4">
-      <h3 className="text-lg font-semibold">Configurações de Auditoria</h3>
-      <p className="text-sm text-gray-500">
+      <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Configurações de Auditoria</h3>
+      <p className="text-sm text-gray-500 dark:text-gray-400">
         Configure como os logs de auditoria são gerenciados e retidos no sistema
       </p>
 

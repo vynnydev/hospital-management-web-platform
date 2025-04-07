@@ -47,7 +47,7 @@ interface GeofencingPanelProps {
   geofencing: boolean;
   allowedLocations: { name: string; coordinates: { latitude: number; longitude: number; radius: number; }; }[] | undefined;
   onChange: (geofencing: boolean, allowedLocations: { name: string; coordinates: { latitude: number; longitude: number; radius: number; }; }[]) => void;
-  onSave: () => Promise<void>;
+  onSave: (location: any) => Promise<void>;
   loading: boolean;
 }
 

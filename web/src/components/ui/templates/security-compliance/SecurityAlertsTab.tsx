@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/organisms/card';
 import { Button } from '@/components/ui/organisms/button';
@@ -129,15 +128,15 @@ export const SecurityAlertsTab = () => {
   const getSeverityBadge = (severity: string) => {
     switch (severity) {
       case 'critical':
-        return <Badge variant="destructive">Crítico</Badge>;
+        return <Badge variant="destructive" className="bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700">Crítico</Badge>;
       case 'high':
-        return <Badge variant="destructive" className="bg-red-400">Alto</Badge>;
+        return <Badge variant="destructive" className="bg-red-400 hover:bg-red-500 dark:bg-red-500 dark:hover:bg-red-600">Alto</Badge>;
       case 'medium':
-        return <Badge variant="warning">Médio</Badge>;
+        return <Badge variant="warning" className="bg-amber-500 hover:bg-amber-600 dark:bg-amber-600 dark:hover:bg-amber-700 text-white">Médio</Badge>;
       case 'low':
-        return <Badge variant="secondary">Baixo</Badge>;
+        return <Badge variant="secondary" className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-300">Baixo</Badge>;
       default:
-        return <Badge variant="outline">{severity}</Badge>;
+        return <Badge variant="outline" className="border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-300">{severity}</Badge>;
     }
   };
 
@@ -145,15 +144,15 @@ export const SecurityAlertsTab = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'new':
-        return <Badge variant="destructive" className="bg-red-500">Novo</Badge>;
+        return <Badge variant="destructive" className="bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700">Novo</Badge>;
       case 'investigating':
-        return <Badge variant="warning" className="bg-yellow-500">Em investigação</Badge>;
+        return <Badge variant="warning" className="bg-yellow-500 hover:bg-yellow-600 dark:bg-yellow-600 dark:hover:bg-yellow-700 text-white">Em investigação</Badge>;
       case 'resolved':
-        return <Badge variant="success" className="bg-green-500">Resolvido</Badge>;
+        return <Badge variant="success" className="bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700 text-white">Resolvido</Badge>;
       case 'false_positive':
-        return <Badge variant="outline">Falso positivo</Badge>;
+        return <Badge variant="outline" className="border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-300">Falso positivo</Badge>;
       default:
-        return <Badge variant="outline">{status}</Badge>;
+        return <Badge variant="outline" className="border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-300">{status}</Badge>;
     }
   };
 
@@ -161,17 +160,17 @@ export const SecurityAlertsTab = () => {
   const getAlertTypeIcon = (type: string) => {
     switch (type) {
       case 'authentication':
-        return <UserCheck className="h-5 w-5 text-blue-500" />;
+        return <UserCheck className="h-5 w-5 text-blue-500 dark:text-blue-400" />;
       case 'data_access':
-        return <Database className="h-5 w-5 text-purple-500" />;
+        return <Database className="h-5 w-5 text-purple-500 dark:text-purple-400" />;
       case 'vulnerability':
-        return <ShieldAlert className="h-5 w-5 text-orange-500" />;
+        return <ShieldAlert className="h-5 w-5 text-orange-500 dark:text-orange-400" />;
       case 'compliance':
-        return <FileText className="h-5 w-5 text-green-500" />;
+        return <FileText className="h-5 w-5 text-green-500 dark:text-green-400" />;
       case 'breach':
-        return <AlertCircle className="h-5 w-5 text-red-500" />;
+        return <AlertCircle className="h-5 w-5 text-red-500 dark:text-red-400" />;
       default:
-        return <Bell className="h-5 w-5 text-gray-500" />;
+        return <Bell className="h-5 w-5 text-gray-500 dark:text-gray-400" />;
     }
   };
 
@@ -181,8 +180,8 @@ export const SecurityAlertsTab = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
         <div>
-          <h3 className="text-lg font-semibold">Alertas de Segurança</h3>
-          <p className="text-sm text-gray-500">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Alertas de Segurança</h3>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
             Monitore e responda a alertas e incidentes de segurança
           </p>
         </div>
@@ -191,7 +190,7 @@ export const SecurityAlertsTab = () => {
           <Button 
             variant="outline" 
             size="sm" 
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
             onClick={() => fetchSecurityAlerts()}
             disabled={loading}
           >
@@ -202,41 +201,41 @@ export const SecurityAlertsTab = () => {
           <Select
             value={statusFilter || undefined} // Converte string vazia para undefined
             onValueChange={setStatusFilter}
-            >
-            <SelectTrigger className="w-[160px]">
-                <SelectValue placeholder="Todos os status" />
+          >
+            <SelectTrigger className="w-[160px] bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white">
+              <SelectValue placeholder="Todos os status" />
             </SelectTrigger>
-            <SelectContent>
-                <SelectItem value="all">Todos os status</SelectItem>
-                <SelectItem value="new">Novos</SelectItem>
-                <SelectItem value="investigating">Em investigação</SelectItem>
-                <SelectItem value="resolved">Resolvidos</SelectItem>
-                <SelectItem value="false_positive">Falsos positivos</SelectItem>
+            <SelectContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+              <SelectItem value="all" className="text-gray-900 dark:text-white">Todos os status</SelectItem>
+              <SelectItem value="new" className="text-gray-900 dark:text-white">Novos</SelectItem>
+              <SelectItem value="investigating" className="text-gray-900 dark:text-white">Em investigação</SelectItem>
+              <SelectItem value="resolved" className="text-gray-900 dark:text-white">Resolvidos</SelectItem>
+              <SelectItem value="false_positive" className="text-gray-900 dark:text-white">Falsos positivos</SelectItem>
             </SelectContent>
           </Select>
         </div>
       </div>
 
       <Tabs value={selectedTab} onValueChange={setSelectedTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="all">Todos</TabsTrigger>
-          <TabsTrigger value="new-critical">
+        <TabsList className="grid w-full grid-cols-4 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+          <TabsTrigger value="all" className="data-[state=active]:bg-white data-[state=active]:text-primary dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-primary-400">Todos</TabsTrigger>
+          <TabsTrigger value="new-critical" className="data-[state=active]:bg-white data-[state=active]:text-primary dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-primary-400">
             Novos & Críticos 
             {securityAlerts && securityAlerts.filter(a => a.status === 'new' && a.severity === 'critical').length > 0 && (
-              <Badge variant="destructive" className="ml-2">
+              <Badge variant="destructive" className="ml-2 bg-red-500 dark:bg-red-600 text-white">
                 {securityAlerts.filter(a => a.status === 'new' && a.severity === 'critical').length}
               </Badge>
             )}
           </TabsTrigger>
-          <TabsTrigger value="investigating">Em Investigação</TabsTrigger>
-          <TabsTrigger value="resolved">Resolvidos</TabsTrigger>
+          <TabsTrigger value="investigating" className="data-[state=active]:bg-white data-[state=active]:text-primary dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-primary-400">Em Investigação</TabsTrigger>
+          <TabsTrigger value="resolved" className="data-[state=active]:bg-white data-[state=active]:text-primary dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-primary-400">Resolvidos</TabsTrigger>
         </TabsList>
 
         <TabsContent value={selectedTab} className="mt-4">
-          <Card>
+          <Card className="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
             <CardHeader className="pb-2">
-              <CardTitle>Alertas de Segurança</CardTitle>
-              <CardDescription>
+              <CardTitle className="text-gray-900 dark:text-white">Alertas de Segurança</CardTitle>
+              <CardDescription className="text-gray-500 dark:text-gray-400">
                 {filteredAlerts.length > 0 
                   ? `Mostrando ${filteredAlerts.length} alerta${filteredAlerts.length > 1 ? 's' : ''}`
                   : 'Nenhum alerta encontrado para os filtros selecionados'
@@ -246,31 +245,31 @@ export const SecurityAlertsTab = () => {
             <CardContent>
               {loading ? (
                 <div className="flex items-center justify-center h-48">
-                  <RefreshCw className="h-8 w-8 animate-spin text-muted-foreground" />
+                  <RefreshCw className="h-8 w-8 animate-spin text-gray-400 dark:text-gray-600" />
                 </div>
               ) : filteredAlerts.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-48 text-center">
-                  <CheckCircle2 className="h-10 w-10 text-green-500 mb-2" />
-                  <h3 className="text-lg font-semibold">Nenhum alerta encontrado</h3>
-                  <p className="text-sm text-gray-500">
+                  <CheckCircle2 className="h-10 w-10 text-green-500 dark:text-green-400 mb-2" />
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Nenhum alerta encontrado</h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
                     Não existem alertas com os filtros atuais
                   </p>
                 </div>
               ) : (
                 <div className="space-y-4">
                   {filteredAlerts.map(alert => (
-                    <Card key={alert.id} className={`overflow-hidden ${
+                    <Card key={alert.id} className={`overflow-hidden border border-gray-200 dark:border-gray-700 ${
                       alert.status === 'new' && alert.severity === 'critical' 
-                        ? 'border-red-500 bg-red-50' 
-                        : ''
+                        ? 'border-red-500 dark:border-red-500 bg-red-50 dark:bg-red-950/20' 
+                        : 'bg-white dark:bg-gray-900'
                     }`}>
                       <div className="p-4">
                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
                           <div className="flex items-start gap-3">
                             {getAlertTypeIcon(alert.type)}
                             <div>
-                              <h4 className="text-sm font-semibold">{alert.title}</h4>
-                              <p className="text-xs text-gray-500">{alert.description}</p>
+                              <h4 className="text-sm font-semibold text-gray-900 dark:text-white">{alert.title}</h4>
+                              <p className="text-xs text-gray-500 dark:text-gray-400">{alert.description}</p>
                             </div>
                           </div>
                           <div className="flex items-center gap-2">
@@ -279,7 +278,7 @@ export const SecurityAlertsTab = () => {
                           </div>
                         </div>
                         
-                        <div className="flex flex-col sm:flex-row justify-between mt-3 text-xs text-gray-500">
+                        <div className="flex flex-col sm:flex-row justify-between mt-3 text-xs text-gray-500 dark:text-gray-400">
                           <div className="flex items-center gap-4">
                             <div className="flex items-center gap-1">
                               <Clock className="h-3.5 w-3.5" />
@@ -299,7 +298,7 @@ export const SecurityAlertsTab = () => {
                               <Button 
                                 variant="outline" 
                                 size="sm"
-                                className="h-7 text-xs"
+                                className="h-7 text-xs border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                                 onClick={() => handleUpdateStatus(alert.id, 'investigating')}
                               >
                                 Iniciar Investigação
@@ -311,7 +310,7 @@ export const SecurityAlertsTab = () => {
                                 <Button 
                                   variant="outline" 
                                   size="sm"
-                                  className="h-7 text-xs"
+                                  className="h-7 text-xs border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                                   onClick={() => {
                                     setSelectedAlert(alert);
                                     setShowResolveDialog(true);
@@ -323,7 +322,7 @@ export const SecurityAlertsTab = () => {
                                 <Button 
                                   variant="ghost" 
                                   size="sm"
-                                  className="h-7 text-xs"
+                                  className="h-7 text-xs text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
                                   onClick={() => handleUpdateStatus(alert.id, 'false_positive')}
                                 >
                                   Falso Positivo
@@ -334,7 +333,7 @@ export const SecurityAlertsTab = () => {
                             <Button 
                               variant="ghost" 
                               size="sm"
-                              className="h-7 text-xs"
+                              className="h-7 text-xs text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
                             >
                               Detalhes
                             </Button>
@@ -342,9 +341,9 @@ export const SecurityAlertsTab = () => {
                         </div>
                         
                         {alert.resolutionNotes && (
-                          <div className="mt-3 p-2 bg-gray-50 rounded-md border text-xs">
-                            <div className="font-medium">Notas de resolução:</div>
-                            <p className="mt-1 text-gray-600">{alert.resolutionNotes}</p>
+                          <div className="mt-3 p-2 bg-gray-50 dark:bg-gray-800/60 rounded-md border border-gray-200 dark:border-gray-700 text-xs">
+                            <div className="font-medium text-gray-700 dark:text-gray-300">Notas de resolução:</div>
+                            <p className="mt-1 text-gray-600 dark:text-gray-400">{alert.resolutionNotes}</p>
                           </div>
                         )}
                       </div>
@@ -359,30 +358,31 @@ export const SecurityAlertsTab = () => {
 
       {/* Alert resolution dialog */}
       <Dialog open={showResolveDialog} onOpenChange={setShowResolveDialog}>
-        <DialogContent>
+        <DialogContent className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
           <DialogHeader>
-            <DialogTitle>Resolver Alerta de Segurança</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-gray-900 dark:text-white">Resolver Alerta de Segurança</DialogTitle>
+            <DialogDescription className="text-gray-500 dark:text-gray-400">
               {selectedAlert?.title}
             </DialogDescription>
           </DialogHeader>
           
           <div className="space-y-3 py-4">
             <div className="space-y-1">
-              <h4 className="text-sm font-medium">Descrição</h4>
-              <p className="text-sm text-gray-500">{selectedAlert?.description}</p>
+              <h4 className="text-sm font-medium text-gray-900 dark:text-white">Descrição</h4>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{selectedAlert?.description}</p>
             </div>
             
             <div className="space-y-1">
-              <Label htmlFor="resolution-notes">Notas de Resolução</Label>
+              <Label htmlFor="resolution-notes" className="text-gray-700 dark:text-gray-300">Notas de Resolução</Label>
               <Textarea 
                 id="resolution-notes"
                 placeholder="Descreva como o problema foi resolvido..."
                 rows={5}
                 value={resolutionNotes}
                 onChange={(e) => setResolutionNotes(e.target.value)}
+                className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white resize-none"
               />
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-500 dark:text-gray-400">
                 Adicione detalhes sobre como o problema foi resolvido, medidas tomadas e recomendações futuras.
               </p>
             </div>
@@ -392,6 +392,7 @@ export const SecurityAlertsTab = () => {
             <Button 
               variant="ghost" 
               onClick={() => setShowResolveDialog(false)}
+              className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
             >
               Cancelar
             </Button>
@@ -399,6 +400,7 @@ export const SecurityAlertsTab = () => {
               variant="default"
               onClick={handleResolveAlert}
               disabled={!resolutionNotes.trim()}
+              className="bg-primary hover:bg-primary/90 text-white dark:bg-primary dark:hover:bg-primary/90 dark:text-white disabled:bg-gray-200 dark:disabled:bg-gray-800 disabled:text-gray-500 dark:disabled:text-gray-500"
             >
               Marcar como Resolvido
             </Button>

@@ -15,27 +15,27 @@ export const DataProtectionTab = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-semibold">Proteção de Dados</h3>
-        <p className="text-sm text-gray-500">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Proteção de Dados</h3>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
           Gerencie a proteção, privacidade e consentimento de dados pessoais em conformidade com LGPD/HIPAA
         </p>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4">
-          <TabsTrigger value="consent" className="flex items-center gap-2">
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+          <TabsTrigger value="consent" className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-primary dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-primary-400">
             <UserCheck size={16} />
             <span className="hidden md:inline">Consentimento</span>
           </TabsTrigger>
-          <TabsTrigger value="encryption" className="flex items-center gap-2">
+          <TabsTrigger value="encryption" className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-primary dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-primary-400">
             <Shield size={16} />
             <span className="hidden md:inline">Criptografia</span>
           </TabsTrigger>
-          <TabsTrigger value="anonymization" className="flex items-center gap-2">
+          <TabsTrigger value="anonymization" className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-primary dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-primary-400">
             <Database size={16} />
             <span className="hidden md:inline">Anonimização</span>
           </TabsTrigger>
-          <TabsTrigger value="data-requests" className="flex items-center gap-2">
+          <TabsTrigger value="data-requests" className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-primary dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-primary-400">
             <FileCheck size={16} />
             <span className="hidden md:inline">Solicitações</span>
           </TabsTrigger>

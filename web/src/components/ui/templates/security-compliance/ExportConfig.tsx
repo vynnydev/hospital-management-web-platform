@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/organisms/card';
 import { Button } from '@/components/ui/organisms/button';
@@ -78,7 +76,7 @@ export const ExportConfig: React.FC<ExportConfigProps> = ({
       case 'email':
         return (
           <div className="space-y-2">
-            <Label htmlFor="email">Endereço de Email</Label>
+            <Label htmlFor="email" className="text-gray-700 dark:text-gray-300">Endereço de Email</Label>
             <Input 
               id="email" 
               type="email"
@@ -91,6 +89,7 @@ export const ExportConfig: React.FC<ExportConfigProps> = ({
                 }
               })}
               placeholder="exemplo@dominio.com"
+              className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
             />
             <div className="flex items-center space-x-2 pt-2">
               <Checkbox
@@ -103,8 +102,9 @@ export const ExportConfig: React.FC<ExportConfigProps> = ({
                     compress: checked === true
                   }
                 })}
+                className="text-primary dark:text-primary-400 border-gray-300 dark:border-gray-600"
               />
-              <Label htmlFor="compress">Comprimir arquivo</Label>
+              <Label htmlFor="compress" className="text-gray-700 dark:text-gray-300">Comprimir arquivo</Label>
             </div>
           </div>
         );
@@ -112,7 +112,7 @@ export const ExportConfig: React.FC<ExportConfigProps> = ({
       case 'sftp':
         return (
           <div className="space-y-2">
-            <Label htmlFor="host">Servidor SFTP</Label>
+            <Label htmlFor="host" className="text-gray-700 dark:text-gray-300">Servidor SFTP</Label>
             <Input 
               id="host" 
               value={config.destinationConfig.host || ''}
@@ -124,11 +124,12 @@ export const ExportConfig: React.FC<ExportConfigProps> = ({
                 }
               })}
               placeholder="sftp.example.com"
+              className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
             />
             
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <Label htmlFor="port">Porta</Label>
+                <Label htmlFor="port" className="text-gray-700 dark:text-gray-300">Porta</Label>
                 <Input 
                   id="port" 
                   value={config.destinationConfig.port || '22'}
@@ -140,10 +141,11 @@ export const ExportConfig: React.FC<ExportConfigProps> = ({
                     }
                   })}
                   placeholder="22"
+                  className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
               <div>
-                <Label htmlFor="path">Caminho</Label>
+                <Label htmlFor="path" className="text-gray-700 dark:text-gray-300">Caminho</Label>
                 <Input 
                   id="path" 
                   value={config.destinationConfig.path || '/logs'}
@@ -155,11 +157,12 @@ export const ExportConfig: React.FC<ExportConfigProps> = ({
                     }
                   })}
                   placeholder="/logs"
+                  className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
             </div>
             
-            <Label htmlFor="username">Usuário</Label>
+            <Label htmlFor="username" className="text-gray-700 dark:text-gray-300">Usuário</Label>
             <Input 
               id="username" 
               value={config.destinationConfig.username || ''}
@@ -171,10 +174,11 @@ export const ExportConfig: React.FC<ExportConfigProps> = ({
                 }
               })}
               placeholder="sftp_user"
+              className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
             />
             
             <div className="flex justify-between items-center pt-1">
-              <Label htmlFor="auth_type">Tipo de Autenticação</Label>
+              <Label htmlFor="auth_type" className="text-gray-700 dark:text-gray-300">Tipo de Autenticação</Label>
               <Select
                 value={config.destinationConfig.auth_type || 'password'}
                 onValueChange={(value) => setConfig({
@@ -185,12 +189,12 @@ export const ExportConfig: React.FC<ExportConfigProps> = ({
                   }
                 })}
               >
-                <SelectTrigger className="w-[150px]">
+                <SelectTrigger id="auth_type" className="w-[150px] bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white">
                   <SelectValue placeholder="Tipo" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="password">Senha</SelectItem>
-                  <SelectItem value="key">Chave SSH</SelectItem>
+                <SelectContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                  <SelectItem value="password" className="text-gray-900 dark:text-white">Senha</SelectItem>
+                  <SelectItem value="key" className="text-gray-900 dark:text-white">Chave SSH</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -200,7 +204,7 @@ export const ExportConfig: React.FC<ExportConfigProps> = ({
       case 's3':
         return (
           <div className="space-y-2">
-            <Label htmlFor="bucket">Bucket S3</Label>
+            <Label htmlFor="bucket" className="text-gray-700 dark:text-gray-300">Bucket S3</Label>
             <Input 
               id="bucket" 
               value={config.destinationConfig.bucket || ''}
@@ -212,9 +216,10 @@ export const ExportConfig: React.FC<ExportConfigProps> = ({
                 }
               })}
               placeholder="my-logs-bucket"
+              className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
             />
             
-            <Label htmlFor="prefix">Prefixo</Label>
+            <Label htmlFor="prefix" className="text-gray-700 dark:text-gray-300">Prefixo</Label>
             <Input 
               id="prefix" 
               value={config.destinationConfig.prefix || 'audit-logs/'}
@@ -226,9 +231,10 @@ export const ExportConfig: React.FC<ExportConfigProps> = ({
                 }
               })}
               placeholder="audit-logs/"
+              className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
             />
             
-            <Label htmlFor="region">Região</Label>
+            <Label htmlFor="region" className="text-gray-700 dark:text-gray-300">Região</Label>
             <Input 
               id="region" 
               value={config.destinationConfig.region || 'us-east-1'}
@@ -240,6 +246,7 @@ export const ExportConfig: React.FC<ExportConfigProps> = ({
                 }
               })}
               placeholder="us-east-1"
+              className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
             />
           </div>
         );
@@ -247,7 +254,7 @@ export const ExportConfig: React.FC<ExportConfigProps> = ({
       case 'api':
         return (
           <div className="space-y-2">
-            <Label htmlFor="url">URL da API</Label>
+            <Label htmlFor="url" className="text-gray-700 dark:text-gray-300">URL da API</Label>
             <Input 
               id="url" 
               value={config.destinationConfig.url || ''}
@@ -259,9 +266,10 @@ export const ExportConfig: React.FC<ExportConfigProps> = ({
                 }
               })}
               placeholder="https://api.example.com/logs"
+              className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
             />
             
-            <Label htmlFor="auth_type">Tipo de Autenticação</Label>
+            <Label htmlFor="auth_type" className="text-gray-700 dark:text-gray-300">Tipo de Autenticação</Label>
             <Select
               value={config.destinationConfig.auth_type || 'bearer'}
               onValueChange={(value) => setConfig({
@@ -272,20 +280,20 @@ export const ExportConfig: React.FC<ExportConfigProps> = ({
                 }
               })}
             >
-              <SelectTrigger>
+              <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white">
                 <SelectValue placeholder="Tipo" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="none">Nenhuma</SelectItem>
-                <SelectItem value="bearer">Bearer Token</SelectItem>
-                <SelectItem value="basic">Basic Auth</SelectItem>
-                <SelectItem value="apikey">API Key</SelectItem>
+              <SelectContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                <SelectItem value="none" className="text-gray-900 dark:text-white">Nenhuma</SelectItem>
+                <SelectItem value="bearer" className="text-gray-900 dark:text-white">Bearer Token</SelectItem>
+                <SelectItem value="basic" className="text-gray-900 dark:text-white">Basic Auth</SelectItem>
+                <SelectItem value="apikey" className="text-gray-900 dark:text-white">API Key</SelectItem>
               </SelectContent>
             </Select>
             
             {config.destinationConfig.auth_type === 'bearer' && (
               <div className="pt-2">
-                <Label htmlFor="token">Bearer Token</Label>
+                <Label htmlFor="token" className="text-gray-700 dark:text-gray-300">Bearer Token</Label>
                 <Input
                   id="token"
                   type="password"
@@ -298,6 +306,7 @@ export const ExportConfig: React.FC<ExportConfigProps> = ({
                     }
                   })}
                   placeholder="Token de autenticação"
+                  className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
             )}
@@ -310,21 +319,21 @@ export const ExportConfig: React.FC<ExportConfigProps> = ({
   };
 
   return (
-    <Card>
+    <Card className="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
       <CardHeader>
         <div className="flex justify-between items-start">
           <div>
-            <CardTitle className="flex items-center gap-2">
-              <FileDown className="h-5 w-5" />
+            <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
+              <FileDown className="h-5 w-5 text-primary dark:text-primary-400" />
               Exportação de Logs
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-gray-500 dark:text-gray-400">
               Configure como os logs de auditoria são exportados
             </CardDescription>
           </div>
           
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium">
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
               {config.enabled ? 'Ativado' : 'Desativado'}
             </span>
             <Switch
@@ -333,6 +342,7 @@ export const ExportConfig: React.FC<ExportConfigProps> = ({
                 ...config,
                 enabled: checked
               })}
+              className="bg-gray-200 dark:bg-gray-700 data-[state=checked]:bg-primary dark:data-[state=checked]:bg-primary-400"
             />
           </div>
         </div>
@@ -342,7 +352,7 @@ export const ExportConfig: React.FC<ExportConfigProps> = ({
           <div className="space-y-3">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-2">
-                <Label htmlFor="format">Formato</Label>
+                <Label htmlFor="format" className="text-gray-700 dark:text-gray-300">Formato</Label>
                 <Select
                   value={config.format}
                   onValueChange={(value: 'json' | 'csv' | 'syslog') => setConfig({
@@ -351,19 +361,19 @@ export const ExportConfig: React.FC<ExportConfigProps> = ({
                   })}
                   disabled={!config.enabled}
                 >
-                  <SelectTrigger id="format">
+                  <SelectTrigger id="format" className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white">
                     <SelectValue placeholder="Selecione um formato" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="json">JSON</SelectItem>
-                    <SelectItem value="csv">CSV</SelectItem>
-                    <SelectItem value="syslog">Syslog</SelectItem>
+                  <SelectContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                    <SelectItem value="json" className="text-gray-900 dark:text-white">JSON</SelectItem>
+                    <SelectItem value="csv" className="text-gray-900 dark:text-white">CSV</SelectItem>
+                    <SelectItem value="syslog" className="text-gray-900 dark:text-white">Syslog</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="frequency">Frequência</Label>
+                <Label htmlFor="frequency" className="text-gray-700 dark:text-gray-300">Frequência</Label>
                 <Select
                   value={config.frequency}
                   onValueChange={(value: 'daily' | 'weekly' | 'monthly' | 'realtime') => setConfig({
@@ -372,21 +382,21 @@ export const ExportConfig: React.FC<ExportConfigProps> = ({
                   })}
                   disabled={!config.enabled}
                 >
-                  <SelectTrigger id="frequency">
+                  <SelectTrigger id="frequency" className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white">
                     <SelectValue placeholder="Selecione uma frequência" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="realtime">Tempo Real</SelectItem>
-                    <SelectItem value="daily">Diário</SelectItem>
-                    <SelectItem value="weekly">Semanal</SelectItem>
-                    <SelectItem value="monthly">Mensal</SelectItem>
+                  <SelectContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                    <SelectItem value="realtime" className="text-gray-900 dark:text-white">Tempo Real</SelectItem>
+                    <SelectItem value="daily" className="text-gray-900 dark:text-white">Diário</SelectItem>
+                    <SelectItem value="weekly" className="text-gray-900 dark:text-white">Semanal</SelectItem>
+                    <SelectItem value="monthly" className="text-gray-900 dark:text-white">Mensal</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="destination">Destino</Label>
+              <Label htmlFor="destination" className="text-gray-700 dark:text-gray-300">Destino</Label>
               <Select
                 value={config.destination}
                 onValueChange={(value: 'email' | 'sftp' | 'api' | 's3') => setConfig({
@@ -397,14 +407,14 @@ export const ExportConfig: React.FC<ExportConfigProps> = ({
                 })}
                 disabled={!config.enabled}
               >
-                <SelectTrigger id="destination">
+                <SelectTrigger id="destination" className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white">
                   <SelectValue placeholder="Selecione um destino" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="email">Email</SelectItem>
-                  <SelectItem value="sftp">SFTP</SelectItem>
-                  <SelectItem value="s3">Amazon S3</SelectItem>
-                  <SelectItem value="api">API Externa</SelectItem>
+                <SelectContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                  <SelectItem value="email" className="text-gray-900 dark:text-white">Email</SelectItem>
+                  <SelectItem value="sftp" className="text-gray-900 dark:text-white">SFTP</SelectItem>
+                  <SelectItem value="s3" className="text-gray-900 dark:text-white">Amazon S3</SelectItem>
+                  <SelectItem value="api" className="text-gray-900 dark:text-white">API Externa</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -412,7 +422,7 @@ export const ExportConfig: React.FC<ExportConfigProps> = ({
             {renderDestinationConfig()}
             
             <div className="space-y-2 pt-2">
-              <Label>Categorias a Incluir</Label>
+              <Label className="text-gray-700 dark:text-gray-300">Categorias a Incluir</Label>
               <div className="grid grid-cols-2 gap-2">
                 {[
                   { id: 'authentication', label: 'Autenticação' },
@@ -422,7 +432,7 @@ export const ExportConfig: React.FC<ExportConfigProps> = ({
                   { id: 'admin_action', label: 'Ações Administrativas' },
                   { id: 'security', label: 'Segurança' }
                 ].map((category) => (
-                  <div key={category.id} className="flex items-center space-x-2 p-2 border rounded-md">
+                  <div key={category.id} className="flex items-center space-x-2 p-2 border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800">
                     <Checkbox
                       id={`export-category-${category.id}`}
                       checked={config.includeCategories.includes(category.id as TLogCategory)}
@@ -430,8 +440,9 @@ export const ExportConfig: React.FC<ExportConfigProps> = ({
                         handleCategoryToggle(category.id as TLogCategory, checked as boolean)
                       }
                       disabled={!config.enabled}
+                      className="text-primary dark:text-primary-400 border-gray-300 dark:border-gray-600"
                     />
-                    <Label htmlFor={`export-category-${category.id}`}>{category.label}</Label>
+                    <Label htmlFor={`export-category-${category.id}`} className="text-gray-700 dark:text-gray-300">{category.label}</Label>
                   </div>
                 ))}
               </div>
@@ -440,11 +451,11 @@ export const ExportConfig: React.FC<ExportConfigProps> = ({
         </div>
 
         {config.enabled && config.destination === 'email' && config.frequency === 'realtime' && (
-          <div className="bg-yellow-50 p-3 rounded-md border border-yellow-200 flex items-start">
-            <RefreshCw className="h-5 w-5 text-yellow-500 mr-2 mt-0.5" />
+          <div className="bg-yellow-50 dark:bg-yellow-900/20 p-3 rounded-md border border-yellow-200 dark:border-yellow-800 flex items-start">
+            <RefreshCw className="h-5 w-5 text-yellow-500 dark:text-yellow-400 mr-2 mt-0.5" />
             <div>
-              <p className="text-sm font-medium text-yellow-700">Cuidado: Alta frequência de emails</p>
-              <p className="text-xs text-yellow-600">
+              <p className="text-sm font-medium text-yellow-700 dark:text-yellow-300">Cuidado: Alta frequência de emails</p>
+              <p className="text-xs text-yellow-600 dark:text-yellow-400">
                 Configurar exportações por email em tempo real pode gerar um grande volume de emails.
                 Considere uma frequência menor ou um destino mais apropriado para exportação em tempo real.
               </p>
@@ -453,7 +464,7 @@ export const ExportConfig: React.FC<ExportConfigProps> = ({
         )}
       </CardContent>
       <CardFooter className="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center gap-2">
-        <div className="text-xs text-gray-500 flex items-center">
+        <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center">
           <Clock className="h-3 w-3 mr-1" />
           <span>
             Última atualização: {new Date(config.updatedAt).toLocaleDateString()}
@@ -462,6 +473,7 @@ export const ExportConfig: React.FC<ExportConfigProps> = ({
         <Button 
           onClick={handleSave} 
           disabled={loading || isSaving || !config.enabled}
+          className="bg-primary hover:bg-primary/90 text-white dark:bg-primary dark:hover:bg-primary/90 dark:text-white disabled:bg-gray-200 dark:disabled:bg-gray-800 disabled:text-gray-500 dark:disabled:text-gray-500"
         >
           {isSaving ? 'Salvando...' : 'Salvar Alterações'}
         </Button>

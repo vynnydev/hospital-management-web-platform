@@ -152,26 +152,26 @@ export const RateLimitingPanel: React.FC<RateLimitingPanelProps> = ({
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'active':
-        return <Badge variant="success" className="bg-green-100 text-green-800">Ativo</Badge>;
+        return <Badge variant="success" className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">Ativo</Badge>;
       case 'paused':
-        return <Badge variant="secondary">Pausado</Badge>;
+        return <Badge variant="secondary" className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300">Pausado</Badge>;
       default:
-        return <Badge variant="outline">{status}</Badge>;
+        return <Badge variant="outline" className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300">{status}</Badge>;
     }
   };
 
   const getMethodBadge = (method: string) => {
     switch (method) {
       case 'GET':
-        return <Badge variant="outline" className="bg-blue-100 text-blue-800">GET</Badge>;
+        return <Badge variant="outline" className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 border-blue-200 dark:border-blue-800">GET</Badge>;
       case 'POST':
-        return <Badge variant="outline" className="bg-green-100 text-green-800">POST</Badge>;
+        return <Badge variant="outline" className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 border-green-200 dark:border-green-800">POST</Badge>;
       case 'PUT':
-        return <Badge variant="outline" className="bg-yellow-100 text-yellow-800">PUT</Badge>;
+        return <Badge variant="outline" className="bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 border-yellow-200 dark:border-yellow-800">PUT</Badge>;
       case 'DELETE':
-        return <Badge variant="outline" className="bg-red-100 text-red-800">DELETE</Badge>;
+        return <Badge variant="outline" className="bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 border-red-200 dark:border-red-800">DELETE</Badge>;
       default:
-        return <Badge variant="outline">{method}</Badge>;
+        return <Badge variant="outline" className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300">{method}</Badge>;
     }
   };
 
@@ -182,48 +182,58 @@ export const RateLimitingPanel: React.FC<RateLimitingPanelProps> = ({
         onValueChange={setSelectedTab}
         className="w-full"
       >
-        <TabsList className="grid grid-cols-3 w-full">
-          <TabsTrigger value="general">
+        <TabsList className="grid grid-cols-3 w-full bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+          <TabsTrigger 
+            value="general" 
+            className="data-[state=active]:bg-white data-[state=active]:text-primary dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-primary-400"
+          >
             <Settings2 className="h-4 w-4 mr-2" />
             Geral
           </TabsTrigger>
-          <TabsTrigger value="ip-rules">
+          <TabsTrigger 
+            value="ip-rules" 
+            className="data-[state=active]:bg-white data-[state=active]:text-primary dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-primary-400"
+          >
             <Lock className="h-4 w-4 mr-2" />
             Regras de IP
           </TabsTrigger>
-          <TabsTrigger value="endpoint-rules">
+          <TabsTrigger 
+            value="endpoint-rules" 
+            className="data-[state=active]:bg-white data-[state=active]:text-primary dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-primary-400"
+          >
             <Zap className="h-4 w-4 mr-2" />
             Regras de Endpoint
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="general" className="space-y-4 mt-4">
-          <Card>
+          <Card className="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
             <CardHeader>
               <div className="flex justify-between items-center">
                 <div>
-                  <CardTitle className="text-base">Configurações de Rate Limiting</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-base text-gray-900 dark:text-white">Configurações de Rate Limiting</CardTitle>
+                  <CardDescription className="text-gray-500 dark:text-gray-400">
                     Configure limites de requisições para proteger a API contra sobrecarga
                   </CardDescription>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium">
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                     {currentConfig.rateLimiting.enabled ? 'Ativado' : 'Desativado'}
                   </span>
                   <Switch
                     checked={currentConfig.rateLimiting.enabled}
                     onCheckedChange={toggleRateLimiting}
+                    className="bg-gray-200 dark:bg-gray-700 data-[state=checked]:bg-primary dark:data-[state=checked]:bg-primary-400"
                   />
                 </div>
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
               {!currentConfig.rateLimiting.enabled && (
-                <Alert variant="warning">
-                  <AlertCircle className="h-4 w-4" />
-                  <AlertTitle>Rate Limiting desativado</AlertTitle>
-                  <AlertDescription>
+                <Alert variant="warning" className="bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800">
+                  <AlertCircle className="h-4 w-4 text-amber-500 dark:text-amber-400" />
+                  <AlertTitle className="text-amber-800 dark:text-amber-300">Rate Limiting desativado</AlertTitle>
+                  <AlertDescription className="text-amber-700 dark:text-amber-400">
                     Desativar o rate limiting pode expor sua API a ataques de DoS e uso excessivo. 
                     Recomendamos manter esta proteção ativada.
                   </AlertDescription>
@@ -233,7 +243,7 @@ export const RateLimitingPanel: React.FC<RateLimitingPanelProps> = ({
               <div className={!currentConfig.rateLimiting.enabled ? 'opacity-50 pointer-events-none' : ''}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <Label htmlFor="requests-per-minute">Requisições por minuto (global)</Label>
+                    <Label htmlFor="requests-per-minute" className="text-gray-700 dark:text-gray-300">Requisições por minuto (global)</Label>
                     <div className="flex items-center space-x-2">
                       <Input 
                         id="requests-per-minute" 
@@ -243,16 +253,17 @@ export const RateLimitingPanel: React.FC<RateLimitingPanelProps> = ({
                         value={currentConfig.rateLimiting.requestsPerMinute} 
                         onChange={(e) => handleRateLimitChange('requestsPerMinute', parseInt(e.target.value))}
                         required
+                        className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
                       />
-                      <div className="text-sm text-gray-500">req/min</div>
+                      <div className="text-sm text-gray-500 dark:text-gray-400">req/min</div>
                     </div>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
                       Número máximo de requisições permitidas por minuto para cada cliente
                     </p>
                   </div>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="burst-limit">Limite de pico</Label>
+                    <Label htmlFor="burst-limit" className="text-gray-700 dark:text-gray-300">Limite de pico</Label>
                     <div className="flex items-center space-x-2">
                       <Input 
                         id="burst-limit" 
@@ -262,76 +273,77 @@ export const RateLimitingPanel: React.FC<RateLimitingPanelProps> = ({
                         value={currentConfig.rateLimiting.burstLimit} 
                         onChange={(e) => handleRateLimitChange('burstLimit', parseInt(e.target.value))}
                         required
+                        className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
                       />
-                      <div className="text-sm text-gray-500">requisições</div>
+                      <div className="text-sm text-gray-500 dark:text-gray-400">requisições</div>
                     </div>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
                       Número máximo de requisições permitidas em um curto período (picos de tráfego)
                     </p>
                   </div>
                 </div>
                 
                 <div className="mt-4 space-y-2">
-                  <Label htmlFor="limiting-strategy">Estratégia de limitação</Label>
+                  <Label htmlFor="limiting-strategy" className="text-gray-700 dark:text-gray-300">Estratégia de limitação</Label>
                   <Select defaultValue="token">
-                    <SelectTrigger id="limiting-strategy">
+                    <SelectTrigger id="limiting-strategy" className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white">
                       <SelectValue placeholder="Selecione uma estratégia" />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="token">Token Bucket</SelectItem>
-                      <SelectItem value="leaky">Leaky Bucket</SelectItem>
-                      <SelectItem value="fixed">Janela Fixa</SelectItem>
-                      <SelectItem value="sliding">Janela Deslizante</SelectItem>
+                    <SelectContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                      <SelectItem value="token" className="text-gray-900 dark:text-white">Token Bucket</SelectItem>
+                      <SelectItem value="leaky" className="text-gray-900 dark:text-white">Leaky Bucket</SelectItem>
+                      <SelectItem value="fixed" className="text-gray-900 dark:text-white">Janela Fixa</SelectItem>
+                      <SelectItem value="sliding" className="text-gray-900 dark:text-white">Janela Deslizante</SelectItem>
                     </SelectContent>
                   </Select>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
                     Algoritmo usado para controlar a taxa de requisições e gerenciar picos de tráfego
                   </p>
                 </div>
               </div>
               
               <div className="space-y-2 pt-4">
-                <h4 className="text-sm font-semibold">Opções avançadas</h4>
+                <h4 className="text-sm font-semibold text-gray-900 dark:text-white">Opções avançadas</h4>
                 
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between p-2 border rounded-md">
+                  <div className="flex items-center justify-between p-2 border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800">
                     <div>
-                      <Label htmlFor="user-based" className="font-medium">Limite por usuário</Label>
-                      <p className="text-xs text-gray-500">
+                      <Label htmlFor="user-based" className="font-medium text-gray-900 dark:text-white">Limite por usuário</Label>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
                         Aplicar limites individualmente para cada usuário autenticado
                       </p>
                     </div>
-                    <Switch id="user-based" defaultChecked />
+                    <Switch id="user-based" defaultChecked className="bg-gray-200 dark:bg-gray-700 data-[state=checked]:bg-primary dark:data-[state=checked]:bg-primary-400" />
                   </div>
                   
-                  <div className="flex items-center justify-between p-2 border rounded-md">
+                  <div className="flex items-center justify-between p-2 border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800">
                     <div>
-                      <Label htmlFor="client-based" className="font-medium">Limite por cliente</Label>
-                      <p className="text-xs text-gray-500">
+                      <Label htmlFor="client-based" className="font-medium text-gray-900 dark:text-white">Limite por cliente</Label>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
                         Aplicar limites individualmente para cada aplicação cliente
                       </p>
                     </div>
-                    <Switch id="client-based" defaultChecked />
+                    <Switch id="client-based" defaultChecked className="bg-gray-200 dark:bg-gray-700 data-[state=checked]:bg-primary dark:data-[state=checked]:bg-primary-400" />
                   </div>
                   
-                  <div className="flex items-center justify-between p-2 border rounded-md">
+                  <div className="flex items-center justify-between p-2 border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800">
                     <div>
-                      <Label htmlFor="headers" className="font-medium">Headers de Rate Limit</Label>
-                      <p className="text-xs text-gray-500">
+                      <Label htmlFor="headers" className="font-medium text-gray-900 dark:text-white">Headers de Rate Limit</Label>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
                         Incluir headers com informações de rate limiting nas respostas HTTP
                       </p>
                     </div>
-                    <Switch id="headers" defaultChecked />
+                    <Switch id="headers" defaultChecked className="bg-gray-200 dark:bg-gray-700 data-[state=checked]:bg-primary dark:data-[state=checked]:bg-primary-400" />
                   </div>
                   
-                  <div className="flex items-center justify-between p-2 border rounded-md">
+                  <div className="flex items-center justify-between p-2 border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800">
                     <div>
-                      <Label htmlFor="retry-after" className="font-medium">Header Retry-After</Label>
-                      <p className="text-xs text-gray-500">
+                      <Label htmlFor="retry-after" className="font-medium text-gray-900 dark:text-white">Header Retry-After</Label>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
                         Indicar ao cliente quando ele pode tentar novamente após exceder o limite
                       </p>
                     </div>
-                    <Switch id="retry-after" defaultChecked />
+                    <Switch id="retry-after" defaultChecked className="bg-gray-200 dark:bg-gray-700 data-[state=checked]:bg-primary dark:data-[state=checked]:bg-primary-400" />
                   </div>
                 </div>
               </div>
@@ -340,37 +352,38 @@ export const RateLimitingPanel: React.FC<RateLimitingPanelProps> = ({
               <Button 
                 onClick={handleSave} 
                 disabled={loading || isSaving}
+                className="bg-primary hover:bg-primary/90 text-white dark:bg-primary dark:hover:bg-primary/90 dark:text-white disabled:bg-gray-200 dark:disabled:bg-gray-800 disabled:text-gray-500 dark:disabled:text-gray-500"
               >
                 Salvar Configurações
               </Button>
             </CardFooter>
           </Card>
           
-          <Card>
+          <Card className="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
             <CardHeader>
-              <CardTitle className="text-base">Estatísticas de Rate Limiting</CardTitle>
-              <CardDescription>
+              <CardTitle className="text-base text-gray-900 dark:text-white">Estatísticas de Rate Limiting</CardTitle>
+              <CardDescription className="text-gray-500 dark:text-gray-400">
                 Visão geral das tentativas de exceder os limites de requisições
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <div className="text-sm text-gray-500 mb-1">Requisições limitadas (24h)</div>
-                  <div className="text-2xl font-bold">1,247</div>
-                  <div className="text-xs text-gray-400 mt-1">1.5% do total de requisições</div>
+                <div className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+                  <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">Requisições limitadas (24h)</div>
+                  <div className="text-2xl font-bold text-gray-900 dark:text-white">1,247</div>
+                  <div className="text-xs text-gray-400 dark:text-gray-500 mt-1">1.5% do total de requisições</div>
                 </div>
                 
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <div className="text-sm text-gray-500 mb-1">Clientes limitados</div>
-                  <div className="text-2xl font-bold">32</div>
-                  <div className="text-xs text-gray-400 mt-1">7.8% do total de clientes</div>
+                <div className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+                  <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">Clientes limitados</div>
+                  <div className="text-2xl font-bold text-gray-900 dark:text-white">32</div>
+                  <div className="text-xs text-gray-400 dark:text-gray-500 mt-1">7.8% do total de clientes</div>
                 </div>
                 
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <div className="text-sm text-gray-500 mb-1">Endpoints mais limitados</div>
-                  <div className="text-2xl font-bold">/api/reports</div>
-                  <div className="text-xs text-gray-400 mt-1">56% das limitações</div>
+                <div className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+                  <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">Endpoints mais limitados</div>
+                  <div className="text-2xl font-bold text-gray-900 dark:text-white">/api/reports</div>
+                  <div className="text-xs text-gray-400 dark:text-gray-500 mt-1">56% das limitações</div>
                 </div>
               </div>
             </CardContent>
@@ -378,42 +391,42 @@ export const RateLimitingPanel: React.FC<RateLimitingPanelProps> = ({
         </TabsContent>
 
         <TabsContent value="ip-rules" className="mt-4">
-          <Card>
+          <Card className="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
             <CardHeader>
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
                 <div>
-                  <CardTitle className="text-base">Regras por IP</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-base text-gray-900 dark:text-white">Regras por IP</CardTitle>
+                  <CardDescription className="text-gray-500 dark:text-gray-400">
                     Configure limites de requisição específicos por IP ou faixa de IPs
                   </CardDescription>
                 </div>
-                <Button>
+                <Button className="bg-primary hover:bg-primary/90 text-white dark:bg-primary dark:hover:bg-primary/90 dark:text-white">
                   Adicionar Regra de IP
                 </Button>
               </div>
             </CardHeader>
             <CardContent>
-              <div className="rounded-md border">
+              <div className="rounded-md border border-gray-200 dark:border-gray-700">
                 <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>IP/Faixa</TableHead>
-                      <TableHead>Tipo</TableHead>
-                      <TableHead>Limite</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead className="text-right">Ações</TableHead>
+                  <TableHeader className="bg-gray-50 dark:bg-gray-800/50">
+                    <TableRow className="border-gray-200 dark:border-gray-700">
+                      <TableHead className="text-gray-700 dark:text-gray-300">IP/Faixa</TableHead>
+                      <TableHead className="text-gray-700 dark:text-gray-300">Tipo</TableHead>
+                      <TableHead className="text-gray-700 dark:text-gray-300">Limite</TableHead>
+                      <TableHead className="text-gray-700 dark:text-gray-300">Status</TableHead>
+                      <TableHead className="text-right text-gray-700 dark:text-gray-300">Ações</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {ipRules.map((rule) => (
-                      <TableRow key={rule.id}>
-                        <TableCell className="font-medium">
+                      <TableRow key={rule.id} className="border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                        <TableCell className="font-medium text-gray-900 dark:text-white">
                           {rule.ipAddress}
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="text-gray-700 dark:text-gray-300">
                           {rule.type === 'range' ? 'Faixa de IPs' : 'IP Individual'}
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="text-gray-700 dark:text-gray-300">
                           {rule.limit} req/{rule.period}
                         </TableCell>
                         <TableCell>
@@ -421,10 +434,10 @@ export const RateLimitingPanel: React.FC<RateLimitingPanelProps> = ({
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-1">
-                            <Button variant="ghost" size="sm">
+                            <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
                               Editar
                             </Button>
-                            <Button variant="ghost" size="sm" className="text-red-500">
+                            <Button variant="ghost" size="sm" className="text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-600">
                               Remover
                             </Button>
                           </div>
@@ -439,53 +452,53 @@ export const RateLimitingPanel: React.FC<RateLimitingPanelProps> = ({
         </TabsContent>
 
         <TabsContent value="endpoint-rules" className="mt-4">
-          <Card>
+          <Card className="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
             <CardHeader>
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
                 <div>
-                  <CardTitle className="text-base">Regras por Endpoint</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-base text-gray-900 dark:text-white">Regras por Endpoint</CardTitle>
+                  <CardDescription className="text-gray-500 dark:text-gray-400">
                     Configure limites de requisição específicos por endpoint da API
                   </CardDescription>
                 </div>
-                <Button>
+                <Button className="bg-primary hover:bg-primary/90 text-white dark:bg-primary dark:hover:bg-primary/90 dark:text-white">
                   Adicionar Regra de Endpoint
                 </Button>
               </div>
             </CardHeader>
             <CardContent>
-              <div className="rounded-md border">
+              <div className="rounded-md border border-gray-200 dark:border-gray-700">
                 <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Endpoint</TableHead>
-                      <TableHead>Método</TableHead>
-                      <TableHead>Limite</TableHead>
-                      <TableHead>Descrição</TableHead>
-                      <TableHead className="text-right">Ações</TableHead>
+                  <TableHeader className="bg-gray-50 dark:bg-gray-800/50">
+                    <TableRow className="border-gray-200 dark:border-gray-700">
+                      <TableHead className="text-gray-700 dark:text-gray-300">Endpoint</TableHead>
+                      <TableHead className="text-gray-700 dark:text-gray-300">Método</TableHead>
+                      <TableHead className="text-gray-700 dark:text-gray-300">Limite</TableHead>
+                      <TableHead className="text-gray-700 dark:text-gray-300">Descrição</TableHead>
+                      <TableHead className="text-right text-gray-700 dark:text-gray-300">Ações</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {endpointRules.map((rule) => (
-                      <TableRow key={rule.id}>
-                        <TableCell className="font-mono text-xs">
+                      <TableRow key={rule.id} className="border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                        <TableCell className="font-mono text-xs text-gray-900 dark:text-white">
                           {rule.path}
                         </TableCell>
                         <TableCell>
                           {getMethodBadge(rule.method)}
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="text-gray-700 dark:text-gray-300">
                           {rule.limit} req/{rule.period}
                         </TableCell>
-                        <TableCell className="text-sm">
+                        <TableCell className="text-sm text-gray-700 dark:text-gray-300">
                           {rule.description}
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-1">
-                            <Button variant="ghost" size="sm">
+                            <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
                               Editar
                             </Button>
-                            <Button variant="ghost" size="sm" className="text-red-500">
+                            <Button variant="ghost" size="sm" className="text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-600">
                               Remover
                             </Button>
                           </div>

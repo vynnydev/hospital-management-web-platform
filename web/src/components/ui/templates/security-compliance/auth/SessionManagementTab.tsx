@@ -65,13 +65,13 @@ export const SessionManagementTab: React.FC<SessionManagementTabProps> = ({
 
   return (
     <div className="space-y-4">
-      <Card>
+      <Card className="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Timer size={18} />
+          <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
+            <Timer size={18} className="text-primary dark:text-primary-400" />
             Gerenciamento de Sessão
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-gray-500 dark:text-gray-400">
             Configure como as sessões de usuário são gerenciadas
           </CardDescription>
         </CardHeader>
@@ -79,7 +79,7 @@ export const SessionManagementTab: React.FC<SessionManagementTabProps> = ({
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="sessionTimeout">Timeout de sessão</Label>
+              <Label htmlFor="sessionTimeout" className="text-gray-700 dark:text-gray-300">Timeout de sessão</Label>
               <div className="flex items-center space-x-2">
                 <Input 
                   id="sessionTimeout" 
@@ -92,18 +92,19 @@ export const SessionManagementTab: React.FC<SessionManagementTabProps> = ({
                     sessionTimeout: parseInt(e.target.value)
                   })}
                   required
+                  className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
                 />
-                <div className="text-sm text-gray-500">minutos</div>
+                <div className="text-sm text-gray-500 dark:text-gray-400">minutos</div>
               </div>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-500 dark:text-gray-400">
                 Tempo de inatividade até encerramento automático da sessão (0 = sem timeout)
               </p>
             </div>
             
-            <div className="space-y-2 flex items-center justify-between p-2 border rounded-md">
+            <div className="space-y-2 flex items-center justify-between p-2 border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800">
               <div>
-                <Label htmlFor="extendOnActivity" className="font-medium">Estender sessão em atividade</Label>
-                <p className="text-xs text-gray-500">
+                <Label htmlFor="extendOnActivity" className="font-medium text-gray-900 dark:text-white">Estender sessão em atividade</Label>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
                   Reinicia o timer de timeout quando o usuário interage com o sistema
                 </p>
               </div>
@@ -114,18 +115,19 @@ export const SessionManagementTab: React.FC<SessionManagementTabProps> = ({
                   ...config,
                   extendOnActivity: checked
                 })}
+                className="bg-gray-200 dark:bg-gray-700 data-[state=checked]:bg-primary dark:data-[state=checked]:bg-primary-400"
               />
             </div>
           </div>
           
           <div className="space-y-4">
-            <h4 className="text-sm font-semibold">Restrições de sessão</h4>
+            <h4 className="text-sm font-semibold text-gray-900 dark:text-white">Restrições de sessão</h4>
             
             <div className="space-y-3">
-              <div className="flex items-center justify-between p-2 border rounded-md">
+              <div className="flex items-center justify-between p-2 border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800">
                 <div>
-                  <Label htmlFor="singleSession" className="font-medium">Sessão única por usuário</Label>
-                  <p className="text-xs text-gray-500">
+                  <Label htmlFor="singleSession" className="font-medium text-gray-900 dark:text-white">Sessão única por usuário</Label>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
                     Permitir apenas uma sessão ativa por usuário (fazer logout de outros logins)
                   </p>
                 </div>
@@ -138,15 +140,16 @@ export const SessionManagementTab: React.FC<SessionManagementTabProps> = ({
                     // Se ativar sessão única, desativar forçar único dispositivo (está implícito)
                     enforceSingleDevice: checked ? false : config.enforceSingleDevice
                   })}
+                  className="bg-gray-200 dark:bg-gray-700 data-[state=checked]:bg-primary dark:data-[state=checked]:bg-primary-400"
                 />
               </div>
               
-              <div className={`flex items-center justify-between p-2 border rounded-md ${
+              <div className={`flex items-center justify-between p-2 border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800 ${
                 config.singleSession ? 'opacity-50 pointer-events-none' : ''
               }`}>
                 <div>
-                  <Label htmlFor="enforceSingleDevice" className="font-medium">Forçar logout em outros dispositivos</Label>
-                  <p className="text-xs text-gray-500">
+                  <Label htmlFor="enforceSingleDevice" className="font-medium text-gray-900 dark:text-white">Forçar logout em outros dispositivos</Label>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
                     Fazer logout automático em outros dispositivos quando o usuário faz login
                   </p>
                 </div>
@@ -158,13 +161,14 @@ export const SessionManagementTab: React.FC<SessionManagementTabProps> = ({
                     ...config,
                     enforceSingleDevice: checked
                   })}
+                  className="bg-gray-200 dark:bg-gray-700 data-[state=checked]:bg-primary dark:data-[state=checked]:bg-primary-400"
                 />
               </div>
               
-              <div className="flex items-center justify-between p-2 border rounded-md">
+              <div className="flex items-center justify-between p-2 border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800">
                 <div>
-                  <Label htmlFor="forceReauthForSensitive" className="font-medium">Reautenticação para ações sensíveis</Label>
-                  <p className="text-xs text-gray-500">
+                  <Label htmlFor="forceReauthForSensitive" className="font-medium text-gray-900 dark:text-white">Reautenticação para ações sensíveis</Label>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
                     Solicitar senha novamente para realizar ações críticas
                   </p>
                 </div>
@@ -175,47 +179,80 @@ export const SessionManagementTab: React.FC<SessionManagementTabProps> = ({
                     ...config,
                     forceReauthForSensitive: checked
                   })}
+                  className="bg-gray-200 dark:bg-gray-700 data-[state=checked]:bg-primary dark:data-[state=checked]:bg-primary-400"
                 />
               </div>
             </div>
           </div>
           
-          <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="sensitive-actions">
-              <AccordionTrigger>Ações sensíveis que exigem reautenticação</AccordionTrigger>
+          <Accordion type="single" collapsible className="w-full border-gray-200 dark:border-gray-700">
+            <AccordionItem value="sensitive-actions" className="border-gray-200 dark:border-gray-700">
+              <AccordionTrigger className="text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-300">Ações sensíveis que exigem reautenticação</AccordionTrigger>
               <AccordionContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2 p-2">
                   <div className="flex items-center space-x-2">
-                    <Checkbox id="action-personal-data" defaultChecked />
-                    <Label htmlFor="action-personal-data">Alteração de dados pessoais</Label>
+                    <Checkbox 
+                      id="action-personal-data" 
+                      defaultChecked 
+                      className="text-primary dark:text-primary-400 border-gray-300 dark:border-gray-600"
+                    />
+                    <Label htmlFor="action-personal-data" className="text-gray-700 dark:text-gray-300">Alteração de dados pessoais</Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Checkbox id="action-security" defaultChecked />
-                    <Label htmlFor="action-security">Configurações de segurança</Label>
+                    <Checkbox 
+                      id="action-security" 
+                      defaultChecked 
+                      className="text-primary dark:text-primary-400 border-gray-300 dark:border-gray-600"
+                    />
+                    <Label htmlFor="action-security" className="text-gray-700 dark:text-gray-300">Configurações de segurança</Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Checkbox id="action-roles" defaultChecked />
-                    <Label htmlFor="action-roles">Alteração de papéis/permissões</Label>
+                    <Checkbox 
+                      id="action-roles" 
+                      defaultChecked 
+                      className="text-primary dark:text-primary-400 border-gray-300 dark:border-gray-600"
+                    />
+                    <Label htmlFor="action-roles" className="text-gray-700 dark:text-gray-300">Alteração de papéis/permissões</Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Checkbox id="action-bulk-data" defaultChecked />
-                    <Label htmlFor="action-bulk-data">Exportação de dados em massa</Label>
+                    <Checkbox 
+                      id="action-bulk-data" 
+                      defaultChecked 
+                      className="text-primary dark:text-primary-400 border-gray-300 dark:border-gray-600"
+                    />
+                    <Label htmlFor="action-bulk-data" className="text-gray-700 dark:text-gray-300">Exportação de dados em massa</Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Checkbox id="action-delete" defaultChecked />
-                    <Label htmlFor="action-delete">Operações de exclusão</Label>
+                    <Checkbox 
+                      id="action-delete" 
+                      defaultChecked 
+                      className="text-primary dark:text-primary-400 border-gray-300 dark:border-gray-600"
+                    />
+                    <Label htmlFor="action-delete" className="text-gray-700 dark:text-gray-300">Operações de exclusão</Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Checkbox id="action-financial" defaultChecked />
-                    <Label htmlFor="action-financial">Transações financeiras</Label>
+                    <Checkbox 
+                      id="action-financial" 
+                      defaultChecked 
+                      className="text-primary dark:text-primary-400 border-gray-300 dark:border-gray-600"
+                    />
+                    <Label htmlFor="action-financial" className="text-gray-700 dark:text-gray-300">Transações financeiras</Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Checkbox id="action-hipaa" defaultChecked />
-                    <Label htmlFor="action-hipaa">Acesso a dados sensíveis (LGPD)</Label>
+                    <Checkbox 
+                      id="action-hipaa" 
+                      defaultChecked 
+                      className="text-primary dark:text-primary-400 border-gray-300 dark:border-gray-600"
+                    />
+                    <Label htmlFor="action-hipaa" className="text-gray-700 dark:text-gray-300">Acesso a dados sensíveis (LGPD)</Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Checkbox id="action-medical" defaultChecked />
-                    <Label htmlFor="action-medical">Prescrições médicas</Label>
+                    <Checkbox 
+                      id="action-medical" 
+                      defaultChecked 
+                      className="text-primary dark:text-primary-400 border-gray-300 dark:border-gray-600"
+                    />
+                    <Label htmlFor="action-medical" className="text-gray-700 dark:text-gray-300">Prescrições médicas</Label>
                   </div>
                 </div>
               </AccordionContent>
@@ -224,13 +261,14 @@ export const SessionManagementTab: React.FC<SessionManagementTabProps> = ({
         </CardContent>
         
         <CardFooter className="flex justify-between">
-          <div className="flex items-center text-sm text-gray-500">
-            <Info size={16} className="mr-1" />
+          <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+            <Info size={16} className="mr-1 text-blue-500 dark:text-blue-400" />
             <span>A sessão atual será mantida após salvar as alterações</span>
           </div>
           <Button 
             onClick={handleSave} 
             disabled={loading || isSaving}
+            className="bg-primary hover:bg-primary/90 text-white dark:bg-primary dark:hover:bg-primary/90 dark:text-white disabled:bg-gray-200 dark:disabled:bg-gray-800 disabled:text-gray-500 dark:disabled:text-gray-500"
           >
             Salvar Configurações
           </Button>
@@ -248,68 +286,71 @@ export const SessionManagementTab: React.FC<SessionManagementTabProps> = ({
 // Componente para o card de sessões ativas
 const ActiveSessionsCard: React.FC = () => {
   return (
-    <Card>
+    <Card className="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-base">
-          <LogIn size={18} />
+        <CardTitle className="flex items-center gap-2 text-base text-gray-900 dark:text-white">
+          <LogIn size={18} className="text-primary dark:text-primary-400" />
           Sessões Ativas
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-gray-500 dark:text-gray-400">
           Visualize e gerencie as sessões de usuário ativas no sistema
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
           <div className="flex justify-between items-center text-sm">
-            <span>Sessões ativas no momento:</span>
-            <Badge>134</Badge>
+            <span className="text-gray-700 dark:text-gray-300">Sessões ativas no momento:</span>
+            <Badge className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">134</Badge>
           </div>
           
           <div className="space-y-1">
-            <div className="text-sm font-medium">Top 5 usuários por sessões:</div>
+            <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Top 5 usuários por sessões:</div>
             
             <div className="space-y-2 mt-2">
               <div className="flex items-center justify-between text-sm">
                 <div className="flex items-center gap-2">
                   <Avatar className="h-8 w-8">
-                    <div className="bg-primary text-white rounded-full h-8 w-8 flex items-center justify-center">
+                    <div className="bg-primary text-white dark:bg-primary dark:text-white rounded-full h-8 w-8 flex items-center justify-center">
                       MA
                     </div>
                   </Avatar>
-                  <div>Maria Almeida (Médico)</div>
+                  <div className="text-gray-900 dark:text-white">Maria Almeida (Médico)</div>
                 </div>
-                <Badge variant="outline">3 sessões</Badge>
+                <Badge variant="outline" className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300">3 sessões</Badge>
               </div>
               
               <div className="flex items-center justify-between text-sm">
                 <div className="flex items-center gap-2">
                   <Avatar className="h-8 w-8">
-                    <div className="bg-primary text-white rounded-full h-8 w-8 flex items-center justify-center">
+                    <div className="bg-primary text-white dark:bg-primary dark:text-white rounded-full h-8 w-8 flex items-center justify-center">
                       CS
                     </div>
                   </Avatar>
-                  <div>Carlos Silva (Administrador)</div>
+                  <div className="text-gray-900 dark:text-white">Carlos Silva (Administrador)</div>
                 </div>
-                <Badge variant="outline">2 sessões</Badge>
+                <Badge variant="outline" className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300">2 sessões</Badge>
               </div>
               
               <div className="flex items-center justify-between text-sm">
                 <div className="flex items-center gap-2">
                   <Avatar className="h-8 w-8">
-                    <div className="bg-primary text-white rounded-full h-8 w-8 flex items-center justify-center">
+                    <div className="bg-primary text-white dark:bg-primary dark:text-white rounded-full h-8 w-8 flex items-center justify-center">
                       JP
                     </div>
                   </Avatar>
-                  <div>Julia Pereira (Enfermeiro)</div>
+                  <div className="text-gray-900 dark:text-white">Julia Pereira (Enfermeiro)</div>
                 </div>
-                <Badge variant="outline">2 sessões</Badge>
+                <Badge variant="outline" className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300">2 sessões</Badge>
               </div>
             </div>
           </div>
         </div>
       </CardContent>
       <CardFooter>
-        <Button variant="outline" className="w-full">
+        <Button 
+          variant="outline" 
+          className="w-full border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+        >
           Ver Todas as Sessões
         </Button>
       </CardFooter>
@@ -320,22 +361,22 @@ const ActiveSessionsCard: React.FC = () => {
 // Componente para o card de ações de emergência
 const EmergencyActionsCard: React.FC = () => {
   return (
-    <Card>
+    <Card className="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-base">
-          <LogOut size={18} />
+        <CardTitle className="flex items-center gap-2 text-base text-gray-900 dark:text-white">
+          <LogOut size={18} className="text-primary dark:text-primary-400" />
           Ações de Emergência
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-gray-500 dark:text-gray-400">
           Ações de segurança para situações críticas
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="bg-yellow-50 p-3 rounded-md border border-yellow-200 flex items-start">
-          <AlertTriangle className="h-5 w-5 text-yellow-500 mr-2 mt-0.5" />
+        <div className="bg-yellow-50 dark:bg-yellow-900/20 p-3 rounded-md border border-yellow-200 dark:border-yellow-800 flex items-start">
+          <AlertTriangle className="h-5 w-5 text-yellow-500 dark:text-yellow-400 mr-2 mt-0.5" />
           <div>
-            <p className="text-sm font-medium text-yellow-700">Atenção!</p>
-            <p className="text-xs text-yellow-600">
+            <p className="text-sm font-medium text-yellow-700 dark:text-yellow-300">Atenção!</p>
+            <p className="text-xs text-yellow-600 dark:text-yellow-400">
               Estas ações afetam todos os usuários e devem ser usadas apenas em situações de segurança críticas.
             </p>
           </div>
@@ -344,101 +385,135 @@ const EmergencyActionsCard: React.FC = () => {
         <div className="space-y-2">
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="outline" className="w-full flex items-center justify-between">
+              <Button 
+                variant="outline" 
+                className="w-full flex items-center justify-between border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+              >
                 <span>Encerrar todas as sessões</span>
                 <LogOut size={16} />
               </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
               <DialogHeader>
-                <DialogTitle>Encerrar todas as sessões</DialogTitle>
-                <DialogDescription>
+                <DialogTitle className="text-gray-900 dark:text-white">Encerrar todas as sessões</DialogTitle>
+                <DialogDescription className="text-gray-500 dark:text-gray-400">
                   Esta ação desconectará todos os usuários do sistema. Todos precisarão fazer login novamente.
                 </DialogDescription>
               </DialogHeader>
               <div className="space-y-4 py-4">
-                <div className="bg-red-50 p-3 rounded-md border border-red-200 flex items-start">
-                  <AlertTriangle className="h-5 w-5 text-red-500 mr-2 mt-0.5" />
+                <div className="bg-red-50 dark:bg-red-900/20 p-3 rounded-md border border-red-200 dark:border-red-800 flex items-start">
+                  <AlertTriangle className="h-5 w-5 text-red-500 dark:text-red-400 mr-2 mt-0.5" />
                   <div>
-                    <p className="text-sm font-medium text-red-700">Atenção!</p>
-                    <p className="text-xs text-red-600">
+                    <p className="text-sm font-medium text-red-700 dark:text-red-300">Atenção!</p>
+                    <p className="text-xs text-red-600 dark:text-red-400">
                       Esta é uma ação disruptiva. Use apenas em caso de suspeita de comprometimento do sistema.
                     </p>
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="confirmation-logout">Digite &quot;CONFIRMAR&quot; para prosseguir:</Label>
-                  <Input id="confirmation-logout" placeholder="CONFIRMAR" />
+                  <Label htmlFor="confirmation-logout" className="text-gray-700 dark:text-gray-300">Digite &quot;CONFIRMAR&quot; para prosseguir:</Label>
+                  <Input 
+                    id="confirmation-logout" 
+                    placeholder="CONFIRMAR" 
+                    className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
+                  />
                 </div>
               </div>
               <DialogFooter>
-                <Button variant="ghost">Cancelar</Button>
-                <Button variant="destructive">Encerrar Todas as Sessões</Button>
+                <Button 
+                  variant="ghost"
+                  className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
+                >
+                  Cancelar
+                </Button>
+                <Button 
+                  variant="destructive"
+                  className="bg-red-600 hover:bg-red-700 text-white dark:bg-red-600 dark:hover:bg-red-700 dark:text-white"
+                >
+                  Encerrar Todas as Sessões
+                </Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>
           
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="outline" className="w-full flex items-center justify-between">
+              <Button 
+                variant="outline" 
+                className="w-full flex items-center justify-between border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+              >
                 <span>Bloquear novos logins</span>
                 <Lock size={16} />
               </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
               <DialogHeader>
-                <DialogTitle>Bloquear novos logins</DialogTitle>
-                <DialogDescription>
+                <DialogTitle className="text-gray-900 dark:text-white">Bloquear novos logins</DialogTitle>
+                <DialogDescription className="text-gray-500 dark:text-gray-400">
                   Esta ação impedirá qualquer novo login no sistema, mantendo apenas as sessões existentes.
                 </DialogDescription>
               </DialogHeader>
               <div className="space-y-4 py-4">
-                <div className="bg-red-50 p-3 rounded-md border border-red-200 flex items-start">
-                  <AlertTriangle className="h-5 w-5 text-red-500 mr-2 mt-0.5" />
+                <div className="bg-red-50 dark:bg-red-900/20 p-3 rounded-md border border-red-200 dark:border-red-800 flex items-start">
+                  <AlertTriangle className="h-5 w-5 text-red-500 dark:text-red-400 mr-2 mt-0.5" />
                   <div>
-                    <p className="text-sm font-medium text-red-700">Atenção!</p>
-                    <p className="text-xs text-red-600">
+                    <p className="text-sm font-medium text-red-700 dark:text-red-300">Atenção!</p>
+                    <p className="text-xs text-red-600 dark:text-red-400">
                       Isto pode impedir acesso legítimo ao sistema. Use com cautela.
                     </p>
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="lockout-duration">Duração do bloqueio:</Label>
+                  <Label htmlFor="lockout-duration" className="text-gray-700 dark:text-gray-300">Duração do bloqueio:</Label>
                   <Select defaultValue="60">
-                    <SelectTrigger>
+                    <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white">
                       <SelectValue placeholder="Selecione a duração" />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="15">15 minutos</SelectItem>
-                      <SelectItem value="30">30 minutos</SelectItem>
-                      <SelectItem value="60">1 hora</SelectItem>
-                      <SelectItem value="240">4 horas</SelectItem>
-                      <SelectItem value="720">12 horas</SelectItem>
-                      <SelectItem value="1440">24 horas</SelectItem>
-                      <SelectItem value="0">Indefinido (até desbloquear manualmente)</SelectItem>
+                    <SelectContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                      <SelectItem value="15" className="text-gray-900 dark:text-white">15 minutos</SelectItem>
+                      <SelectItem value="30" className="text-gray-900 dark:text-white">30 minutos</SelectItem>
+                      <SelectItem value="60" className="text-gray-900 dark:text-white">1 hora</SelectItem>
+                      <SelectItem value="240" className="text-gray-900 dark:text-white">4 horas</SelectItem>
+                      <SelectItem value="720" className="text-gray-900 dark:text-white">12 horas</SelectItem>
+                      <SelectItem value="1440" className="text-gray-900 dark:text-white">24 horas</SelectItem>
+                      <SelectItem value="0" className="text-gray-900 dark:text-white">Indefinido (até desbloquear manualmente)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="exception-role">Exceção para papel:</Label>
+                  <Label htmlFor="exception-role" className="text-gray-700 dark:text-gray-300">Exceção para papel:</Label>
                   <Select defaultValue="admin">
-                    <SelectTrigger>
+                    <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white">
                       <SelectValue placeholder="Selecione o papel" />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="admin">Administradores</SelectItem>
-                      <SelectItem value="none">Nenhum (bloquear todos)</SelectItem>
+                    <SelectContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                      <SelectItem value="admin" className="text-gray-900 dark:text-white">Administradores</SelectItem>
+                      <SelectItem value="none" className="text-gray-900 dark:text-white">Nenhum (bloquear todos)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="confirmation-block">Digite &quot;CONFIRMAR&quot; para prosseguir:</Label>
-                  <Input id="confirmation-block" placeholder="CONFIRMAR" />
+                  <Label htmlFor="confirmation-block" className="text-gray-700 dark:text-gray-300">Digite &quot;CONFIRMAR&quot; para prosseguir:</Label>
+                  <Input 
+                    id="confirmation-block" 
+                    placeholder="CONFIRMAR"
+                    className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white" 
+                  />
                 </div>
               </div>
               <DialogFooter>
-                <Button variant="ghost">Cancelar</Button>
-                <Button variant="destructive">Bloquear Novos Logins</Button>
+                <Button 
+                  variant="ghost"
+                  className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
+                >
+                  Cancelar
+                </Button>
+                <Button 
+                  variant="destructive"
+                  className="bg-red-600 hover:bg-red-700 text-white dark:bg-red-600 dark:hover:bg-red-700 dark:text-white"
+                >
+                  Bloquear Novos Logins
+                </Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>

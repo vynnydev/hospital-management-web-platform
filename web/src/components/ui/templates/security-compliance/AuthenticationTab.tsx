@@ -18,12 +18,12 @@ export const AuthenticationTab = () => {
         onValueChange={setSelectedTab} 
         className="w-full"
       >
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="mfa" className="flex items-center gap-2">
+        <TabsList className="grid w-full grid-cols-2 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+          <TabsTrigger value="mfa" className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-primary dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-primary-400">
             <Key size={16} />
             <span>Autenticação Multi-Fator (MFA)</span>
           </TabsTrigger>
-          <TabsTrigger value="session" className="flex items-center gap-2">
+          <TabsTrigger value="session" className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-primary dark:data-[state=active]:bg-gray-700 dark:data-[state=active]:text-primary-400">
             <Timer size={16} />
             <span>Gerenciamento de Sessão</span>
           </TabsTrigger>
