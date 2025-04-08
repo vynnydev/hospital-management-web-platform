@@ -5209,588 +5209,6 @@
     "averageSyncTime": 45,
     "uptime": "99.8%"
   },
-  "financeSettings": {
-    "networkDefaults": {
-      "currency": {
-        "code": "BRL",
-        "symbol": "R$",
-        "decimalSeparator": ",",
-        "thousandsSeparator": ".",
-        "decimalPlaces": 2,
-        "symbolPosition": "before"
-      },
-      "tax": {
-        "vatEnabled": true,
-        "vatRate": 5,
-        "additionalTaxes": [
-          {
-            "name": "COFINS",
-            "rate": 3,
-            "appliesTo": [
-              "consultations",
-              "procedures"
-            ]
-          },
-          {
-            "name": "PIS",
-            "rate": 0.65,
-            "appliesTo": [
-              "consultations",
-              "procedures",
-              "hospitalization"
-            ]
-          }
-        ],
-        "taxExemptions": [
-          {
-            "name": "Isenção para Entidades Filantrópicas",
-            "code": "EX-FILAN-001",
-            "description": "Isenção fiscal para entidades filantrópicas de saúde"
-          }
-        ]
-      },
-      "patientBilling": {
-        "defaultBillingCycle": "monthly",
-        "acceptedPaymentMethods": [
-          "credit_card",
-          "debit_card",
-          "insurance",
-          "bank_transfer",
-          "pix"
-        ],
-        "defaultPaymentTerms": 30,
-        "automaticBillingEnabled": true,
-        "sendPaymentReminders": true,
-        "discountSettings": {
-          "earlyPaymentDiscountEnabled": true,
-          "earlyPaymentDiscountRate": 5,
-          "earlyPaymentDaysThreshold": 10,
-          "volumeDiscountEnabled": true,
-          "volumeDiscountThresholds": [
-            {
-              "amount": 5000,
-              "discountRate": 5
-            },
-            {
-              "amount": 10000,
-              "discountRate": 10
-            },
-            {
-              "amount": 20000,
-              "discountRate": 15
-            }
-          ]
-        },
-        "defaultInsuranceBillingEnabled": true
-      },
-      "budget": {
-        "fiscalYearStart": {
-          "month": 1,
-          "day": 1
-        },
-        "defaultDepartmentalAllocations": [
-          {
-            "departmentId": "UTI",
-            "percentage": 30
-          },
-          {
-            "departmentId": "Enfermaria",
-            "percentage": 25
-          },
-          {
-            "departmentId": "Centro Cirúrgico",
-            "percentage": 20
-          },
-          {
-            "departmentId": "Ambulatório",
-            "percentage": 15
-          },
-          {
-            "departmentId": "Administrativo",
-            "percentage": 10
-          }
-        ],
-        "budgetApprovalWorkflow": [
-          {
-            "role": "Gerente Financeiro",
-            "order": 1
-          },
-          {
-            "role": "Diretor Administrativo",
-            "order": 2
-          },
-          {
-            "role": "Diretor Executivo",
-            "order": 3
-          }
-        ],
-        "budgetReviewFrequency": "quarterly",
-        "thresholdForAlerts": {
-          "underBudget": 15,
-          "overBudget": 10
-        }
-      },
-      "serviceCost": {
-        "calculateAutomatically": true,
-        "defaultMarkupPercentage": 30,
-        "costUpdateFrequency": "monthly",
-        "includedOverheadPercentage": 15,
-        "customPricingEnabled": true
-      },
-      "financialReports": {
-        "defaultReportTypes": [
-          "monthly",
-          "quarterly",
-          "annual"
-        ],
-        "automaticReportGeneration": true,
-        "recipientEmails": [
-          "financeiro@hospital.com",
-          "diretoria@hospital.com"
-        ],
-        "exportFormats": [
-          "pdf",
-          "excel"
-        ],
-        "includedMetrics": [
-          "revenue",
-          "expenses",
-          "margin",
-          "cashflow"
-        ],
-        "retentionPeriod": 60
-      },
-      "insurance": {
-        "providers": [
-          {
-            "id": "conv-001",
-            "name": "Unimed",
-            "contractCode": "UNI-12345",
-            "billingCode": "BILL-UNI-001",
-            "contactInfo": {
-              "email": "faturamento@unimed.com.br",
-              "phone": "(11) 3333-4444"
-            },
-            "servicesMap": [
-              {
-                "serviceCode": "CONS-001",
-                "coveragePercentage": 80,
-                "requiresPreAuthorization": false,
-                "maxAllowedAmount": 250
-              },
-              {
-                "serviceCode": "PROC-122",
-                "coveragePercentage": 70,
-                "requiresPreAuthorization": true,
-                "maxAllowedAmount": 5000
-              }
-            ],
-            "submissionMethod": "electronic",
-            "paymentTerms": 45
-          }
-        ],
-        "defaultProvider": "conv-001"
-      },
-      "auditSettings": {
-        "internalAuditFrequency": "quarterly",
-        "externalAuditRequired": true,
-        "externalAuditFrequency": "annual",
-        "auditTrailRetention": 24,
-        "responsibleRoles": [
-          "Auditor Interno",
-          "Gerente Financeiro"
-        ]
-      },
-      "integrations": {
-        "enabled": true,
-        "systems": [
-          {
-            "id": "sys-001",
-            "name": "Sistema Contábil ERP",
-            "type": "accounting",
-            "apiEndpoint": "https://api.contabil.com.br/v1",
-            "apiKey": "api_key_12345",
-            "refreshToken": "refresh_token_12345",
-            "syncFrequency": "daily",
-            "lastSync": "2025-04-01T08:00:00Z",
-            "mappedFields": {
-              "invoice": "fatura",
-              "patient": "paciente",
-              "service": "servico"
-            }
-          }
-        ]
-      },
-      "lastUpdated": "2025-04-01T10:00:00Z",
-      "updatedBy": "admin"
-    },
-    "settings": {
-      "hospital-001": {
-        "currency": {
-          "decimalPlaces": 3
-        },
-        "patientBilling": {
-          "defaultPaymentTerms": 45
-        },
-        "lastUpdated": "2025-04-01T11:30:00Z",
-        "updatedBy": "john.doe"
-      }
-    }
-  },
-  "financePriceTables": {
-    "tables": [
-      {
-        "id": "price-table-001",
-        "name": "Tabela Padrão de Procedimentos",
-        "description": "Tabela de preços padrão para procedimentos e consultas",
-        "isDefault": true,
-        "validFrom": "2025-01-01",
-        "validUntil": null,
-        "insuranceProviderId": null,
-        "items": [
-          {
-            "id": "item-001",
-            "code": "CONS-001",
-            "name": "Consulta Médica Básica",
-            "description": "Consulta inicial com médico generalista",
-            "category": "consultas",
-            "unitPrice": 250,
-            "customMarkup": null,
-            "taxIncluded": true,
-            "effectiveTaxRate": 5
-          },
-          {
-            "id": "item-002",
-            "code": "CONS-002",
-            "name": "Consulta Médica Especializada",
-            "description": "Consulta com médico especialista",
-            "category": "consultas",
-            "unitPrice": 350,
-            "customMarkup": null,
-            "taxIncluded": true,
-            "effectiveTaxRate": 5
-          }
-        ]
-      }
-    ]
-  },
-  "financeBillingModels": {
-    "models": [
-      {
-        "id": "billing-model-001",
-        "name": "Faturamento Diário Padrão",
-        "description": "Modelo de faturamento baseado em diárias hospitalares",
-        "type": "daily",
-        "isDefault": true,
-        "applicableAreas": [
-          "inpatient",
-          "icu"
-        ],
-        "rules": {
-          "dailyRates": {
-            "enabled": true,
-            "includesBasicMedication": true,
-            "includesNursing": true,
-            "bedTypes": {
-              "standard": 500,
-              "semiprivate": 750,
-              "private": 1200,
-              "luxury": 2000,
-              "icu": 3500
-            }
-          },
-          "procedureBased": {
-            "enabled": true,
-            "priceTableId": "price-table-001",
-            "comboProcedureDiscounts": []
-          },
-          "packages": {
-            "enabled": false,
-            "definitions": []
-          }
-        },
-        "customFields": {}
-      }
-    ]
-  },
-  "financeIntegrationStatus": {
-    "id": "sys-001",
-    "name": "Sistema Contábil ERP",
-    "status": "active",
-    "lastSync": "2025-04-01T08:00:00Z",
-    "nextScheduledSync": "2025-04-02T08:00:00Z",
-    "errorCount": 0,
-    "syncHistory": [
-      {
-        "timestamp": "2025-04-01T08:00:00Z",
-        "status": "success",
-        "recordsProcessed": 156,
-        "errorDetails": null
-      },
-      {
-        "timestamp": "2025-03-31T08:00:00Z",
-        "status": "success",
-        "recordsProcessed": 142,
-        "errorDetails": null
-      }
-    ],
-    "connectionHealth": 100,
-    "credentials": {
-      "valid": true,
-      "expiry": "2025-10-01T00:00:00Z"
-    }
-  },
-  "financeReportTemplates": {
-    "templates": [
-      {
-        "id": "report-001",
-        "name": "Relatório Financeiro Mensal",
-        "description": "Relatório padrão de resultados financeiros mensais",
-        "type": "financial",
-        "format": "pdf",
-        "periodicity": "monthly",
-        "sections": [
-          {
-            "id": "section-001",
-            "title": "Resumo Executivo",
-            "type": "summary",
-            "dataSource": "financial_data",
-            "columns": [
-              "metric",
-              "value",
-              "comparison"
-            ],
-            "chartType": null,
-            "sortBy": null,
-            "filters": null
-          },
-          {
-            "id": "section-002",
-            "title": "Receita por Departamento",
-            "type": "chart",
-            "dataSource": "department_revenue",
-            "columns": [
-              "department",
-              "revenue"
-            ],
-            "chartType": "bar",
-            "sortBy": "revenue",
-            "filters": null
-          }
-        ],
-        "recipients": [
-          "diretoria@hospital.com"
-        ],
-        "scheduledDelivery": {
-          "enabled": true,
-          "dayOfMonth": 5,
-          "dayOfWeek": null,
-          "time": "08:00"
-        }
-      }
-    ]
-  },
-  "financeDashboard": {
-    "summary": {
-      "totalRevenue": 1254789.56,
-      "totalExpenses": 980456.32,
-      "grossMargin": 274333.24,
-      "grossMarginPercentage": 21.86,
-      "periodComparison": {
-        "revenue": {
-          "value": 7.2,
-          "trend": "up"
-        },
-        "expenses": {
-          "value": 3.5,
-          "trend": "up"
-        },
-        "margin": {
-          "value": 18.6,
-          "trend": "up"
-        }
-      },
-      "cashPosition": 340125.89,
-      "accountsReceivable": 285690.45,
-      "accountsPayable": 175320.78,
-      "lastUpdated": "2025-04-01T10:30:00Z"
-    },
-    "departments": [
-      {
-        "id": "UTI",
-        "name": "Unidade de Terapia Intensiva",
-        "revenue": 425690.32,
-        "expenses": 385420.45,
-        "margin": 40269.87,
-        "marginPercentage": 9.46,
-        "budget": {
-          "allocated": 400000,
-          "consumed": 385420.45,
-          "remaining": 14579.55,
-          "status": "on_track"
-        }
-      },
-      {
-        "id": "Centro Cirúrgico",
-        "name": "Centro Cirúrgico",
-        "revenue": 358945.67,
-        "expenses": 298567.23,
-        "margin": 60378.44,
-        "marginPercentage": 16.82,
-        "budget": {
-          "allocated": 300000,
-          "consumed": 298567.23,
-          "remaining": 1432.77,
-          "status": "warning"
-        }
-      }
-    ],
-    "alerts": [
-      {
-        "id": "alert-001",
-        "type": "budget",
-        "severity": "warning",
-        "message": "Centro Cirúrgico próximo de atingir limite orçamentário",
-        "details": "99.5% do orçamento consumido com 25 dias restantes no período",
-        "timestamp": "2025-04-01T09:15:00Z",
-        "actionRequired": true
-      }
-    ]
-  },
-  "financeAuditLogs": {
-    "logs": [
-      {
-        "id": "log-001",
-        "timestamp": "2025-04-01T10:30:45Z",
-        "userId": "john.doe",
-        "userName": "John Doe",
-        "action": "update",
-        "entity": "finance_settings",
-        "entityId": "hospital-001",
-        "changes": [
-          {
-            "field": "patientBilling.defaultPaymentTerms",
-            "oldValue": 30,
-            "newValue": 45
-          }
-        ],
-        "ipAddress": "192.168.1.100",
-        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-      }
-    ],
-    "pagination": {
-      "totalRecords": 152,
-      "page": 1,
-      "perPage": 50,
-      "totalPages": 4
-    }
-  },
-  "financeAnalyticsPredictions": {
-    "cashFlow": {
-      "predicted": [
-        {
-          "date": "2025-05-01",
-          "inflow": 1280000,
-          "outflow": 995000
-        },
-        {
-          "date": "2025-06-01",
-          "inflow": 1310000,
-          "outflow": 1010000
-        },
-        {
-          "date": "2025-07-01",
-          "inflow": 1345000,
-          "outflow": 1025000
-        }
-      ],
-      "accuracy": 92.5,
-      "factors": [
-        {
-          "name": "Sazonalidade",
-          "impact": "positive",
-          "value": 5.2
-        },
-        {
-          "name": "Tendência histórica",
-          "impact": "positive",
-          "value": 3.8
-        }
-      ]
-    },
-    "pricing": {
-      "recommendations": [
-        {
-          "itemId": "CONS-002",
-          "currentPrice": 350,
-          "recommendedPrice": 375,
-          "potentialRevenueIncrease": 8750,
-          "confidence": 85
-        }
-      ]
-    },
-    "budgetRecommendations": {
-      "departments": [
-        {
-          "id": "Centro Cirúrgico",
-          "currentAllocation": 20,
-          "recommendedAllocation": 23.5,
-          "reason": "Aumento de demanda projetado em 15% para o próximo trimestre"
-        }
-      ]
-    }
-  },
-  "financeInvoices": {
-    "invoices": [
-      {
-        "id": "INV-001-2025",
-        "patient": {
-          "id": "PAT-12345",
-          "name": "João Silva"
-        },
-        "hospital": {
-          "id": "hospital-001",
-          "name": "Hospital Central"
-        },
-        "issueDate": "2025-04-01",
-        "dueDate": "2025-05-01",
-        "status": "pending",
-        "totalAmount": 3575.5,
-        "items": [
-          {
-            "code": "CONS-001",
-            "description": "Consulta Médica Básica",
-            "quantity": 1,
-            "unitPrice": 250,
-            "totalPrice": 250,
-            "taxAmount": 12.5
-          },
-          {
-            "code": "PROC-001",
-            "description": "Radiografia Simples",
-            "quantity": 2,
-            "unitPrice": 180,
-            "totalPrice": 360,
-            "taxAmount": 18
-          }
-        ],
-        "payments": [],
-        "insuranceProvider": {
-          "id": "conv-001",
-          "name": "Unimed",
-          "coverage": 80
-        },
-        "patientResponsibility": 715.1,
-        "insuranceResponsibility": 2860.4
-      }
-    ],
-    "pagination": {
-      "totalRecords": 325,
-      "page": 1,
-      "perPage": 50,
-      "totalPages": 7
-    }
-  },
   "config": {
     "passwordPolicies": [
       {
@@ -6276,622 +5694,6 @@
     "createdAt": "2025-03-15T15:00:00Z",
     "updatedAt": "2025-04-17T10:30:00Z"
   },
-  "payment-cards": [
-    {
-      "id": "card-001",
-      "cardNumber": "**** **** **** 4582",
-      "cardHolderName": "Hospital São Lucas",
-      "expiryDate": "09/26",
-      "cardType": "corporate",
-      "cardBrand": "mastercard",
-      "lastFourDigits": "4582",
-      "billingAddress": {
-        "street": "Avenida Principal",
-        "number": "1500",
-        "complement": "Torre Corporativa",
-        "neighborhood": "Centro Médico",
-        "city": "São Paulo",
-        "state": "SP",
-        "zipCode": "04555-000",
-        "country": "Brasil"
-      },
-      "isDefault": true,
-      "status": "active",
-      "securitySettings": {
-        "requiresPin": true,
-        "requires2FA": true,
-        "allowOnlineTransactions": true,
-        "allowInternationalTransactions": false,
-        "transactionApprovalThreshold": 5000,
-        "allowedApprovers": [
-          "user-001",
-          "user-002",
-          "user-004"
-        ],
-        "maxDailyTransactionAmount": 15000,
-        "maxMonthlyTransactionAmount": 100000
-      },
-      "issuedAt": "2023-05-15T10:30:00Z",
-      "updatedAt": "2025-03-10T14:45:00Z",
-      "departmentId": "dept-001",
-      "departmentName": "Administração",
-      "usageRestrictions": {
-        "allowedCategories": [
-          "medical_supplies",
-          "pharmaceuticals",
-          "equipment",
-          "office_supplies",
-          "utilities"
-        ],
-        "restrictedMerchants": [],
-        "allowedDaysOfWeek": [
-          1,
-          2,
-          3,
-          4,
-          5
-        ]
-      },
-      "creditLimit": 50000,
-      "availableBalance": 32450.75,
-      "cardImage": "/assets/cards/corporate-mastercard.svg",
-      "colorScheme": "gradient-blue"
-    },
-    {
-      "id": "card-002",
-      "cardNumber": "**** **** **** 7791",
-      "cardHolderName": "Farmácia Central",
-      "expiryDate": "11/27",
-      "cardType": "corporate",
-      "cardBrand": "visa",
-      "lastFourDigits": "7791",
-      "isDefault": false,
-      "status": "active",
-      "securitySettings": {
-        "requiresPin": true,
-        "requires2FA": true,
-        "allowOnlineTransactions": true,
-        "allowInternationalTransactions": false,
-        "transactionApprovalThreshold": 3000,
-        "allowedApprovers": [
-          "user-001",
-          "user-003"
-        ],
-        "maxDailyTransactionAmount": 10000,
-        "maxMonthlyTransactionAmount": 50000
-      },
-      "issuedAt": "2023-06-20T09:15:00Z",
-      "updatedAt": "2025-02-15T11:20:00Z",
-      "departmentId": "dept-003",
-      "departmentName": "Farmácia",
-      "usageRestrictions": {
-        "allowedCategories": [
-          "pharmaceuticals"
-        ],
-        "restrictedMerchants": [],
-        "allowedDaysOfWeek": [
-          1,
-          2,
-          3,
-          4,
-          5,
-          6
-        ]
-      },
-      "creditLimit": 30000,
-      "availableBalance": 25678.92,
-      "cardImage": "/assets/cards/corporate-visa.svg",
-      "colorScheme": "gradient-green"
-    },
-    {
-      "id": "card-003",
-      "cardNumber": "**** **** **** 3507",
-      "cardHolderName": "Suprimentos Médicos",
-      "expiryDate": "02/27",
-      "cardType": "corporate",
-      "cardBrand": "mastercard",
-      "lastFourDigits": "3507",
-      "isDefault": false,
-      "status": "active",
-      "securitySettings": {
-        "requiresPin": true,
-        "requires2FA": true,
-        "allowOnlineTransactions": true,
-        "allowInternationalTransactions": true,
-        "transactionApprovalThreshold": 10000,
-        "allowedApprovers": [
-          "user-001",
-          "user-002"
-        ],
-        "maxDailyTransactionAmount": 25000,
-        "maxMonthlyTransactionAmount": 150000
-      },
-      "issuedAt": "2023-04-10T14:30:00Z",
-      "updatedAt": "2025-01-20T10:10:00Z",
-      "departmentId": "dept-002",
-      "departmentName": "Suprimentos",
-      "usageRestrictions": {
-        "allowedCategories": [
-          "medical_supplies",
-          "equipment"
-        ],
-        "restrictedMerchants": [],
-        "allowedDaysOfWeek": [
-          1,
-          2,
-          3,
-          4,
-          5
-        ]
-      },
-      "creditLimit": 75000,
-      "availableBalance": 42189.5,
-      "cardImage": "/assets/cards/corporate-mastercard.svg",
-      "colorScheme": "gradient-blue"
-    },
-    {
-      "id": "card-004",
-      "cardNumber": "**** **** **** 6190",
-      "cardHolderName": "Departamento de TI",
-      "expiryDate": "08/28",
-      "cardType": "virtual",
-      "cardBrand": "visa",
-      "lastFourDigits": "6190",
-      "isDefault": false,
-      "status": "active",
-      "securitySettings": {
-        "requiresPin": false,
-        "requires2FA": true,
-        "allowOnlineTransactions": true,
-        "allowInternationalTransactions": false,
-        "transactionApprovalThreshold": 2000,
-        "allowedApprovers": [
-          "user-001",
-          "user-004"
-        ],
-        "maxDailyTransactionAmount": 5000,
-        "maxMonthlyTransactionAmount": 20000
-      },
-      "issuedAt": "2024-02-05T16:45:00Z",
-      "updatedAt": "2025-02-05T16:45:00Z",
-      "departmentId": "dept-004",
-      "departmentName": "Tecnologia",
-      "usageRestrictions": {
-        "allowedCategories": [
-          "software",
-          "equipment"
-        ],
-        "restrictedMerchants": [],
-        "allowedDaysOfWeek": [
-          1,
-          2,
-          3,
-          4,
-          5
-        ]
-      },
-      "creditLimit": 20000,
-      "availableBalance": 18750.25,
-      "cardImage": "/assets/cards/virtual-visa.svg",
-      "colorScheme": "gradient-purple"
-    }
-  ],
-  "transactions": [
-    {
-      "id": "trans-001",
-      "cardId": "card-001",
-      "amount": 2450.75,
-      "currency": "BRL",
-      "merchant": "Distribuidora Médica Nacional",
-      "merchantCategory": "Medical Supplies",
-      "timestamp": "2025-04-01T10:25:30Z",
-      "status": "completed",
-      "description": "Aquisição de materiais hospitalares",
-      "referenceNumber": "REF12345678",
-      "paymentMethod": "online",
-      "category": "medical_supplies",
-      "receiptUrl": "/receipts/trans-001.pdf",
-      "authorizedBy": "user-002",
-      "notes": "Compra aprovada para reposição de estoque",
-      "tags": [
-        "regular",
-        "bulk"
-      ],
-      "departmentId": "dept-001",
-      "location": "São Paulo, Brasil",
-      "ipAddress": "192.168.10.15"
-    },
-    {
-      "id": "trans-002",
-      "cardId": "card-003",
-      "amount": 15890,
-      "currency": "BRL",
-      "merchant": "MedEquip Importações",
-      "merchantCategory": "Medical Equipment",
-      "timestamp": "2025-03-28T14:15:10Z",
-      "status": "completed",
-      "description": "Equipamentos de monitoramento para UTI",
-      "referenceNumber": "REF98765432",
-      "paymentMethod": "online",
-      "category": "equipment",
-      "receiptUrl": "/receipts/trans-002.pdf",
-      "authorizedBy": "user-001",
-      "departmentId": "dept-002",
-      "location": "São Paulo, Brasil",
-      "ipAddress": "192.168.10.22"
-    },
-    {
-      "id": "trans-003",
-      "cardId": "card-002",
-      "amount": 4350.25,
-      "currency": "BRL",
-      "merchant": "Pharma Distribuidora",
-      "merchantCategory": "Pharmaceuticals",
-      "timestamp": "2025-03-25T09:30:45Z",
-      "status": "completed",
-      "description": "Medicamentos para setor oncológico",
-      "referenceNumber": "REF56781234",
-      "paymentMethod": "online",
-      "category": "pharmaceuticals",
-      "receiptUrl": "/receipts/trans-003.pdf",
-      "authorizedBy": "user-003",
-      "departmentId": "dept-003",
-      "location": "São Paulo, Brasil",
-      "ipAddress": "192.168.10.18"
-    },
-    {
-      "id": "trans-004",
-      "cardId": "card-004",
-      "amount": 1299.9,
-      "currency": "BRL",
-      "merchant": "TechSupply",
-      "merchantCategory": "IT Services",
-      "timestamp": "2025-04-02T11:45:20Z",
-      "status": "completed",
-      "description": "Licenças de software para segurança",
-      "referenceNumber": "REF45678912",
-      "paymentMethod": "online",
-      "category": "software",
-      "receiptUrl": "/receipts/trans-004.pdf",
-      "authorizedBy": "user-004",
-      "departmentId": "dept-004",
-      "location": "São Paulo, Brasil",
-      "ipAddress": "192.168.10.30"
-    },
-    {
-      "id": "trans-005",
-      "cardId": "card-001",
-      "amount": 7850,
-      "currency": "BRL",
-      "merchant": "Global Medical Supplies",
-      "merchantCategory": "Medical Supplies",
-      "timestamp": "2025-04-03T15:20:10Z",
-      "status": "requires_approval",
-      "description": "Equipamentos de proteção individual",
-      "referenceNumber": "REF23456789",
-      "paymentMethod": "online",
-      "category": "medical_supplies",
-      "departmentId": "dept-001",
-      "location": "São Paulo, Brasil",
-      "ipAddress": "192.168.10.15"
-    },
-    {
-      "id": "trans-006",
-      "cardId": "card-002",
-      "amount": 12500,
-      "currency": "BRL",
-      "merchant": "PharmaWholesale International",
-      "merchantCategory": "Pharmaceuticals",
-      "timestamp": "2025-04-02T10:10:30Z",
-      "status": "requires_approval",
-      "description": "Medicamentos importados para tratamento especializado",
-      "referenceNumber": "REF34567891",
-      "paymentMethod": "online",
-      "category": "pharmaceuticals",
-      "departmentId": "dept-003",
-      "location": "São Paulo, Brasil",
-      "ipAddress": "192.168.10.18"
-    }
-  ],
-  "approval-requests": [
-    {
-      "id": "apr-001",
-      "transactionId": "trans-005",
-      "requestedAt": "2025-04-03T15:21:00Z",
-      "requestedBy": "user-005",
-      "status": "pending",
-      "urgency": "medium",
-      "expiresAt": "2025-04-05T15:21:00Z"
-    },
-    {
-      "id": "apr-002",
-      "transactionId": "trans-006",
-      "requestedAt": "2025-04-02T10:11:00Z",
-      "requestedBy": "user-006",
-      "status": "pending",
-      "urgency": "high",
-      "expiresAt": "2025-04-04T10:11:00Z"
-    }
-  ],
-  "payment-audit-logs": [
-    {
-      "id": "log-001",
-      "timestamp": "2025-04-03T15:22:10Z",
-      "userId": "user-005",
-      "userName": "Maria Santos",
-      "userRole": "cardholder",
-      "action": "create",
-      "resource": "Solicitação de Aprovação",
-      "resourceId": "apr-001",
-      "resourceType": "approval",
-      "details": "Solicitação de aprovação para transação de R$ 7.850,00",
-      "ipAddress": "192.168.10.15",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
-      "sessionId": "SES56789",
-      "result": "success",
-      "severity": "info",
-      "category": "payment"
-    },
-    {
-      "id": "log-002",
-      "timestamp": "2025-04-02T10:12:00Z",
-      "userId": "user-006",
-      "userName": "João Silva",
-      "userRole": "cardholder",
-      "action": "create",
-      "resource": "Solicitação de Aprovação",
-      "resourceId": "apr-002",
-      "resourceType": "approval",
-      "details": "Solicitação de aprovação para transação de R$ 12.500,00",
-      "ipAddress": "192.168.10.18",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)",
-      "sessionId": "SES67890",
-      "result": "success",
-      "severity": "info",
-      "category": "payment"
-    },
-    {
-      "id": "log-003",
-      "timestamp": "2025-04-01T10:26:30Z",
-      "userId": "user-002",
-      "userName": "Ana Oliveira",
-      "userRole": "approver",
-      "action": "approve",
-      "resource": "Transação",
-      "resourceId": "trans-001",
-      "resourceType": "transaction",
-      "details": "Aprovação de transação de R$ 2.450,75",
-      "ipAddress": "192.168.10.22",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
-      "sessionId": "SES12345",
-      "result": "success",
-      "severity": "info",
-      "category": "payment"
-    },
-    {
-      "id": "log-004",
-      "timestamp": "2025-04-03T08:30:15Z",
-      "userId": "user-001",
-      "userName": "Carlos Mendes",
-      "userRole": "admin",
-      "action": "update",
-      "resource": "Configurações do Cartão",
-      "resourceId": "card-001",
-      "resourceType": "security_setting",
-      "details": "Alteração do limite de aprovação automática",
-      "ipAddress": "192.168.10.10",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
-      "sessionId": "SES23456",
-      "result": "success",
-      "severity": "info",
-      "category": "configuration",
-      "before": "{\"transactionApprovalThreshold\": 3000}",
-      "after": "{\"transactionApprovalThreshold\": 5000}"
-    }
-  ],
-  "payment-stats": {
-    "totalTransactions": 150,
-    "totalAmount": 1234567.89,
-    "averageTransactionAmount": 8230.45,
-    "transactionsByCategory": {
-      "medical_supplies": 45,
-      "pharmaceuticals": 35,
-      "equipment": 30,
-      "office_supplies": 20,
-      "software": 15,
-      "utilities": 5
-    },
-    "transactionsByCard": {
-      "card-001": 50,
-      "card-002": 40,
-      "card-003": 35,
-      "card-004": 25
-    },
-    "pendingApprovals": 2,
-    "declinedTransactions": 3,
-    "monthlySpending": [
-      {
-        "month": 1,
-        "year": 2025,
-        "amount": 254678.5,
-        "transactionCount": 32
-      },
-      {
-        "month": 2,
-        "year": 2025,
-        "amount": 312456.75,
-        "transactionCount": 38
-      },
-      {
-        "month": 3,
-        "year": 2025,
-        "amount": 289754.2,
-        "transactionCount": 35
-      },
-      {
-        "month": 4,
-        "year": 2025,
-        "amount": 78456.25,
-        "transactionCount": 12
-      }
-    ]
-  },
-  "payment-access": [
-    {
-      "userId": "user-001",
-      "userName": "Carlos Mendes",
-      "role": "admin",
-      "permissions": [
-        "view_cards",
-        "manage_cards",
-        "view_transactions",
-        "approve_transactions",
-        "export_data",
-        "manage_settings",
-        "manage_users",
-        "view_reports"
-      ],
-      "cardVisibility": "all",
-      "transactionVisibility": "all",
-      "id": "bf6a"
-    },
-    {
-      "userId": "user-002",
-      "userName": "Ana Oliveira",
-      "role": "approver",
-      "permissions": [
-        "view_cards",
-        "view_transactions",
-        "approve_transactions",
-        "view_reports"
-      ],
-      "cardVisibility": "all",
-      "transactionVisibility": "all",
-      "approvalThreshold": 20000,
-      "id": "5c75"
-    },
-    {
-      "userId": "user-003",
-      "userName": "Pedro Almeida",
-      "role": "approver",
-      "permissions": [
-        "view_cards",
-        "view_transactions",
-        "approve_transactions",
-        "view_reports"
-      ],
-      "cardVisibility": "department",
-      "transactionVisibility": "department",
-      "allowedDepartmentIds": [
-        "dept-003"
-      ],
-      "approvalThreshold": 10000,
-      "id": "4987"
-    },
-    {
-      "userId": "user-004",
-      "userName": "Fernanda Costa",
-      "role": "manager",
-      "permissions": [
-        "view_cards",
-        "manage_cards",
-        "view_transactions",
-        "approve_transactions",
-        "export_data",
-        "view_reports"
-      ],
-      "cardVisibility": "department",
-      "transactionVisibility": "department",
-      "allowedDepartmentIds": [
-        "dept-001",
-        "dept-004"
-      ],
-      "approvalThreshold": 15000,
-      "id": "282d"
-    },
-    {
-      "userId": "user-005",
-      "userName": "Maria Santos",
-      "role": "cardholder",
-      "permissions": [
-        "view_cards",
-        "view_transactions"
-      ],
-      "cardVisibility": "assigned",
-      "transactionVisibility": "own",
-      "allowedCardIds": [
-        "card-001"
-      ],
-      "id": "045e"
-    },
-    {
-      "userId": "user-006",
-      "userName": "João Silva",
-      "role": "cardholder",
-      "permissions": [
-        "view_cards",
-        "view_transactions"
-      ],
-      "cardVisibility": "assigned",
-      "transactionVisibility": "own",
-      "allowedCardIds": [
-        "card-002"
-      ],
-      "id": "a1be"
-    },
-    {
-      "userId": "user-007",
-      "userName": "Luciana Ferreira",
-      "role": "accountant",
-      "permissions": [
-        "view_cards",
-        "view_transactions",
-        "export_data",
-        "view_reports"
-      ],
-      "cardVisibility": "all",
-      "transactionVisibility": "all",
-      "id": "6b3f"
-    }
-  ],
-  "departments-payments": [
-    {
-      "id": "dept-001",
-      "name": "Administração",
-      "code": "ADM",
-      "budgetCategory": "administrative",
-      "parentDepartmentId": null,
-      "manager": "user-004",
-      "costCenter": "CC-001"
-    },
-    {
-      "id": "dept-002",
-      "name": "Suprimentos",
-      "code": "SUP",
-      "budgetCategory": "operational",
-      "parentDepartmentId": null,
-      "manager": "user-008",
-      "costCenter": "CC-002"
-    },
-    {
-      "id": "dept-003",
-      "name": "Farmácia",
-      "code": "FAR",
-      "budgetCategory": "medical",
-      "parentDepartmentId": null,
-      "manager": "user-003",
-      "costCenter": "CC-003"
-    },
-    {
-      "id": "dept-004",
-      "name": "Tecnologia",
-      "code": "TEC",
-      "budgetCategory": "administrative",
-      "parentDepartmentId": "dept-001",
-      "manager": "user-004",
-      "costCenter": "CC-004"
-    }
-  ],
   "security-settings": {
     "passwordPolicy": {
       "minimumLength": 12,
@@ -6953,5 +5755,2222 @@
       "dataAtRestEncryptionEnabled": true,
       "secureDataTransferEnabled": true
     }
-  }
+  },
+  "plans": [
+    {
+      "id": "plan-starter",
+      "name": "Plano Starter",
+      "type": "starter",
+      "description": "Plano inicial ideal para pequenas clínicas e consultórios",
+      "price": {
+        "monthly": 199.90,
+        "yearly": 2149.00,
+        "quarterly": 569.70,
+        "setup": 0
+      },
+      "yearlyDiscount": 10,
+      "modules": [
+        {
+          "id": "overview",
+          "name": "Visão Geral",
+          "description": "Dashboard principal com indicadores básicos",
+          "enabled": true,
+          "order": 1,
+          "features": [
+            {
+              "id": "feature-dashboard-basic",
+              "name": "Dashboard Básico",
+              "description": "Visualização dos indicadores principais",
+              "included": true
+            },
+            {
+              "id": "feature-reports-basic",
+              "name": "Relatórios Básicos",
+              "description": "Relatórios pré-configurados",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "patient-management",
+          "name": "Gestão de Pacientes",
+          "description": "Cadastro e gerenciamento de pacientes",
+          "enabled": true,
+          "order": 2,
+          "features": [
+            {
+              "id": "feature-patient-records",
+              "name": "Prontuários Simples",
+              "description": "Cadastro básico de informações do paciente",
+              "included": true
+            },
+            {
+              "id": "feature-patient-search",
+              "name": "Busca de Pacientes",
+              "description": "Busca simples por nome e identificador",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "appointments",
+          "name": "Consultas",
+          "description": "Agendamento e gestão de consultas",
+          "enabled": true,
+          "order": 3,
+          "features": [
+            {
+              "id": "feature-appointment-schedule",
+              "name": "Agendamento Básico",
+              "description": "Agenda de consultas com visualização diária",
+              "included": true
+            },
+            {
+              "id": "feature-appointment-notifications",
+              "name": "Notificações de Consulta",
+              "description": "Lembretes por email",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "bed-management",
+          "name": "Gestão de Leitos",
+          "description": "Controle de ocupação de leitos",
+          "enabled": false,
+          "order": 4,
+          "features": []
+        },
+        {
+          "id": "staff-management",
+          "name": "Gestão de Equipes",
+          "description": "Gerenciamento de profissionais de saúde",
+          "enabled": false,
+          "order": 5,
+          "features": []
+        },
+        {
+          "id": "predictive-analysis",
+          "name": "Análise Preditiva",
+          "description": "Análises preditivas com IA",
+          "enabled": false,
+          "order": 6,
+          "features": []
+        },
+        {
+          "id": "inventory-resources",
+          "name": "Recursos & Inventário",
+          "description": "Gestão de estoque e recursos",
+          "enabled": false,
+          "order": 7,
+          "features": []
+        },
+        {
+          "id": "health-digital-support",
+          "name": "Atendimento Digital",
+          "description": "Ferramentas para atendimento digital",
+          "enabled": false,
+          "order": 8,
+          "features": []
+        },
+        {
+          "id": "telemedicine",
+          "name": "Telemedicina",
+          "description": "Consultas remotas e teleconsultas",
+          "enabled": false,
+          "order": 9,
+          "features": []
+        },
+        {
+          "id": "prescriptions",
+          "name": "Prescrições",
+          "description": "Gestão de prescrições médicas",
+          "enabled": true,
+          "order": 10,
+          "features": [
+            {
+              "id": "feature-prescriptions-basic",
+              "name": "Prescrições Básicas",
+              "description": "Criação e impressão de prescrições",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "medical-records",
+          "name": "Prontuários",
+          "description": "Gerenciamento de prontuários médicos",
+          "enabled": true,
+          "order": 11,
+          "features": [
+            {
+              "id": "feature-records-basic",
+              "name": "Prontuários Básicos",
+              "description": "Registro manual de informações",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "analytics",
+          "name": "Estatísticas",
+          "description": "Análises e relatórios estatísticos",
+          "enabled": false,
+          "order": 12,
+          "features": []
+        },
+        {
+          "id": "billing",
+          "name": "Faturamento",
+          "description": "Gestão de contas e faturamento",
+          "enabled": false,
+          "order": 13,
+          "features": []
+        },
+        {
+          "id": "ai-assistant",
+          "name": "Assistente IA",
+          "description": "Assistente virtual inteligente",
+          "enabled": false,
+          "order": 14,
+          "features": []
+        },
+        {
+          "id": "process-studio-settings",
+          "name": "Studio de Processos",
+          "description": "Personalização de fluxos de trabalho",
+          "enabled": false,
+          "order": 15,
+          "features": []
+        },
+        {
+          "id": "security-compliance",
+          "name": "Segurança & Compliance",
+          "description": "Ferramentas de segurança e conformidade",
+          "enabled": true,
+          "order": 16,
+          "features": [
+            {
+              "id": "feature-basic-security",
+              "name": "Segurança Básica",
+              "description": "Controle de acesso por usuário",
+              "included": true
+            }
+          ]
+        }
+      ],
+      "limits": {
+        "users": 5,
+        "patients": 500,
+        "storage": 5,
+        "beds": 0,
+        "apiCalls": 1000,
+        "customReports": 0,
+        "aiAssistantQueries": 20
+      },
+      "isPopular": false,
+      "isEnterprise": false,
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "plan-professional",
+      "name": "Plano Professional",
+      "type": "professional",
+      "description": "Ideal para clínicas médias e consultórios com múltiplos médicos",
+      "price": {
+        "monthly": 599.90,
+        "yearly": 6479.00,
+        "quarterly": 1709.70,
+        "setup": 0
+      },
+      "yearlyDiscount": 10,
+      "modules": [
+        {
+          "id": "overview",
+          "name": "Visão Geral",
+          "description": "Dashboard completo com indicadores avançados",
+          "enabled": true,
+          "order": 1,
+          "features": [
+            {
+              "id": "feature-dashboard-advanced",
+              "name": "Dashboard Avançado",
+              "description": "Visualização personalizada de indicadores",
+              "included": true
+            },
+            {
+              "id": "feature-reports-advanced",
+              "name": "Relatórios Avançados",
+              "description": "Relatórios personalizáveis",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "patient-management",
+          "name": "Gestão de Pacientes",
+          "description": "Cadastro e gerenciamento completo de pacientes",
+          "enabled": true,
+          "order": 2,
+          "features": [
+            {
+              "id": "feature-patient-records-advanced",
+              "name": "Prontuários Avançados",
+              "description": "Cadastro completo com histórico",
+              "included": true
+            },
+            {
+              "id": "feature-patient-search-advanced",
+              "name": "Busca Avançada",
+              "description": "Busca por múltiplos critérios",
+              "included": true
+            },
+            {
+              "id": "feature-patient-portal",
+              "name": "Portal do Paciente",
+              "description": "Acesso do paciente às suas informações",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "appointments",
+          "name": "Consultas",
+          "description": "Sistema completo de agendamento",
+          "enabled": true,
+          "order": 3,
+          "features": [
+            {
+              "id": "feature-appointment-schedule-advanced",
+              "name": "Agendamento Avançado",
+              "description": "Agenda com visualização semanal e mensal",
+              "included": true
+            },
+            {
+              "id": "feature-appointment-notifications-advanced",
+              "name": "Notificações Avançadas",
+              "description": "Lembretes por email e SMS",
+              "included": true
+            },
+            {
+              "id": "feature-online-scheduling",
+              "name": "Agendamento Online",
+              "description": "Pacientes podem agendar consultas online",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "bed-management",
+          "name": "Gestão de Leitos",
+          "description": "Controle completo de ocupação de leitos",
+          "enabled": true,
+          "order": 4,
+          "features": [
+            {
+              "id": "feature-bed-tracking",
+              "name": "Rastreamento de Leitos",
+              "description": "Visualização em tempo real da ocupação",
+              "included": true
+            },
+            {
+              "id": "feature-bed-assignment",
+              "name": "Atribuição de Leitos",
+              "description": "Alocação de pacientes a leitos",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "staff-management",
+          "name": "Gestão de Equipes",
+          "description": "Gerenciamento completo de profissionais",
+          "enabled": true,
+          "order": 5,
+          "features": [
+            {
+              "id": "feature-staff-scheduling",
+              "name": "Escala de Trabalho",
+              "description": "Gerenciamento de escalas e turnos",
+              "included": true
+            },
+            {
+              "id": "feature-staff-profiles",
+              "name": "Perfis Profissionais",
+              "description": "Cadastro detalhado de especialidades",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "predictive-analysis",
+          "name": "Análise Preditiva",
+          "description": "Análises preditivas com IA",
+          "enabled": false,
+          "order": 6,
+          "features": []
+        },
+        {
+          "id": "inventory-resources",
+          "name": "Recursos & Inventário",
+          "description": "Gestão de estoque e recursos",
+          "enabled": true,
+          "order": 7,
+          "features": [
+            {
+              "id": "feature-inventory-tracking",
+              "name": "Rastreamento de Estoque",
+              "description": "Controle de medicamentos e materiais",
+              "included": true
+            },
+            {
+              "id": "feature-resource-allocation",
+              "name": "Alocação de Recursos",
+              "description": "Gerenciamento de equipamentos",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "health-digital-support",
+          "name": "Atendimento Digital",
+          "description": "Ferramentas para atendimento digital",
+          "enabled": true,
+          "order": 8,
+          "features": [
+            {
+              "id": "feature-digital-checkin",
+              "name": "Check-in Digital",
+              "description": "Sistema de recepção digital",
+              "included": true
+            },
+            {
+              "id": "feature-digital-forms",
+              "name": "Formulários Digitais",
+              "description": "Coleta digital de informações",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "telemedicine",
+          "name": "Telemedicina",
+          "description": "Consultas remotas e teleconsultas",
+          "enabled": true,
+          "order": 9,
+          "features": [
+            {
+              "id": "feature-video-consultations",
+              "name": "Consultas por Vídeo",
+              "description": "Sistema integrado para teleconsultas",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "prescriptions",
+          "name": "Prescrições",
+          "description": "Gestão de prescrições médicas",
+          "enabled": true,
+          "order": 10,
+          "features": [
+            {
+              "id": "feature-prescriptions-advanced",
+              "name": "Prescrições Avançadas",
+              "description": "Criação e envio digital de prescrições",
+              "included": true
+            },
+            {
+              "id": "feature-medication-interactions",
+              "name": "Detecção de Interações",
+              "description": "Alerta para interações medicamentosas",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "medical-records",
+          "name": "Prontuários",
+          "description": "Gerenciamento de prontuários médicos",
+          "enabled": true,
+          "order": 11,
+          "features": [
+            {
+              "id": "feature-records-advanced",
+              "name": "Prontuários Avançados",
+              "description": "Sistema completo de prontuário eletrônico",
+              "included": true
+            },
+            {
+              "id": "feature-records-sharing",
+              "name": "Compartilhamento de Prontuários",
+              "description": "Compartilhamento entre profissionais",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "analytics",
+          "name": "Estatísticas",
+          "description": "Análises e relatórios estatísticos",
+          "enabled": true,
+          "order": 12,
+          "features": [
+            {
+              "id": "feature-analytics-dashboards",
+              "name": "Dashboards Estatísticos",
+              "description": "Visualizações de dados personalizáveis",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "billing",
+          "name": "Faturamento",
+          "description": "Gestão de contas e faturamento",
+          "enabled": true,
+          "order": 13,
+          "features": [
+            {
+              "id": "feature-insurance-billing",
+              "name": "Faturamento de Convênios",
+              "description": "Sistema de faturamento para convênios",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "ai-assistant",
+          "name": "Assistente IA",
+          "description": "Assistente virtual inteligente",
+          "enabled": false,
+          "order": 14,
+          "features": []
+        },
+        {
+          "id": "process-studio-settings",
+          "name": "Studio de Processos",
+          "description": "Personalização de fluxos de trabalho",
+          "enabled": false,
+          "order": 15,
+          "features": []
+        },
+        {
+          "id": "security-compliance",
+          "name": "Segurança & Compliance",
+          "description": "Ferramentas de segurança e conformidade",
+          "enabled": true,
+          "order": 16,
+          "features": [
+            {
+              "id": "feature-advanced-security",
+              "name": "Segurança Avançada",
+              "description": "Controle de acesso avançado e auditoria",
+              "included": true
+            },
+            {
+              "id": "feature-compliance-tools",
+              "name": "Ferramentas de Compliance",
+              "description": "Conformidade com normas de saúde",
+              "included": true
+            }
+          ]
+        }
+      ],
+      "limits": {
+        "users": 15,
+        "patients": 2000,
+        "storage": 20,
+        "beds": 50,
+        "apiCalls": 10000,
+        "customReports": 10,
+        "aiAssistantQueries": 200
+      },
+      "isPopular": true,
+      "isEnterprise": false,
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "plan-enterprise",
+      "name": "Plano Enterprise",
+      "type": "enterprise",
+      "description": "Solução completa para hospitais e redes de clínicas",
+      "price": {
+        "monthly": 1499.90,
+        "yearly": 16199.00,
+        "quarterly": 4274.70,
+        "setup": 999.00
+      },
+      "yearlyDiscount": 10,
+      "modules": [
+        {
+          "id": "overview",
+          "name": "Visão Geral",
+          "description": "Dashboard completo com business intelligence",
+          "enabled": true,
+          "order": 1,
+          "features": [
+            {
+              "id": "feature-dashboard-enterprise",
+              "name": "Dashboard Enterprise",
+              "description": "BI completo com análises avançadas",
+              "included": true
+            },
+            {
+              "id": "feature-reports-enterprise",
+              "name": "Relatórios Enterprise",
+              "description": "Sistema completo de relatórios",
+              "included": true
+            },
+            {
+              "id": "feature-custom-dashboards",
+              "name": "Dashboards Personalizados",
+              "description": "Criação de dashboards específicos",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "patient-management",
+          "name": "Gestão de Pacientes",
+          "description": "Sistema completo de gestão de pacientes",
+          "enabled": true,
+          "order": 2,
+          "features": [
+            {
+              "id": "feature-patient-records-enterprise",
+              "name": "Prontuários Enterprise",
+              "description": "Sistema completo com integrações",
+              "included": true
+            },
+            {
+              "id": "feature-patient-journey",
+              "name": "Jornada do Paciente",
+              "description": "Acompanhamento completo do paciente",
+              "included": true
+            },
+            {
+              "id": "feature-patient-engagement",
+              "name": "Engajamento de Pacientes",
+              "description": "Ferramentas de comunicação e educação",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "appointments",
+          "name": "Consultas",
+          "description": "Sistema avançado de agendamento",
+          "enabled": true,
+          "order": 3,
+          "features": [
+            {
+              "id": "feature-appointment-enterprise",
+              "name": "Agendamento Enterprise",
+              "description": "Sistema completo com integrações",
+              "included": true
+            },
+            {
+              "id": "feature-multi-location",
+              "name": "Multi-localidade",
+              "description": "Gerenciamento de múltiplas unidades",
+              "included": true
+            },
+            {
+              "id": "feature-dynamic-scheduling",
+              "name": "Agendamento Dinâmico",
+              "description": "Otimização automática de agendas",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "bed-management",
+          "name": "Gestão de Leitos",
+          "description": "Sistema avançado de gestão de leitos",
+          "enabled": true,
+          "order": 4,
+          "features": [
+            {
+              "id": "feature-bed-optimization",
+              "name": "Otimização de Leitos",
+              "description": "Algoritmos para maximizar ocupação",
+              "included": true
+            },
+            {
+              "id": "feature-bed-forecasting",
+              "name": "Previsão de Demanda",
+              "description": "Previsões de necessidade de leitos",
+              "included": true
+            },
+            {
+              "id": "feature-patient-flow",
+              "name": "Fluxo de Pacientes",
+              "description": "Gerenciamento do fluxo de internações",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "staff-management",
+          "name": "Gestão de Equipes",
+          "description": "Sistema completo de gestão de equipes",
+          "enabled": true,
+          "order": 5,
+          "features": [
+            {
+              "id": "feature-staff-optimization",
+              "name": "Otimização de Escalas",
+              "description": "Algoritmos para otimizar turnos",
+              "included": true
+            },
+            {
+              "id": "feature-performance-tracking",
+              "name": "Acompanhamento de Desempenho",
+              "description": "Métricas de produtividade e qualidade",
+              "included": true
+            },
+            {
+              "id": "feature-staff-credentials",
+              "name": "Gestão de Credenciais",
+              "description": "Controle de licenças e certificações",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "predictive-analysis",
+          "name": "Análise Preditiva",
+          "description": "Análises preditivas avançadas com IA",
+          "enabled": true,
+          "order": 6,
+          "features": [
+            {
+              "id": "feature-readmission-prediction",
+              "name": "Previsão de Readmissões",
+              "description": "Identificação de riscos de readmissão",
+              "included": true
+            },
+            {
+              "id": "feature-resource-prediction",
+              "name": "Previsão de Recursos",
+              "description": "Antecipação de necessidades",
+              "included": true
+            },
+            {
+              "id": "feature-treatment-optimization",
+              "name": "Otimização de Tratamentos",
+              "description": "Sugestões baseadas em evidências",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "inventory-resources",
+          "name": "Recursos & Inventário",
+          "description": "Sistema avançado de gestão de recursos",
+          "enabled": true,
+          "order": 7,
+          "features": [
+            {
+              "id": "feature-inventory-optimization",
+              "name": "Otimização de Estoque",
+              "description": "Previsão e otimização automática",
+              "included": true
+            },
+            {
+              "id": "feature-supply-chain",
+              "name": "Cadeia de Suprimentos",
+              "description": "Gestão completa de fornecedores",
+              "included": true
+            },
+            {
+              "id": "feature-equipment-lifecycle",
+              "name": "Ciclo de Vida de Equipamentos",
+              "description": "Gestão de manutenção e substituição",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "health-digital-support",
+          "name": "Atendimento Digital",
+          "description": "Sistema completo de atendimento digital",
+          "enabled": true,
+          "order": 8,
+          "features": [
+            {
+              "id": "feature-omnichannel",
+              "name": "Atendimento Omnichannel",
+              "description": "Integração de múltiplos canais",
+              "included": true
+            },
+            {
+              "id": "feature-ai-triage",
+              "name": "Triagem com IA",
+              "description": "Classificação automática de casos",
+              "included": true
+            },
+            {
+              "id": "feature-digital-onboarding",
+              "name": "Onboarding Digital",
+              "description": "Processo de admissão digitalizado",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "telemedicine",
+          "name": "Telemedicina",
+          "description": "Plataforma completa de telemedicina",
+          "enabled": true,
+          "order": 9,
+          "features": [
+            {
+              "id": "feature-virtual-clinic",
+              "name": "Clínica Virtual",
+              "description": "Plataforma completa de teleconsultas",
+              "included": true
+            },
+            {
+              "id": "feature-remote-monitoring",
+              "name": "Monitoramento Remoto",
+              "description": "Acompanhamento de pacientes à distância",
+              "included": true
+            },
+            {
+              "id": "feature-digital-therapeutics",
+              "name": "Terapêuticas Digitais",
+              "description": "Programas terapêuticos digitais",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "prescriptions",
+          "name": "Prescrições",
+          "description": "Sistema avançado de prescrições",
+          "enabled": true,
+          "order": 10,
+          "features": [
+            {
+              "id": "feature-prescription-enterprise",
+              "name": "Prescrições Enterprise",
+              "description": "Sistema completo com integrações",
+              "included": true
+            },
+            {
+              "id": "feature-clinical-decision",
+              "name": "Suporte a Decisão Clínica",
+              "description": "Recomendações baseadas em evidências",
+              "included": true
+            },
+            {
+              "id": "feature-e-prescription",
+              "name": "E-Prescrição",
+              "description": "Integração com farmácias",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "medical-records",
+          "name": "Prontuários",
+          "description": "Sistema avançado de prontuários",
+          "enabled": true,
+          "order": 11,
+          "features": [
+            {
+              "id": "feature-records-enterprise",
+              "name": "Prontuários Enterprise",
+              "description": "Sistema completo com integrações",
+              "included": true
+            },
+            {
+              "id": "feature-structured-data",
+              "name": "Dados Estruturados",
+              "description": "Informações organizadas para análises",
+              "included": true
+            },
+            {
+              "id": "feature-interoperability",
+              "name": "Interoperabilidade",
+              "description": "Compatibilidade com padrões do setor",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "analytics",
+          "name": "Estatísticas",
+          "description": "Sistema avançado de análises",
+          "enabled": true,
+          "order": 12,
+          "features": [
+            {
+              "id": "feature-analytics-enterprise",
+              "name": "Estatísticas Enterprise",
+              "description": "Sistema completo de business intelligence",
+              "included": true
+            },
+            {
+              "id": "feature-predictive-analytics",
+              "name": "Análises Preditivas",
+              "description": "Previsões baseadas em machine learning",
+              "included": true
+            },
+            {
+              "id": "feature-custom-analytics",
+              "name": "Análises Personalizadas",
+              "description": "Criação de métricas específicas",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "billing",
+          "name": "Faturamento",
+          "description": "Sistema avançado de faturamento",
+          "enabled": true,
+          "order": 13,
+          "features": [
+            {
+              "id": "feature-billing-enterprise",
+              "name": "Faturamento Enterprise",
+              "description": "Sistema completo com integrações",
+              "included": true
+            },
+            {
+              "id": "feature-revenue-optimization",
+              "name": "Otimização de Receita",
+              "description": "Maximização de faturamento",
+              "included": true
+            },
+            {
+              "id": "feature-claim-management",
+              "name": "Gestão de Glosas",
+              "description": "Redução de perdas com glosas",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "ai-assistant",
+          "name": "Assistente IA",
+          "description": "Assistente virtual inteligente",
+          "enabled": true,
+          "order": 14,
+          "features": [
+            {
+              "id": "feature-ai-clinical",
+              "name": "IA Clínica",
+              "description": "Suporte a decisões clínicas",
+              "included": true
+            },
+            {
+              "id": "feature-ai-administrative",
+              "name": "IA Administrativa",
+              "description": "Automatização de processos",
+              "included": true
+            },
+            {
+              "id": "feature-ai-patient",
+              "name": "IA para Pacientes",
+              "description": "Assistente para pacientes",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "process-studio-settings",
+          "name": "Studio de Processos",
+          "description": "Personalização de fluxos de trabalho",
+          "enabled": true,
+          "order": 15,
+          "features": [
+            {
+              "id": "feature-workflow-builder",
+              "name": "Construtor de Fluxos",
+              "description": "Criação de fluxos personalizados",
+              "included": true
+            },
+            {
+              "id": "feature-process-automation",
+              "name": "Automação de Processos",
+              "description": "Automatização de tarefas",
+              "included": true
+            },
+            {
+              "id": "feature-process-analytics",
+              "name": "Análise de Processos",
+              "description": "Identificação de gargalos",
+              "included": true
+            }
+          ]
+        },
+        {
+          "id": "security-compliance",
+          "name": "Segurança & Compliance",
+          "description": "Sistema avançado de segurança",
+          "enabled": true,
+          "order": 16,
+          "features": [
+            {
+              "id": "feature-security-enterprise",
+              "name": "Segurança Enterprise",
+              "description": "Proteção avançada de dados",
+              "included": true
+            },
+            {
+              "id": "feature-audit-trail",
+              "name": "Trilha de Auditoria",
+              "description": "Rastreamento completo de atividades",
+              "included": true
+            },
+            {
+              "id": "feature-compliance-automation",
+              "name": "Automação de Compliance",
+              "description": "Verificação automatizada de conformidade",
+              "included": true
+            }
+          ]
+        }
+      ],
+      "limits": {
+        "users": 50,
+        "patients": 10000,
+        "storage": 100,
+        "beds": 200,
+        "apiCalls": 100000,
+        "customReports": 50,
+        "aiAssistantQueries": 2000
+      },
+      "isPopular": false,
+      "isEnterprise": true,
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "plan-custom",
+      "name": "Plano Personalizado",
+      "type": "custom",
+      "description": "Solução sob medida para suas necessidades específicas",
+      "price": {
+        "monthly": 0,
+        "yearly": 0,
+        "quarterly": 0,
+        "setup": 0
+      },
+      "yearlyDiscount": 10,
+      "modules": [],
+      "limits": {
+        "users": 0,
+        "patients": 0,
+        "storage": 0,
+        "beds": 0,
+        "apiCalls": 0,
+        "customReports": 0,
+        "aiAssistantQueries": 0
+      },
+      "isPopular": false,
+      "isEnterprise": true,
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    }
+  ],
+  "subscriptions": [
+    {
+      "id": "sub-001",
+      "planId": "plan-professional",
+      "hospitalId": "RD4H-SP-ITAIM",
+      "status": "active",
+      "currentCycle": "yearly",
+      "startDate": "2024-01-01T00:00:00.000Z",
+      "endDate": "2025-01-01T00:00:00.000Z",
+      "autoRenew": true,
+      "paymentMethod": "credit_card",
+      "paymentHistory": [
+        {
+          "id": "pay-001",
+          "subscriptionId": "sub-001",
+          "amount": 6479.00,
+          "currency": "BRL",
+          "status": "processed",
+          "paymentMethod": "credit_card",
+          "date": "2024-01-01T00:00:00.000Z",
+          "invoiceUrl": "#",
+          "receiptUrl": "#"
+        },
+        {
+          "id": "pay-003",
+          "subscriptionId": "sub-001",
+          "amount": 1500.00,
+          "currency": "BRL",
+          "status": "processed",
+          "paymentMethod": "credit_card",
+          "date": "2023-07-01T00:00:00.000Z",
+          "invoiceUrl": "#",
+          "receiptUrl": "#"
+        },
+        {
+          "id": "pay-004",
+          "subscriptionId": "sub-001",
+          "amount": 1500.00,
+          "currency": "BRL",
+          "status": "pending",
+          "paymentMethod": "credit_card",
+          "date": "2023-04-01T00:00:00.000Z",
+          "invoiceUrl": "#",
+          "receiptUrl": "#"
+        },
+        {
+          "id": "pay-005",
+          "subscriptionId": "sub-001",
+          "amount": 1500.00,
+          "currency": "BRL",
+          "status": "failed",
+          "paymentMethod": "credit_card",
+          "date": "2023-01-10T00:00:00.000Z",
+          "invoiceUrl": "#",
+          "receiptUrl": null
+        },
+        {
+          "id": "pay-006",
+          "subscriptionId": "sub-001",
+          "amount": 500.00,
+          "currency": "BRL",
+          "status": "refunded",
+          "paymentMethod": "credit_card",
+          "date": "2023-01-01T00:00:00.000Z",
+          "invoiceUrl": "#",
+          "receiptUrl": "#"
+        }
+      ],
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "sub-002",
+      "planId": "plan-enterprise",
+      "hospitalId": "RD4H-SP-MORUMBI",
+      "status": "active",
+      "currentCycle": "yearly",
+      "startDate": "2024-01-01T00:00:00.000Z",
+      "endDate": "2025-01-01T00:00:00.000Z",
+      "autoRenew": true,
+      "paymentMethod": "credit_card",
+      "paymentHistory": [
+        {
+          "id": "pay-002",
+          "subscriptionId": "sub-002",
+          "amount": 16199.00,
+          "currency": "BRL",
+          "status": "processed",
+          "paymentMethod": "credit_card",
+          "date": "2024-01-01T00:00:00.000Z",
+          "invoiceUrl": "#",
+          "receiptUrl": "#"
+        },
+        {
+          "id": "pay-007",
+          "subscriptionId": "sub-002",
+          "amount": 3500.00,
+          "currency": "BRL",
+          "status": "processed",
+          "paymentMethod": "bank_transfer",
+          "date": "2023-07-01T00:00:00.000Z",
+          "invoiceUrl": "#",
+          "receiptUrl": "#"
+        },
+        {
+          "id": "pay-008",
+          "subscriptionId": "sub-002",
+          "amount": 3500.00,
+          "currency": "BRL",
+          "status": "processed",
+          "paymentMethod": "bank_transfer",
+          "date": "2023-04-01T00:00:00.000Z",
+          "invoiceUrl": "#",
+          "receiptUrl": "#"
+        },
+        {
+          "id": "pay-009",
+          "subscriptionId": "sub-002",
+          "amount": 3500.00,
+          "currency": "BRL",
+          "status": "processed",
+          "paymentMethod": "bank_transfer",
+          "date": "2023-01-01T00:00:00.000Z",
+          "invoiceUrl": "#",
+          "receiptUrl": "#"
+        }
+      ],
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "sub-003",
+      "planId": "plan-starter",
+      "hospitalId": "RD4H-RJ-BARRA",
+      "status": "trial",
+      "currentCycle": "monthly",
+      "startDate": "2024-03-15T00:00:00.000Z",
+      "endDate": "2024-04-15T00:00:00.000Z",
+      "autoRenew": false,
+      "paymentMethod": "credit_card",
+      "paymentHistory": [],
+      "createdAt": "2024-03-15T00:00:00.000Z",
+      "updatedAt": "2024-03-15T00:00:00.000Z"
+    },
+    {
+      "id": "sub-004",
+      "planId": "plan-professional",
+      "hospitalId": "RD4H-RJ-CENTRO",
+      "status": "expired",
+      "currentCycle": "monthly",
+      "startDate": "2023-12-01T00:00:00.000Z",
+      "endDate": "2024-01-01T00:00:00.000Z",
+      "autoRenew": false,
+      "paymentMethod": "credit_card",
+      "paymentHistory": [
+        {
+          "id": "pay-010",
+          "subscriptionId": "sub-004",
+          "amount": 599.90,
+          "currency": "BRL",
+          "status": "processed",
+          "paymentMethod": "credit_card",
+          "date": "2023-12-01T00:00:00.000Z",
+          "invoiceUrl": "#",
+          "receiptUrl": "#"
+        },
+        {
+          "id": "pay-011",
+          "subscriptionId": "sub-004",
+          "amount": 599.90,
+          "currency": "BRL",
+          "status": "processed",
+          "paymentMethod": "credit_card",
+          "date": "2023-11-01T00:00:00.000Z",
+          "invoiceUrl": "#",
+          "receiptUrl": "#"
+        },
+        {
+          "id": "pay-012",
+          "subscriptionId": "sub-004",
+          "amount": 599.90,
+          "currency": "BRL",
+          "status": "processed",
+          "paymentMethod": "credit_card",
+          "date": "2023-10-01T00:00:00.000Z",
+          "invoiceUrl": "#",
+          "receiptUrl": "#"
+        }
+      ],
+      "createdAt": "2023-10-01T00:00:00.000Z",
+      "updatedAt": "2024-01-02T00:00:00.000Z"
+    },
+    {
+      "id": "sub-005",
+      "planId": "plan-custom",
+      "hospitalId": "RD4H-SP-POMPEIA",
+      "status": "active",
+      "currentCycle": "yearly",
+      "startDate": "2024-02-01T00:00:00.000Z",
+      "endDate": "2025-02-01T00:00:00.000Z",
+      "autoRenew": true,
+      "paymentMethod": "bank_transfer",
+      "customModules": [
+        {
+          "id": "overview",
+          "name": "Visão Geral",
+          "description": "Dashboard personalizado para rede de clínicas",
+          "enabled": true,
+          "order": 1,
+          "features": []
+        },
+        {
+          "id": "patient-management",
+          "name": "Gestão de Pacientes",
+          "description": "Sistema avançado de gestão de pacientes",
+          "enabled": true,
+          "order": 2,
+          "features": []
+        },
+        {
+          "id": "appointments",
+          "name": "Consultas",
+          "description": "Sistema de agendamento multi-unidade",
+          "enabled": true,
+          "order": 3,
+          "features": []
+        },
+        {
+          "id": "predictive-analysis",
+          "name": "Análise Preditiva",
+          "description": "Sistema de análise preditiva especializado",
+          "enabled": true,
+          "order": 4,
+          "features": []
+        },
+        {
+          "id": "telemedicine",
+          "name": "Telemedicina",
+          "description": "Plataforma completa de telemedicina",
+          "enabled": true,
+          "order": 5,
+          "features": []
+        },
+        {
+          "id": "ai-assistant",
+          "name": "Assistente IA",
+          "description": "Assistente IA especializado",
+          "enabled": true,
+          "order": 6,
+          "features": []
+        },
+        {
+          "id": "security-compliance",
+          "name": "Segurança & Compliance",
+          "description": "Sistema avançado de segurança",
+          "enabled": true,
+          "order": 7,
+          "features": []
+        }
+      ],
+      "customLimits": {
+        "users": 100,
+        "patients": 20000,
+        "storage": 500,
+        "beds": 0,
+        "apiCalls": 500000,
+        "customReports": 100,
+        "aiAssistantQueries": 10000
+      },
+      "paymentHistory": [
+        {
+          "id": "pay-013",
+          "subscriptionId": "sub-005",
+          "amount": 25000.00,
+          "currency": "BRL",
+          "status": "processed",
+          "paymentMethod": "bank_transfer",
+          "date": "2024-02-01T00:00:00.000Z",
+          "invoiceUrl": "#",
+          "receiptUrl": "#"
+        }
+      ],
+      "createdAt": "2024-02-01T00:00:00.000Z",
+      "updatedAt": "2024-02-01T00:00:00.000Z"
+    }
+  ],
+  "plan_settings": {
+    "hospitals": [
+      {
+        "id": "hosp-settings-001",
+        "hospitalId": "RD4H-SP-ITAIM",
+        "name": "Hospital 4Health Itaim",
+        "moduleOrder": [
+          "overview",
+          "patient-management",
+          "appointments",
+          "bed-management",
+          "staff-management",
+          "inventory-resources",
+          "health-digital-support",
+          "telemedicine",
+          "prescriptions",
+          "medical-records",
+          "analytics",
+          "billing",
+          "security-compliance"
+        ],
+        "activeModules": [
+          "overview",
+          "patient-management",
+          "appointments",
+          "bed-management",
+          "staff-management",
+          "inventory-resources",
+          "health-digital-support",
+          "telemedicine",
+          "prescriptions",
+          "medical-records",
+          "analytics",
+          "billing",
+          "security-compliance"
+        ],
+        "createdAt": "2024-01-01T00:00:00.000Z",
+        "updatedAt": "2024-01-01T00:00:00.000Z"
+      },
+      {
+        "id": "hosp-settings-002",
+        "hospitalId": "RD4H-SP-MORUMBI",
+        "name": "Hospital 4Health Morumbi",
+        "moduleOrder": [
+          "overview",
+          "patient-management",
+          "appointments",
+          "bed-management",
+          "predictive-analysis",
+          "staff-management",
+          "inventory-resources",
+          "health-digital-support",
+          "telemedicine",
+          "prescriptions",
+          "medical-records",
+          "analytics",
+          "billing",
+          "ai-assistant",
+          "process-studio-settings",
+          "security-compliance"
+        ],
+        "activeModules": [
+          "overview",
+          "patient-management",
+          "appointments",
+          "bed-management",
+          "predictive-analysis",
+          "staff-management",
+          "inventory-resources",
+          "health-digital-support",
+          "telemedicine",
+          "prescriptions",
+          "medical-records",
+          "analytics",
+          "billing",
+          "ai-assistant",
+          "process-studio-settings",
+          "security-compliance"
+        ],
+        "createdAt": "2024-01-01T00:00:00.000Z",
+        "updatedAt": "2024-01-01T00:00:00.000Z"
+      },
+      {
+        "id": "hosp-settings-003",
+        "hospitalId": "RD4H-RJ-BARRA",
+        "name": "Hospital 4Health Barra da Tijuca",
+        "moduleOrder": [
+          "overview",
+          "patient-management",
+          "appointments",
+          "prescriptions",
+          "medical-records",
+          "security-compliance"
+        ],
+        "activeModules": [
+          "overview",
+          "patient-management",
+          "appointments",
+          "prescriptions",
+          "medical-records",
+          "security-compliance"
+        ],
+        "createdAt": "2024-03-15T00:00:00.000Z",
+        "updatedAt": "2024-03-15T00:00:00.000Z"
+      },
+      {
+        "id": "hosp-settings-004",
+        "hospitalId": "RD4H-RJ-CENTRO",
+        "name": "Hospital 4Health Centro RJ",
+        "moduleOrder": [
+          "overview",
+          "patient-management",
+          "appointments",
+          "bed-management",
+          "staff-management",
+          "health-digital-support",
+          "prescriptions",
+          "medical-records",
+          "analytics",
+          "billing",
+          "security-compliance"
+        ],
+        "activeModules": [
+          "overview",
+          "patient-management",
+          "appointments",
+          "bed-management",
+          "staff-management",
+          "health-digital-support",
+          "prescriptions",
+          "medical-records",
+          "analytics",
+          "billing",
+          "security-compliance"
+        ],
+        "createdAt": "2023-10-01T00:00:00.000Z",
+        "updatedAt": "2024-01-02T00:00:00.000Z"
+      },
+      {
+        "id": "hosp-settings-005",
+        "hospitalId": "RD4H-SP-POMPEIA",
+        "name": "Rede de Clínicas 4Health Pompeia",
+        "moduleOrder": [
+          "overview",
+          "patient-management",
+          "appointments",
+          "predictive-analysis",
+          "telemedicine",
+          "ai-assistant",
+          "security-compliance"
+        ],
+        "activeModules": [
+          "overview",
+          "patient-management",
+          "appointments",
+          "predictive-analysis",
+          "telemedicine",
+          "ai-assistant",
+          "security-compliance"
+        ],
+        "createdAt": "2024-02-01T00:00:00.000Z",
+        "updatedAt": "2024-02-01T00:00:00.000Z"
+      }
+    ]
+  },
+  "usage_statistics": [
+    {
+      "id": "stats-001",
+      "hospitalId": "RD4H-SP-ITAIM",
+      "period": "2024-03",
+      "generalStats": {
+        "totalUsers": 12,
+        "activeUsers": 10,
+        "totalPatients": 1547,
+        "totalStorage": 12.4,
+        "apiCalls": 7542,
+        "aiQueries": 145
+      },
+      "moduleUsage": [
+        {
+          "name": "Visão Geral",
+          "value": 89,
+          "color": "#4f46e5"
+        },
+        {
+          "name": "Gestão de Pacientes",
+          "value": 156,
+          "color": "#7c3aed"
+        },
+        {
+          "name": "Consultas",
+          "value": 124,
+          "color": "#2563eb"
+        },
+        {
+          "name": "Gestão de Leitos",
+          "value": 67,
+          "color": "#0891b2"
+        },
+        {
+          "name": "Gestão de Equipes",
+          "value": 45,
+          "color": "#0d9488"
+        },
+        {
+          "name": "Recursos & Inventário",
+          "value": 34,
+          "color": "#059669"
+        },
+        {
+          "name": "Atendimento Digital",
+          "value": 78,
+          "color": "#65a30d"
+        },
+        {
+          "name": "Telemedicina",
+          "value": 91,
+          "color": "#ca8a04"
+        },
+        {
+          "name": "Prescrições",
+          "value": 108,
+          "color": "#d97706"
+        },
+        {
+          "name": "Prontuários",
+          "value": 132,
+          "color": "#dc2626"
+        },
+        {
+          "name": "Estatísticas",
+          "value": 56,
+          "color": "#e11d48"
+        },
+        {
+          "name": "Faturamento",
+          "value": 43,
+          "color": "#9333ea"
+        },
+        {
+          "name": "Segurança & Compliance",
+          "value": 29,
+          "color": "#3b82f6"
+        }
+      ],
+      "userActivity": [
+        {
+          "name": "Seg",
+          "admin": 20,
+          "doctor": 45,
+          "nurse": 28,
+          "attendant": 17
+        },
+        {
+          "name": "Ter",
+          "admin": 15,
+          "doctor": 50,
+          "nurse": 35,
+          "attendant": 20
+        },
+        {
+          "name": "Qua",
+          "admin": 22,
+          "doctor": 55,
+          "nurse": 30,
+          "attendant": 25
+        },
+        {
+          "name": "Qui",
+          "admin": 18,
+          "doctor": 48,
+          "nurse": 25,
+          "attendant": 19
+        },
+        {
+          "name": "Sex",
+          "admin": 25,
+          "doctor": 52,
+          "nurse": 32,
+          "attendant": 22
+        },
+        {
+          "name": "Sáb",
+          "admin": 10,
+          "doctor": 30,
+          "nurse": 20,
+          "attendant": 15
+        },
+        {
+          "name": "Dom",
+          "admin": 5,
+          "doctor": 15,
+          "nurse": 10,
+          "attendant": 8
+        }
+      ],
+      "resourceUsage": [
+        {
+          "name": "Usuários",
+          "value": 12,
+          "limit": 15
+        },
+        {
+          "name": "Pacientes",
+          "value": 1547,
+          "limit": 2000
+        },
+        {
+          "name": "Armazenamento (GB)",
+          "value": 12.4,
+          "limit": 20
+        },
+        {
+          "name": "Chamadas API",
+          "value": 7542,
+          "limit": 10000
+        },
+        {
+          "name": "Consultas IA",
+          "value": 145,
+          "limit": 200
+        }
+      ],
+      "createdAt": "2024-04-01T00:00:00.000Z",
+      "updatedAt": "2024-04-01T00:00:00.000Z"
+    },
+    {
+      "id": "stats-002",
+      "hospitalId": "RD4H-SP-MORUMBI",
+      "period": "2024-03",
+      "generalStats": {
+        "totalUsers": 35,
+        "activeUsers": 32,
+        "totalPatients": 5782,
+        "totalStorage": 67.8,
+        "apiCalls": 45298,
+        "aiQueries": 1245
+      },
+      "moduleUsage": [
+        {
+          "name": "Visão Geral",
+          "value": 145,
+          "color": "#4f46e5"
+        },
+        {
+          "name": "Gestão de Pacientes",
+          "value": 278,
+          "color": "#7c3aed"
+        },
+        {
+          "name": "Consultas",
+          "value": 234,
+          "color": "#2563eb"
+        },
+        {
+          "name": "Gestão de Leitos",
+          "value": 187,
+          "color": "#0891b2"
+        },
+        {
+          "name": "Análise Preditiva",
+          "value": 98,
+          "color": "#0d9488"
+        },
+        {
+          "name": "Gestão de Equipes",
+          "value": 156,
+          "color": "#059669"
+        },
+        {
+          "name": "Recursos & Inventário",
+          "value": 89,
+          "color": "#65a30d"
+        },
+        {
+          "name": "Atendimento Digital",
+          "value": 123,
+          "color": "#ca8a04"
+        },
+        {
+          "name": "Telemedicina",
+          "value": 167,
+          "color": "#d97706"
+        },
+        {
+          "name": "Prescrições",
+          "value": 198,
+          "color": "#dc2626"
+        },
+        {
+          "name": "Prontuários",
+          "value": 245,
+          "color": "#e11d48"
+        },
+        {
+          "name": "Estatísticas",
+          "value": 134,
+          "color": "#9333ea"
+        },
+        {
+          "name": "Faturamento",
+          "value": 112,
+          "color": "#3b82f6"
+        },
+        {
+          "name": "Assistente IA",
+          "value": 176,
+          "color": "#06b6d4"
+        },
+        {
+          "name": "Studio de Processos",
+          "value": 67,
+          "color": "#10b981"
+        },
+        {
+          "name": "Segurança & Compliance",
+          "value": 78,
+          "color": "#6366f1"
+        }
+      ],
+      "userActivity": [
+        {
+          "name": "Seg",
+          "admin": 35,
+          "doctor": 120,
+          "nurse": 85,
+          "attendant": 45
+        },
+        {
+          "name": "Ter",
+          "admin": 32,
+          "doctor": 135,
+          "nurse": 92,
+          "attendant": 48
+        },
+        {
+          "name": "Qua",
+          "admin": 38,
+          "doctor": 142,
+          "nurse": 95,
+          "attendant": 52
+        },
+        {
+          "name": "Qui",
+          "admin": 33,
+          "doctor": 138,
+          "nurse": 90,
+          "attendant": 47
+        },
+        {
+          "name": "Sex",
+          "admin": 36,
+          "doctor": 145,
+          "nurse": 98,
+          "attendant": 50
+        },
+        {
+          "name": "Sáb",
+          "admin": 25,
+          "doctor": 98,
+          "nurse": 65,
+          "attendant": 35
+        },
+        {
+          "name": "Dom",
+          "admin": 18,
+          "doctor": 65,
+          "nurse": 45,
+          "attendant": 22
+        }
+      ],
+      "resourceUsage": [
+        {
+          "name": "Usuários",
+          "value": 35,
+          "limit": 50
+        },
+        {
+          "name": "Pacientes",
+          "value": 5782,
+          "limit": 10000
+        },
+        {
+          "name": "Armazenamento (GB)",
+          "value": 67.8,
+          "limit": 100
+        },
+        {
+          "name": "Chamadas API",
+          "value": 45298,
+          "limit": 100000
+        },
+        {
+          "name": "Consultas IA",
+          "value": 1245,
+          "limit": 2000
+        }
+      ],
+      "createdAt": "2024-04-01T00:00:00.000Z",
+      "updatedAt": "2024-04-01T00:00:00.000Z"
+    },
+    {
+      "id": "stats-003",
+      "hospitalId": "RD4H-SP-POMPEIA",
+      "period": "2024-03",
+      "generalStats": {
+        "totalUsers": 72,
+        "activeUsers": 65,
+        "totalPatients": 12456,
+        "totalStorage": 356.7,
+        "apiCalls": 267854,
+        "aiQueries": 6543
+      },
+      "moduleUsage": [
+        {
+          "name": "Visão Geral",
+          "value": 245,
+          "color": "#4f46e5"
+        },
+        {
+          "name": "Gestão de Pacientes",
+          "value": 378,
+          "color": "#7c3aed"
+        },
+        {
+          "name": "Consultas",
+          "value": 345,
+          "color": "#2563eb"
+        },
+        {
+          "name": "Análise Preditiva",
+          "value": 178,
+          "color": "#0d9488"
+        },
+        {
+          "name": "Telemedicina",
+          "value": 289,
+          "color": "#d97706"
+        },
+        {
+          "name": "Assistente IA",
+          "value": 432,
+          "color": "#06b6d4"
+        },
+        {
+          "name": "Segurança & Compliance",
+          "value": 134,
+          "color": "#6366f1"
+        }
+      ],
+      "userActivity": [
+        {
+          "name": "Seg",
+          "admin": 42,
+          "doctor": 187,
+          "nurse": 0,
+          "attendant": 68
+        },
+        {
+          "name": "Ter",
+          "admin": 45,
+          "doctor": 193,
+          "nurse": 0,
+          "attendant": 72
+        },
+        {
+          "name": "Qua",
+          "admin": 48,
+          "doctor": 201,
+          "nurse": 0,
+          "attendant": 75
+        },
+        {
+          "name": "Qui",
+          "admin": 44,
+          "doctor": 198,
+          "nurse": 0,
+          "attendant": 70
+        },
+        {
+          "name": "Sex",
+          "admin": 46,
+          "doctor": 205,
+          "nurse": 0,
+          "attendant": 73
+        },
+        {
+          "name": "Sáb",
+          "admin": 35,
+          "doctor": 167,
+          "nurse": 0,
+          "attendant": 56
+        },
+        {
+          "name": "Dom",
+          "admin": 29,
+          "doctor": 134,
+          "nurse": 0,
+          "attendant": 42
+        }
+      ],
+      "resourceUsage": [
+        {
+          "name": "Usuários",
+          "value": 72,
+          "limit": 100
+        },
+        {
+          "name": "Pacientes",
+          "value": 12456,
+          "limit": 20000
+        },
+        {
+          "name": "Armazenamento (GB)",
+          "value": 356.7,
+          "limit": 500
+        },
+        {
+          "name": "Chamadas API",
+          "value": 267854,
+          "limit": 500000
+        },
+        {
+          "name": "Consultas IA",
+          "value": 6543,
+          "limit": 10000
+        }
+      ],
+      "createdAt": "2024-04-01T00:00:00.000Z",
+      "updatedAt": "2024-04-01T00:00:00.000Z"
+    },
+    {
+      "id": "stats-004",
+      "hospitalId": "RD4H-RJ-BARRA",
+      "period": "2024-03",
+      "generalStats": {
+        "totalUsers": 3,
+        "activeUsers": 3,
+        "totalPatients": 78,
+        "totalStorage": 0.5,
+        "apiCalls": 634,
+        "aiQueries": 7
+      },
+      "moduleUsage": [
+        {
+          "name": "Visão Geral",
+          "value": 45,
+          "color": "#4f46e5"
+        },
+        {
+          "name": "Gestão de Pacientes",
+          "value": 67,
+          "color": "#7c3aed"
+        },
+        {
+          "name": "Consultas",
+          "value": 54,
+          "color": "#2563eb"
+        },
+        {
+          "name": "Prescrições",
+          "value": 32,
+          "color": "#dc2626"
+        },
+        {
+          "name": "Prontuários",
+          "value": 42,
+          "color": "#e11d48"
+        },
+        {
+          "name": "Segurança & Compliance",
+          "value": 12,
+          "color": "#6366f1"
+        }
+      ],
+      "userActivity": [
+        {
+          "name": "Seg",
+          "admin": 3,
+          "doctor": 5,
+          "nurse": 0,
+          "attendant": 4
+        },
+        {
+          "name": "Ter",
+          "admin": 2,
+          "doctor": 6,
+          "nurse": 0,
+          "attendant": 3
+        },
+        {
+          "name": "Qua",
+          "admin": 3,
+          "doctor": 7,
+          "nurse": 0,
+          "attendant": 4
+        },
+        {
+          "name": "Qui",
+          "admin": 2,
+          "doctor": 5,
+          "nurse": 0,
+          "attendant": 3
+        },
+        {
+          "name": "Sex",
+          "admin": 3,
+          "doctor": 6,
+          "nurse": 0,
+          "attendant": 4
+        },
+        {
+          "name": "Sáb",
+          "admin": 1,
+          "doctor": 3,
+          "nurse": 0,
+          "attendant": 2
+        },
+        {
+          "name": "Dom",
+          "admin": 0,
+          "doctor": 0,
+          "nurse": 0,
+          "attendant": 0
+        }
+      ],
+      "resourceUsage": [
+        {
+          "name": "Usuários",
+          "value": 3,
+          "limit": 5
+        },
+        {
+          "name": "Pacientes",
+          "value": 78,
+          "limit": 500
+        },
+        {
+          "name": "Armazenamento (GB)",
+          "value": 0.5,
+          "limit": 5
+        },
+        {
+          "name": "Chamadas API",
+          "value": 634,
+          "limit": 1000
+        },
+        {
+          "name": "Consultas IA",
+          "value": 7,
+          "limit": 20
+        }
+      ],
+      "createdAt": "2024-04-01T00:00:00.000Z",
+      "updatedAt": "2024-04-01T00:00:00.000Z"
+    },
+    {
+      "id": "stats-005",
+      "hospitalId": "RD4H-RJ-CENTRO",
+      "period": "2023-12",
+      "generalStats": {
+        "totalUsers": 12,
+        "activeUsers": 10,
+        "totalPatients": 1235,
+        "totalStorage": 12.4,
+        "apiCalls": 6578,
+        "aiQueries": 0
+      },
+      "moduleUsage": [
+        {
+          "name": "Visão Geral",
+          "value": 89,
+          "color": "#4f46e5"
+        },
+        {
+          "name": "Gestão de Pacientes",
+          "value": 124,
+          "color": "#7c3aed"
+        },
+        {
+          "name": "Consultas",
+          "value": 98,
+          "color": "#2563eb"
+        },
+        {
+          "name": "Gestão de Leitos",
+          "value": 56,
+          "color": "#0891b2"
+        },
+        {
+          "name": "Gestão de Equipes",
+          "value": 43,
+          "color": "#0d9488"
+        },
+        {
+          "name": "Atendimento Digital",
+          "value": 67,
+          "color": "#ca8a04"
+        },
+        {
+          "name": "Prescrições",
+          "value": 87,
+          "color": "#dc2626"
+        },
+        {
+          "name": "Prontuários",
+          "value": 112,
+          "color": "#e11d48"
+        },
+        {
+          "name": "Estatísticas",
+          "value": 45,
+          "color": "#9333ea"
+        },
+        {
+          "name": "Faturamento",
+          "value": 36,
+          "color": "#3b82f6"
+        },
+        {
+          "name": "Segurança & Compliance",
+          "value": 23,
+          "color": "#6366f1"
+        }
+      ],
+      "userActivity": [
+        {
+          "name": "Seg",
+          "admin": 10,
+          "doctor": 35,
+          "nurse": 22,
+          "attendant": 15
+        },
+        {
+          "name": "Ter",
+          "admin": 9,
+          "doctor": 38,
+          "nurse": 25,
+          "attendant": 17
+        },
+        {
+          "name": "Qua",
+          "admin": 11,
+          "doctor": 42,
+          "nurse": 27,
+          "attendant": 18
+        },
+        {
+          "name": "Qui",
+          "admin": 10,
+          "doctor": 40,
+          "nurse": 24,
+          "attendant": 16
+        },
+        {
+          "name": "Sex",
+          "admin": 12,
+          "doctor": 43,
+          "nurse": 28,
+          "attendant": 19
+        },
+        {
+          "name": "Sáb",
+          "admin": 7,
+          "doctor": 25,
+          "nurse": 16,
+          "attendant": 10
+        },
+        {
+          "name": "Dom",
+          "admin": 3,
+          "doctor": 10,
+          "nurse": 6,
+          "attendant": 5
+        }
+      ],
+      "resourceUsage": [
+        {
+          "name": "Usuários",
+          "value": 12,
+          "limit": 15
+        },
+        {
+          "name": "Pacientes",
+          "value": 1235,
+          "limit": 2000
+        },
+        {
+          "name": "Armazenamento (GB)",
+          "value": 12.4,
+          "limit": 20
+        },
+        {
+          "name": "Chamadas API",
+          "value": 6578,
+          "limit": 10000
+        },
+        {
+          "name": "Consultas IA",
+          "value": 0,
+          "limit": 0
+        }
+      ],
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    }
+  ]
 }

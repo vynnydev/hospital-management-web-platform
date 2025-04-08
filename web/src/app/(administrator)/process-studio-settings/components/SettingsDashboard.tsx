@@ -13,8 +13,8 @@ import { ConnectionsTab } from './connections/ConnectionsTab';
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
 import { AlertsProvider } from '@/components/ui/templates/providers/alerts/AlertsProvider';
 import { UserManagement } from '@/components/ui/templates/UserManagement';
-import { FinanceSettingsTab } from '@/components/ui/templates/FinanceSettingsTab';
 import { SecurityComplianceTab } from '@/components/ui/templates/SecurityComplianceTab';
+import { SubscriptionManager } from '@/components/ui/templates/SubscriptionManager';
 
 export const SettingsDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState('workflow');
@@ -28,8 +28,8 @@ export const SettingsDashboard: React.FC = () => {
     { id: 'calendar', label: 'Calendário Hospitalar', icon: Calendar },
     { id: 'connections', label: 'Conexões Externas', icon: Link },
     { id: 'user-management', label: 'Gerenciador de Usuários', icon: UserIcon },
-    { id: 'finance', label: 'Configurações Financeiras', icon: CreditCard },
     { id: 'security-compliance', label: 'Segurança & Compliance', icon: Shield },
+    { id: 'subscription', label: 'Planos & Assinaturas', icon: Shield },
   ];
 
   return (
@@ -144,18 +144,18 @@ export const SettingsDashboard: React.FC = () => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="finance" className="space-y-4">
-            <Card className="h-full">
-              <CardContent className="p-0 h-full">
-                <FinanceSettingsTab />
-              </CardContent>
-            </Card>
-          </TabsContent>
-
           <TabsContent value="security-compliance" className="space-y-4">
             <Card className="h-full">
               <CardContent className="p-0 h-full">
                 <SecurityComplianceTab />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="subscription" className="space-y-4">
+            <Card className="h-full">
+              <CardContent className="p-0 h-full">
+                <SubscriptionManager />
               </CardContent>
             </Card>
           </TabsContent>

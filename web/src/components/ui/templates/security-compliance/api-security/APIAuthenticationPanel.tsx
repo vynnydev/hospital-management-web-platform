@@ -427,7 +427,7 @@ export const APIAuthenticationPanel: React.FC<APIAuthenticationPanelProps> = ({
                           </div>
                         </div>
                         <DialogFooter>
-                          <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 text-xs sm:text-sm">
+                          <div className="flex items-center text-gray-500 dark:text-gray-400 text-xs sm:text-sm">
                             <Info className="h-4 w-4 mr-1" />
                             <span>Este token não será exibido novamente</span>
                           </div>

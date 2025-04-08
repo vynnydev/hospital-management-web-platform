@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Card, CardReport } from "./mediMindAIPatientAssistantFunctions";
 
-import { PatientRiskAnalysis } from "@/services/AI/medimind-ai-assistant/PatientRiskAnalysis";
-import { VitalSignsAnalyzer } from "@/services/AI/medimind-ai-assistant/VitalSignsAnalyzer";
-import { MedicationAnalyzer } from "@/services/AI/medimind-ai-assistant/MedicationAnalyzer";
-import { RecommendationCache } from "@/services/AI/medimind-ai-assistant/RecommendationCache";
-import { RecommendationValidator } from "@/services/AI/medimind-ai-assistant/RecommendationValidator";
-import { Patient, PatientContext, PatientData, Procedure } from "@/services/AI/medimind-ai-assistant/types/medimind-ai-assistant";
-import { ImageGenerationService } from "@/services/AI/medimind-ai-assistant/ImageGenerationService";
+import { PatientRiskAnalysis } from "@/services/general/AI/medimind-ai-assistant/PatientRiskAnalysis";
+import { VitalSignsAnalyzer } from "@/services/general/AI/medimind-ai-assistant/VitalSignsAnalyzer";
+import { MedicationAnalyzer } from "@/services/general/AI/medimind-ai-assistant/MedicationAnalyzer";
+import { RecommendationCache } from "@/services/general/AI/medimind-ai-assistant/RecommendationCache";
+import { RecommendationValidator } from "@/services/general/AI/medimind-ai-assistant/RecommendationValidator";
+import { Patient, PatientContext, PatientData, Procedure } from "@/services/general/AI/medimind-ai-assistant/types/medimind-ai-assistant";
+import { ImageGenerationService } from "@/services/general/AI/medimind-ai-assistant/ImageGenerationService";
 
 class AssistantFuncionalities {
   private static instance: AssistantFuncionalities;

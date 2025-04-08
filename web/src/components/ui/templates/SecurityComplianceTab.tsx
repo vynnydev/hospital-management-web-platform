@@ -54,7 +54,7 @@ export const SecurityComplianceTab = () => {
 
   return (
     <div className="w-full space-y-4 mb-4">
-      <div className='flex flex-col items-center justify-center text-center mb-6'>
+      <div className='flex flex-col items-center justify-center text-center py-4'>
         <div className='flex flex-row'>
           <Shield className="h-6 w-6 text-blue-600 dark:text-blue-400 mr-2 mt-1" />
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Segurança e Compliance</h2>

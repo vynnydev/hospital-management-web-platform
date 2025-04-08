@@ -12,7 +12,7 @@ import {
   getDepartmentData,
   filterPatientsByDepartment
 } from '@/utils/patientDataUtils';
-import { generateAIContent } from '@/services/AI/aiGenerateRecommendationsAndImagesServices';
+import { generateAIContent } from '@/services/general/AI/aiGenerateRecommendationsAndImagesServices';
 import { PatientViewListMenuBar } from '@/components/ui/templates/PatientViewListMenuBar';
 import { ViewType } from '@/types/app-types';
 import { PatientListView } from './PatientListView';

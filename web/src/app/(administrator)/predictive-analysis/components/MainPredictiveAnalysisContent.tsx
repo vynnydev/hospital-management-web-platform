@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { Brain, LayoutGrid } from 'lucide-react';
-import { generateAIRecommendations } from '@/services/AI/aiStaffAnalysis';
+import { generateAIRecommendations } from '@/services/general/AI/aiStaffAnalysis';
 import { AIGenerationModal } from './AIGenerationModal';
 import { StaffPredictiveAnalysis } from './StaffPredictiveAnalysis';
 

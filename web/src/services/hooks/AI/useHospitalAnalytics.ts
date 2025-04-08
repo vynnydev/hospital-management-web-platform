@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // hooks/useHospitalAnalytics.ts
 import { useState, useCallback } from 'react';
-import { HospitalAnalyticsServiceAI } from '@/services/AI/hospitalAnalyticsServiceAI';
+import { HospitalAnalyticsServiceAI } from '@/services/general/AI/hospitalAnalyticsServiceAI';
 
 const analyticsService = new HospitalAnalyticsServiceAI();
 
