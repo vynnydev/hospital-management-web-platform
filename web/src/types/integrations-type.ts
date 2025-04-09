@@ -1,1 +1,0 @@
-export type IntegrationType = 'teams' | 'slack' | 'gmail' | 'whatsapp' | 'more';

@@ -3563,6 +3563,21 @@
       "createdBy": "ai",
       "createdAt": "2025-04-04T19:31:56.091Z",
       "isCustom": true
+    },
+    {
+      "id": "custom-metric-1744164754230",
+      "title": "Taxa de Ocupação UTI",
+      "subtitle": "Ocupação atual dos leitos",
+      "description": "Métrica gerada pela IA para monitorar a ocupação da UTI em tempo real",
+      "type": "main",
+      "cardType": "critical-hospital",
+      "additionalInfo": {
+        "label": "Taxa Atual",
+        "value": "87%"
+      },
+      "createdBy": "ai",
+      "createdAt": "2025-04-09T02:12:34.230Z",
+      "isCustom": true
     }
   ],
   "panelMetrics": {
@@ -5763,9 +5778,9 @@
       "type": "starter",
       "description": "Plano inicial ideal para pequenas clínicas e consultórios",
       "price": {
-        "monthly": 199.90,
-        "yearly": 2149.00,
-        "quarterly": 569.70,
+        "monthly": 199.9,
+        "yearly": 2149,
+        "quarterly": 569.7,
         "setup": 0
       },
       "yearlyDiscount": 10,
@@ -5979,9 +5994,9 @@
       "type": "professional",
       "description": "Ideal para clínicas médias e consultórios com múltiplos médicos",
       "price": {
-        "monthly": 599.90,
-        "yearly": 6479.00,
-        "quarterly": 1709.70,
+        "monthly": 599.9,
+        "yearly": 6479,
+        "quarterly": 1709.7,
         "setup": 0
       },
       "yearlyDiscount": 10,
@@ -6298,10 +6313,10 @@
       "type": "enterprise",
       "description": "Solução completa para hospitais e redes de clínicas",
       "price": {
-        "monthly": 1499.90,
-        "yearly": 16199.00,
-        "quarterly": 4274.70,
-        "setup": 999.00
+        "monthly": 1499.9,
+        "yearly": 16199,
+        "quarterly": 4274.7,
+        "setup": 999
       },
       "yearlyDiscount": 10,
       "modules": [
@@ -6795,7 +6810,7 @@
         {
           "id": "pay-001",
           "subscriptionId": "sub-001",
-          "amount": 6479.00,
+          "amount": 6479,
           "currency": "BRL",
           "status": "processed",
           "paymentMethod": "credit_card",
@@ -6806,7 +6821,7 @@
         {
           "id": "pay-003",
           "subscriptionId": "sub-001",
-          "amount": 1500.00,
+          "amount": 1500,
           "currency": "BRL",
           "status": "processed",
           "paymentMethod": "credit_card",
@@ -6817,7 +6832,7 @@
         {
           "id": "pay-004",
           "subscriptionId": "sub-001",
-          "amount": 1500.00,
+          "amount": 1500,
           "currency": "BRL",
           "status": "pending",
           "paymentMethod": "credit_card",
@@ -6828,7 +6843,7 @@
         {
           "id": "pay-005",
           "subscriptionId": "sub-001",
-          "amount": 1500.00,
+          "amount": 1500,
           "currency": "BRL",
           "status": "failed",
           "paymentMethod": "credit_card",
@@ -6839,7 +6854,7 @@
         {
           "id": "pay-006",
           "subscriptionId": "sub-001",
-          "amount": 500.00,
+          "amount": 500,
           "currency": "BRL",
           "status": "refunded",
           "paymentMethod": "credit_card",
@@ -6865,7 +6880,7 @@
         {
           "id": "pay-002",
           "subscriptionId": "sub-002",
-          "amount": 16199.00,
+          "amount": 16199,
           "currency": "BRL",
           "status": "processed",
           "paymentMethod": "credit_card",
@@ -6876,7 +6891,7 @@
         {
           "id": "pay-007",
           "subscriptionId": "sub-002",
-          "amount": 3500.00,
+          "amount": 3500,
           "currency": "BRL",
           "status": "processed",
           "paymentMethod": "bank_transfer",
@@ -6887,7 +6902,7 @@
         {
           "id": "pay-008",
           "subscriptionId": "sub-002",
-          "amount": 3500.00,
+          "amount": 3500,
           "currency": "BRL",
           "status": "processed",
           "paymentMethod": "bank_transfer",
@@ -6898,7 +6913,7 @@
         {
           "id": "pay-009",
           "subscriptionId": "sub-002",
-          "amount": 3500.00,
+          "amount": 3500,
           "currency": "BRL",
           "status": "processed",
           "paymentMethod": "bank_transfer",
@@ -6938,7 +6953,7 @@
         {
           "id": "pay-010",
           "subscriptionId": "sub-004",
-          "amount": 599.90,
+          "amount": 599.9,
           "currency": "BRL",
           "status": "processed",
           "paymentMethod": "credit_card",
@@ -6949,7 +6964,7 @@
         {
           "id": "pay-011",
           "subscriptionId": "sub-004",
-          "amount": 599.90,
+          "amount": 599.9,
           "currency": "BRL",
           "status": "processed",
           "paymentMethod": "credit_card",
@@ -6960,7 +6975,7 @@
         {
           "id": "pay-012",
           "subscriptionId": "sub-004",
-          "amount": 599.90,
+          "amount": 599.9,
           "currency": "BRL",
           "status": "processed",
           "paymentMethod": "credit_card",
@@ -7053,7 +7068,7 @@
         {
           "id": "pay-013",
           "subscriptionId": "sub-005",
-          "amount": 25000.00,
+          "amount": 25000,
           "currency": "BRL",
           "status": "processed",
           "paymentMethod": "bank_transfer",

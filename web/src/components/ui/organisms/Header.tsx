@@ -12,7 +12,7 @@ import { WelcomeMsg } from "@/components/ui/templates/WelcomeMsg"
 import { Button } from "@/components/ui/organisms/button"
 import { authService } from "@/services/auth/AuthService"
 import { ConfigurationAndUserModalMenus } from '../templates/modals/ConfigurationAndUserModalMenus';
-import { IntegrationsContent } from '../templates/modal-contents/IntegrationsContent';
+import { IntegrationsContent } from '../templates/user-preferences/IntegrationsContent';
 import { AlertsProvider } from '../templates/providers/alerts/AlertsProvider';
 import { H24AssistantBar } from '../templates/ai-assistant/H24AssistantBar';
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';

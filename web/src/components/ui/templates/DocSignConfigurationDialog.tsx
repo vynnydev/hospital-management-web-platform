@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/organisms/dialog';
-import { Button } from '@/components/ui/organisms/button';
-import { Input } from '@/components/ui/organisms/input';
-import { Label } from '@/components/ui/organisms/label';
-import { Switch } from '@/components/ui/organisms/switch';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/organisms/tabs';
-import { FileSignature, Key, Settings, Users, Shield, FileText } from 'lucide-react';
+import { X, Check, AlertCircle } from 'lucide-react';
 
 interface DocSignConfigurationDialogProps {
   open: boolean;
@@ -14,309 +8,230 @@ interface DocSignConfigurationDialogProps {
 
 export const DocSignConfigurationDialog: React.FC<DocSignConfigurationDialogProps> = ({
   open,
-  onOpenChange,
+  onOpenChange
 }) => {
-  const [activeTab, setActiveTab] = useState('general');
-  const [apiKey, setApiKey] = useState('d45fg7h8j9k0**********************');
-  const [settings, setSettings] = useState({
-    autoSign: true,
-    requireAuthentication: true,
-    storeDocuments: true,
-    notifyOnSign: true,
-    allowBulkSign: false,
-    useElectronicSignature: true,
-    allowAnnotations: true,
-    enforceSequentialSigning: false,
-  });
+  const [apiKey, setApiKey] = useState('');
+  const [webhookURL, setWebhookURL] = useState('');
+  const [environment, setEnvironment] = useState('sandbox');
+  const [autoSign, setAutoSign] = useState(false);
+  const [requirePatientAuth, setRequirePatientAuth] = useState(true);
+  const [signerTypes, setSignerTypes] = useState<string[]>(['doctor', 'patient']);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
 
-  const handleToggleSetting = (setting: string) => {
-    setSettings(prev => ({
-      ...prev,
-      [setting]: !prev[setting as keyof typeof prev],
-    }));
+  const handleSave = async () => {
+    setIsSaving(true);
+    
+    try {
+      // Simula chamada de API
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Em um ambiente real, faria uma chamada à API para salvar as configurações
+      console.log('Salvando configurações DocSign:', {
+        apiKey,
+        webhookURL,
+        environment,
+        autoSign,
+        requirePatientAuth,
+        signerTypes
+      });
+      
+      setSaveSuccess(true);
+      setTimeout(() => setSaveSuccess(false), 3000);
+    } catch (error) {
+      console.error('Erro ao salvar configurações:', error);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
+  if (!open) return null;
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px] bg-gray-50 dark:bg-gray-900">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-xl">
-            <FileSignature className="h-6 w-6 text-teal-600" />
-            Configuração do DocSign
-          </DialogTitle>
-          <DialogDescription>
-            Configure os parâmetros da integração DocSign para assinatura de documentos médicos.
-          </DialogDescription>
-        </DialogHeader>
-
-        <Tabs defaultValue="general" value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="general" className="flex items-center gap-1">
-              <Settings className="h-4 w-4" />
-              <span className="hidden sm:inline">Geral</span>
-            </TabsTrigger>
-            <TabsTrigger value="api" className="flex items-center gap-1">
-              <Key className="h-4 w-4" />
-              <span className="hidden sm:inline">API</span>
-            </TabsTrigger>
-            <TabsTrigger value="permissions" className="flex items-center gap-1">
-              <Shield className="h-4 w-4" />
-              <span className="hidden sm:inline">Permissões</span>
-            </TabsTrigger>
-            <TabsTrigger value="templates" className="flex items-center gap-1">
-              <FileText className="h-4 w-4" />
-              <span className="hidden sm:inline">Templates</span>
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="general" className="mt-4 space-y-4">
-            <div className="grid grid-cols-1 gap-2">
-              <div className="flex items-center justify-between border-b pb-2">
-                <div className="space-y-0.5">
-                  <h4 className="text-sm font-medium">Assinatura Automática</h4>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Finaliza assinaturas automaticamente em documentos padrão
-                  </p>
-                </div>
-                <Switch
-                  checked={settings.autoSign}
-                  onCheckedChange={() => handleToggleSetting('autoSign')}
-                />
-              </div>
-
-              <div className="flex items-center justify-between border-b pb-2">
-                <div className="space-y-0.5">
-                  <h4 className="text-sm font-medium">Autenticação de Dois Fatores</h4>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Requer autenticação dupla para assinaturas
-                  </p>
-                </div>
-                <Switch
-                  checked={settings.requireAuthentication}
-                  onCheckedChange={() => handleToggleSetting('requireAuthentication')}
-                />
-              </div>
-
-              <div className="flex items-center justify-between border-b pb-2">
-                <div className="space-y-0.5">
-                  <h4 className="text-sm font-medium">Armazenamento de Documentos</h4>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Armazena cópias assinadas dos documentos
-                  </p>
-                </div>
-                <Switch
-                  checked={settings.storeDocuments}
-                  onCheckedChange={() => handleToggleSetting('storeDocuments')}
-                />
-              </div>
-
-              <div className="flex items-center justify-between pb-2">
-                <div className="space-y-0.5">
-                  <h4 className="text-sm font-medium">Notificações</h4>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Notifica todas as partes quando um documento é assinado
-                  </p>
-                </div>
-                <Switch
-                  checked={settings.notifyOnSign}
-                  onCheckedChange={() => handleToggleSetting('notifyOnSign')}
-                />
-              </div>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="api" className="mt-4 space-y-4">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="api-key">Chave API</Label>
-                <div className="flex">
-                  <Input
-                    id="api-key"
-                    type="password"
-                    value={apiKey}
-                    onChange={(e) => setApiKey(e.target.value)}
-                    className="flex-1"
-                  />
-                  <Button variant="outline" className="ml-2">
-                    Regenerar
-                  </Button>
-                </div>
-                <p className="text-xs text-gray-500">
-                  Mantenha essa chave segura. Ela garante acesso aos serviços DocSign.
-                </p>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="webhook-url">URL de Webhook</Label>
-                <Input
-                  id="webhook-url"
-                  defaultValue="https://seu-hospital.com/api/docSign/webhook"
-                  readOnly
-                />
-                <p className="text-xs text-gray-500">
-                  Endpoint para receber notificações de eventos do DocSign.
-                </p>
-              </div>
-
-              <div className="space-y-2">
-                <h4 className="text-sm font-medium">Serviços Habilitados</h4>
-                <div className="grid grid-cols-1 gap-2">
-                  <div className="flex items-center space-x-2">
-                    <input type="checkbox" id="e-sign" className="h-4 w-4" defaultChecked />
-                    <label htmlFor="e-sign" className="text-sm text-gray-700 dark:text-gray-300">
-                      Assinatura Eletrônica
-                    </label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <input type="checkbox" id="template-api" className="h-4 w-4" defaultChecked />
-                    <label htmlFor="template-api" className="text-sm text-gray-700 dark:text-gray-300">
-                      API de Templates
-                    </label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <input type="checkbox" id="bulk-send" className="h-4 w-4" />
-                    <label htmlFor="bulk-send" className="text-sm text-gray-700 dark:text-gray-300">
-                      Envio em Massa
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="permissions" className="mt-4 space-y-4">
-            <div className="space-y-4">
-              <h4 className="text-sm font-medium">Tipos de Documentos Permitidos</h4>
-              <div className="grid grid-cols-2 gap-2">
-                <div className="flex items-center space-x-2">
-                  <input type="checkbox" id="protocols" className="h-4 w-4" defaultChecked />
-                  <label htmlFor="protocols" className="text-sm">Protocolos Clínicos</label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <input type="checkbox" id="reports" className="h-4 w-4" defaultChecked />
-                  <label htmlFor="reports" className="text-sm">Relatórios Médicos</label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <input type="checkbox" id="consent" className="h-4 w-4" defaultChecked />
-                  <label htmlFor="consent" className="text-sm">Termos de Consentimento</label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <input type="checkbox" id="prescriptions" className="h-4 w-4" defaultChecked />
-                  <label htmlFor="prescriptions" className="text-sm">Prescrições</label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <input type="checkbox" id="discharge" className="h-4 w-4" defaultChecked />
-                  <label htmlFor="discharge" className="text-sm">Documentos de Alta</label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <input type="checkbox" id="admin" className="h-4 w-4" />
-                  <label htmlFor="admin" className="text-sm">Documentos Administrativos</label>
-                </div>
-              </div>
-
-              <h4 className="text-sm font-medium mt-4">Funções com Permissão</h4>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between py-2 border-b">
-                  <div className="flex items-center gap-2">
-                    <Users className="h-4 w-4 text-blue-600" />
-                    <span className="text-sm">Médicos</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-gray-500">Assinar, Visualizar, Enviar</span>
-                    <Button variant="ghost" size="sm" className="h-6 text-xs">
-                      Editar
-                    </Button>
-                  </div>
-                </div>
-                
-                <div className="flex items-center justify-between py-2 border-b">
-                  <div className="flex items-center gap-2">
-                    <Users className="h-4 w-4 text-green-600" />
-                    <span className="text-sm">Enfermeiros</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-gray-500">Visualizar, Enviar</span>
-                    <Button variant="ghost" size="sm" className="h-6 text-xs">
-                      Editar
-                    </Button>
-                  </div>
-                </div>
-                
-                <div className="flex items-center justify-between py-2">
-                  <div className="flex items-center gap-2">
-                    <Users className="h-4 w-4 text-purple-600" />
-                    <span className="text-sm">Administradores</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-gray-500">Assinar, Visualizar, Enviar, Gerenciar</span>
-                    <Button variant="ghost" size="sm" className="h-6 text-xs">
-                      Editar
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="templates" className="mt-4 space-y-4">
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <h4 className="text-sm font-medium">Templates Disponíveis</h4>
-                <Button variant="outline" size="sm" className="h-8 text-xs">
-                  Adicionar Template
-                </Button>
-              </div>
-              
-              <div className="border rounded-md">
-                <div className="grid grid-cols-[1fr,auto] border-b py-2 px-3">
-                  <div>
-                    <h5 className="text-sm font-medium">Termo de Consentimento Cirúrgico</h5>
-                    <p className="text-xs text-gray-500">Para procedimentos cirúrgicos</p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Button variant="ghost" size="sm" className="h-7 text-xs">Editar</Button>
-                    <Button variant="ghost" size="sm" className="h-7 text-xs">Ver</Button>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-[1fr,auto] border-b py-2 px-3">
-                  <div>
-                    <h5 className="text-sm font-medium">Prescrição de Medicamentos</h5>
-                    <p className="text-xs text-gray-500">Template de prescrição padrão</p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Button variant="ghost" size="sm" className="h-7 text-xs">Editar</Button>
-                    <Button variant="ghost" size="sm" className="h-7 text-xs">Ver</Button>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-[1fr,auto] py-2 px-3">
-                  <div>
-                    <h5 className="text-sm font-medium">Protocolo de Alta Hospitalar</h5>
-                    <p className="text-xs text-gray-500">Documentação de alta padrão</p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Button variant="ghost" size="sm" className="h-7 text-xs">Editar</Button>
-                    <Button variant="ghost" size="sm" className="h-7 text-xs">Ver</Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </TabsContent>
-        </Tabs>
-
-        <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancelar
-          </Button>
-          <Button 
-            className="bg-teal-600 hover:bg-teal-700 text-white"
+    <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center">
+      <div className="w-full max-w-2xl bg-white dark:bg-gray-900 rounded-lg shadow-xl overflow-hidden">
+        <div className="flex justify-between items-center p-6 border-b border-gray-200 dark:border-gray-700">
+          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">Configuração DocSign</h2>
+          <button 
             onClick={() => onOpenChange(false)}
+            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full text-gray-500 dark:text-gray-400"
           >
-            Salvar Configurações
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        <div className="p-6 space-y-6">
+          <div className="space-y-4">
+            {saveSuccess && (
+              <div className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 p-4 rounded-lg flex items-center">
+                <Check className="w-5 h-5 mr-2" />
+                <span>Configurações salvas com sucesso!</span>
+              </div>
+            )}
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Ambiente</label>
+              <div className="flex space-x-4">
+                <label className="inline-flex items-center">
+                  <input
+                    type="radio"
+                    value="sandbox"
+                    checked={environment === 'sandbox'}
+                    onChange={() => setEnvironment('sandbox')}
+                    className="h-4 w-4 text-blue-600 dark:text-blue-500"
+                  />
+                  <span className="ml-2 text-gray-700 dark:text-gray-300">Sandbox</span>
+                </label>
+                <label className="inline-flex items-center">
+                  <input
+                    type="radio"
+                    value="production"
+                    checked={environment === 'production'}
+                    onChange={() => setEnvironment('production')}
+                    className="h-4 w-4 text-blue-600 dark:text-blue-500"
+                  />
+                  <span className="ml-2 text-gray-700 dark:text-gray-300">Produção</span>
+                </label>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Chave de API</label>
+              <input
+                type="password"
+                value={apiKey}
+                onChange={(e) => setApiKey(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md 
+                  shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 
+                  dark:focus:border-blue-400 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                placeholder="Insira sua chave de API"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">URL do Webhook</label>
+              <input
+                type="text"
+                value={webhookURL}
+                onChange={(e) => setWebhookURL(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md 
+                  shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 
+                  dark:focus:border-blue-400 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                placeholder="https://seu-dominio.com/webhook/docsign"
+              />
+            </div>
+
+            <div className="pt-4 space-y-2">
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white">Configurações de Assinatura</h3>
+              
+              <div className="flex items-center justify-between py-2">
+                <div>
+                  <span className="font-medium text-gray-700 dark:text-gray-300">Assinatura Automática</span>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    Envia documentos para assinatura automaticamente após geração
+                  </p>
+                </div>
+                <button
+                  onClick={() => setAutoSign(!autoSign)}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full ${
+                    autoSign ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700'
+                  }`}
+                >
+                  <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${
+                    autoSign ? 'translate-x-6' : 'translate-x-1'
+                  }`} />
+                </button>
+              </div>
+
+              <div className="flex items-center justify-between py-2">
+                <div>
+                  <span className="font-medium text-gray-700 dark:text-gray-300">Autenticação de Pacientes</span>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    Requer verificação de identidade do paciente para assinatura
+                  </p>
+                </div>
+                <button
+                  onClick={() => setRequirePatientAuth(!requirePatientAuth)}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full ${
+                    requirePatientAuth ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700'
+                  }`}
+                >
+                  <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${
+                    requirePatientAuth ? 'translate-x-6' : 'translate-x-1'
+                  }`} />
+                </button>
+              </div>
+            </div>
+
+            <div className="space-y-2 pt-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Tipos de Assinantes</label>
+              <div className="grid grid-cols-2 gap-2">
+                {['doctor', 'nurse', 'patient', 'administrator'].map((type) => (
+                  <label key={type} className="inline-flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={signerTypes.includes(type)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setSignerTypes([...signerTypes, type]);
+                        } else {
+                          setSignerTypes(signerTypes.filter(t => t !== type));
+                        }
+                      }}
+                      className="h-4 w-4 text-blue-600 dark:text-blue-500"
+                    />
+                    <span className="ml-2 text-gray-700 dark:text-gray-300 capitalize">
+                      {type === 'doctor' ? 'Médico' : 
+                       type === 'nurse' ? 'Enfermeiro' : 
+                       type === 'patient' ? 'Paciente' : 'Administrador'}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div className="pt-4 space-y-2">
+              <div className="flex items-start">
+                <div className="flex-shrink-0">
+                  <AlertCircle className="h-5 w-5 text-yellow-500" />
+                </div>
+                <div className="ml-3">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    As configurações do DocSign afetam todo o fluxo de assinaturas digitais do hospital. 
+                    Certifique-se de que as configurações estão corretas antes de salvar.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex justify-end space-x-4 p-6 border-t border-gray-200 dark:border-gray-700">
+          <button
+            onClick={() => onOpenChange(false)}
+            className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg 
+              text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+          >
+            Cancelar
+          </button>
+          <button
+            onClick={handleSave}
+            disabled={isSaving}
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white 
+              disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+          >
+            {isSaving ? (
+              <>
+                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Salvando...
+              </>
+            ) : 'Salvar Configurações'}
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
