@@ -2,19 +2,19 @@ import React from 'react';
 import { Bot, MessageSquare, Brain } from 'lucide-react';
 import { Button } from '@/components/ui/organisms/button';
 
-interface CommonQuestion {
+interface ICommonQuestion {
   category: string;
   questions: string[];
 }
 
-interface MediMindAIProps {
+interface ICognitivaAIProps {
   onQuestionSelect: (question: string) => void;
   isGenerating: boolean;
   aiResponse: string;
   onGenerateProtocol: () => void;
 }
 
-const commonQuestions: CommonQuestion[] = [
+const commonQuestions: ICommonQuestion[] = [
   {
     category: "Sinais Vitais",
     questions: [
@@ -41,7 +41,7 @@ const commonQuestions: CommonQuestion[] = [
   }
 ];
 
-export const MediMindAI: React.FC<MediMindAIProps> = ({
+export const CognitivaAI: React.FC<ICognitivaAIProps> = ({
   onQuestionSelect,
   isGenerating,
   aiResponse,
@@ -52,7 +52,7 @@ export const MediMindAI: React.FC<MediMindAIProps> = ({
       <div className="bg-gradient-to-r from-blue-50 to-teal-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-xl">
         <div className="flex items-center gap-3 mb-6">
           <Bot className="w-6 h-6 text-blue-500" />
-          <h3 className="text-xl font-semibold">MediMind AI - Assistente Inteligente</h3>
+          <h3 className="text-xl font-semibold">Cognitiva AI - Assistente Inteligente</h3>
         </div>
 
         <div className="grid grid-cols-3 gap-4 mb-6">
@@ -87,7 +87,7 @@ export const MediMindAI: React.FC<MediMindAIProps> = ({
                 <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
                 <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></span>
               </div>
-              <span>MediMind AI está analisando...</span>
+              <span>Cognitiva AI está analisando...</span>
             </div>
           ) : (
             <div className="prose dark:prose-invert max-w-none">

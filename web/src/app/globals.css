@@ -82,7 +82,7 @@
   animation: shimmer 2s infinite;
 }
 
-/* animação do botão da assistente de inteligencia artificial MediMind AI */
+/* animação do botão da assistente de inteligencia artificial Cognitiva AI */
 @keyframes pulse-gradient {
   0% {
     background-position: 0% 50%;
@@ -107,7 +107,7 @@
   margin-right: 1rem;
 }
 
-/* Estilos do MediMind AI Assistant */
+/* Estilos do Cognitiva AI Assistant */
 @keyframes spin-slow {
   from {
     transform: rotate(0deg);

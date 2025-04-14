@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/organisms/card';
 import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { MediMindAIPatientAssistant } from '@/components/ui/templates/medimind-ai-assistant/MediMindAIPatientAssistant';
+import { CognitivaAIPatientAssistant } from '@/components/ui/templates/cognitiva-ai-assistant/CognitivaAIPatientAssistant';
 import { ReorderableSectionsInOverviewPage } from '@/components/ui/templates/ReorderableSectionsInOverviewPage';
 import { ManagementNetworkMetrics } from './components/ManagementNetworkMetrics';
 import { DepartmentStatus } from './components/DepartmentStatus';
@@ -365,7 +365,7 @@ const Overview: React.FC = () => {
         setSelectedHospital={setSelectedHospital}
       />
 
-      <MediMindAIPatientAssistant />
+      <CognitivaAIPatientAssistant />
     </>
   );
 };

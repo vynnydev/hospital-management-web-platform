@@ -20,7 +20,7 @@ export const FooterApplication = () => {
 
                 <h1 className="text-gray-500 dark:text-gray-400 ml-40">© {new Date().getFullYear()} - Cognitiva</h1>
 
-                <h1 className="text-gray-500 dark:text-gray-400 mr-8">Tecnologia Hospítalar - Cognitiva Studio</h1>
+                <h1 className="text-gray-500 dark:text-gray-400 mr-8">Tecnologia Hospítalar - Cognitiva Tech</h1>
             </div>
 
         </div>

@@ -63,14 +63,14 @@ export const StaffPredictiveAnalysis: React.FC<StaffPredictiveAnalysisProps> = (
                             </p>
                         </div>
 
-                        {/* Subcard MediMind Insights */}
+                        {/* Subcard Cognitiva Insights */}
                         <div className="bg-blue-50/50 dark:bg-blue-900/20 rounded-2xl p-4
                             border border-blue-200/20 dark:border-blue-700/20 cursor-pointer
                             hover:bg-blue-50/70 dark:hover:bg-blue-900/30 transition-colors">
                             <div className="flex items-center gap-2 mb-3">
                             <Brain className="w-4 h-4 text-blue-500" />
                             <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
-                                MediMind Insights
+                                Cognitiva Insights
                             </span>
                             </div>
                             <p className="text-sm text-slate-600 dark:text-slate-400">
@@ -107,14 +107,14 @@ export const StaffPredictiveAnalysis: React.FC<StaffPredictiveAnalysisProps> = (
                     </p>
                 </div>
 
-                {/* Subcard MediMind Insights */}
+                {/* Subcard Cognitiva Insights */}
                 <div className="bg-emerald-50/50 dark:bg-emerald-900/20 rounded-2xl p-4
                     border border-emerald-200/20 dark:border-emerald-700/20 cursor-pointer
                     hover:bg-emerald-50/70 dark:hover:bg-emerald-900/30 transition-colors">
                     <div className="flex items-center gap-2 mb-3">
                     <Brain className="w-4 h-4 text-emerald-500" />
                     <span className="text-sm font-medium text-emerald-700 dark:text-emerald-300">
-                        MediMind Insights
+                        Cognitiva Insights
                     </span>
                     </div>
                     <p className="text-sm text-slate-600 dark:text-slate-400">
@@ -147,14 +147,14 @@ export const StaffPredictiveAnalysis: React.FC<StaffPredictiveAnalysisProps> = (
                         </p>
                     </div>
 
-                    {/* Subcard MediMind Insights */}
+                    {/* Subcard Cognitiva Insights */}
                     <div className="bg-amber-50/50 dark:bg-amber-900/20 rounded-2xl p-4
                         border border-amber-200/20 dark:border-amber-700/20 cursor-pointer
                         hover:bg-amber-50/70 dark:hover:bg-amber-900/30 transition-colors">
                         <div className="flex items-center gap-2 mb-3">
                             <Brain className="w-4 h-4 text-amber-500" />
                             <span className="text-sm font-medium text-amber-700 dark:text-amber-300">
-                                MediMind Insights
+                                Cognitiva Insights
                             </span>
                             </div>
                                 <p className="text-sm text-slate-600 dark:text-slate-400">

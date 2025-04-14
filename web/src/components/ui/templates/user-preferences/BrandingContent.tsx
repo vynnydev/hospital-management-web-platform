@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Save, Upload, EyeOff, Palette, AlertTriangle } from 'lucide-react';
+import { Save, Upload, Palette, AlertTriangle } from 'lucide-react';
 import { authService } from '@/services/auth/AuthService';
+import Image from 'next/image';
 
 export const BrandingContent: React.FC = () => {
   const [isSaving, setIsSaving] = useState(false);
@@ -200,10 +201,12 @@ export const BrandingContent: React.FC = () => {
             <div className="flex items-center">
               <div className="w-24 h-24 border border-gray-300 dark:border-gray-700 rounded-lg flex items-center justify-center bg-white dark:bg-gray-900">
                 {brandingSettings.logoFile ? (
-                  <img 
+                  <Image 
                     src={URL.createObjectURL(brandingSettings.logoFile)}
                     alt="Logo Preview"
                     className="max-w-full max-h-full object-contain"
+                    width={96} // Adjust width as needed
+                    height={96} // Adjust height as needed
                   />
                 ) : (
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">

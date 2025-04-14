@@ -132,7 +132,7 @@ export interface Patient {
   };
 }
 
-// MediMind AI Assistant
+// Cognitiva AI Assistant
 export interface PatientData {
     medicalTeam: any;
     personalInfo: {

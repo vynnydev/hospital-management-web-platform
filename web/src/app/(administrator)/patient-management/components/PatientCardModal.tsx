@@ -8,7 +8,7 @@ import { AccessibilityBar } from './patient-card-modal/AccessibilityBar';
 import { PatientHeader } from './patient-card-modal/PatientHeader';
 import { VitalsChart } from './patient-card-modal/VitalsChart';
 import { RiskAnalysis } from './patient-card-modal/RiskAnalysis';
-import { MediMindAI } from './patient-card-modal/MediMindAI';
+import { MediMindAI } from './patient-card-modal/CognitivaAI';
 import { ReportsSlider } from './patient-card-modal/ReportsSlider';
 import { StatusHistory } from './patient-card-modal/StatusHistory';
 import { BedInformation } from './patient-card-modal/BedInformation';

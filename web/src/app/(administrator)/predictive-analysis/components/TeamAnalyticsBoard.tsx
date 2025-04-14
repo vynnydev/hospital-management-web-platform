@@ -248,7 +248,7 @@ export const TeamAnalyticsBoard: React.FC<TeamAnalyticsBoardProps> = ({
         <div>
           <h4 className="font-medium text-slate-200 mb-4 flex items-center gap-2">
             <Brain className="w-5 h-5 text-blue-500" />
-            MediMind Insights
+            Cognitiva Insights
           </h4>
           <div className="bg-slate-800/40 rounded-xl p-4 space-y-4
             border border-slate-700/20">

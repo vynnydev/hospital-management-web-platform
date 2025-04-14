@@ -89,7 +89,7 @@ export const cardInitialMessages: Record<CardTitle, string> = {
     " - Por favor, descreva o caso clínico para análise."
 };
 
-export const initialMessage = 'Olá! Sou MediMind AI, sua assistente virtual especializada em saúde. ' +
+export const initialMessage = 'Olá! Sou Cognitiva AI, sua assistente virtual especializada em saúde. ' +
 'Posso ajudar com gestão de pacientes, análise de prontuários, agendamentos e muito mais. ' +
 'Como posso auxiliar você hoje?';
 

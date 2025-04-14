@@ -1,12 +1,26 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { 
   FileSpreadsheet, BarChart3, MessageCircle, 
   Mail, FileText, Bell, Check, FileSignature,
-  AlertTriangle, Loader2, Search, Filter, PlusCircle,
-  RefreshCw, ShieldCheck, Lock, BookOpen
+  AlertTriangle, Loader2, Search, Filter, ShieldCheck, BookOpen
 } from 'lucide-react';
-import { DocSignConfigurationDialog } from '../DocSignConfigurationDialog';
 import { IntegrationConfigModal } from '../modals/IntegrationConfigModal';
+
+// Componentes de Configuração para integrações específicas
+import { DocSignConfig } from '../integration-configs/DocSignConfig';
+import { ExcelConfig } from '../integration-configs/ExcelConfig';
+import { SlackConfig } from '../integration-configs/SlackConfig';
+import { EmailConfig } from '../integration-configs/EmailConfig';
+import { PDFConfig } from '../integration-configs/PDFConfig';
+import { EHRConfig } from '../integration-configs/EHRConfig';
+import { JiraConfig } from '../integration-configs/JiraConfig';
+import { PowerBIConfig } from '../integration-configs/PowerBIConfig';
+import { SecureHealthConfig } from '../integration-configs/SecureHealthConfig';
+import { TeamsConfig } from '../integration-configs/TeamsConfig';
+import { WhatsAppConfig } from '../integration-configs/WhatsAppConfig';
+import { WordConfig } from '../integration-configs/WordConfig';
 
 // Tipagem para as integrações
 interface Integration {
@@ -17,7 +31,6 @@ interface Integration {
   isActive: boolean;
   category: string;
   gradientColors: string;
-  configComponent?: React.ReactNode;
   isNew?: boolean;
   isPopular?: boolean;
 }
@@ -107,9 +120,25 @@ export const IntegrationsContent = () => {
   // Gerenciamento de modais de configuração
   const [activeConfigModal, setActiveConfigModal] = useState<string | null>(null);
   
+  // Configurações atuais de cada integração
+  const [integrationsConfig, setIntegrationsConfig] = useState<Record<string, any>>({
+    docsign: {},
+    excel: {},
+    slack: {},
+    email: {},
+    pdf: {},
+    ehr: {},
+    word: {},
+    jira: {},
+    whatsapp: {},
+    powerbi: {},
+    teams: {},
+    security: {}
+  });
+  
   // Lista de integrações
   const [integrations, setIntegrations] = useState<Integration[]>([
-    // DocSign Integration (Added)
+    // DocSign Integration
     {
       id: 'docsign',
       name: 'DocSign',
@@ -232,7 +261,6 @@ export const IntegrationsContent = () => {
     return () => clearTimeout(timer);
   }, []);
 
-
   // Limpar completamente a barra de busca quando qualquer modal estiver aberto
   useEffect(() => {
     if (activeConfigModal) {
@@ -295,6 +323,16 @@ export const IntegrationsContent = () => {
     closeConfigModal();
   };
 
+  // Salvar configurações de integração
+  const saveIntegrationConfig = (id: string, config: any) => {
+    setIntegrationsConfig(prev => ({
+      ...prev,
+      [id]: config
+    }));
+    
+    console.log(`Configurações da integração ${id} salvas:`, config);
+  };
+
   // Filtrar integrações
   const filteredIntegrations = integrations.filter(integration => {
     // Filtro por categoria
@@ -316,174 +354,48 @@ export const IntegrationsContent = () => {
     const integration = integrations.find(i => i.id === id);
     if (!integration) return null;
 
+    const handleConfigChange = (config: any) => {
+      saveIntegrationConfig(id, config);
+    };
+
     switch (id) {
       case 'docsign':
-        return (
-          <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">API Key</label>
-            <input 
-              type="password" 
-              className="w-full p-2 border rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800"
-              placeholder="Insira sua API Key"
-              autoComplete="off" // Impede o preenchimento automático
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">URL do Webhook</label>
-            <input 
-              type="text" 
-              className="w-full p-2 border rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800"
-              placeholder="https://sua-url.com/webhook"
-              autoComplete="off" // Impede o preenchimento automático
-            />
-          </div>
-            <div className="mt-4">
-              <h4 className="font-medium mb-2">Configurações de Assinatura</h4>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span>Enviar automaticamente para assinatura</span>
-                  <div className="relative inline-flex h-6 w-11 items-center rounded-full bg-gray-200 dark:bg-gray-700">
-                    <span className="inline-block h-4 w-4 transform rounded-full bg-white translate-x-1" />
-                  </div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>Requer autenticação do paciente</span>
-                  <div className="relative inline-flex h-6 w-11 items-center rounded-full bg-blue-600">
-                    <span className="inline-block h-4 w-4 transform rounded-full bg-white translate-x-6" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
+        return <DocSignConfig config={integrationsConfig.docsign} onChange={handleConfigChange} />;
         
-      case 'excel':
-        return (
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium mb-1">Pasta para exportação</label>
-              <input 
-                type="text" 
-                className="w-full p-2 border rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800"
-                placeholder="/pasta/exportacao"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Formato padrão</label>
-              <select className="w-full p-2 border rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800">
-                <option>XLSX</option>
-                <option>CSV</option>
-                <option>ODS</option>
-              </select>
-            </div>
-            <div className="mt-4">
-              <h4 className="font-medium mb-2">Configurações de Exportação</h4>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span>Exportar automaticamente relatórios</span>
-                  <div className="relative inline-flex h-6 w-11 items-center rounded-full bg-blue-600">
-                    <span className="inline-block h-4 w-4 transform rounded-full bg-white translate-x-6" />
-                  </div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>Incluir gráficos</span>
-                  <div className="relative inline-flex h-6 w-11 items-center rounded-full bg-blue-600">
-                    <span className="inline-block h-4 w-4 transform rounded-full bg-white translate-x-6" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-        
-      case 'slack':
-        return (
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium mb-1">URL do Webhook do Slack</label>
-              <input 
-                type="text" 
-                className="w-full p-2 border rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800"
-                placeholder="https://hooks.slack.com/services/..."
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Canal padrão</label>
-              <input 
-                type="text" 
-                className="w-full p-2 border rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800"
-                placeholder="#canal"
-              />
-            </div>
-            <div className="mt-4">
-              <h4 className="font-medium mb-2">Tipos de notificações</h4>
-              <div className="space-y-2">
-                <div className="flex items-center">
-                  <input type="checkbox" className="mr-2" checked />
-                  <span>Alertas de emergência</span>
-                </div>
-                <div className="flex items-center">
-                  <input type="checkbox" className="mr-2" checked />
-                  <span>Novos agendamentos</span>
-                </div>
-                <div className="flex items-center">
-                  <input type="checkbox" className="mr-2" />
-                  <span>Resultados de exames</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
+      case 'ehr':
+        return <EHRConfig config={integrationsConfig.ehr} onChange={handleConfigChange} />;
         
       case 'email':
-        return (
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium mb-1">Servidor SMTP</label>
-              <input 
-                type="text" 
-                className="w-full p-2 border rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800"
-                placeholder="smtp.servidor.com"
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium mb-1">Porta</label>
-                <input 
-                  type="number" 
-                  className="w-full p-2 border rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800"
-                  placeholder="587"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1">Criptografia</label>
-                <select className="w-full p-2 border rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800">
-                  <option>TLS</option>
-                  <option>SSL</option>
-                  <option>Nenhuma</option>
-                </select>
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Email remetente</label>
-              <input 
-                type="email" 
-                className="w-full p-2 border rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800"
-                placeholder="sistema@hospital.com"
-              />
-            </div>
-            <div className="mt-4">
-              <h4 className="font-medium mb-2">Templates de Email</h4>
-              <select className="w-full p-2 border rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800">
-                <option>Template padrão</option>
-                <option>Template minimalista</option>
-                <option>Template detalhado</option>
-              </select>
-            </div>
-          </div>
-        );
-        
+        return <EmailConfig config={integrationsConfig.email} onChange={handleConfigChange} />;
+
+      case 'excel':
+        return <ExcelConfig config={integrationsConfig.excel} onChange={handleConfigChange} />;
+
+      case 'jira':
+        return <JiraConfig config={integrationsConfig.jira} onChange={handleConfigChange} />;
+      
+      case 'pdf':
+        return <PDFConfig config={integrationsConfig.pdf} onChange={handleConfigChange} />;
+
+      case 'powerbi':
+        return <PowerBIConfig {...integrationsConfig.powerbi} onChange={handleConfigChange} />;
+
+      case 'security':
+        return <SecureHealthConfig {...integrationsConfig.security} onChange={handleConfigChange} />;
+
+      case 'slack':
+        return <SlackConfig config={integrationsConfig.slack} onChange={handleConfigChange} />;
+      
+      case 'teams':
+        return <TeamsConfig {...integrationsConfig.teams} onChange={handleConfigChange} />;
+
+      case 'whatsapp':
+        return <WhatsAppConfig {...integrationsConfig.whatsapp} onChange={handleConfigChange} />;
+
+      case 'word':
+        return <WordConfig {...integrationsConfig.word} onChange={handleConfigChange} />;
+      
+      // Para integrações sem componentes específicos ainda
       default:
         return (
           <div className="flex flex-col items-center justify-center py-8">
@@ -563,6 +475,18 @@ export const IntegrationsContent = () => {
             <Loader2 className="w-12 h-12 text-blue-500 animate-spin mb-4" />
             <p className="text-gray-500 dark:text-gray-400">Carregando integrações...</p>
           </div>
+        ) : error ? (
+          <div className="flex flex-col items-center justify-center py-12">
+            <AlertTriangle className="w-12 h-12 text-red-500 mb-4" />
+            <p className="text-red-500 dark:text-red-400 mb-2">Erro ao carregar integrações</p>
+            <p className="text-gray-500 dark:text-gray-400">{error}</p>
+            <button 
+              onClick={() => window.location.reload()}
+              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Tentar novamente
+            </button>
+          </div>
         ) : (
           <>
             {/* Lista de integrações */}
@@ -601,6 +525,11 @@ export const IntegrationsContent = () => {
           isOpen={activeConfigModal === integration.id}
           onClose={closeConfigModal}
           onDeactivate={() => deactivateIntegration(integration.id)}
+          onSave={async (data) => {
+            saveIntegrationConfig(integration.id, data);
+            closeConfigModal();
+            return true; // Ensure the function returns a Promise<boolean>
+          }}
           title={`Configuração - ${integration.name}`}
         >
           {renderConfigModalContent(integration.id)}

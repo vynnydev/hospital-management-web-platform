@@ -3,6 +3,7 @@ import { Eye, Bell, MessageSquare, AlertTriangle, Check, ZoomIn, Save } from 'lu
 import { useUserPreferences } from '@/services/hooks/use-preferences/useUserPreferences';
 import { authService } from '@/services/auth/AuthService';
 
+// Definição correta da interface de props
 interface AccessibilitySettingsProps {
   section: 'visual' | 'alerts' | 'captions';
 }
@@ -31,7 +32,7 @@ export const AccessibilitySettings: React.FC<AccessibilitySettingsProps> = ({ se
     }
   }, [preferences]);
 
-  // Salvar as configurações
+  // Função para salvar as configurações
   const saveSettings = async () => {
     setIsSaving(true);
     try {
@@ -45,11 +46,19 @@ export const AccessibilitySettings: React.FC<AccessibilitySettingsProps> = ({ se
     }
   };
 
-  // Toggler para configurações booleanas
+  // Função para alternar configurações booleanas
   const toggleSetting = (key: 'highContrast' | 'visualAlerts' | 'closedCaptions') => {
     setSettings(prev => ({
       ...prev,
       [key]: !prev[key]
+    }));
+  };
+
+  // Função para atualizar o tamanho do texto
+  const updateTextSize = (size: 'small' | 'medium' | 'large') => {
+    setSettings(prev => ({
+      ...prev,
+      textSize: size
     }));
   };
 
@@ -88,7 +97,7 @@ export const AccessibilitySettings: React.FC<AccessibilitySettingsProps> = ({ se
                 
                 <div className="grid grid-cols-3 gap-3">
                   <button
-                    onClick={() => setSettings(prev => ({ ...prev, textSize: 'small' }))}
+                    onClick={() => updateTextSize('small')}
                     className={`py-2 px-4 rounded border ${
                       settings.textSize === 'small'
                         ? 'bg-blue-50 dark:bg-blue-900/30 border-blue-500 text-blue-700 dark:text-blue-400'
@@ -98,7 +107,7 @@ export const AccessibilitySettings: React.FC<AccessibilitySettingsProps> = ({ se
                     Pequeno
                   </button>
                   <button
-                    onClick={() => setSettings(prev => ({ ...prev, textSize: 'medium' }))}
+                    onClick={() => updateTextSize('medium')}
                     className={`py-2 px-4 rounded border ${
                       settings.textSize === 'medium'
                         ? 'bg-blue-50 dark:bg-blue-900/30 border-blue-500 text-blue-700 dark:text-blue-400'
@@ -108,7 +117,7 @@ export const AccessibilitySettings: React.FC<AccessibilitySettingsProps> = ({ se
                     Médio
                   </button>
                   <button
-                    onClick={() => setSettings(prev => ({ ...prev, textSize: 'large' }))}
+                    onClick={() => updateTextSize('large')}
                     className={`py-2 px-4 rounded border ${
                       settings.textSize === 'large'
                         ? 'bg-blue-50 dark:bg-blue-900/30 border-blue-500 text-blue-700 dark:text-blue-400'
@@ -274,7 +283,7 @@ export const AccessibilitySettings: React.FC<AccessibilitySettingsProps> = ({ se
       default:
         return null;
     }
-  }
+  };
 
   return (
     <div className="space-y-8">
