@@ -70,7 +70,7 @@ export const TeamsAuthSection: React.FC<TeamsAuthSectionProps> = ({
             type="text"
             value={credentials.redirectUri}
             onChange={(e) => onCredentialChange('redirectUri', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white bg-gray-50 dark:bg-gray-700"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:text-white bg-gray-50 dark:bg-gray-700"
             readOnly
           />
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
