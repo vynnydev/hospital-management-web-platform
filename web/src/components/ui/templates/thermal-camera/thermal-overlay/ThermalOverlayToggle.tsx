@@ -137,7 +137,7 @@ export const ThermalOverlayToggle: React.FC<ThermalOverlayToggleProps> = ({
                   }`}
                   onClick={() => setColorMode('rainbow')}
                 >
-                  <div className="h-4 w-16 bg-gradient-to-r from-blue-600 via-green-500 via-yellow-500 to-red-600 rounded"></div>
+                  <div className="h-4 w-16 bg-gradient-to-r from-blue-600 via-yellow-500 to-red-600 rounded"></div>
                 </div>
                 <div
                   className={`p-3 rounded-lg border cursor-pointer flex items-center justify-center ${
