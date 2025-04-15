@@ -2,9 +2,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect, useRef } from 'react';
 import { MessageCircle, X, Sparkles, Bell, Clock } from 'lucide-react';
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
-import { useStaffData } from '@/services/hooks/staffs/useStaffData';
-import { useAmbulanceData } from '@/services/hooks/ambulance/useAmbulanceData';
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData';
+import { useStaffData } from '@/hooks/staffs/useStaffData';
+import { useAmbulanceData } from '@/hooks/ambulance/useAmbulanceData';
 import { IChatContact, IMessage } from '@/types/chat-types';
 import { ChatSidebar } from './ChatSidebar';
 import { ContactAvatar } from './ContactAvatar';

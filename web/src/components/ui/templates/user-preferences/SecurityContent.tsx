@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Lock, Shield, KeyRound, Smartphone, AlertTriangle, Save } from 'lucide-react';
-import { authService } from '@/services/auth/AuthService';
+import { authService } from '@/services/general/auth/AuthService';
 
 export const SecurityContent: React.FC = () => {
   const [isSaving, setIsSaving] = useState(false);

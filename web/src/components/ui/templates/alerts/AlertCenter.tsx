@@ -5,7 +5,7 @@ import { AlertBadge } from './AlertBadge';
 import { AlertList } from './AlertList';
 import { AlertDetail } from './AlertDetail';
 import { Button } from '@/components/ui/organisms/button';
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData';
 import { AlertsProvider, useAlertsProvider } from '../providers/alerts/AlertsProvider';
 import { IAlert } from '@/types/alert-types';
 

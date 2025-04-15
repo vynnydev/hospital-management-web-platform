@@ -12,11 +12,11 @@ import { MetricForm } from '@/components/ui/templates/hospital-metrics/MetricFor
 import { MetricsManagementSection } from '@/components/ui/templates/metrics/MetricsManagementSection';
 
 // Importações de hooks e tipos
-import { useMetrics } from '@/services/hooks/hospital-metrics/useMetrics';
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
+import { useMetrics } from '@/hooks/hospital-metrics/useMetrics';
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData';
 import { ICreateMetricPayload, TMetric } from '@/types/hospital-metrics';
 import { MetricsDashboard } from '@/components/ui/templates/metrics/custom/ai/MetricsDashboard';
-import { useAIInsights } from '@/services/hooks/AI/ai-analytics/useAIInsights';
+import { useAIInsights } from '@/hooks/AI/ai-analytics/useAIInsights';
 
 /**
  * Componente principal da aba IA Generativa

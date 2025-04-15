@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { IPatientRegistration } from '@/types/patient-types';
-import { usePatientManagement } from '@/services/hooks/digital-care-service/usePatientManagement';
+import { usePatientManagement } from '@/hooks/digital-care-service/usePatientManagement';
 import Link from 'next/link';
 import Image from 'next/image';
 

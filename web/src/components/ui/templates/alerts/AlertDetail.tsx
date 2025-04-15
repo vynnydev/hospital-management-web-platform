@@ -27,7 +27,7 @@ import {
   Server
 } from 'lucide-react';
 import { Button } from '@/components/ui/organisms/button';
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData';
 import { useAlertsProvider } from '../providers/alerts/AlertsProvider';
 import { IAlert, TAlertStatus, TAlertType } from '@/types/alert-types';
 

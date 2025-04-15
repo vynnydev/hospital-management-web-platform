@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Save, Upload, Palette, AlertTriangle } from 'lucide-react';
-import { authService } from '@/services/auth/AuthService';
+import { authService } from '@/services/general/auth/AuthService';
 import Image from 'next/image';
 
 export const BrandingContent: React.FC = () => {

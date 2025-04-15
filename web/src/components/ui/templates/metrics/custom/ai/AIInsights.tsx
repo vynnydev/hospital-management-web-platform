@@ -3,7 +3,7 @@ import { Card } from '@/components/ui/organisms/card';
 import { X, Lightbulb, AlertTriangle, Activity, ChevronRight, Zap, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/organisms/button';
 import { Spinner } from '@/components/ui/organisms/spinner';
-import { IHospitalInsight, IPredictiveInsight, ISystemInsight } from '@/services/hooks/AI/ai-analytics/useAIInsights';
+import { IHospitalInsight, IPredictiveInsight, ISystemInsight } from '@/hooks/AI/ai-analytics/useAIInsights';
 
 interface AIInsightsProps {
   insights: (ISystemInsight | IHospitalInsight | IPredictiveInsight)[];

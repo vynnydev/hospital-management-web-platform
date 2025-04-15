@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/organisms/card';
 import { Button } from '@/components/ui/organisms/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/organisms/tabs';
-import { useSecurityCompliance } from '@/services/hooks/security-compliance/useSecurityCompliance';
+import { useSecurityCompliance } from '@/hooks/security-compliance/useSecurityCompliance';
 import { useToast } from '@/components/ui/hooks/use-toast';
 import { Shield, LockKeyhole, Timer, Globe, RefreshCw } from 'lucide-react';
 

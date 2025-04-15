@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Bell, Calendar, FileText, AlertTriangle, User, Save } from 'lucide-react';
-import { authService } from '@/services/auth/AuthService';
+import { authService } from '@/services/general/auth/AuthService';
 
 export const NotificationsContent: React.FC = () => {
   const [isSaving, setIsSaving] = useState(false);

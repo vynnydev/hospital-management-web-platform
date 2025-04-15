@@ -9,7 +9,7 @@ import {
 import { Brain } from 'lucide-react';
 import { AIMetricsGenerator } from './AIMetricsGenerator';
 import { INetworkData } from '@/types/hospital-network-types';
-import { useUserMetrics } from '@/services/hooks/user/metrics/useUserMetrics';
+import { useUserMetrics } from '@/hooks/user/metrics/useUserMetrics';
 
 interface AIMetricsModalProps {
   isOpen: boolean;

@@ -1,7 +1,7 @@
 // components/resources/MainResourceManagementContainer.tsx
 import React, { useState } from 'react';
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
-import { useStaffData } from '@/services/hooks/staffs/useStaffData';
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData';
+import { useStaffData } from '@/hooks/staffs/useStaffData';
 import { ResourceManagementMap } from './ResourceManagementMap';
 import { Alert, AlertDescription } from '@/components/ui/organisms/alert';
 import { Loader2 } from 'lucide-react';

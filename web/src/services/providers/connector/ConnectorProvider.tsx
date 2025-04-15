@@ -1,10 +1,10 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { IConnectorContextProps, IImportValidationResult, ISystemConnector } from "@/types/connectors-types";
 
-import { useConnectionStats } from "@/services/hooks/connectors/useConnectionStats";
-import { useConnectorImportExport } from "@/services/hooks/connectors/useConnectorImportExport";
-import { useConnectors } from "@/services/hooks/connectors/useConnectors";
-import { useSyncHistory } from "@/services/hooks/connectors/useSyncHistory";
+import { useConnectionStats } from "@/hooks/connectors/useConnectionStats";
+import { useConnectorImportExport } from "@/hooks/connectors/useConnectorImportExport";
+import { useConnectors } from "@/hooks/connectors/useConnectors";
+import { useSyncHistory } from "@/hooks/connectors/useSyncHistory";
 
 // Criar o contexto
 const ConnectorContext = createContext<IConnectorContextProps | undefined>(undefined);

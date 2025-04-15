@@ -17,7 +17,7 @@ import { Button } from '@/components/ui/organisms/button'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/organisms/radio-group'
 import { Label } from '@/components/ui/organisms/label'
 
-import { useSubscription } from '@/services/hooks/subscription/useSubscription'
+import { useSubscription } from '@/hooks/subscription/useSubscription'
 import { ISubscriptionPlan, TBillingCycle } from '@/types/subscription-types'
 import { SubscriptionCards } from '../SubscriptionCards'
 import { NoActivePlanView } from '../no-plan/NoActivePlanView'

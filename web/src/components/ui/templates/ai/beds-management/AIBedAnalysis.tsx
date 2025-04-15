@@ -24,9 +24,9 @@ import {
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/organisms/card';
 import type { IBed, IPatient, IVitalSign } from '@/types/hospital-network-types';
 import { Button } from '@/components/ui/organisms/button';
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
-import { useAmbulanceData } from '@/services/hooks/ambulance/useAmbulanceData';
-import { useStaffData } from '@/services/hooks/staffs/useStaffData';
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData';
+import { useAmbulanceData } from '@/hooks/ambulance/useAmbulanceData';
+import { useStaffData } from '@/hooks/staffs/useStaffData';
 import { IAppUser } from '@/types/auth-types';
 import { 
   Dialog,

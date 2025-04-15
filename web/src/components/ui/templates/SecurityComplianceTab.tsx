@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/organisms/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/organisms/card';
-import { useSecurityCompliance } from '@/services/hooks/security-compliance/useSecurityCompliance';
+import { useSecurityCompliance } from '@/hooks/security-compliance/useSecurityCompliance';
 import { Shield, Lock, FileText, AlertTriangle, Activity, FileCheck, Key, Database, Users } from 'lucide-react';
 import { Skeleton } from '@/components/ui/organisms/skeleton';
 

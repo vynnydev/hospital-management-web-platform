@@ -15,9 +15,9 @@ import {
 import { Button } from '@/components/ui/organisms/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/organisms/tabs'
 
-import { useSubscription } from '@/services/hooks/subscription/useSubscription'
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData'
-import { useAuth } from '@/services/hooks/auth/useAuth'
+import { useSubscription } from '@/hooks/subscription/useSubscription'
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData'
+import { useAuth } from '@/hooks/auth/useAuth'
 
 import { PlanSelectionTab } from './subscription/tabs/PlanSelectionTab'
 import { ModuleConfigurationTab } from './subscription/tabs/ModuleConfigurationTab'

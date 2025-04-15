@@ -33,7 +33,7 @@ import {
 } from '@/components/ui/organisms/select';
 import { Spinner } from '@/components/ui/organisms/spinner';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/organisms/tooltip';
-import { IInsight, TInsightCategory, TInsightSeverity, useAIInsights } from '@/services/hooks/AI/ai-analytics/useAIInsights';
+import { IInsight, TInsightCategory, TInsightSeverity, useAIInsights } from '@/hooks/AI/ai-analytics/useAIInsights';
 
 interface AIInsightsDisplayProps {
   hospitalId?: string;

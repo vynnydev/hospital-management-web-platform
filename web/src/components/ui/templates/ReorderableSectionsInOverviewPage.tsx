@@ -16,8 +16,8 @@ import { ModernTabs } from '@/app/(administrator)/overview/components/ModernTabs
 import { IAppUser } from '@/types/auth-types';
 import { AmbulanceManagement } from './AmbulanceManagement';
 import { PatientMonitoringDashboard } from './PatientMonitoringDashboard';
-import { useStaffData } from '@/services/hooks/staffs/useStaffData';
-import { useAmbulanceData } from '@/services/hooks/ambulance/useAmbulanceData';
+import { useStaffData } from '@/hooks/staffs/useStaffData';
+import { useAmbulanceData } from '@/hooks/ambulance/useAmbulanceData';
 import { LoadingSpinner } from './LoadingSpinner';
 import { AlertCenterHub } from './AlertCenterHub';
 
@@ -60,7 +60,6 @@ interface ReorderableOverviewProps {
   loading: boolean;
   isReorderMode: boolean;
   onSectionsOrderChange?: (sections: string[]) => void;
-  setMessage: React.Dispatch<React.SetStateAction<string>>
 }
 
 const ReorderableSection: React.FC<ReorderableSectionProps> = ({
@@ -137,10 +136,10 @@ export const ReorderableSectionsInOverviewPage: React.FC<ReorderableOverviewProp
   loading,
   isReorderMode,
   onSectionsOrderChange,
-  setMessage
 }) => {
     const [sections, setSections] = useState<Section[]>([]);
     const [selectedMessageUsers, setSelectedMessageUsers] = useState<IAppUser[]>([]);
+    const [message, setMessage] = useState<string>('');
 
     const {
       staffData

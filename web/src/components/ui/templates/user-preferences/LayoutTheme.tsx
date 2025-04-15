@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Moon, Sun, Monitor, Check } from 'lucide-react';
-import { useUserPreferences } from '@/services/hooks/use-preferences/useUserPreferences';
-import { authService } from '@/services/auth/AuthService';
+import { useUserPreferences } from '@/hooks/use-preferences/useUserPreferences';
+import { authService } from '@/services/general/auth/AuthService';
 
 export const LayoutTheme: React.FC = () => {
   const { preferences, updateTheme } = useUserPreferences();

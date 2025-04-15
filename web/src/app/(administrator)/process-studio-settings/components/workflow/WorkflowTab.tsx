@@ -14,14 +14,14 @@ import {
 } from '@/types/workflow/customize-process-by-workflow-types';
 import { Button } from '@/components/ui/organisms/button';
 import { X, BarChart2, Plus, RefreshCw, Activity, Clock, History } from 'lucide-react';
-import { useTemplateWorkflowIntegration } from '@/services/hooks/workflow-templates/useTemplateWorkflowIntegration';
+import { useTemplateWorkflowIntegration } from '@/hooks/workflow-templates/useTemplateWorkflowIntegration';
 import { findTemplateById } from '@/utils/findTemplateById';
 import { workflowTemplates } from '@/utils/workflowTemplates';
 import { TemplatesSidebar } from './TemplatesSidebar';
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
-import { useAmbulanceData } from '@/services/hooks/ambulance/useAmbulanceData';
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData';
+import { useAmbulanceData } from '@/hooks/ambulance/useAmbulanceData';
 import { useAlertsProvider } from '@/components/ui/templates/providers/alerts/AlertsProvider';
-import { useStaffData } from '@/services/hooks/staffs/useStaffData';
+import { useStaffData } from '@/hooks/staffs/useStaffData';
 import { SmartTemplateRecommendations } from '@/components/ui/templates/process-templates/SmartTemplateRecommendations';
 import { EnhancedTemplateCarousel } from '@/components/ui/templates/process-templates/EnhancedTemplateCarousel';
 import { IStaffData } from '@/types/staff-types';

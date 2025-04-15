@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { usePatientRegistration } from '@/services/hooks/digital-care-service/usePatientRegistration';
+import { usePatientRegistration } from '@/hooks/digital-care-service/usePatientRegistration';
 import PatientPersonalInfo from './PatientPersonalInfo';
 import PatientContactInfo from './PatientContactInfo';
 import PatientInsuranceInfo from './PatientInsuranceInfo';

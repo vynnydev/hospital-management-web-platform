@@ -4,8 +4,8 @@ import {
   BarChart2, Clock, GitBranch, FileText, AlertTriangle, Settings,
   PlusCircle, Workflow, Filter, Search, Sliders
 } from 'lucide-react';
-import { useWorkflow } from '@/services/hooks/workflows/useWorkflow';
-import { authService } from '@/services/auth/AuthService';
+import { useWorkflow } from '@/hooks/workflows/useWorkflow';
+import { authService } from '@/services/general/auth/AuthService';
 import { WorkflowStats } from './WorkflowStats';
 import { WorkflowTemplateList } from './WorkflowTemplateList';
 import { WorkflowSettings } from './WorkflowSettings';

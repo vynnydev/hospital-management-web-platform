@@ -16,7 +16,7 @@ import {
   ChevronDown,
   ChevronUp
 } from 'lucide-react';
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData';
 import { useAlertsProvider } from '../../../providers/alerts/AlertsProvider';
 import { IAlert } from '@/types/alert-types';
 

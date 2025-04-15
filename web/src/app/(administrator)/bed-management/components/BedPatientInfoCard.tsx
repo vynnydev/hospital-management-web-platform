@@ -1,27 +1,29 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useRef } from 'react';
+// Atualização do BedPatientInfoCard para incluir o monitoramento térmico
+import React from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { 
   AlertCircle, Calendar, Clock, User, Activity, 
   HeartPulse, Droplets, MapPin, Phone, 
   Construction, Brain, Timer,
-  Printer
+  Printer,
 } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/organisms/card';
 import type { IBed, IPatient } from '@/types/hospital-network-types';
 import { Button } from '@/components/ui/organisms/button';
 import { handlePrint } from './PrintContent';
 import { getMaintenanceRecommendations, getMaintenanceSchedule } from '@/utils/AI/getMaintenanceRecommendations';
+import { ThermalMonitoringSection } from '@/components/ui/templates/ThermalMonitoringSection';
+import { useThermalCameraData } from '@/hooks/thermal-cameras/useThermalCameraData';
 
 interface PatientInfoCardProps {
   selectedBed: IBed | null;
 }
 
 export const BedPatientInfoCard: React.FC<PatientInfoCardProps> = ({ selectedBed }) => {
+  const { getCameraForBed } = useThermalCameraData();
     if (!selectedBed?.patient) return null;
-  
     const patient: IPatient = selectedBed.patient;
+    const hasThermalCamera = selectedBed ? !!getCameraForBed(selectedBed.id) : false;
 
     const calculateInternmentDays = (admissionDate: string): number => {
       const admission = new Date(admissionDate);
@@ -156,6 +158,11 @@ export const BedPatientInfoCard: React.FC<PatientInfoCardProps> = ({ selectedBed
             </CardContent>
           </Card>
         </div>
+        
+        {/* Componente de Monitoramento Térmico - Exibir apenas se o leito tiver uma câmera térmica */}
+        {hasThermalCamera && (
+          <ThermalMonitoringSection selectedBed={selectedBed} />
+        )}
   
         <div className="relative">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl" />

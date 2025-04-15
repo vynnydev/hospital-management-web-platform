@@ -6,7 +6,7 @@ import { Eye, EyeOff, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/organisms/button'
 import { Input } from '@/components/ui/organisms/input'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/organisms/card'
-import { useAuth } from '@/services/hooks/auth/useAuth'
+import { useAuth } from '@/hooks/auth/useAuth'
 import { useToast } from "@/components/ui/hooks/use-toast"
 
 export const SignInForm = () => {

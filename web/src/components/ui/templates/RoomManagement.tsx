@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { 
   DoorOpen, 
@@ -9,7 +10,6 @@ import {
   Search,
   Filter,
   X,
-  Check,
   Stethoscope,
   Users,
   Clock
@@ -38,8 +38,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui/organisms/dropdown-menu';
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
-import { useStaffData } from '@/services/hooks/staffs/useStaffData';
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData';
+import { useStaffData } from '@/hooks/staffs/useStaffData';
 import type { IHospital, IDepartment, IRoom, IBed } from '@/types/hospital-network-types';
 import { Badge } from '@/components/ui/organisms/badge';
 
@@ -72,8 +72,8 @@ export const RoomManagement: React.FC<RoomManagementProps> = ({
   const { networkData, beds } = useNetworkData();
   const { staffData } = useStaffData(hospitalId);
   
-  const hospital = networkData?.hospitals.find(h => h.id === hospitalId);
-  const department = hospital?.departments.find(d => d.name === selectedDepartment);
+  const hospital = networkData?.hospitals.find((h: { id: string }) => h.id === hospitalId);
+  const department = hospital?.departments.find((d: { name: string }) => d.name === selectedDepartment);
   
   // Resetar filtros quando mudar departamento ou andar
   useEffect(() => {
@@ -92,12 +92,11 @@ export const RoomManagement: React.FC<RoomManagementProps> = ({
   if (!department) {
     return <div className="p-4 text-gray-400">Selecione um departamento para gerenciar quartos</div>;
   }
-  
   // Filtrar quartos por andar
-  const roomsInFloor = department.rooms.filter(room => room.floor === selectedFloor);
+  const roomsInFloor = department.rooms.filter((room: { floor: string }) => room.floor === selectedFloor);
   
   // Aplicar filtros de busca e ocupação
-  const filteredRooms = roomsInFloor.filter(room => {
+  const filteredRooms = roomsInFloor.filter((room: { roomNumber: string; specialty?: string }) => {
     // Filtro de busca
     const matchesSearch = searchTerm === '' || 
       room.roomNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -106,8 +105,8 @@ export const RoomManagement: React.FC<RoomManagementProps> = ({
     // Filtro de ocupação
     if (filterOccupied === 'all') return matchesSearch;
     
-    const roomBeds = room.beds || [];
-    const occupiedBeds = roomBeds.filter(bed => bed.status === 'occupied');
+    const roomBeds = (room as { beds?: Array<{ status: string }> }).beds || [];
+    const occupiedBeds = roomBeds.filter((bed: { status: string }) => bed.status === 'occupied');
     
     if (filterOccupied === 'occupied') {
       return matchesSearch && occupiedBeds.length > 0;
@@ -274,7 +273,7 @@ export const RoomManagement: React.FC<RoomManagementProps> = ({
                       <SelectValue placeholder="Selecionar especialidade" />
                     </SelectTrigger>
                     <SelectContent className="bg-gray-700 border-gray-600">
-                      {hospital?.specialties.map(specialty => (
+                      {hospital?.specialties.map((specialty: string) => (
                         <SelectItem key={specialty} value={specialty}>
                           {specialty}
                         </SelectItem>
@@ -347,7 +346,7 @@ export const RoomManagement: React.FC<RoomManagementProps> = ({
       </div>
       
       <div className="grid grid-cols-2 gap-4">
-        {filteredRooms.map(room => {
+        {filteredRooms.map((room: IRoom) => {
           const stats = getRoomStats(room);
           const isSelected = selectedRoom === room.roomNumber;
           

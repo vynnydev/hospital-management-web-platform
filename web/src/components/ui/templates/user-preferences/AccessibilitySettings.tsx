@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { Eye, Bell, MessageSquare, AlertTriangle, Check, ZoomIn, Save } from 'lucide-react';
-import { useUserPreferences } from '@/services/hooks/use-preferences/useUserPreferences';
-import { authService } from '@/services/auth/AuthService';
+import { useUserPreferences } from '@/hooks/use-preferences/useUserPreferences';
+import { authService } from '@/services/general/auth/AuthService';
 
 // Definição correta da interface de props
 interface AccessibilitySettingsProps {

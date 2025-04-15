@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/organisms/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/organisms/select';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/organisms/dialog';
 import { AlertTriangle, CheckCircle, Edit2, Lock, PlusCircle, Trash2, Users } from 'lucide-react';
-import { useSecurityCompliance } from '@/services/hooks/security-compliance/useSecurityCompliance';
+import { useSecurityCompliance } from '@/hooks/security-compliance/useSecurityCompliance';
 import { IPasswordPolicy } from '@/types/security-compliance-types';
 import { useToast } from '@/components/ui/hooks/use-toast';
 

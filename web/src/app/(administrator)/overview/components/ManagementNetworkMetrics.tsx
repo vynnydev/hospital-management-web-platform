@@ -38,11 +38,11 @@ import {
   DialogTitle,
   DialogDescription
 } from '@/components/ui/organisms/dialog';
-import { authService } from '@/services/auth/AuthService';
+import { authService } from '@/services/general/auth/AuthService';
 import { Alert } from "@/components/ui/organisms/alert";
 import { AlertCircle } from 'lucide-react';
-import { useUserMetrics } from '@/services/hooks/user/metrics/useUserMetrics';
-import { usePermissions } from '@/services/hooks/auth/usePermissions';
+import { useUserMetrics } from '@/hooks/user/metrics/useUserMetrics';
+import { usePermissions } from '@/hooks/auth/usePermissions';
 import { EditableMetricsPanel } from '@/components/ui/templates/hospital-metrics/EditableMetricsPanel';
 import { MetricManager } from '@/components/ui/templates/hospital-metrics/MetricManager';
 

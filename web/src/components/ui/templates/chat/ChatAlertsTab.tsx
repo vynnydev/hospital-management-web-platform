@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData';
 import type { IHospital } from '@/types/hospital-network-types';
 import { useAlertsProvider } from '@/components/ui/templates/providers/alerts/AlertsProvider';
 import { AlertDetail } from '@/components/ui/templates/alerts/AlertDetail';

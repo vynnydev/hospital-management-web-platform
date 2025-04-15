@@ -6,12 +6,12 @@ import { AlertEditor } from './AlertEditor';
 import { AlertHistory } from './AlertHistory';
 import { AlertTemplates } from './AlertTemplates';
 import { IAlertTemplate, IAlert } from '@/types/alert-types';
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData';
 import { Loader2, AlertTriangle } from 'lucide-react';
-import { useAlerts } from '@/services/hooks/alerts/useAlerts';
-import { useNotificationSettings } from '@/services/hooks/notification-settings/useNotificationSettings';
+import { useAlerts } from '@/hooks/alerts/useAlerts';
+import { useNotificationSettings } from '@/hooks/notification-settings/useNotificationSettings';
 import { AlertsNotifications } from '@/components/ui/templates/alerts/AlertsNotifications';
-import { useAlertTemplates } from '@/services/hooks/alerts/useAlertTemplates';
+import { useAlertTemplates } from '@/hooks/alerts/useAlertTemplates';
 import { AlertsProvider } from '@/components/ui/templates/providers/alerts/AlertsProvider';
 
 export const NotificationsTab: React.FC = () => {

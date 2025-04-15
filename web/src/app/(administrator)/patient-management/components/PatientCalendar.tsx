@@ -12,7 +12,7 @@ import { PatientTimeGrid } from '@/components/ui/templates/calendar/patient/Pati
 import { MiniCalendar } from '@/components/ui/templates/calendar/MiniCalendar';
 
 // Hooks
-import { usePatientEvents } from '@/services/hooks/patients/usePatientEvents';
+import { usePatientEvents } from '@/hooks/patients/usePatientEvents';
 import { IPatientCalendarEvent } from '@/types/patient-calendar';
 
 interface PatientCalendarProps {

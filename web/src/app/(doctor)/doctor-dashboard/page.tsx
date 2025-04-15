@@ -2,9 +2,9 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/organisms/card";
 import { PatientMonitoringDashboard } from "@/components/ui/templates/PatientMonitoringDashboard"
-import { useAmbulanceData } from "@/services/hooks/ambulance/useAmbulanceData";
-import { useNetworkData } from "@/services/hooks/network-hospital/useNetworkData";
-import { useStaffData } from "@/services/hooks/staffs/useStaffData";
+import { useAmbulanceData } from "@/hooks/ambulance/useAmbulanceData";
+import { useNetworkData } from "@/hooks/network-hospital/useNetworkData";
+import { useStaffData } from "@/hooks/staffs/useStaffData";
 
 const DoctorDashboard = () => {
   const { networkData, currentUser, setNetworkData, loading, error } = useNetworkData();

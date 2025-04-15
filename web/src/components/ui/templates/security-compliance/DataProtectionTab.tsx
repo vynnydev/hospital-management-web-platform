@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/organisms/tabs';
-import { useSecurityCompliance } from '@/services/hooks/security-compliance/useSecurityCompliance';
+import { useSecurityCompliance } from '@/hooks/security-compliance/useSecurityCompliance';
 import { Database, Shield, FileCheck, UserCheck } from 'lucide-react';
 
 import { ConsentManagement } from './data-protection/ConsentManagement';

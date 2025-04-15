@@ -109,8 +109,8 @@ export const BedSpace: React.FC<IBedSpaceProps> = ({ bed, isSelected, onClick })
         <div className="absolute inset-0">
           <BedModelCanva
             patient={bed.patient}
-            isSelected={isSelected}
-            status={bed.status}
+            isSelected={isSelected} 
+            status={bed.status as "available" | "maintenance" | "occupied"}
           />
         </div>
       </div>
@@ -137,7 +137,7 @@ export const BedStatus: React.FC<{ status: IBed['status'] }> = ({ status }) => {
     maintenance: { color: 'text-yellow-400', label: 'Manutenção' }
   };
 
-  const config = statusConfig[status];
+  const config = statusConfig[status as keyof typeof statusConfig];
 
   return (
     <div className={`flex items-center justify-center gap-1.5 mt-1.5 ${config.color} text-xs`}>

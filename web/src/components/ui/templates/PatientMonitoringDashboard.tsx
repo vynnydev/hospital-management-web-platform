@@ -18,8 +18,8 @@ import { TransferSection } from '@/components/ui/templates/patient-monitoring-da
 import { calculateStats } from '@/utils/patient-monitoring-dashboard/calculateStats';
 import { DashboardConfigProvider } from '../context/patient-monitoring-dashboard/DashboardConfigContext';
 import { NotificationProvider } from '../context/patient-monitoring-dashboard/NotificationContext';
-import { authService } from '@/services/auth/AuthService';
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
+import { authService } from '@/services/general/auth/AuthService';
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData';
 
 interface PatientMonitoringDashboardProps {
   selectedHospitalId: string;

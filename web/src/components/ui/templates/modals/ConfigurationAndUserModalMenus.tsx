@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+// ConfigurationAndUserModalMenus.tsx - Com modificações para incluir câmeras térmicas
 import React, { useState, useEffect } from 'react';
-import { X, LogOut } from 'lucide-react';
+import { X, LogOut, Thermometer } from 'lucide-react';
 import Image from 'next/image';
 import { IAppUser } from '@/types/auth-types';
 
@@ -14,6 +15,7 @@ import { BrandingContent } from '../user-preferences/BrandingContent';
 import { AccessibilitySettings } from '../user-preferences/AccessibilitySettings';
 import { IntegrationsContent } from '../user-preferences/IntegrationsContent';
 import { WorkflowAutomationContent } from '../WorkflowAutomationContent';
+import { ThermalCameraContent } from '../thermal-camera/ThermalCameraContent';
 
 interface Props {
   isOpen: boolean;
@@ -57,6 +59,7 @@ export const ConfigurationAndUserModalMenus: React.FC<Props> = ({
         { id: 'ai-settings', label: 'Configurações IA', icon: '🤖' },
         { id: 'chat-settings', label: 'Config. Chat Médico', icon: '💬' },
         { id: 'integrations', label: 'Integrações', icon: '🔗' },
+        { id: 'thermal-cameras', label: 'Câmeras Térmicas', icon: '🌡️' }, // Nova opção de menu
       ]
     },
     {
@@ -103,6 +106,9 @@ export const ConfigurationAndUserModalMenus: React.FC<Props> = ({
       
       case 'integrations':
         return <IntegrationsContent />;
+        
+      case 'thermal-cameras': // Nova seção para câmeras térmicas
+        return <ThermalCameraContent hospitalId={user?.hospitalId || ''} />;
       
       case 'theme':
         return <LayoutTheme />;
@@ -230,7 +236,16 @@ export const ConfigurationAndUserModalMenus: React.FC<Props> = ({
         {/* Main Content */}
         <div className="flex-1 overflow-y-auto bg-white dark:bg-gray-900">
           <div className="flex justify-between items-center p-6 border-b border-gray-200 dark:border-gray-700">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">{getActiveMenuTitle()}</h2>
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+              {activeSection === 'thermal-cameras' ? (
+                <div className="flex items-center gap-2">
+                  <Thermometer className="h-6 w-6 text-blue-500" />
+                  Configurações de Câmeras Térmicas
+                </div>
+              ) : (
+                getActiveMenuTitle()
+              )}
+            </h2>
             <button 
               onClick={onClose}
               className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full text-gray-500 dark:text-gray-400"

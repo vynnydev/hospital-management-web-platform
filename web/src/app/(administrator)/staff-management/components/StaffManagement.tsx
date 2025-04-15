@@ -19,7 +19,7 @@ import { StaffBoard } from './StaffBoard';
 import { StaffListView } from './StaffListView';
 import { StaffCardModal } from './StaffCardModal';
 import { StaffCalendar } from './StaffCalendar';
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData';
 
 interface StaffManagementProps {
     data: IHospitalMetrics | undefined;

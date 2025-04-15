@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from '@/components/ui/organisms/button'
 import { useToast } from '@/components/ui/hooks/use-toast'
 import { AlertCircle, Loader2 } from 'lucide-react'
-import { authService } from '@/services/auth/AuthService'
+import { authService } from '@/services/general/auth/AuthService'
 
 // Importação dos componentes de passos
 import { StepOne } from './steps/StepOne'

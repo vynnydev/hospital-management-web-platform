@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { Check, ChevronDown, Building } from 'lucide-react'
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData'
-import { useAuth } from '@/services/hooks/auth/useAuth'
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData'
+import { useAuth } from '@/hooks/auth/useAuth'
 
 import { 
   Select,

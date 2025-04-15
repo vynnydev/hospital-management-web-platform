@@ -15,7 +15,7 @@ import { Badge } from '@/components/ui/organisms/badge';
 import { Spinner } from '@/components/ui/organisms/spinner';
 import { AIInsightsDisplay } from './AIInsightsDisplay';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/organisms/dialog';
-import { IInsight, useAIInsights } from '@/services/hooks/AI/ai-analytics/useAIInsights';
+import { IInsight, useAIInsights } from '@/hooks/AI/ai-analytics/useAIInsights';
 
 interface AIInsightsWidgetProps {
   hospitalId?: string;

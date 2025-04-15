@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/organi
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/organisms/alert';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/organisms/select';
 import { useToast } from '@/components/ui/hooks/use-toast';
-import { useSecurityCompliance } from '@/services/hooks/security-compliance/useSecurityCompliance';
+import { useSecurityCompliance } from '@/hooks/security-compliance/useSecurityCompliance';
 import { IAccessControlConfig, IRBAPolicy } from '@/types/security-compliance-types';
 import { 
   Shield, 

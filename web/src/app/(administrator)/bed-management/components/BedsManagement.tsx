@@ -7,8 +7,7 @@ import {
   LayoutGrid, List, X, Droplets, Trash
 } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/organisms/select';
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/organisms/tabs';
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData';
 import type { 
   IUseNetworkDataReturn,
   IHospital,
@@ -16,12 +15,8 @@ import type {
   IDepartment,
   INetworkData
 } from '@/types/hospital-network-types';
-import { IntegrationsPreviewPressable } from '@/components/ui/organisms/IntegrationsPreviewPressable';
-import { ConfigurationAndUserModalMenus } from '@/components/ui/templates/modals/ConfigurationAndUserModalMenus';
 import { BedPatientInfoCard } from './BedPatientInfoCard';
 import { HygienizationStatusCards } from './HygienizationStatusCards';
-import { Input } from '@/components/ui/organisms/input';
-import { Badge } from '@/components/ui/organisms/badge';
 import { Button } from '@/components/ui/organisms/button';
 import {
   DropdownMenu,
@@ -70,7 +65,7 @@ export const BedsManagement: React.FC<IBedsManagementProps> = ({ className }) =>
     if (!networkData?.hospitals) return [];
     if (!searchTerm) return networkData.hospitals;
 
-    return networkData.hospitals.filter(hospital  => 
+    return networkData.hospitals.filter((hospital: IHospital) => 
       hospital.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [networkData?.hospitals, searchTerm]);
@@ -253,7 +248,7 @@ export const BedsManagement: React.FC<IBedsManagementProps> = ({ className }) =>
               <span className="font-medium">Visão Geral dos Leitos</span>
             </button>
 
-            {filteredHospitals.map((hospital) => (
+            {filteredHospitals.map((hospital: IHospital) => (
               <button
                 key={hospital.id}
                 onClick={() => {

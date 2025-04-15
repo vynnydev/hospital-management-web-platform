@@ -1,7 +1,7 @@
 // services/users/UserManagementService.ts
 
 import { IAppUser, ICreateUserData, TPermission, TRole } from '@/types/auth-types';
-import { authService } from '@/services/auth/AuthService';
+import { authService } from '@/services/general/auth/AuthService';
 import { IUserFilter, IUserResponse } from '@/types/user-types';
 
 class UserManagementService {

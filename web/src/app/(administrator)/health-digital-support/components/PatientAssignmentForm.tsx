@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
-import { usePatientManagement } from '@/services/hooks/digital-care-service/usePatientManagement';
-import { usePatientAssignment } from '@/services/hooks/digital-care-service/usePatientAssignment';
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData';
+import { usePatientManagement } from '@/hooks/digital-care-service/usePatientManagement';
+import { usePatientAssignment } from '@/hooks/digital-care-service/usePatientAssignment';
 import { IPatientRegistration, IPatientAdmission, IPatientAssignment, TPatientPriority } from '@/types/patient-types';
 import DepartmentSelector from './DepartmentSelector';
 import DoctorSelector from './DoctorSelector';

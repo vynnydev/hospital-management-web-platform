@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/organisms/tabs';
 import { Key, Timer } from 'lucide-react';
-import { useSecurityCompliance } from '@/services/hooks/security-compliance/useSecurityCompliance';
+import { useSecurityCompliance } from '@/hooks/security-compliance/useSecurityCompliance';
 
 import { MFAConfigTab } from './auth/MFAConfigTab';
 import { SessionManagementTab } from './auth/SessionManagementTab';

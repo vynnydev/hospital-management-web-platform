@@ -9,7 +9,7 @@ import {
 import { AIMetricsGenerator } from './AIMetricsGenerator';
 import { MetricsAlertsIntegration } from './MetricsAlertsIntegration';
 import { INetworkData } from '@/types/hospital-network-types';
-import { useUserMetrics } from '@/services/hooks/user/metrics/useUserMetrics';
+import { useUserMetrics } from '@/hooks/user/metrics/useUserMetrics';
 import { Brain, Bell } from 'lucide-react';
 import { AlertsProvider } from '../providers/alerts/AlertsProvider';
 

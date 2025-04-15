@@ -794,3 +794,43 @@ html, body, #root, .app-container {
 .dark .scrollbar-thin {
   scrollbar-color: rgba(156, 163, 175, 0.3) transparent;
 }
+
+/* Estilos para o modal de configuração de câmera térmica */
+/* Estilo para as abas */
+.tabs-container {
+  display: flex;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 24px;
+}
+
+.tab-button {
+  padding: 12px 24px;
+  font-size: 16px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  border: none;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab-button:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.tab-button.active {
+  color: rgb(255, 255, 255);
+  font-weight: 500;
+}
+
+/* Indicador animado sob a aba ativa */
+.tab-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #4361ee, #7209b7);
+  border-radius: 3px 3px 0 0;
+}

@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { Loader2, Save, X, PlusCircle, Download, Upload, ArrowLeft } from 'lucide-react';
-import { useWorkflow } from '@/services/hooks/workflows/useWorkflow';
+import { useWorkflow } from '@/hooks/workflows/useWorkflow';
 import { IWorkflowTemplate, ICustomWorkflow, IWorkflowNode } from '@/types/workflow/workflow-types';
 
 interface WorkflowSettingsEditorProps {

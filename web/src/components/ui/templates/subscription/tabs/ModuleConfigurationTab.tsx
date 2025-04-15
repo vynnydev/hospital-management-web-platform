@@ -6,7 +6,7 @@ import {
   AlertCircle, 
   Info
 } from 'lucide-react'
-import { useSubscription } from '@/services/hooks/subscription/useSubscription'
+import { useSubscription } from '@/hooks/subscription/useSubscription'
 import { Button } from '@/components/ui/organisms/button'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
 import { TModuleName } from '@/types/subscription-types'

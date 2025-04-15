@@ -10,12 +10,12 @@ import { Brand } from "@/components/ui/atoms/Brand"
 import { HeaderNavigation } from "@/components/ui/organisms/HeaderNavigation"
 import { WelcomeMsg } from "@/components/ui/templates/WelcomeMsg"
 import { Button } from "@/components/ui/organisms/button"
-import { authService } from "@/services/auth/AuthService"
+import { authService } from "@/services/general/auth/AuthService"
 import { ConfigurationAndUserModalMenus } from '../templates/modals/ConfigurationAndUserModalMenus';
 import { IntegrationsContent } from '../templates/user-preferences/IntegrationsContent';
 import { AlertsProvider } from '../templates/providers/alerts/AlertsProvider';
-import { H24AssistantBar } from '../templates/ai-assistant/H24AssistantBar';
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
+import { CognitivaAssistantBar } from '../templates/ai-assistant/CognitivaAssistantBar';
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData';
 
 export const Header = () => {
     const { theme, setTheme } = useTheme();
@@ -44,7 +44,7 @@ export const Header = () => {
         }
     }, [user]);
 
-    const selectedHospital = networkData?.hospitals?.find(h => h.id === currentUser?.hospitalId);
+    const selectedHospital = networkData?.hospitals?.find((h: { id: string }) => h.id === currentUser?.hospitalId);
 
     const handleLogout = async () => {
         await authService.logout();
@@ -164,7 +164,7 @@ export const Header = () => {
                 <div className='absolute rounded-full p-1 bg-gray-700 mt-16'>
                     <AlertsProvider hospitalId={selectedHospital as unknown as string || ''} checkInterval={30000}>
                             {/* Barra com Assistente IA e Chat */}
-                            <H24AssistantBar showTitle={false} />
+                            <CognitivaAssistantBar showTitle={false} />
                     </AlertsProvider>
                 </div>
             </div>

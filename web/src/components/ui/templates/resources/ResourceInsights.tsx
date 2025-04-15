@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
-import { useAmbulanceData } from '@/services/hooks/ambulance/useAmbulanceData';
-import { useStaffData } from '@/services/hooks/staffs/useStaffData';
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData';
+import { useAmbulanceData } from '@/hooks/ambulance/useAmbulanceData';
+import { useStaffData } from '@/hooks/staffs/useStaffData';
 import { 
   Users, 
   Bed, 

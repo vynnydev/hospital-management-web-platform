@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import axios from 'axios';
-import { authService } from '@/services/auth/AuthService';
+import { authService } from '@/services/general/auth/AuthService';
 import { ICreateMetricPayload, TMetric } from '@/types/hospital-metrics';
 
 class UserMetricsService {

@@ -7936,12 +7936,31 @@
         }
       ],
       "slaSettings": [
-        { "departmentId": "reception", "maxTime": 15, "timeUnit": "minute", "alertAt": 10 },
-        { "departmentId": "triage", "maxTime": 30, "timeUnit": "minute", "alertAt": 20 },
-        { "departmentId": "medical_eval", "maxTime": 1, "timeUnit": "hour", "alertAt": 45 }
+        {
+          "departmentId": "reception",
+          "maxTime": 15,
+          "timeUnit": "minute",
+          "alertAt": 10
+        },
+        {
+          "departmentId": "triage",
+          "maxTime": 30,
+          "timeUnit": "minute",
+          "alertAt": 20
+        },
+        {
+          "departmentId": "medical_eval",
+          "maxTime": 1,
+          "timeUnit": "hour",
+          "alertAt": 45
+        }
       ],
       "exceptionFlows": [
-        { "condition": "Paciente de alto risco", "targetDepartment": "emergency", "priority": "critical" }
+        {
+          "condition": "Paciente de alto risco",
+          "targetDepartment": "emergency",
+          "priority": "critical"
+        }
       ],
       "isActive": true,
       "createdAt": "2024-03-15T10:00:00Z",
@@ -8015,14 +8034,42 @@
         }
       ],
       "slaSettings": [
-        { "departmentId": "med_clearance", "maxTime": 2, "timeUnit": "hour", "alertAt": 1 },
-        { "departmentId": "pharmacy", "maxTime": 30, "timeUnit": "minute", "alertAt": 25 },
-        { "departmentId": "admin_checkout", "maxTime": 1, "timeUnit": "hour", "alertAt": 45 },
-        { "departmentId": "discharge", "maxTime": 30, "timeUnit": "minute", "alertAt": 20 }
+        {
+          "departmentId": "med_clearance",
+          "maxTime": 2,
+          "timeUnit": "hour",
+          "alertAt": 1
+        },
+        {
+          "departmentId": "pharmacy",
+          "maxTime": 30,
+          "timeUnit": "minute",
+          "alertAt": 25
+        },
+        {
+          "departmentId": "admin_checkout",
+          "maxTime": 1,
+          "timeUnit": "hour",
+          "alertAt": 45
+        },
+        {
+          "departmentId": "discharge",
+          "maxTime": 30,
+          "timeUnit": "minute",
+          "alertAt": 20
+        }
       ],
       "exceptionFlows": [
-        { "condition": "Pendências administrativas", "targetDepartment": "admin_manager", "priority": "high" },
-        { "condition": "Necessidade de home care", "targetDepartment": "social_service", "priority": "medium" }
+        {
+          "condition": "Pendências administrativas",
+          "targetDepartment": "admin_manager",
+          "priority": "high"
+        },
+        {
+          "condition": "Necessidade de home care",
+          "targetDepartment": "social_service",
+          "priority": "medium"
+        }
       ],
       "isActive": true,
       "createdAt": "2024-03-15T10:00:00Z",
@@ -8108,15 +8155,47 @@
         }
       ],
       "slaSettings": [
-        { "departmentId": "surgical_consult", "maxTime": 5, "timeUnit": "day", "alertAt": 4 },
-        { "departmentId": "preop_exam", "maxTime": 3, "timeUnit": "day", "alertAt": 2 },
-        { "departmentId": "anesthesia_eval", "maxTime": 2, "timeUnit": "day", "alertAt": 1 },
-        { "departmentId": "scheduling", "maxTime": 1, "timeUnit": "day", "alertAt": 4 }
+        {
+          "departmentId": "surgical_consult",
+          "maxTime": 5,
+          "timeUnit": "day",
+          "alertAt": 4
+        },
+        {
+          "departmentId": "preop_exam",
+          "maxTime": 3,
+          "timeUnit": "day",
+          "alertAt": 2
+        },
+        {
+          "departmentId": "anesthesia_eval",
+          "maxTime": 2,
+          "timeUnit": "day",
+          "alertAt": 1
+        },
+        {
+          "departmentId": "scheduling",
+          "maxTime": 1,
+          "timeUnit": "day",
+          "alertAt": 4
+        }
       ],
       "exceptionFlows": [
-        { "condition": "Exames alterados", "targetDepartment": "med_consult", "priority": "high" },
-        { "condition": "Risco anestésico elevado", "targetDepartment": "intensive_care", "priority": "high" },
-        { "condition": "Necessidade de UTI", "targetDepartment": "icu_reservation", "priority": "medium" }
+        {
+          "condition": "Exames alterados",
+          "targetDepartment": "med_consult",
+          "priority": "high"
+        },
+        {
+          "condition": "Risco anestésico elevado",
+          "targetDepartment": "intensive_care",
+          "priority": "high"
+        },
+        {
+          "condition": "Necessidade de UTI",
+          "targetDepartment": "icu_reservation",
+          "priority": "medium"
+        }
       ],
       "isActive": true,
       "createdAt": "2024-03-15T10:00:00Z",
@@ -8202,15 +8281,48 @@
         }
       ],
       "slaSettings": [
-        { "departmentId": "exam_request", "maxTime": 30, "timeUnit": "minute", "alertAt": 25 },
-        { "departmentId": "sample_collection", "maxTime": 1, "timeUnit": "hour", "alertAt": 45 },
-        { "departmentId": "sample_processing", "maxTime": 2, "timeUnit": "hour", "alertAt": 1 },
-        { "departmentId": "lab_analysis", "maxTime": 4, "timeUnit": "hour", "alertAt": 3 },
-        { "departmentId": "medical_review", "maxTime": 2, "timeUnit": "hour", "alertAt": 1 }
+        {
+          "departmentId": "exam_request",
+          "maxTime": 30,
+          "timeUnit": "minute",
+          "alertAt": 25
+        },
+        {
+          "departmentId": "sample_collection",
+          "maxTime": 1,
+          "timeUnit": "hour",
+          "alertAt": 45
+        },
+        {
+          "departmentId": "sample_processing",
+          "maxTime": 2,
+          "timeUnit": "hour",
+          "alertAt": 1
+        },
+        {
+          "departmentId": "lab_analysis",
+          "maxTime": 4,
+          "timeUnit": "hour",
+          "alertAt": 3
+        },
+        {
+          "departmentId": "medical_review",
+          "maxTime": 2,
+          "timeUnit": "hour",
+          "alertAt": 1
+        }
       ],
       "exceptionFlows": [
-        { "condition": "Amostra inadequada", "targetDepartment": "new_collection", "priority": "high" },
-        { "condition": "Resultado crítico", "targetDepartment": "urgent_notification", "priority": "critical" }
+        {
+          "condition": "Amostra inadequada",
+          "targetDepartment": "new_collection",
+          "priority": "high"
+        },
+        {
+          "condition": "Resultado crítico",
+          "targetDepartment": "urgent_notification",
+          "priority": "critical"
+        }
       ],
       "isActive": true,
       "createdAt": "2024-03-15T10:00:00Z",
@@ -8296,16 +8408,53 @@
         }
       ],
       "slaSettings": [
-        { "departmentId": "triage_emerg", "maxTime": 5, "timeUnit": "minute", "alertAt": 3 },
-        { "departmentId": "stabilization", "maxTime": 15, "timeUnit": "minute", "alertAt": 10 },
-        { "departmentId": "critical_care", "maxTime": 30, "timeUnit": "minute", "alertAt": 15 },
-        { "departmentId": "diagnosis", "maxTime": 30, "timeUnit": "minute", "alertAt": 20 },
-        { "departmentId": "emergency_treatment", "maxTime": 1, "timeUnit": "hour", "alertAt": 45 }
+        {
+          "departmentId": "triage_emerg",
+          "maxTime": 5,
+          "timeUnit": "minute",
+          "alertAt": 3
+        },
+        {
+          "departmentId": "stabilization",
+          "maxTime": 15,
+          "timeUnit": "minute",
+          "alertAt": 10
+        },
+        {
+          "departmentId": "critical_care",
+          "maxTime": 30,
+          "timeUnit": "minute",
+          "alertAt": 15
+        },
+        {
+          "departmentId": "diagnosis",
+          "maxTime": 30,
+          "timeUnit": "minute",
+          "alertAt": 20
+        },
+        {
+          "departmentId": "emergency_treatment",
+          "maxTime": 1,
+          "timeUnit": "hour",
+          "alertAt": 45
+        }
       ],
       "exceptionFlows": [
-        { "condition": "Parada cardíaca", "targetDepartment": "cpr", "priority": "critical" },
-        { "condition": "Trauma grave", "targetDepartment": "trauma_center", "priority": "critical" },
-        { "condition": "Necessidade de cirurgia", "targetDepartment": "emergency_surgery", "priority": "critical" }
+        {
+          "condition": "Parada cardíaca",
+          "targetDepartment": "cpr",
+          "priority": "critical"
+        },
+        {
+          "condition": "Trauma grave",
+          "targetDepartment": "trauma_center",
+          "priority": "critical"
+        },
+        {
+          "condition": "Necessidade de cirurgia",
+          "targetDepartment": "emergency_surgery",
+          "priority": "critical"
+        }
       ],
       "isActive": true,
       "createdAt": "2024-03-15T10:00:00Z",
@@ -8382,14 +8531,42 @@
         }
       ],
       "slaSettings": [
-        { "departmentId": "reception", "maxTime": 10, "timeUnit": "minute", "alertAt": 8 },
-        { "departmentId": "triage", "maxTime": 20, "timeUnit": "minute", "alertAt": 15 },
-        { "departmentId": "patient_history", "maxTime": 15, "timeUnit": "minute", "alertAt": 12 },
-        { "departmentId": "medical_eval", "maxTime": 45, "timeUnit": "minute", "alertAt": 35 }
+        {
+          "departmentId": "reception",
+          "maxTime": 10,
+          "timeUnit": "minute",
+          "alertAt": 8
+        },
+        {
+          "departmentId": "triage",
+          "maxTime": 20,
+          "timeUnit": "minute",
+          "alertAt": 15
+        },
+        {
+          "departmentId": "patient_history",
+          "maxTime": 15,
+          "timeUnit": "minute",
+          "alertAt": 12
+        },
+        {
+          "departmentId": "medical_eval",
+          "maxTime": 45,
+          "timeUnit": "minute",
+          "alertAt": 35
+        }
       ],
       "exceptionFlows": [
-        { "condition": "Paciente de alto risco", "targetDepartment": "emergency", "priority": "critical" },
-        { "condition": "Necessidade de isolamento", "targetDepartment": "isolation", "priority": "high" }
+        {
+          "condition": "Paciente de alto risco",
+          "targetDepartment": "emergency",
+          "priority": "critical"
+        },
+        {
+          "condition": "Necessidade de isolamento",
+          "targetDepartment": "isolation",
+          "priority": "high"
+        }
       ],
       "status": "active",
       "lastRun": "2024-04-10T14:30:00Z",
@@ -8495,16 +8672,54 @@
         }
       ],
       "slaSettings": [
-        { "departmentId": "med_clearance", "maxTime": 2, "timeUnit": "hour", "alertAt": 1 },
-        { "departmentId": "cardio_exam", "maxTime": 1, "timeUnit": "hour", "alertAt": 45 },
-        { "departmentId": "pharmacy", "maxTime": 30, "timeUnit": "minute", "alertAt": 25 },
-        { "departmentId": "cardio_education", "maxTime": 40, "timeUnit": "minute", "alertAt": 30 },
-        { "departmentId": "admin_checkout", "maxTime": 1, "timeUnit": "hour", "alertAt": 45 },
-        { "departmentId": "discharge", "maxTime": 30, "timeUnit": "minute", "alertAt": 20 }
+        {
+          "departmentId": "med_clearance",
+          "maxTime": 2,
+          "timeUnit": "hour",
+          "alertAt": 1
+        },
+        {
+          "departmentId": "cardio_exam",
+          "maxTime": 1,
+          "timeUnit": "hour",
+          "alertAt": 45
+        },
+        {
+          "departmentId": "pharmacy",
+          "maxTime": 30,
+          "timeUnit": "minute",
+          "alertAt": 25
+        },
+        {
+          "departmentId": "cardio_education",
+          "maxTime": 40,
+          "timeUnit": "minute",
+          "alertAt": 30
+        },
+        {
+          "departmentId": "admin_checkout",
+          "maxTime": 1,
+          "timeUnit": "hour",
+          "alertAt": 45
+        },
+        {
+          "departmentId": "discharge",
+          "maxTime": 30,
+          "timeUnit": "minute",
+          "alertAt": 20
+        }
       ],
       "exceptionFlows": [
-        { "condition": "Alteração nos exames cardíacos", "targetDepartment": "cardiology", "priority": "critical" },
-        { "condition": "Necessidade de home care", "targetDepartment": "social_service", "priority": "medium" }
+        {
+          "condition": "Alteração nos exames cardíacos",
+          "targetDepartment": "cardiology",
+          "priority": "critical"
+        },
+        {
+          "condition": "Necessidade de home care",
+          "targetDepartment": "social_service",
+          "priority": "medium"
+        }
       ],
       "status": "active",
       "lastRun": "2024-04-12T09:15:00Z",
@@ -8610,16 +8825,54 @@
         }
       ],
       "slaSettings": [
-        { "departmentId": "triage_emerg", "maxTime": 3, "timeUnit": "minute", "alertAt": 2 },
-        { "departmentId": "stabilization", "maxTime": 5, "timeUnit": "minute", "alertAt": 4 },
-        { "departmentId": "brain_imaging", "maxTime": 15, "timeUnit": "minute", "alertAt": 10 },
-        { "departmentId": "neuro_evaluation", "maxTime": 10, "timeUnit": "minute", "alertAt": 8 },
-        { "departmentId": "thrombolysis_decision", "maxTime": 5, "timeUnit": "minute", "alertAt": 4 },
-        { "departmentId": "intervention", "maxTime": 10, "timeUnit": "minute", "alertAt": 8 }
+        {
+          "departmentId": "triage_emerg",
+          "maxTime": 3,
+          "timeUnit": "minute",
+          "alertAt": 2
+        },
+        {
+          "departmentId": "stabilization",
+          "maxTime": 5,
+          "timeUnit": "minute",
+          "alertAt": 4
+        },
+        {
+          "departmentId": "brain_imaging",
+          "maxTime": 15,
+          "timeUnit": "minute",
+          "alertAt": 10
+        },
+        {
+          "departmentId": "neuro_evaluation",
+          "maxTime": 10,
+          "timeUnit": "minute",
+          "alertAt": 8
+        },
+        {
+          "departmentId": "thrombolysis_decision",
+          "maxTime": 5,
+          "timeUnit": "minute",
+          "alertAt": 4
+        },
+        {
+          "departmentId": "intervention",
+          "maxTime": 10,
+          "timeUnit": "minute",
+          "alertAt": 8
+        }
       ],
       "exceptionFlows": [
-        { "condition": "Contraindicação para trombólise", "targetDepartment": "interventional_neuro", "priority": "critical" },
-        { "condition": "Necessidade de neurocirurgia", "targetDepartment": "neurosurgery", "priority": "critical" }
+        {
+          "condition": "Contraindicação para trombólise",
+          "targetDepartment": "interventional_neuro",
+          "priority": "critical"
+        },
+        {
+          "condition": "Necessidade de neurocirurgia",
+          "targetDepartment": "neurosurgery",
+          "priority": "critical"
+        }
       ],
       "status": "active",
       "lastRun": "2024-04-14T08:45:00Z",
@@ -8725,17 +8978,59 @@
         }
       ],
       "slaSettings": [
-        { "departmentId": "exam_request", "maxTime": 20, "timeUnit": "minute", "alertAt": 15 },
-        { "departmentId": "priority_evaluation", "maxTime": 10, "timeUnit": "minute", "alertAt": 8 },
-        { "departmentId": "patient_preparation", "maxTime": 30, "timeUnit": "minute", "alertAt": 25 },
-        { "departmentId": "image_acquisition", "maxTime": 45, "timeUnit": "minute", "alertAt": 40 },
-        { "departmentId": "radiologist_analysis", "maxTime": 1, "timeUnit": "hour", "alertAt": 45 },
-        { "departmentId": "urgent_notification", "maxTime": 15, "timeUnit": "minute", "alertAt": 10 }
+        {
+          "departmentId": "exam_request",
+          "maxTime": 20,
+          "timeUnit": "minute",
+          "alertAt": 15
+        },
+        {
+          "departmentId": "priority_evaluation",
+          "maxTime": 10,
+          "timeUnit": "minute",
+          "alertAt": 8
+        },
+        {
+          "departmentId": "patient_preparation",
+          "maxTime": 30,
+          "timeUnit": "minute",
+          "alertAt": 25
+        },
+        {
+          "departmentId": "image_acquisition",
+          "maxTime": 45,
+          "timeUnit": "minute",
+          "alertAt": 40
+        },
+        {
+          "departmentId": "radiologist_analysis",
+          "maxTime": 1,
+          "timeUnit": "hour",
+          "alertAt": 45
+        },
+        {
+          "departmentId": "urgent_notification",
+          "maxTime": 15,
+          "timeUnit": "minute",
+          "alertAt": 10
+        }
       ],
       "exceptionFlows": [
-        { "condition": "Achado crítico", "targetDepartment": "emergency_notification", "priority": "critical" },
-        { "condition": "Necessidade de outro exame", "targetDepartment": "additional_imaging", "priority": "high" },
-        { "condition": "Reação ao contraste", "targetDepartment": "emergency_response", "priority": "critical" }
+        {
+          "condition": "Achado crítico",
+          "targetDepartment": "emergency_notification",
+          "priority": "critical"
+        },
+        {
+          "condition": "Necessidade de outro exame",
+          "targetDepartment": "additional_imaging",
+          "priority": "high"
+        },
+        {
+          "condition": "Reação ao contraste",
+          "targetDepartment": "emergency_response",
+          "priority": "critical"
+        }
       ],
       "status": "active",
       "lastRun": "2024-04-13T12:30:00Z",
@@ -8769,9 +9064,18 @@
         "final": "medical_director"
       },
       "reminderIntervals": [
-        { "threshold": 75, "type": "percentage" },
-        { "threshold": 90, "type": "percentage" },
-        { "threshold": 100, "type": "percentage" }
+        {
+          "threshold": 75,
+          "type": "percentage"
+        },
+        {
+          "threshold": 90,
+          "type": "percentage"
+        },
+        {
+          "threshold": 100,
+          "type": "percentage"
+        }
       ]
     },
     "visualization": {
@@ -8995,7 +9299,7 @@
       ]
     },
     "slaPerformance": {
-      "overall": 0.90,
+      "overall": 0.9,
       "byPriority": {
         "critical": 0.95,
         "high": 0.92,
@@ -9015,24 +9319,73 @@
         "administration": 0.81
       },
       "trend": [
-        { "date": "2024-04-08", "completionRate": 0.88 },
-        { "date": "2024-04-09", "completionRate": 0.87 },
-        { "date": "2024-04-10", "completionRate": 0.89 },
-        { "date": "2024-04-11", "completionRate": 0.91 },
-        { "date": "2024-04-12", "completionRate": 0.90 },
-        { "date": "2024-04-13", "completionRate": 0.92 },
-        { "date": "2024-04-14", "completionRate": 0.91 }
+        {
+          "date": "2024-04-08",
+          "completionRate": 0.88
+        },
+        {
+          "date": "2024-04-09",
+          "completionRate": 0.87
+        },
+        {
+          "date": "2024-04-10",
+          "completionRate": 0.89
+        },
+        {
+          "date": "2024-04-11",
+          "completionRate": 0.91
+        },
+        {
+          "date": "2024-04-12",
+          "completionRate": 0.9
+        },
+        {
+          "date": "2024-04-13",
+          "completionRate": 0.92
+        },
+        {
+          "date": "2024-04-14",
+          "completionRate": 0.91
+        }
       ]
     },
     "processVolume": {
       "daily": [
-        { "date": "2024-04-08", "started": 25, "completed": 23 },
-        { "date": "2024-04-09", "started": 28, "completed": 26 },
-        { "date": "2024-04-10", "started": 32, "completed": 29 },
-        { "date": "2024-04-11", "started": 27, "completed": 25 },
-        { "date": "2024-04-12", "started": 31, "completed": 28 },
-        { "date": "2024-04-13", "started": 22, "completed": 20 },
-        { "date": "2024-04-14", "started": 18, "completed": 17 }
+        {
+          "date": "2024-04-08",
+          "started": 25,
+          "completed": 23
+        },
+        {
+          "date": "2024-04-09",
+          "started": 28,
+          "completed": 26
+        },
+        {
+          "date": "2024-04-10",
+          "started": 32,
+          "completed": 29
+        },
+        {
+          "date": "2024-04-11",
+          "started": 27,
+          "completed": 25
+        },
+        {
+          "date": "2024-04-12",
+          "started": 31,
+          "completed": 28
+        },
+        {
+          "date": "2024-04-13",
+          "started": 22,
+          "completed": 20
+        },
+        {
+          "date": "2024-04-14",
+          "started": 18,
+          "completed": 17
+        }
       ],
       "byCategory": {
         "geral": 18,
@@ -9107,5 +9460,1897 @@
       }
     },
     "lastUpdated": "2024-04-14T16:30:00Z"
-  }
+  },
+  "thermal-cameras": [
+    {
+      "id": "TC-001",
+      "roomId": "101A",
+      "bedId": "UTI-101",
+      "hospitalId": "RD4H-SP-ITAIM",
+      "name": "Câmera Térmica 101A",
+      "model": "ESP32-CAM-MLX90640",
+      "status": "active",
+      "resolution": "32x24",
+      "ipAddress": "192.168.1.101",
+      "lastMaintenance": "2025-01-15",
+      "nextMaintenance": "2025-07-15",
+      "thermalSettings": {
+        "temperatureRange": {
+          "min": 30,
+          "max": 45
+        },
+        "alertThreshold": 38.5,
+        "captureInterval": 60,
+        "sensitivity": 8
+      },
+      "privacySettings": {
+        "dataRetentionDays": 30,
+        "maskingEnabled": true,
+        "gdprCompliant": true,
+        "recordingEnabled": false,
+        "authorizedAccessRoles": [
+          "admin",
+          "medico",
+          "enfermeiro_chefe"
+        ]
+      },
+      "lastReading": {
+        "timestamp": "2025-04-15T10:23:45",
+        "averageTemperature": 36.8,
+        "hotspots": [
+          {
+            "x": 15,
+            "y": 10,
+            "temperature": 37.2
+          }
+        ],
+        "occupancyDetected": true,
+        "alertsTriggered": false
+      }
+    },
+    {
+      "id": "TC-002",
+      "roomId": "102A",
+      "bedId": "UTI-102",
+      "hospitalId": "RD4H-SP-ITAIM",
+      "name": "Câmera Térmica 102A",
+      "model": "ESP32-CAM-MLX90640",
+      "status": "active",
+      "resolution": "32x24",
+      "ipAddress": "192.168.1.102",
+      "lastMaintenance": "2025-01-20",
+      "nextMaintenance": "2025-07-20",
+      "thermalSettings": {
+        "temperatureRange": {
+          "min": 30,
+          "max": 45
+        },
+        "alertThreshold": 38,
+        "captureInterval": 60,
+        "sensitivity": 7
+      },
+      "privacySettings": {
+        "dataRetentionDays": 30,
+        "maskingEnabled": true,
+        "gdprCompliant": true,
+        "recordingEnabled": false,
+        "authorizedAccessRoles": [
+          "admin",
+          "medico",
+          "enfermeiro_chefe"
+        ]
+      },
+      "lastReading": {
+        "timestamp": "2025-04-15T10:24:15",
+        "averageTemperature": 36.5,
+        "hotspots": [
+          {
+            "x": 12,
+            "y": 8,
+            "temperature": 36.9
+          }
+        ],
+        "occupancyDetected": true,
+        "alertsTriggered": false
+      }
+    },
+    {
+      "id": "TC-003",
+      "roomId": "103A",
+      "bedId": "UTI-103",
+      "hospitalId": "RD4H-SP-ITAIM",
+      "name": "Câmera Térmica 103A",
+      "model": "ESP32-CAM-MLX90640",
+      "status": "inactive",
+      "resolution": "32x24",
+      "ipAddress": "192.168.1.103",
+      "lastMaintenance": "2024-10-15",
+      "nextMaintenance": "2025-04-15",
+      "thermalSettings": {
+        "temperatureRange": {
+          "min": 30,
+          "max": 45
+        },
+        "alertThreshold": 38.5,
+        "captureInterval": 60,
+        "sensitivity": 8
+      },
+      "privacySettings": {
+        "dataRetentionDays": 30,
+        "maskingEnabled": true,
+        "gdprCompliant": true,
+        "recordingEnabled": false,
+        "authorizedAccessRoles": [
+          "admin",
+          "medico",
+          "enfermeiro_chefe"
+        ]
+      },
+      "lastReading": {
+        "timestamp": "2025-04-14T22:10:25",
+        "averageTemperature": 37.2,
+        "hotspots": [
+          {
+            "x": 18,
+            "y": 12,
+            "temperature": 37.8
+          }
+        ],
+        "occupancyDetected": true,
+        "alertsTriggered": false
+      }
+    },
+    {
+      "id": "TC-004",
+      "roomId": "201A",
+      "bedId": "ENF-201",
+      "hospitalId": "RD4H-SP-ITAIM",
+      "name": "Câmera Térmica 201A",
+      "model": "ESP32-CAM-MLX90641",
+      "status": "active",
+      "resolution": "16x12",
+      "ipAddress": "192.168.1.201",
+      "lastMaintenance": "2025-02-05",
+      "nextMaintenance": "2025-08-05",
+      "thermalSettings": {
+        "temperatureRange": {
+          "min": 30,
+          "max": 45
+        },
+        "alertThreshold": 38,
+        "captureInterval": 120,
+        "sensitivity": 6
+      },
+      "privacySettings": {
+        "dataRetentionDays": 15,
+        "maskingEnabled": true,
+        "gdprCompliant": true,
+        "recordingEnabled": false,
+        "authorizedAccessRoles": [
+          "admin",
+          "medico",
+          "enfermeiro_chefe"
+        ]
+      },
+      "lastReading": {
+        "timestamp": "2025-04-15T10:22:45",
+        "averageTemperature": 36.6,
+        "hotspots": [
+          {
+            "x": 8,
+            "y": 6,
+            "temperature": 37
+          }
+        ],
+        "occupancyDetected": true,
+        "alertsTriggered": false
+      }
+    },
+    {
+      "id": "TC-005",
+      "roomId": "101A",
+      "bedId": "UTI-101",
+      "hospitalId": "RD4H-SP-MORUMBI",
+      "name": "Câmera Térmica 101A",
+      "model": "RaspberryPi-AMG8833",
+      "status": "active",
+      "resolution": "8x8",
+      "ipAddress": "192.168.2.101",
+      "lastMaintenance": "2025-03-10",
+      "nextMaintenance": "2025-09-10",
+      "thermalSettings": {
+        "temperatureRange": {
+          "min": 30,
+          "max": 45
+        },
+        "alertThreshold": 38.2,
+        "captureInterval": 30,
+        "sensitivity": 9
+      },
+      "privacySettings": {
+        "dataRetentionDays": 30,
+        "maskingEnabled": true,
+        "gdprCompliant": true,
+        "recordingEnabled": false,
+        "authorizedAccessRoles": [
+          "admin",
+          "medico",
+          "enfermeiro_chefe"
+        ]
+      },
+      "lastReading": {
+        "timestamp": "2025-04-15T10:25:15",
+        "averageTemperature": 37.8,
+        "hotspots": [
+          {
+            "x": 4,
+            "y": 3,
+            "temperature": 38.2
+          }
+        ],
+        "occupancyDetected": true,
+        "alertsTriggered": true
+      }
+    },
+    {
+      "id": "TC-006",
+      "roomId": "202A",
+      "bedId": "UTI-202-COPA",
+      "hospitalId": "RD4H-RJ-COPA",
+      "name": "Câmera Térmica 202A",
+      "model": "FLIR-Lepton3",
+      "status": "inactive",
+      "resolution": "160x120",
+      "ipAddress": "192.168.3.202",
+      "lastMaintenance": "2025-01-05",
+      "nextMaintenance": "2025-07-05",
+      "thermalSettings": {
+        "temperatureRange": {
+          "min": 30,
+          "max": 45
+        },
+        "alertThreshold": 38.5,
+        "captureInterval": 30,
+        "sensitivity": 10
+      },
+      "privacySettings": {
+        "dataRetentionDays": 30,
+        "maskingEnabled": true,
+        "gdprCompliant": true,
+        "recordingEnabled": false,
+        "authorizedAccessRoles": [
+          "admin",
+          "medico",
+          "enfermeiro_chefe"
+        ]
+      },
+      "lastReading": {
+        "timestamp": "2025-04-14T18:45:30",
+        "averageTemperature": 36.4,
+        "hotspots": [
+          {
+            "x": 80,
+            "y": 60,
+            "temperature": 36.8
+          }
+        ],
+        "occupancyDetected": true,
+        "alertsTriggered": false
+      }
+    }
+  ],
+  "thermal-readings": [
+    {
+      "id": "TR-00001",
+      "cameraId": "TC-001",
+      "bedId": "UTI-101",
+      "timestamp": "2025-04-15T10:23:45",
+      "thermalData": {
+        "averageTemperature": 36.8,
+        "maxTemperature": 37.2,
+        "minTemperature": 35.9,
+        "temperatureMatrix": [
+          [
+            36.1,
+            36.2,
+            36.3,
+            36.1,
+            36.2,
+            36,
+            36.1,
+            36.2,
+            36.3,
+            36.1,
+            36.2,
+            36,
+            36.1,
+            36.2,
+            36.3,
+            36.1,
+            36.2,
+            36,
+            36.1,
+            36.2,
+            36.3,
+            36.1,
+            36.2,
+            36,
+            36.1,
+            36.2,
+            36.3,
+            36.1,
+            36.2,
+            36,
+            36.1,
+            36.2
+          ],
+          [
+            36.2,
+            36.4,
+            36.5,
+            36.3,
+            36.4,
+            36.3,
+            36.2,
+            36.4,
+            36.5,
+            36.3,
+            36.4,
+            36.3,
+            36.2,
+            36.4,
+            36.5,
+            36.3,
+            36.4,
+            36.3,
+            36.2,
+            36.4,
+            36.5,
+            36.3,
+            36.4,
+            36.3,
+            36.2,
+            36.4,
+            36.5,
+            36.3,
+            36.4,
+            36.3,
+            36.2,
+            36.4
+          ],
+          [
+            36.3,
+            36.6,
+            36.7,
+            36.5,
+            36.6,
+            36.5,
+            36.3,
+            36.6,
+            36.7,
+            36.5,
+            36.6,
+            36.5,
+            36.3,
+            36.6,
+            36.7,
+            36.5,
+            36.6,
+            36.5,
+            36.3,
+            36.6,
+            36.7,
+            36.5,
+            36.6,
+            36.5,
+            36.3,
+            36.6,
+            36.7,
+            36.5,
+            36.6,
+            36.5,
+            36.3,
+            36.6
+          ],
+          [
+            36.4,
+            36.8,
+            36.9,
+            36.7,
+            36.8,
+            36.7,
+            36.4,
+            36.8,
+            36.9,
+            36.7,
+            36.8,
+            36.7,
+            36.4,
+            36.8,
+            36.9,
+            36.7,
+            36.8,
+            36.7,
+            36.4,
+            36.8,
+            36.9,
+            36.7,
+            36.8,
+            36.7,
+            36.4,
+            36.8,
+            36.9,
+            36.7,
+            36.8,
+            36.7,
+            36.4,
+            36.8
+          ],
+          [
+            36.5,
+            36.7,
+            36.8,
+            36.6,
+            36.7,
+            36.6,
+            36.5,
+            36.7,
+            36.8,
+            36.6,
+            36.7,
+            36.6,
+            36.5,
+            36.7,
+            37.2,
+            36.9,
+            36.7,
+            36.6,
+            36.5,
+            36.7,
+            36.8,
+            36.6,
+            36.7,
+            36.6,
+            36.5,
+            36.7,
+            36.8,
+            36.6,
+            36.7,
+            36.6,
+            36.5,
+            36.7
+          ],
+          [
+            36.4,
+            36.6,
+            36.7,
+            36.5,
+            36.6,
+            36.5,
+            36.4,
+            36.6,
+            36.7,
+            36.5,
+            36.6,
+            37,
+            37,
+            37,
+            37.1,
+            36.9,
+            36.6,
+            36.5,
+            36.4,
+            36.6,
+            36.7,
+            36.5,
+            36.6,
+            36.5,
+            36.4,
+            36.6,
+            36.7,
+            36.5,
+            36.6,
+            36.5,
+            36.4,
+            36.6
+          ],
+          [
+            36.3,
+            36.5,
+            36.6,
+            36.4,
+            36.5,
+            36.4,
+            36.3,
+            36.5,
+            36.6,
+            36.4,
+            36.8,
+            37.1,
+            37.2,
+            37.1,
+            37,
+            36.8,
+            36.5,
+            36.4,
+            36.3,
+            36.5,
+            36.6,
+            36.4,
+            36.5,
+            36.4,
+            36.3,
+            36.5,
+            36.6,
+            36.4,
+            36.5,
+            36.4,
+            36.3,
+            36.5
+          ],
+          [
+            36.2,
+            36.4,
+            36.5,
+            36.3,
+            36.4,
+            36.3,
+            36.2,
+            36.4,
+            36.5,
+            36.3,
+            36.7,
+            37,
+            37.1,
+            37,
+            36.9,
+            36.7,
+            36.4,
+            36.3,
+            36.2,
+            36.4,
+            36.5,
+            36.3,
+            36.4,
+            36.3,
+            36.2,
+            36.4,
+            36.5,
+            36.3,
+            36.4,
+            36.3,
+            36.2,
+            36.4
+          ],
+          [
+            36.1,
+            36.3,
+            36.4,
+            36.2,
+            36.3,
+            36.2,
+            36.1,
+            36.3,
+            36.4,
+            36.2,
+            36.5,
+            36.8,
+            36.9,
+            36.8,
+            36.6,
+            36.5,
+            36.3,
+            36.2,
+            36.1,
+            36.3,
+            36.4,
+            36.2,
+            36.3,
+            36.2,
+            36.1,
+            36.3,
+            36.4,
+            36.2,
+            36.3,
+            36.2,
+            36.1,
+            36.3
+          ],
+          [
+            36,
+            36.2,
+            36.3,
+            36.1,
+            36.2,
+            36.1,
+            36,
+            36.2,
+            36.3,
+            36.1,
+            36.3,
+            36.6,
+            36.7,
+            36.6,
+            36.4,
+            36.3,
+            36.2,
+            36.1,
+            36,
+            36.2,
+            36.3,
+            36.1,
+            36.2,
+            36.1,
+            36,
+            36.2,
+            36.3,
+            36.1,
+            36.2,
+            36.1,
+            36,
+            36.2
+          ],
+          [
+            35.9,
+            36.1,
+            36.2,
+            36,
+            36.1,
+            36,
+            35.9,
+            36.1,
+            36.2,
+            36,
+            36.2,
+            36.5,
+            36.6,
+            36.5,
+            36.3,
+            36.2,
+            36.1,
+            36,
+            35.9,
+            36.1,
+            36.2,
+            36,
+            36.1,
+            36,
+            35.9,
+            36.1,
+            36.2,
+            36,
+            36.1,
+            36,
+            35.9,
+            36.1
+          ],
+          [
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36.1,
+            36.3,
+            36.4,
+            36.3,
+            36.2,
+            36.1,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36
+          ],
+          [
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            36.2,
+            36.3,
+            36.2,
+            36.1,
+            36,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36
+          ],
+          [
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            36.1,
+            36.2,
+            36.1,
+            36,
+            36,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36
+          ],
+          [
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            36.1,
+            36.2,
+            36.1,
+            36,
+            36,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36
+          ],
+          [
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            36.1,
+            36.2,
+            36.1,
+            36,
+            36,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36
+          ],
+          [
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            36.1,
+            36.2,
+            36.1,
+            36,
+            36,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36
+          ],
+          [
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            36.1,
+            36.2,
+            36.1,
+            36,
+            36,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36
+          ],
+          [
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            36.1,
+            36.2,
+            36.1,
+            36,
+            36,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36
+          ],
+          [
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            36.1,
+            36.2,
+            36.1,
+            36,
+            36,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36
+          ],
+          [
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            36.1,
+            36.2,
+            36.1,
+            36,
+            36,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36
+          ],
+          [
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            36.1,
+            36.2,
+            36.1,
+            36,
+            36,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36
+          ],
+          [
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            36.1,
+            36.2,
+            36.1,
+            36,
+            36,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36
+          ],
+          [
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            36.1,
+            36.2,
+            36.1,
+            36,
+            36,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36,
+            36.1,
+            35.9,
+            36,
+            35.9,
+            35.9,
+            36
+          ]
+        ]
+      },
+      "occupancyData": {
+        "occupied": true,
+        "movementDetected": true,
+        "estimatedHeartRate": 72,
+        "estimatedRespirationRate": 16
+      },
+      "alerts": {
+        "highTemperature": false,
+        "lowTemperature": false,
+        "noMovement": false,
+        "abnormalVitalSigns": false
+      }
+    },
+    {
+      "id": "TR-00002",
+      "cameraId": "TC-001",
+      "bedId": "UTI-101",
+      "timestamp": "2025-04-15T10:24:45",
+      "thermalData": {
+        "averageTemperature": 36.9,
+        "maxTemperature": 37.3,
+        "minTemperature": 36,
+        "temperatureMatrix": []
+      },
+      "occupancyData": {
+        "occupied": true,
+        "movementDetected": true,
+        "estimatedHeartRate": 73,
+        "estimatedRespirationRate": 16
+      },
+      "alerts": {
+        "highTemperature": false,
+        "lowTemperature": false,
+        "noMovement": false,
+        "abnormalVitalSigns": false
+      }
+    },
+    {
+      "id": "TR-00003",
+      "cameraId": "TC-001",
+      "bedId": "UTI-101",
+      "timestamp": "2025-04-15T10:25:45",
+      "thermalData": {
+        "averageTemperature": 36.7,
+        "maxTemperature": 37.1,
+        "minTemperature": 35.9,
+        "temperatureMatrix": []
+      },
+      "occupancyData": {
+        "occupied": true,
+        "movementDetected": true,
+        "estimatedHeartRate": 71,
+        "estimatedRespirationRate": 15
+      },
+      "alerts": {
+        "highTemperature": false,
+        "lowTemperature": false,
+        "noMovement": false,
+        "abnormalVitalSigns": false
+      }
+    },
+    {
+      "id": "TR-00004",
+      "cameraId": "TC-001",
+      "bedId": "UTI-101",
+      "timestamp": "2025-04-15T10:26:45",
+      "thermalData": {
+        "averageTemperature": 36.8,
+        "maxTemperature": 37.2,
+        "minTemperature": 36,
+        "temperatureMatrix": []
+      },
+      "occupancyData": {
+        "occupied": true,
+        "movementDetected": true,
+        "estimatedHeartRate": 72,
+        "estimatedRespirationRate": 16
+      },
+      "alerts": {
+        "highTemperature": false,
+        "lowTemperature": false,
+        "noMovement": false,
+        "abnormalVitalSigns": false
+      }
+    },
+    {
+      "id": "TR-00005",
+      "cameraId": "TC-001",
+      "bedId": "UTI-101",
+      "timestamp": "2025-04-15T10:27:45",
+      "thermalData": {
+        "averageTemperature": 36.9,
+        "maxTemperature": 37.3,
+        "minTemperature": 36.1,
+        "temperatureMatrix": []
+      },
+      "occupancyData": {
+        "occupied": true,
+        "movementDetected": true,
+        "estimatedHeartRate": 74,
+        "estimatedRespirationRate": 16
+      },
+      "alerts": {
+        "highTemperature": false,
+        "lowTemperature": false,
+        "noMovement": false,
+        "abnormalVitalSigns": false
+      }
+    },
+    {
+      "id": "TR-00006",
+      "cameraId": "TC-002",
+      "bedId": "UTI-102",
+      "timestamp": "2025-04-15T10:24:15",
+      "thermalData": {
+        "averageTemperature": 36.5,
+        "maxTemperature": 36.9,
+        "minTemperature": 35.8,
+        "temperatureMatrix": []
+      },
+      "occupancyData": {
+        "occupied": true,
+        "movementDetected": true,
+        "estimatedHeartRate": 68,
+        "estimatedRespirationRate": 14
+      },
+      "alerts": {
+        "highTemperature": false,
+        "lowTemperature": false,
+        "noMovement": false,
+        "abnormalVitalSigns": false
+      }
+    },
+    {
+      "id": "TR-00007",
+      "cameraId": "TC-002",
+      "bedId": "UTI-102",
+      "timestamp": "2025-04-15T10:25:15",
+      "thermalData": {
+        "averageTemperature": 36.4,
+        "maxTemperature": 36.8,
+        "minTemperature": 35.7,
+        "temperatureMatrix": []
+      },
+      "occupancyData": {
+        "occupied": true,
+        "movementDetected": true,
+        "estimatedHeartRate": 67,
+        "estimatedRespirationRate": 14
+      },
+      "alerts": {
+        "highTemperature": false,
+        "lowTemperature": false,
+        "noMovement": false,
+        "abnormalVitalSigns": false
+      }
+    },
+    {
+      "id": "TR-00008",
+      "cameraId": "TC-003",
+      "bedId": "UTI-103",
+      "timestamp": "2025-04-14T22:10:25",
+      "thermalData": {
+        "averageTemperature": 37.2,
+        "maxTemperature": 37.8,
+        "minTemperature": 36.4,
+        "temperatureMatrix": []
+      },
+      "occupancyData": {
+        "occupied": true,
+        "movementDetected": true,
+        "estimatedHeartRate": 78,
+        "estimatedRespirationRate": 17
+      },
+      "alerts": {
+        "highTemperature": false,
+        "lowTemperature": false,
+        "noMovement": false,
+        "abnormalVitalSigns": false
+      }
+    },
+    {
+      "id": "TR-00009",
+      "cameraId": "TC-004",
+      "bedId": "ENF-201",
+      "timestamp": "2025-04-15T10:22:45",
+      "thermalData": {
+        "averageTemperature": 36.6,
+        "maxTemperature": 37,
+        "minTemperature": 35.9,
+        "temperatureMatrix": []
+      },
+      "occupancyData": {
+        "occupied": true,
+        "movementDetected": true,
+        "estimatedHeartRate": 70,
+        "estimatedRespirationRate": 15
+      },
+      "alerts": {
+        "highTemperature": false,
+        "lowTemperature": false,
+        "noMovement": false,
+        "abnormalVitalSigns": false
+      }
+    },
+    {
+      "id": "TR-00010",
+      "cameraId": "TC-005",
+      "bedId": "UTI-101",
+      "timestamp": "2025-04-15T10:25:15",
+      "thermalData": {
+        "averageTemperature": 37.8,
+        "maxTemperature": 38.2,
+        "minTemperature": 37,
+        "temperatureMatrix": []
+      },
+      "occupancyData": {
+        "occupied": true,
+        "movementDetected": true,
+        "estimatedHeartRate": 85,
+        "estimatedRespirationRate": 19
+      },
+      "alerts": {
+        "highTemperature": true,
+        "lowTemperature": false,
+        "noMovement": false,
+        "abnormalVitalSigns": true
+      }
+    },
+    {
+      "id": "TR-00011",
+      "cameraId": "TC-006",
+      "bedId": "UTI-202-COPA",
+      "timestamp": "2025-04-14T18:45:30",
+      "thermalData": {
+        "averageTemperature": 36.4,
+        "maxTemperature": 36.8,
+        "minTemperature": 35.6,
+        "temperatureMatrix": []
+      },
+      "occupancyData": {
+        "occupied": true,
+        "movementDetected": true,
+        "estimatedHeartRate": 65,
+        "estimatedRespirationRate": 14
+      },
+      "alerts": {
+        "highTemperature": false,
+        "lowTemperature": false,
+        "noMovement": false,
+        "abnormalVitalSigns": false
+      }
+    }
+  ],
+  "thermal-configs": [
+    {
+      "id": "CFG-RD4H-SP-ITAIM",
+      "hospitalId": "RD4H-SP-ITAIM",
+      "defaultSettings": {
+        "captureInterval": 60,
+        "temperatureThresholds": {
+          "low": 35,
+          "normal": 37,
+          "elevated": 37.5,
+          "fever": 38
+        },
+        "privacyDefaults": {
+          "dataRetentionDays": 30,
+          "maskingEnabled": true,
+          "recordingEnabled": false
+        }
+      },
+      "alertNotifications": {
+        "enabledChannels": {
+          "email": true,
+          "sms": true,
+          "appNotification": true,
+          "systemAlert": true
+        },
+        "alertRecipients": [
+          "user-001",
+          "role-uti-medico",
+          "role-uti-enfermeiro"
+        ],
+        "escalationTime": 15
+      }
+    },
+    {
+      "id": "CFG-RD4H-SP-MORUMBI",
+      "hospitalId": "RD4H-SP-MORUMBI",
+      "defaultSettings": {
+        "captureInterval": 30,
+        "temperatureThresholds": {
+          "low": 35.5,
+          "normal": 37,
+          "elevated": 37.5,
+          "fever": 38
+        },
+        "privacyDefaults": {
+          "dataRetentionDays": 15,
+          "maskingEnabled": true,
+          "recordingEnabled": false
+        }
+      },
+      "alertNotifications": {
+        "enabledChannels": {
+          "email": true,
+          "sms": false,
+          "appNotification": true,
+          "systemAlert": true
+        },
+        "alertRecipients": [
+          "user-005",
+          "role-uti-medico",
+          "role-uti-enfermeiro"
+        ],
+        "escalationTime": 10
+      }
+    },
+    {
+      "id": "CFG-RD4H-RJ-COPA",
+      "hospitalId": "RD4H-RJ-COPA",
+      "defaultSettings": {
+        "captureInterval": 45,
+        "temperatureThresholds": {
+          "low": 35,
+          "normal": 36.8,
+          "elevated": 37.6,
+          "fever": 38.1
+        },
+        "privacyDefaults": {
+          "dataRetentionDays": 30,
+          "maskingEnabled": true,
+          "recordingEnabled": false
+        }
+      },
+      "alertNotifications": {
+        "enabledChannels": {
+          "email": true,
+          "sms": true,
+          "appNotification": true,
+          "systemAlert": true
+        },
+        "alertRecipients": [
+          "user-010",
+          "role-uti-medico",
+          "role-uti-enfermeiro"
+        ],
+        "escalationTime": 20
+      }
+    }
+  ],
+  "thermal-alerts": [
+    {
+      "id": "TA-00001",
+      "cameraId": "TC-005",
+      "bedId": "UTI-101",
+      "hospitalId": "RD4H-SP-MORUMBI",
+      "timestamp": "2025-04-15T10:25:15",
+      "alertType": "highTemperature",
+      "severity": "medium",
+      "value": 38.2,
+      "threshold": 38,
+      "status": "open",
+      "notified": [
+        {
+          "channel": "systemAlert",
+          "timestamp": "2025-04-15T10:25:16",
+          "recipients": [
+            "dashboard-uti"
+          ]
+        },
+        {
+          "channel": "appNotification",
+          "timestamp": "2025-04-15T10:25:17",
+          "recipients": [
+            "user-005",
+            "role-uti-medico"
+          ]
+        },
+        {
+          "channel": "email",
+          "timestamp": "2025-04-15T10:25:30",
+          "recipients": [
+            "user-005"
+          ]
+        }
+      ],
+      "acknowledgedBy": null,
+      "acknowledgedAt": null,
+      "resolution": null
+    },
+    {
+      "id": "TA-00002",
+      "cameraId": "TC-005",
+      "bedId": "UTI-101",
+      "hospitalId": "RD4H-SP-MORUMBI",
+      "timestamp": "2025-04-15T10:25:15",
+      "alertType": "abnormalVitalSigns",
+      "severity": "medium",
+      "value": 85,
+      "threshold": 80,
+      "status": "open",
+      "notified": [
+        {
+          "channel": "systemAlert",
+          "timestamp": "2025-04-15T10:25:16",
+          "recipients": [
+            "dashboard-uti"
+          ]
+        },
+        {
+          "channel": "appNotification",
+          "timestamp": "2025-04-15T10:25:17",
+          "recipients": [
+            "user-005",
+            "role-uti-medico"
+          ]
+        }
+      ],
+      "acknowledgedBy": null,
+      "acknowledgedAt": null,
+      "resolution": null
+    },
+    {
+      "id": "TA-00003",
+      "cameraId": "TC-001",
+      "bedId": "UTI-101",
+      "hospitalId": "RD4H-SP-ITAIM",
+      "timestamp": "2025-04-14T23:15:10",
+      "alertType": "noMovement",
+      "severity": "high",
+      "value": 30,
+      "threshold": 20,
+      "status": "resolved",
+      "notified": [
+        {
+          "channel": "systemAlert",
+          "timestamp": "2025-04-14T23:15:11",
+          "recipients": [
+            "dashboard-uti"
+          ]
+        },
+        {
+          "channel": "appNotification",
+          "timestamp": "2025-04-14T23:15:12",
+          "recipients": [
+            "user-001",
+            "role-uti-medico",
+            "role-uti-enfermeiro"
+          ]
+        },
+        {
+          "channel": "sms",
+          "timestamp": "2025-04-14T23:15:20",
+          "recipients": [
+            "user-001"
+          ]
+        }
+      ],
+      "acknowledgedBy": "user-001",
+      "acknowledgedAt": "2025-04-14T23:16:45",
+      "resolution": {
+        "timestamp": "2025-04-14T23:20:10",
+        "resolvedBy": "user-001",
+        "notes": "Paciente dormindo profundamente. Verificado pessoalmente e está tudo normal."
+      }
+    },
+    {
+      "id": "TA-00004",
+      "cameraId": "TC-004",
+      "bedId": "ENF-201",
+      "hospitalId": "RD4H-SP-ITAIM",
+      "timestamp": "2025-04-14T21:10:05",
+      "alertType": "lowTemperature",
+      "severity": "medium",
+      "value": 34.8,
+      "threshold": 35,
+      "status": "resolved",
+      "notified": [
+        {
+          "channel": "systemAlert",
+          "timestamp": "2025-04-14T21:10:06",
+          "recipients": [
+            "dashboard-enfermaria"
+          ]
+        },
+        {
+          "channel": "appNotification",
+          "timestamp": "2025-04-14T21:10:07",
+          "recipients": [
+            "user-002",
+            "role-enfermaria-medico",
+            "role-enfermaria-enfermeiro"
+          ]
+        }
+      ],
+      "acknowledgedBy": "user-002",
+      "acknowledgedAt": "2025-04-14T21:11:30",
+      "resolution": {
+        "timestamp": "2025-04-14T21:15:22",
+        "resolvedBy": "user-002",
+        "notes": "Ajustada a temperatura do quarto e adicionados cobertores extras. Paciente normalizado após 10 minutos."
+      }
+    },
+    {
+      "id": "TA-00005",
+      "cameraId": "TC-003",
+      "bedId": "UTI-103",
+      "hospitalId": "RD4H-SP-ITAIM",
+      "timestamp": "2025-04-14T18:30:00",
+      "alertType": "highTemperature",
+      "severity": "high",
+      "value": 39.2,
+      "threshold": 38,
+      "status": "resolved",
+      "notified": [
+        {
+          "channel": "systemAlert",
+          "timestamp": "2025-04-14T18:30:01",
+          "recipients": [
+            "dashboard-uti"
+          ]
+        },
+        {
+          "channel": "appNotification",
+          "timestamp": "2025-04-14T18:30:02",
+          "recipients": [
+            "user-001",
+            "role-uti-medico",
+            "role-uti-enfermeiro"
+          ]
+        },
+        {
+          "channel": "sms",
+          "timestamp": "2025-04-14T18:30:10",
+          "recipients": [
+            "user-001"
+          ]
+        },
+        {
+          "channel": "email",
+          "timestamp": "2025-04-14T18:30:15",
+          "recipients": [
+            "user-001"
+          ]
+        }
+      ],
+      "acknowledgedBy": "user-003",
+      "acknowledgedAt": "2025-04-14T18:31:20",
+      "resolution": {
+        "timestamp": "2025-04-14T19:05:00",
+        "resolvedBy": "user-003",
+        "notes": "Administrado antitérmico conforme prescrição médica. Temperatura normalizada após 30 minutos."
+      }
+    }
+  ],
+  "thermal-maintenance": [
+    {
+      "id": "TM-00001",
+      "cameraId": "TC-001",
+      "hospitalId": "RD4H-SP-ITAIM",
+      "technician": "user-tech-001",
+      "type": "preventive",
+      "status": "completed",
+      "startDate": "2025-01-15T09:00:00",
+      "endDate": "2025-01-15T10:30:00",
+      "nextScheduledDate": "2025-07-15",
+      "issues": [
+        {
+          "category": "calibration",
+          "description": "Calibração de temperatura realizada",
+          "resolution": "Ajustado offset em 0.2°C para compensar desvio"
+        },
+        {
+          "category": "cleaning",
+          "description": "Limpeza do sensor e lentes",
+          "resolution": "Realizada limpeza com pano de microfibra e álcool isopropílico"
+        }
+      ],
+      "notes": "Equipamento em boas condições gerais. Recomendação para próxima manutenção: verificar conexões de energia que apresentaram pequena oxidação.",
+      "parts": [
+        {
+          "name": "Pano de microfibra",
+          "quantity": 1,
+          "cost": 5
+        },
+        {
+          "name": "Álcool isopropílico",
+          "quantity": 0.1,
+          "cost": 2.5
+        }
+      ],
+      "totalCost": 7.5
+    },
+    {
+      "id": "TM-00002",
+      "cameraId": "TC-002",
+      "hospitalId": "RD4H-SP-ITAIM",
+      "technician": "user-tech-001",
+      "type": "preventive",
+      "status": "completed",
+      "startDate": "2025-01-20T14:00:00",
+      "endDate": "2025-01-20T15:15:00",
+      "nextScheduledDate": "2025-07-20",
+      "issues": [
+        {
+          "category": "calibration",
+          "description": "Calibração de temperatura realizada",
+          "resolution": "Valores dentro do esperado, sem necessidade de ajustes"
+        },
+        {
+          "category": "cleaning",
+          "description": "Limpeza do sensor e lentes",
+          "resolution": "Realizada limpeza com pano de microfibra e álcool isopropílico"
+        },
+        {
+          "category": "mounting",
+          "description": "Verificação da fixação da câmera",
+          "resolution": "Reajustado suporte que estava ligeiramente solto"
+        }
+      ],
+      "notes": "Equipamento em condições normais de funcionamento.",
+      "parts": [
+        {
+          "name": "Pano de microfibra",
+          "quantity": 1,
+          "cost": 5
+        },
+        {
+          "name": "Álcool isopropílico",
+          "quantity": 0.1,
+          "cost": 2.5
+        },
+        {
+          "name": "Parafusos de fixação",
+          "quantity": 2,
+          "cost": 1
+        }
+      ],
+      "totalCost": 8.5
+    },
+    {
+      "id": "TM-00003",
+      "cameraId": "TC-003",
+      "hospitalId": "RD4H-SP-ITAIM",
+      "technician": "user-tech-002",
+      "type": "corrective",
+      "status": "in_progress",
+      "startDate": "2025-04-15T08:30:00",
+      "endDate": null,
+      "nextScheduledDate": null,
+      "issues": [
+        {
+          "category": "sensor",
+          "description": "Falha intermitente na matriz de sensores térmicos",
+          "resolution": null
+        },
+        {
+          "category": "connectivity",
+          "description": "Perda ocasional de conexão com o sistema central",
+          "resolution": null
+        }
+      ],
+      "notes": "Câmera apresentando comportamento errático nas últimas 48 horas. Suspeitamos de problema no módulo Wi-Fi ou sensor térmico. Em análise.",
+      "parts": [
+        {
+          "name": "Módulo Wi-Fi ESP32",
+          "quantity": 1,
+          "cost": 25
+        },
+        {
+          "name": "Sensor MLX90640",
+          "quantity": 1,
+          "cost": 55
+        }
+      ],
+      "totalCost": 80
+    },
+    {
+      "id": "TM-00004",
+      "cameraId": "TC-004",
+      "hospitalId": "RD4H-SP-ITAIM",
+      "technician": "user-tech-001",
+      "type": "preventive",
+      "status": "completed",
+      "startDate": "2025-02-05T10:00:00",
+      "endDate": "2025-02-05T11:00:00",
+      "nextScheduledDate": "2025-08-05",
+      "issues": [
+        {
+          "category": "calibration",
+          "description": "Calibração de temperatura realizada",
+          "resolution": "Ajustado offset em 0.1°C para compensar desvio"
+        },
+        {
+          "category": "software",
+          "description": "Atualização de firmware",
+          "resolution": "Atualizado para versão 2.1.3 que corrige bugs de detecção de movimento"
+        }
+      ],
+      "notes": "Equipamento funcionando normalmente após atualização de firmware.",
+      "parts": [],
+      "totalCost": 0
+    },
+    {
+      "id": "TM-00005",
+      "cameraId": "TC-005",
+      "hospitalId": "RD4H-SP-MORUMBI",
+      "technician": "user-tech-003",
+      "type": "preventive",
+      "status": "completed",
+      "startDate": "2025-03-10T13:00:00",
+      "endDate": "2025-03-10T14:30:00",
+      "nextScheduledDate": "2025-09-10",
+      "issues": [
+        {
+          "category": "calibration",
+          "description": "Calibração de temperatura realizada",
+          "resolution": "Valores dentro do esperado, sem necessidade de ajustes"
+        },
+        {
+          "category": "power",
+          "description": "Verificação da fonte de alimentação",
+          "resolution": "Substituída fonte de alimentação que apresentava flutuações"
+        }
+      ],
+      "notes": "Câmera em bom estado geral. Nova fonte de alimentação deve resolver os problemas de estabilidade.",
+      "parts": [
+        {
+          "name": "Fonte de alimentação 5V 2A",
+          "quantity": 1,
+          "cost": 15
+        }
+      ],
+      "totalCost": 15
+    },
+    {
+      "id": "TM-00006",
+      "cameraId": "TC-006",
+      "hospitalId": "RD4H-RJ-COPA",
+      "technician": "user-tech-004",
+      "type": "installation",
+      "status": "completed",
+      "startDate": "2025-01-05T09:00:00",
+      "endDate": "2025-01-05T12:00:00",
+      "nextScheduledDate": "2025-07-05",
+      "issues": [
+        {
+          "category": "installation",
+          "description": "Instalação inicial do equipamento",
+          "resolution": "Equipamento montado, configurado e testado com sucesso"
+        },
+        {
+          "category": "network",
+          "description": "Configuração de rede",
+          "resolution": "Conectado à rede local com IP estático"
+        },
+        {
+          "category": "calibration",
+          "description": "Calibração inicial",
+          "resolution": "Realizada calibração com referência padrão"
+        }
+      ],
+      "notes": "Instalação realizada com sucesso. Equipe local treinada para operação básica do equipamento.",
+      "parts": [
+        {
+          "name": "Suporte de parede",
+          "quantity": 1,
+          "cost": 30
+        },
+        {
+          "name": "Kit de cabos",
+          "quantity": 1,
+          "cost": 25
+        },
+        {
+          "name": "Fonte de alimentação",
+          "quantity": 1,
+          "cost": 20
+        }
+      ],
+      "totalCost": 75
+    }
+  ]
 }

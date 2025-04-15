@@ -3,7 +3,7 @@ import { BarChart4, Bell, Workflow, MessageCircle, RefreshCw, AlertTriangle, Spa
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/organisms/card';
 import { Button } from '@/components/ui/organisms/button';
 import { Skeleton } from '@/components/ui/organisms/skeleton';
-import { AIHistoryItem, PromptItem, useAILibrary } from '@/services/hooks/AI/ai-library/useAILibrary';
+import { AIHistoryItem, PromptItem, useAILibrary } from '@/hooks/AI/ai-library/useAILibrary';
 
 interface AILibraryProps {
   onHistoryItemSelect?: (item: AIHistoryItem) => void;

@@ -13,7 +13,7 @@ import {
     SheetTrigger
 } from '@/components/ui/organisms/sheet'
 import { Menu, Activity, User, Calendar, FileText, Stethoscope, Hospital, BarChart3, Package, Settings, CheckSquare, UserPlus } from 'lucide-react'
-import { authService } from '@/services/auth/AuthService'
+import { authService } from '@/services/general/auth/AuthService'
 
 // Definição dos itens de menu para cada tipo de usuário
 const adminRoutes = [

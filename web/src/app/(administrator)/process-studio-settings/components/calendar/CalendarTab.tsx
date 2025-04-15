@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useCalendarEvents } from '@/services/hooks/calendar/useCalendarEvents';
-import { useCalendarNotifications } from '@/services/hooks/calendar/useCalendarNotifications';
-import { useStaffData } from '@/services/hooks/staffs/useStaffData';
+import { useCalendarEvents } from '@/hooks/calendar/useCalendarEvents';
+import { useCalendarNotifications } from '@/hooks/calendar/useCalendarNotifications';
+import { useStaffData } from '@/hooks/staffs/useStaffData';
 import React, { useState, useEffect } from 'react';
 import { CalendarNotifications } from './CalendarNotifications';
 import { HospitalaryCalendarModule } from './HospitalaryCalendarModule';

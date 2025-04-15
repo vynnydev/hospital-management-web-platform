@@ -18,7 +18,7 @@ import {
   CheckCircle
 } from 'lucide-react'
 import { Bar, BarChart, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
-import { useSubscription } from '@/services/hooks/subscription/useSubscription'
+import { useSubscription } from '@/hooks/subscription/useSubscription'
 import { Button } from '@/components/ui/organisms/button'
 
 interface UsageStatisticsTabProps {

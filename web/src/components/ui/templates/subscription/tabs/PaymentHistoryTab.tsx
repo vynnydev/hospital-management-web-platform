@@ -14,7 +14,7 @@ import {
   Filter,
   ChevronDown
 } from 'lucide-react'
-import { useSubscription } from '@/services/hooks/subscription/useSubscription'
+import { useSubscription } from '@/hooks/subscription/useSubscription'
 import { Button } from '@/components/ui/organisms/button'
 import { 
   DropdownMenu,

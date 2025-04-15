@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/organisms/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/organisms/tabs';
 import { formatDistance, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { useCalendarNotifications } from '@/services/hooks/calendar/useCalendarNotifications';
+import { useCalendarNotifications } from '@/hooks/calendar/useCalendarNotifications';
 
 interface CalendarNotificationsProps {
   className?: string;

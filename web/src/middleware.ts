@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { authService } from '@/services/auth/AuthService';
+import { authService } from '@/services/general/auth/AuthService';
 
 // Solução híbrida com leitura nos cookies e localStorage
 export async function middleware(request: NextRequest) {

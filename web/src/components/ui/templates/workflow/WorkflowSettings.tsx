@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Save, AlertTriangle, RefreshCw, Bell, Lock, Users, Zap, Activity } from 'lucide-react';
 import { IWorkflowSettings } from '@/types/workflow/workflow-types';
-import { authService } from '@/services/auth/AuthService';
+import { authService } from '@/services/general/auth/AuthService';
 
 interface WorkflowSettingsProps {
   settings: IWorkflowSettings;

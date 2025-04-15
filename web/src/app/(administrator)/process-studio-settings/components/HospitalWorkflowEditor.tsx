@@ -4,9 +4,9 @@
 import React, { useState, useEffect } from 'react';
 
 // Hooks e serviços
-import { useWorkflowActions } from '@/services/hooks/workflows/useWorkflowActions';
-import { useWorkflowManager } from '@/services/hooks/workflows/useWorkflowManager';
-import { useWorkflowImportExport } from '@/services/hooks/workflows/useWorkflowImportExport';
+import { useWorkflowActions } from '@/hooks/workflows/useWorkflowActions';
+import { useWorkflowManager } from '@/hooks/workflows/useWorkflowManager';
+import { useWorkflowImportExport } from '@/hooks/workflows/useWorkflowImportExport';
 
 // Componentes
 import { WorkflowHeader } from './workflow/WorkflowHeader';
@@ -27,7 +27,7 @@ import { CollaborationInviteModal } from './workflow/modals/CollaborationInviteM
 import { NodeConfigModal } from './workflow/modals/NodeConfigModal';
 
 // Hook dos handlers
-import { useWorkflowHandlers } from '@/services/hooks/workflows/useWorkflowHandlers';
+import { useWorkflowHandlers } from '@/hooks/workflows/useWorkflowHandlers';
 import { ISavedWorkflow, IWorkflowNode } from '@/types/workflow/customize-process-by-workflow-types';
 import { departmentTypes } from './workflow/constants/departmentTypes';
 import { SaveWorkflowModal } from './workflow/modals/SaveWorkflowModal';

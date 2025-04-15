@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Save, Info } from 'lucide-react';
-import { authService } from '@/services/auth/AuthService';
+import { authService } from '@/services/general/auth/AuthService';
 
 export const PreferencesContent: React.FC = () => {
   const [isSaving, setIsSaving] = useState(false);

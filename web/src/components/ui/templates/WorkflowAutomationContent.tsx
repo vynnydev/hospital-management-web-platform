@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { WorkflowContent } from './workflow/WorkflowContent';
-import { authService } from '@/services/auth/AuthService';
+import { authService } from '@/services/general/auth/AuthService';
 
 export const WorkflowAutomationContent = () => {
   const [userHasAccess, setUserHasAccess] = useState<boolean>(false);

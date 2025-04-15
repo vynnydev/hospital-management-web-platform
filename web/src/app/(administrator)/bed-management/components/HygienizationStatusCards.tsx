@@ -42,7 +42,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui/organisms/dropdown-menu';
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData';
 import { countBedsByStatus } from '@/utils/countBeds';
 import { IBed, IHospital } from '@/types/hospital-network-types';
 import { Badge } from '@/components/ui/organisms/badge';
@@ -222,7 +222,7 @@ export const HygienizationStatusCards: React.FC<HygienizationStatusCardsProps> =
   // Obter nome do hospital pelo ID
   const getHospitalName = (hospitalId: string): string => {
     if (hospitalId === 'all') return '';
-    const hospital = networkData?.hospitals.find(h => h.id === hospitalId);
+    const hospital = networkData?.hospitals.find((h: { id: string }) => h.id === hospitalId);
     return hospital?.name || '';
   };
   

@@ -38,8 +38,8 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/organisms/select';
-import { useAmbulanceData } from '@/services/hooks/ambulance/useAmbulanceData';
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
+import { useAmbulanceData } from '@/hooks/ambulance/useAmbulanceData';
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData';
 import type { IAmbulance, IAmbulanceRoute, IAmbulanceRequest, TEmergengyLevel } from '@/types/ambulance-types';
 import type { IBed } from '@/types/hospital-network-types';
 
@@ -71,7 +71,7 @@ export const AmbulanceIntegration: React.FC<AmbulanceIntegrationProps> = ({
   
   const { networkData, beds, getBedsForFloor } = useNetworkData();
   
-  const hospital = networkData?.hospitals.find(h => h.id === hospitalId);
+  const hospital = networkData?.hospitals.find((h: { id: string }) => h.id === hospitalId);
   
   // Filtra rotas relevantes para o departamento selecionado
   const filteredRoutes = selectedDepartment 

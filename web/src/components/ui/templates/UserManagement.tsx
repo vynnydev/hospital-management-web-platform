@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
-import { useUserManagement } from '@/services/hooks/user/useUserManagement';
+import { useUserManagement } from '@/hooks/user/useUserManagement';
 import { hospitalsService } from '@/services/general/hospital/HospitalsService';
 import { TRole, TPermission, IAppUser, ICreateUserData } from '@/types/auth-types';
 import { format } from 'date-fns';

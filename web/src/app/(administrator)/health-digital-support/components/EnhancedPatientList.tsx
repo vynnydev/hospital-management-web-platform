@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from 'react';
-import { usePatientManagement } from '@/services/hooks/digital-care-service/usePatientManagement';
+import { usePatientManagement } from '@/hooks/digital-care-service/usePatientManagement';
 import { IHospital } from '@/types/hospital-network-types';
 import { IPatientRegistration } from '@/types/patient-types';
 import EnhancedPatientCard from './EnhancedPatientCard';

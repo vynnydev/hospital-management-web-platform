@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
-import { useAmbulanceData } from '@/services/hooks/ambulance/useAmbulanceData';
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData';
+import { useAmbulanceData } from '@/hooks/ambulance/useAmbulanceData';
 import { 
   Sparkles, 
   AlertTriangle, 
@@ -16,7 +16,7 @@ import {
   X
 } from 'lucide-react';
 import { useAlertsProvider } from '../providers/alerts/AlertsProvider';
-import { useStaffData } from '@/services/hooks/staffs/useStaffData';
+import { useStaffData } from '@/hooks/staffs/useStaffData';
 import { IntelligentRecommendations } from './IntelligentRecommendations';
 import { PredictiveAnalysis } from './PredictiveAnalysis';
 import { AlertsNotifications } from '../alerts/AlertsNotifications';

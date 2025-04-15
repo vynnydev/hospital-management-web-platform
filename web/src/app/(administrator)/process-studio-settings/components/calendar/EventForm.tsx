@@ -8,8 +8,8 @@ import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/componen
 import { Checkbox } from '@/components/ui/organisms/checkbox';
 import { Label } from '@/components/ui/organisms/label';
 import { format } from 'date-fns';
-import { useStaffData } from '@/services/hooks/staffs/useStaffData';
-import { useCalendarEvents } from '@/services/hooks/calendar/useCalendarEvents';
+import { useStaffData } from '@/hooks/staffs/useStaffData';
+import { useCalendarEvents } from '@/hooks/calendar/useCalendarEvents';
 
 interface IEventFormProps {
   onSubmit?: (eventData: any) => void;

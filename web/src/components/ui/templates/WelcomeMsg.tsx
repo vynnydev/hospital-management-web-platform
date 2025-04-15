@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData'
-import { authService } from '@/services/auth/AuthService'
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData'
+import { authService } from '@/services/general/auth/AuthService'
 import { useEffect, useState } from 'react'
 import { Stethoscope, UserCog, User, Heart, UserCheck } from 'lucide-react'
 

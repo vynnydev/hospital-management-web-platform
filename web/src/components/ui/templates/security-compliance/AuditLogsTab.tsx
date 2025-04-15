@@ -6,7 +6,7 @@ import { Dialog, DialogTrigger } from '@/components/ui/organisms/dialog';
 import { Badge } from '@/components/ui/organisms/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/organisms/tabs';
 import { IAuditLog } from '@/types/security-compliance-types';
-import { useSecurityCompliance } from '@/services/hooks/security-compliance/useSecurityCompliance';
+import { useSecurityCompliance } from '@/hooks/security-compliance/useSecurityCompliance';
 import { Filter, FileSpreadsheet, FileJson, FileType, Search } from 'lucide-react';
 
 import { AuditLogsTable } from './audit-logs/AuditLogsTable';

@@ -2,7 +2,7 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/organisms/card';
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { CognitivaAIPatientAssistant } from '@/components/ui/templates/cognitiva-ai-assistant/CognitivaAIPatientAssistant';
@@ -21,8 +21,8 @@ import { LayoutGrid } from 'lucide-react';
 import { DashboardModeModalOptions } from '@/components/ui/templates/modals/DashboardModeModalOptions';
 import { FullscreenModeModalForOverviewPage } from '@/components/ui/templates/modals/FullscreenModeModalForOverviewPage';
 import { AmbulanceManagement } from '@/components/ui/templates/AmbulanceManagement';
-import { useStaffData } from '@/services/hooks/staffs/useStaffData';
-import { useAmbulanceData } from '@/services/hooks/ambulance/useAmbulanceData';
+import { useStaffData } from '@/hooks/staffs/useStaffData';
+import { useAmbulanceData } from '@/hooks/ambulance/useAmbulanceData';
 import { PatientMonitoringDashboard } from '@/components/ui/templates/PatientMonitoringDashboard';
 import { AlertCenterHub } from '@/components/ui/templates/AlertCenterHub';
 

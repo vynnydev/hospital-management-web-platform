@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/organi
 import { Switch } from '@/components/ui/organisms/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/organisms/select';
 import { CalendarIcon, CheckCircle, ChevronRight, FileCheck, FileText, FileClock, FileWarning, HelpCircle, Info, ListChecks, RefreshCw, ShieldCheck, XCircle, Users } from 'lucide-react';
-import { useSecurityCompliance } from '@/services/hooks/security-compliance/useSecurityCompliance';
+import { useSecurityCompliance } from '@/hooks/security-compliance/useSecurityCompliance';
 import { useToast } from '@/components/ui/hooks/use-toast';
 import { IComplianceConfig } from '@/types/security-compliance-types';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/organisms/popover';

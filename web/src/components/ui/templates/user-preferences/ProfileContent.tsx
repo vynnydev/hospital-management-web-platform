@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { IAppUser } from '@/types/auth-types';
-import { authService } from '@/services/auth/AuthService';
+import { authService } from '@/services/general/auth/AuthService';
 
 interface ProfileContentProps {
   user: IAppUser | null;

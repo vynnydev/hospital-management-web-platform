@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ChangeEvent, useState } from 'react';
 import { IPatientRegistration, TInsuranceType } from '@/types/patient-types';
-import { useInsuranceData } from '@/services/hooks/digital-care-service/useInsuranceData';
+import { useInsuranceData } from '@/hooks/digital-care-service/useInsuranceData';
 
 interface PatientInsuranceInfoProps {
   data: IPatientRegistration['insuranceInfo'];

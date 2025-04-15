@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect } from 'react';
 import { NextPage } from 'next';
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
-import { usePermissions } from '@/services/hooks/auth/usePermissions';
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData';
+import { usePermissions } from '@/hooks/auth/usePermissions';
 import PatientRegistrationContainer from './PatientRegistrationContainer';
 import EnhancedPatientList from './EnhancedPatientList';
 import PatientAssignmentForm from './PatientAssignmentForm';
 import HospitalSelector from './HospitalSelector';
 import { PatientMonitoringDashboard } from '@/components/ui/templates/PatientMonitoringDashboard';
 import { LoadingSpinner } from '@/components/ui/templates/LoadingSpinner';
-import { useStaffData } from '@/services/hooks/staffs/useStaffData';
-import { useAmbulanceData } from '@/services/hooks/ambulance/useAmbulanceData';
+import { useStaffData } from '@/hooks/staffs/useStaffData';
+import { useAmbulanceData } from '@/hooks/ambulance/useAmbulanceData';
 
 enum AttendanceTab {
   PatientList = 'patient-list',

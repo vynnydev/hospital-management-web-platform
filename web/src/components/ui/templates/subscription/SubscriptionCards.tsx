@@ -8,7 +8,7 @@ import {
   Calendar,
   CreditCard
 } from 'lucide-react'
-import { useSubscription } from '@/services/hooks/subscription/useSubscription'
+import { useSubscription } from '@/hooks/subscription/useSubscription'
 
 interface SubscriptionCardsProps {
   hospitalId?: string;

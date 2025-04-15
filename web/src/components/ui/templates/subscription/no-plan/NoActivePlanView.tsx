@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/organisms/button'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/organisms/radio-group'
 import { Label } from '@/components/ui/organisms/label'
 
-import { useSubscription } from '@/services/hooks/subscription/useSubscription'
+import { useSubscription } from '@/hooks/subscription/useSubscription'
 import { TBillingCycle } from '@/types/subscription-types'
 
 interface NoActivePlanViewProps {

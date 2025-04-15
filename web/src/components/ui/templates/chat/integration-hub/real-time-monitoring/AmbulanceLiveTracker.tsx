@@ -14,7 +14,7 @@ import {
   Heart,
   Route
 } from 'lucide-react';
-import { useAmbulanceData } from '@/services/hooks/ambulance/useAmbulanceData';
+import { useAmbulanceData } from '@/hooks/ambulance/useAmbulanceData';
 import { useAlertsProvider } from '../../../providers/alerts/AlertsProvider';
 import { IAlert } from '@/types/alert-types';
 

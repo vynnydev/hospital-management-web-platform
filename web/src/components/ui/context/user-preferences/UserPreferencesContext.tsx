@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-import { authService } from '@/services/auth/AuthService';
+import { authService } from '@/services/general/auth/AuthService';
 import { UserPreferences } from '@/types/user-preferences-types';
 
 interface UserPreferencesContextProps {

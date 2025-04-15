@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from 'react';
-import { usePatientManagement } from '@/services/hooks/digital-care-service/usePatientManagement';
+import { usePatientManagement } from '@/hooks/digital-care-service/usePatientManagement';
 import PatientCard from './PatientCard';
 import PatientSearch from './PatientSearch';
 import PatientFilters from './PatientFilters';

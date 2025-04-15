@@ -7,8 +7,8 @@ import { EventForm } from './EventForm';
 import { CalendarFilters } from './CalendarFilters';
 import { format, parseISO, addMonths, subMonths } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { useStaffData } from '@/services/hooks/staffs/useStaffData';
-import { useCalendarEvents } from '@/services/hooks/calendar/useCalendarEvents';
+import { useStaffData } from '@/hooks/staffs/useStaffData';
+import { useCalendarEvents } from '@/hooks/calendar/useCalendarEvents';
 import { ICalendarEvent } from '@/types/calendar-types';
 
 export const HospitalaryCalendarModule: React.FC = () => {

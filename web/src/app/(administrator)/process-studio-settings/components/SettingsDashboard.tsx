@@ -10,7 +10,7 @@ import { AIGenerativeTab } from './ai-generative/AIGenerativeTab';
 import { NotificationsTab } from './notifications/NotificationsTab';
 import { CalendarTab } from './calendar/CalendarTab';
 import { ConnectionsTab } from './connections/ConnectionsTab';
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData';
 import { AlertsProvider } from '@/components/ui/templates/providers/alerts/AlertsProvider';
 import { UserManagement } from '@/components/ui/templates/UserManagement';
 import { SecurityComplianceTab } from '@/components/ui/templates/SecurityComplianceTab';

@@ -1,6 +1,6 @@
 // services/hospitals/HospitalsService.ts
 
-import { authService } from '@/services/auth/AuthService';
+import { authService } from '@/services/general/auth/AuthService';
 
 /**
  * Interface para hospital

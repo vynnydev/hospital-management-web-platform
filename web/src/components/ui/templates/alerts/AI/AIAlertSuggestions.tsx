@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/organisms/scroll-area';
 import { Button } from '@/components/ui/organisms/button';
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData';
 import type { IHospital } from '@/types/hospital-network-types';
 import { useAlertsProvider } from '../../providers/alerts/AlertsProvider';
 import { IAlert, TAlertType } from '@/types/alert-types';

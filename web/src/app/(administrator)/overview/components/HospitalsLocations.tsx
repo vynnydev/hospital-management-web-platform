@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { IHospital } from "@/types/hospital-network-types";
 import { IAppUser } from "@/types/auth-types";
 import { MapboxHospitalOverview } from '@/components/ui/templates/map/overview/MapboxHospitalOverview';
-import { useHospitalAdvancedData } from '@/services/hooks/network-hospital/useHospitalAdvancedData';
+import { useHospitalAdvancedData } from '@/hooks/network-hospital/useHospitalAdvancedData';
 import { HospitalSidebar } from './resources/HospitalSidebar';
 import { ViewModeSelector } from './resources/ViewModeSelector';
 

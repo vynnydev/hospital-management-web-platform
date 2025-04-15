@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect, useCallback } from 'react';
-import { useAmbulanceData } from '@/services/hooks/ambulance/useAmbulanceData';
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
+import { useAmbulanceData } from '@/hooks/ambulance/useAmbulanceData';
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData';
 import { MapboxAmbulances } from '@/components/ui/templates/map/ambulances/MapboxAmbulances';
 import { AmbulanceRequestForm } from './ambulances/AmbulanceRequestForm';
 import { AmbulanceRouteDetails } from './ambulances/AmbulanceRouteDetails';

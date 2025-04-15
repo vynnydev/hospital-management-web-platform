@@ -33,7 +33,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/organi
 import { Input } from '@/components/ui/organisms/input';
 import { MetricForm } from './MetricForm';
 import { ICreateMetricPayload, TMetric } from '@/types/hospital-metrics';
-import { useMetrics } from '@/services/hooks/hospital-metrics/useMetrics';
+import { useMetrics } from '@/hooks/hospital-metrics/useMetrics';
 
 import { 
   Select, 

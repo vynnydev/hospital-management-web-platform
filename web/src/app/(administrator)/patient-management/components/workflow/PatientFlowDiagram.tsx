@@ -12,7 +12,7 @@ import {
 import dagre from 'dagre';
 import '@xyflow/react/dist/style.css';
 import { Activity } from 'lucide-react';
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData';
 import { nodeTypes, getEventColor } from './nodes/CustomNode';
 import type { IPatientFlowNode, IPatientFlowEdge } from './types/flow-types';
 

@@ -1,7 +1,7 @@
 'use client'
 import { IconMenu2 } from '@tabler/icons-react'
 import { Sidebar } from './Sidebar'
-import { useDialogState } from '@/services/hooks/dialog/dialog'
+import { useDialogState } from '@/hooks/dialog/dialog'
 
 import { MenuItem } from '@/types/maps'
 import { LogoutButton } from '../molecules/LogoutButton'

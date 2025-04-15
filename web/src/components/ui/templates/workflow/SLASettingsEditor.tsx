@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Clock, Save, PlusCircle, X, AlertTriangle } from 'lucide-react';
-import { useWorkflow } from '@/services/hooks/workflows/useWorkflow';
+import { useWorkflow } from '@/hooks/workflows/useWorkflow';
 import {
   IWorkflowTemplate, 
   ICustomWorkflow, 

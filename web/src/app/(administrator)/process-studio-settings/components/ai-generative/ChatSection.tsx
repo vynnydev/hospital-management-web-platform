@@ -6,7 +6,7 @@ import { Spinner } from '@/components/ui/organisms/spinner';
 import { ChatInterface } from './ChatInterface';
 import { AIPreview } from './AIPreview';
 import { ICreateMetricPayload } from '@/types/hospital-metrics';
-import { IHospitalInsight, IPredictiveInsight, ISystemInsight } from '@/services/hooks/AI/ai-analytics/useAIInsights';
+import { IHospitalInsight, IPredictiveInsight, ISystemInsight } from '@/hooks/AI/ai-analytics/useAIInsights';
 import { MetricPreviewCard } from './MetricPreviewCard';
 import { AlertPreview } from './alert/AlertPreview';
 import { WorkflowPreview } from './alert/WorkflowPreview';

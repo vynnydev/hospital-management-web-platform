@@ -3,8 +3,8 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
 // Hooks
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
-import { useStaffData } from '@/services/hooks/staffs/useStaffData';
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData';
+import { useStaffData } from '@/hooks/staffs/useStaffData';
 
 // Segundo componente principal
 import { MainPredictiveAnalysisContent } from './MainPredictiveAnalysisContent';

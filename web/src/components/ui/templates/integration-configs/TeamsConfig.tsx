@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import { MessageSquare, Save, Check, AlertTriangle } from 'lucide-react';
-import { authService } from '@/services/auth/AuthService';
+import { authService } from '@/services/general/auth/AuthService';
 
 // Importar componentes auxiliares
 import { TeamsAuthSection } from './microsoft-teams/TeamsAuthSection';

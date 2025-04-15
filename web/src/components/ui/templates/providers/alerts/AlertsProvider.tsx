@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { useNetworkData } from '@/services/hooks/network-hospital/useNetworkData';
-import { useAmbulanceData } from '@/services/hooks/ambulance/useAmbulanceData';
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData';
+import { useAmbulanceData } from '@/hooks/ambulance/useAmbulanceData';
 import { IAlert, TAlertPriority, TAlertStatus, TAlertType } from '@/types/alert-types';
 
 // Interface para o contexto de alertas

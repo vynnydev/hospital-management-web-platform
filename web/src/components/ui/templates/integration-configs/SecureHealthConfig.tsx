@@ -15,7 +15,7 @@ import {
   Clock,
   Search
 } from 'lucide-react';
-import { authService } from '@/services/auth/AuthService';
+import { authService } from '@/services/general/auth/AuthService';
 
 interface SecureHealthConfigProps {
   isActive: boolean;
