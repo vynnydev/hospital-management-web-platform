@@ -35,7 +35,7 @@ export const useTemplateWorkflowIntegration = () => {
   const [workflow, setWorkflow] = useState<IWorkflowNode[]>([]);
   const [slaSettings, setSlaSettings] = useState<ISLASettings[]>([]);
   const [exceptionFlows, setExceptionFlows] = useState<IExceptionFlow[]>([]);
-  const [processoEmAndamento, setProcessoEmAndamento] = useState<boolean>(false);
+  const [processInProgress, setprocessInProgress] = useState<boolean>(false);
   
   // Referência para rastrear se a atualização do workflow já foi feita
   const workflowUpdatedRef = useRef<boolean>(false);
@@ -49,14 +49,14 @@ export const useTemplateWorkflowIntegration = () => {
       setWorkflow([]);
       setSlaSettings([]);
       setExceptionFlows([]);
-      setProcessoEmAndamento(false);
+      setprocessInProgress(false);
       workflowUpdatedRef.current = false;
     };
     
     const handleProcessStarted = (e: Event) => {
       // Se o processo foi iniciado manualmente pelo DepartmentsList,
       // precisamos manter o estado de processo em andamento
-      setProcessoEmAndamento(true);
+      setprocessInProgress(true);
     };
     
     window.addEventListener('workflow-process-canceled', handleProcessCanceled);
@@ -122,7 +122,7 @@ export const useTemplateWorkflowIntegration = () => {
         setExceptionFlows([...templateExceptionFlows]);
         
         // Marca que o processo está em andamento
-        setProcessoEmAndamento(true);
+        setprocessInProgress(true);
         
         // Dispara evento para sincronizar com outros componentes
         const processStartedEvent = new CustomEvent('workflow-process-started', {
@@ -142,7 +142,7 @@ export const useTemplateWorkflowIntegration = () => {
         setWorkflow([]);
         setSlaSettings([]);
         setExceptionFlows([]);
-        setProcessoEmAndamento(false);
+        setprocessInProgress(false);
       }
     }
   }, [selectedTemplate]); // Importante: Só depende do selectedTemplate
@@ -197,7 +197,7 @@ export const useTemplateWorkflowIntegration = () => {
     // Limpar outras configurações
     setSlaSettings([]);
     setExceptionFlows([]);
-    setProcessoEmAndamento(false);
+    setprocessInProgress(false);
     
     // Disparar evento para comunicação entre componentes
     const processCanceledEvent = new CustomEvent('workflow-process-canceled');
@@ -209,7 +209,7 @@ export const useTemplateWorkflowIntegration = () => {
     workflow,
     slaSettings,
     exceptionFlows,
-    processoEmAndamento,
+    processInProgress,
     selectTemplate,
     selectTemplateById,
     setWorkflow,

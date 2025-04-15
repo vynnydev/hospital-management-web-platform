@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { Eye, Bell, MessageSquare, AlertTriangle, Check, ZoomIn, Save } from 'lucide-react';
 import { useUserPreferences } from '@/services/hooks/use-preferences/useUserPreferences';

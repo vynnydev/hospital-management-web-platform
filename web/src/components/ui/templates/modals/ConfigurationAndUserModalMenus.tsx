@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { X, LogOut } from 'lucide-react';
 import Image from 'next/image';
@@ -12,6 +13,7 @@ import { LayoutTheme } from '../user-preferences/LayoutTheme';
 import { BrandingContent } from '../user-preferences/BrandingContent';
 import { AccessibilitySettings } from '../user-preferences/AccessibilitySettings';
 import { IntegrationsContent } from '../user-preferences/IntegrationsContent';
+import { WorkflowAutomationContent } from '../WorkflowAutomationContent';
 
 interface Props {
   isOpen: boolean;
@@ -130,6 +132,8 @@ export const ConfigurationAndUserModalMenus: React.FC<Props> = ({
 
       // Casos para seções ainda não implementadas
       case 'workflow':
+        return <WorkflowAutomationContent />
+
       case 'ai-settings':
       case 'chat-settings':
       case 'teams':

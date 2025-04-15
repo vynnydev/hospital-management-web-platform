@@ -23,11 +23,6 @@ const adminRoutes = [
         icon: Activity
     },
     {
-        href: '/health-digital-support',
-        label: 'Atendimento Digital',
-        icon: User
-    },
-    {
         href: '/bed-management',
         label: 'Gestão de Leitos',
         icon: Hospital
@@ -40,6 +35,11 @@ const adminRoutes = [
     {
         href: '/staff-management',
         label: 'Gestão de Equipes',
+        icon: User
+    },
+    {
+        href: '/health-digital-support',
+        label: 'Fluxo de Pacientes',
         icon: User
     },
     {

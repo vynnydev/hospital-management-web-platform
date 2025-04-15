@@ -1,6 +1,7 @@
 // Tipos de departamentos
 
 import { LucideProps } from "lucide-react";
+import { IWorkflowTemplate } from "./workflow-types";
 
 type TPriority = 'low' | 'medium' | 'high' | 'critical'
 type TWorkflowSelectHandler = (workflow: ISavedWorkflow) => void;
@@ -107,14 +108,4 @@ export interface IExceptionFlow {
   condition: string;
   targetDepartment: string;
   priority: TPriority;
-}
-
-export interface IWorkflowTemplate {
-  id: string;
-  name: string;
-  description: string;
-  category: string;
-  baseNodes: IWorkflowNode[];
-  slaSettings?: ISLASettings[];
-  exceptionFlows?: IExceptionFlow[];
 }

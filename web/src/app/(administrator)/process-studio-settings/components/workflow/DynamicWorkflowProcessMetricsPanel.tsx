@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
-import { IWorkflowTemplate } from '@/types/workflow/customize-process-by-workflow-types';
+import { IWorkflowTemplate } from '@/types/workflow/workflow-types';
 import { INetworkData } from '@/types/hospital-network-types';
 import { IStaffData } from '@/types/staff-types';
 import { IAmbulanceData } from '@/types/ambulance-types';

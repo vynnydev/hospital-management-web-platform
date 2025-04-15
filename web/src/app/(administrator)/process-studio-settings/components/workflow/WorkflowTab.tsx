@@ -9,7 +9,6 @@ import { HospitalWorkflowEditor } from '../HospitalWorkflowEditor';
 import { 
   IWorkflowNode, 
   ISavedWorkflow, 
-  IWorkflowTemplate,
   ISLASettings,
   IExceptionFlow
 } from '@/types/workflow/customize-process-by-workflow-types';
@@ -42,7 +41,7 @@ export const WorkflowTab = () => {
     workflow,
     slaSettings,
     exceptionFlows,
-    processoEmAndamento,
+    processInProgress,
     selectTemplate,
     selectTemplateById,
     setWorkflow,
@@ -231,7 +230,7 @@ export const WorkflowTab = () => {
 
           <Card className="p-4 bg-gradient-to-r from-blue-950 to-indigo-900 border-none shadow-lg">
             <h2 className="text-xl font-semibold mb-4 text-white">Templates Disponíveis</h2>
-            <div className={processoEmAndamento ? 'opacity-50 pointer-events-none' : ''}>               
+            <div className={processInProgress ? 'opacity-50 pointer-events-none' : ''}>               
               <EnhancedTemplateCarousel 
                 templates={filteredTemplates}
                 onSelectTemplate={handleTemplateSelect}
@@ -244,7 +243,7 @@ export const WorkflowTab = () => {
       </div>
       
       {/* Seção Processo em Andamento */}
-      {processoEmAndamento && selectedTemplate && (
+      {processInProgress && selectedTemplate && (
         <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 rounded-lg shadow-md flex justify-between items-center">
           <div>
             <h2 className="text-xl font-semibold text-white flex items-center gap-2">

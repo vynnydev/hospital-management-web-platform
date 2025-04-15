@@ -14,7 +14,7 @@ import { ReadPropertyFromJsonTask } from "@/lib/workflow/task/ReadPropertyFromJs
 import { ScrollToElementTask } from "@/lib/workflow/task/ScrollToElement";
 import { WaitForElementTask } from "@/lib/workflow/task/WaitForElement";
 import { TaskType } from "@/types/workflow/task";
-import { DepartmentTask, HospitalTask, NetworkTask } from "@/types/workflow/workflow";
+import { DepartmentTask, HospitalTask, NetworkTask } from "@/types/workflow/workflow-task";
 
 type HospitalTasks = {
   [TaskType.NETWORK]: NetworkTask;

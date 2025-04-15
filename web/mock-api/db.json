@@ -7879,5 +7879,1233 @@
       "createdAt": "2024-01-01T00:00:00.000Z",
       "updatedAt": "2024-01-01T00:00:00.000Z"
     }
-  ]
+  ],
+  "workflow-templates": [
+    {
+      "id": "1",
+      "name": "Admissão de Paciente",
+      "description": "Processo completo desde a chegada até a alocação de leito, com triagem e avaliação inicial.",
+      "category": "geral",
+      "baseNodes": [
+        {
+          "id": "reception",
+          "label": "Recepção",
+          "icon": "Clipboard",
+          "subtitle": "Registro inicial",
+          "color": "blue",
+          "description": "Registro dos dados do paciente e documentação",
+          "x": 50,
+          "y": 50,
+          "priority": "medium"
+        },
+        {
+          "id": "triage",
+          "label": "Triagem",
+          "icon": "FileCheck",
+          "subtitle": "Avaliação inicial",
+          "color": "green",
+          "description": "Classificação de risco e avaliação de sinais vitais",
+          "x": 50,
+          "y": 130,
+          "parentId": "reception",
+          "priority": "medium"
+        },
+        {
+          "id": "medical_eval",
+          "label": "Avaliação Médica",
+          "icon": "Stethoscope",
+          "subtitle": "Exame clínico",
+          "color": "orange",
+          "description": "Anamnese e exame físico pelo médico",
+          "x": 50,
+          "y": 210,
+          "parentId": "triage",
+          "priority": "medium"
+        },
+        {
+          "id": "bed_allocation",
+          "label": "Alocação de Leito",
+          "icon": "Building2",
+          "subtitle": "Internação",
+          "color": "purple",
+          "description": "Definição de setor e leito apropriado",
+          "x": 50,
+          "y": 290,
+          "parentId": "medical_eval",
+          "priority": "medium"
+        }
+      ],
+      "slaSettings": [
+        { "departmentId": "reception", "maxTime": 15, "timeUnit": "minute", "alertAt": 10 },
+        { "departmentId": "triage", "maxTime": 30, "timeUnit": "minute", "alertAt": 20 },
+        { "departmentId": "medical_eval", "maxTime": 1, "timeUnit": "hour", "alertAt": 45 }
+      ],
+      "exceptionFlows": [
+        { "condition": "Paciente de alto risco", "targetDepartment": "emergency", "priority": "critical" }
+      ],
+      "isActive": true,
+      "createdAt": "2024-03-15T10:00:00Z",
+      "updatedAt": "2024-03-15T10:00:00Z",
+      "createdBy": "USR001"
+    },
+    {
+      "id": "2",
+      "name": "Alta Hospitalar",
+      "description": "Processo de liberação do paciente e documentação, incluindo instruções de cuidados pós-alta.",
+      "category": "geral",
+      "baseNodes": [
+        {
+          "id": "med_clearance",
+          "label": "Liberação Médica",
+          "icon": "ClipboardCheck",
+          "subtitle": "Avaliação final",
+          "color": "green",
+          "description": "Avaliação médica final e autorização de alta",
+          "x": 100,
+          "y": 50,
+          "priority": "medium"
+        },
+        {
+          "id": "pharmacy",
+          "label": "Farmácia",
+          "icon": "Pill",
+          "subtitle": "Medicação de alta",
+          "color": "blue",
+          "description": "Dispensação de medicamentos para continuidade do tratamento",
+          "x": 100,
+          "y": 130,
+          "parentId": "med_clearance",
+          "priority": "medium"
+        },
+        {
+          "id": "admin_checkout",
+          "label": "Checkout Administrativo",
+          "icon": "FileText",
+          "subtitle": "Documentação",
+          "color": "amber",
+          "description": "Fechamento de conta e documentação final",
+          "x": 100,
+          "y": 210,
+          "parentId": "pharmacy",
+          "priority": "medium"
+        },
+        {
+          "id": "discharge",
+          "label": "Saída do Paciente",
+          "icon": "UserCheck",
+          "subtitle": "Finalização",
+          "color": "cyan",
+          "description": "Instruções finais e entrega de relatório de alta",
+          "x": 100,
+          "y": 290,
+          "parentId": "admin_checkout",
+          "priority": "medium"
+        },
+        {
+          "id": "followup",
+          "label": "Agendamento de Follow-up",
+          "icon": "CalendarCheck",
+          "subtitle": "Acompanhamento",
+          "color": "indigo",
+          "description": "Agendamento de consulta de retorno",
+          "x": 100,
+          "y": 370,
+          "parentId": "discharge",
+          "priority": "medium"
+        }
+      ],
+      "slaSettings": [
+        { "departmentId": "med_clearance", "maxTime": 2, "timeUnit": "hour", "alertAt": 1 },
+        { "departmentId": "pharmacy", "maxTime": 30, "timeUnit": "minute", "alertAt": 25 },
+        { "departmentId": "admin_checkout", "maxTime": 1, "timeUnit": "hour", "alertAt": 45 },
+        { "departmentId": "discharge", "maxTime": 30, "timeUnit": "minute", "alertAt": 20 }
+      ],
+      "exceptionFlows": [
+        { "condition": "Pendências administrativas", "targetDepartment": "admin_manager", "priority": "high" },
+        { "condition": "Necessidade de home care", "targetDepartment": "social_service", "priority": "medium" }
+      ],
+      "isActive": true,
+      "createdAt": "2024-03-15T10:00:00Z",
+      "updatedAt": "2024-03-15T10:00:00Z",
+      "createdBy": "USR001"
+    },
+    {
+      "id": "3",
+      "name": "Agendamento Cirúrgico",
+      "description": "Workflow para preparação, confirmação e realização de cirurgias eletivas e de urgência.",
+      "category": "cirurgias",
+      "baseNodes": [
+        {
+          "id": "surgical_consult",
+          "label": "Consulta Cirúrgica",
+          "icon": "Stethoscope",
+          "subtitle": "Avaliação inicial",
+          "color": "blue",
+          "description": "Avaliação médica e indicação cirúrgica",
+          "x": 150,
+          "y": 50,
+          "priority": "medium"
+        },
+        {
+          "id": "preop_exam",
+          "label": "Exames Pré-Operatórios",
+          "icon": "FileCheck",
+          "subtitle": "Análises clínicas",
+          "color": "green",
+          "description": "Exames laboratoriais e de imagem pré-operatórios",
+          "x": 150,
+          "y": 130,
+          "parentId": "surgical_consult",
+          "priority": "medium"
+        },
+        {
+          "id": "anesthesia_eval",
+          "label": "Avaliação Anestésica",
+          "icon": "Thermometer",
+          "subtitle": "Risco anestésico",
+          "color": "teal",
+          "description": "Avaliação de risco anestésico e aprovação",
+          "x": 150,
+          "y": 210,
+          "parentId": "preop_exam",
+          "priority": "medium"
+        },
+        {
+          "id": "scheduling",
+          "label": "Agendamento",
+          "icon": "CalendarCheck",
+          "subtitle": "Data e hora",
+          "color": "amber",
+          "description": "Definição de data, hora e sala cirúrgica",
+          "x": 150,
+          "y": 290,
+          "parentId": "anesthesia_eval",
+          "priority": "medium"
+        },
+        {
+          "id": "surgery",
+          "label": "Procedimento Cirúrgico",
+          "icon": "Building2",
+          "subtitle": "Realização",
+          "color": "red",
+          "description": "Realização do procedimento cirúrgico",
+          "x": 150,
+          "y": 370,
+          "parentId": "scheduling",
+          "priority": "medium"
+        },
+        {
+          "id": "postop_care",
+          "label": "Cuidados Pós-Operatórios",
+          "icon": "Heart",
+          "subtitle": "Recuperação",
+          "color": "pink",
+          "description": "Recuperação e cuidados após cirurgia",
+          "x": 150,
+          "y": 450,
+          "parentId": "surgery",
+          "priority": "medium"
+        }
+      ],
+      "slaSettings": [
+        { "departmentId": "surgical_consult", "maxTime": 5, "timeUnit": "day", "alertAt": 4 },
+        { "departmentId": "preop_exam", "maxTime": 3, "timeUnit": "day", "alertAt": 2 },
+        { "departmentId": "anesthesia_eval", "maxTime": 2, "timeUnit": "day", "alertAt": 1 },
+        { "departmentId": "scheduling", "maxTime": 1, "timeUnit": "day", "alertAt": 4 }
+      ],
+      "exceptionFlows": [
+        { "condition": "Exames alterados", "targetDepartment": "med_consult", "priority": "high" },
+        { "condition": "Risco anestésico elevado", "targetDepartment": "intensive_care", "priority": "high" },
+        { "condition": "Necessidade de UTI", "targetDepartment": "icu_reservation", "priority": "medium" }
+      ],
+      "isActive": true,
+      "createdAt": "2024-03-15T10:00:00Z",
+      "updatedAt": "2024-03-15T10:00:00Z",
+      "createdBy": "DR001"
+    },
+    {
+      "id": "4",
+      "name": "Exames Laboratoriais",
+      "description": "Fluxo de solicitação, coleta, processamento, análise e liberação de resultados de exames.",
+      "category": "diagnósticos",
+      "baseNodes": [
+        {
+          "id": "exam_request",
+          "label": "Solicitação de Exame",
+          "icon": "FileText",
+          "subtitle": "Pedido médico",
+          "color": "blue",
+          "description": "Requisição médica de exames",
+          "x": 200,
+          "y": 50,
+          "priority": "medium"
+        },
+        {
+          "id": "sample_collection",
+          "label": "Coleta de Amostra",
+          "icon": "BookOpen",
+          "subtitle": "Procedimento",
+          "color": "green",
+          "description": "Coleta de material biológico para análise",
+          "x": 200,
+          "y": 130,
+          "parentId": "exam_request",
+          "priority": "medium"
+        },
+        {
+          "id": "sample_processing",
+          "label": "Processamento de Amostra",
+          "icon": "Microscope",
+          "subtitle": "Preparação",
+          "color": "indigo",
+          "description": "Preparação e processamento inicial da amostra",
+          "x": 200,
+          "y": 210,
+          "parentId": "sample_collection",
+          "priority": "medium"
+        },
+        {
+          "id": "lab_analysis",
+          "label": "Análise Laboratorial",
+          "icon": "Stethoscope",
+          "subtitle": "Processamento",
+          "color": "amber",
+          "description": "Análise técnica da amostra",
+          "x": 200,
+          "y": 290,
+          "parentId": "sample_processing",
+          "priority": "medium"
+        },
+        {
+          "id": "medical_review",
+          "label": "Revisão Médica",
+          "icon": "ClipboardCheck",
+          "subtitle": "Validação",
+          "color": "orange",
+          "description": "Revisão dos resultados pelo médico patologista",
+          "x": 200,
+          "y": 370,
+          "parentId": "lab_analysis",
+          "priority": "medium"
+        },
+        {
+          "id": "results",
+          "label": "Liberação de Resultados",
+          "icon": "ClipboardCheck",
+          "subtitle": "Entrega",
+          "color": "purple",
+          "description": "Disponibilização dos resultados para médico e paciente",
+          "x": 200,
+          "y": 450,
+          "parentId": "medical_review",
+          "priority": "medium"
+        }
+      ],
+      "slaSettings": [
+        { "departmentId": "exam_request", "maxTime": 30, "timeUnit": "minute", "alertAt": 25 },
+        { "departmentId": "sample_collection", "maxTime": 1, "timeUnit": "hour", "alertAt": 45 },
+        { "departmentId": "sample_processing", "maxTime": 2, "timeUnit": "hour", "alertAt": 1 },
+        { "departmentId": "lab_analysis", "maxTime": 4, "timeUnit": "hour", "alertAt": 3 },
+        { "departmentId": "medical_review", "maxTime": 2, "timeUnit": "hour", "alertAt": 1 }
+      ],
+      "exceptionFlows": [
+        { "condition": "Amostra inadequada", "targetDepartment": "new_collection", "priority": "high" },
+        { "condition": "Resultado crítico", "targetDepartment": "urgent_notification", "priority": "critical" }
+      ],
+      "isActive": true,
+      "createdAt": "2024-03-15T10:00:00Z",
+      "updatedAt": "2024-03-15T10:00:00Z",
+      "createdBy": "DR002"
+    },
+    {
+      "id": "5",
+      "name": "Protocolo de Emergência",
+      "description": "Atendimento rápido para casos críticos, com priorização baseada em risco e fluxo acelerado.",
+      "category": "emergência",
+      "baseNodes": [
+        {
+          "id": "triage_emerg",
+          "label": "Triagem de Emergência",
+          "icon": "FileCheck",
+          "subtitle": "Priorização",
+          "color": "red",
+          "description": "Classificação de risco e priorização imediata",
+          "x": 250,
+          "y": 50,
+          "priority": "high"
+        },
+        {
+          "id": "stabilization",
+          "label": "Estabilização",
+          "icon": "Stethoscope",
+          "subtitle": "Primeiros cuidados",
+          "color": "orange",
+          "description": "Intervenções iniciais e suporte vital",
+          "x": 250,
+          "y": 130,
+          "parentId": "triage_emerg",
+          "priority": "critical"
+        },
+        {
+          "id": "critical_care",
+          "label": "Cuidados Críticos",
+          "icon": "Heart",
+          "subtitle": "Monitoramento intensivo",
+          "color": "red",
+          "description": "Monitoramento de sinais vitais e intervenções específicas",
+          "x": 250,
+          "y": 210,
+          "parentId": "stabilization",
+          "priority": "critical"
+        },
+        {
+          "id": "diagnosis",
+          "label": "Diagnóstico",
+          "icon": "ClipboardCheck",
+          "subtitle": "Avaliação clínica",
+          "color": "amber",
+          "description": "Exames e procedimentos diagnósticos de emergência",
+          "x": 250,
+          "y": 290,
+          "parentId": "critical_care",
+          "priority": "high"
+        },
+        {
+          "id": "emergency_treatment",
+          "label": "Tratamento",
+          "icon": "Building2",
+          "subtitle": "Intervenção",
+          "color": "purple",
+          "description": "Tratamento específico baseado no diagnóstico",
+          "x": 250,
+          "y": 370,
+          "parentId": "diagnosis",
+          "priority": "high"
+        },
+        {
+          "id": "destination_decision",
+          "label": "Definição de Destino",
+          "icon": "GitBranch",
+          "subtitle": "Encaminhamento",
+          "color": "blue",
+          "description": "Decisão sobre internação, UTI ou alta",
+          "x": 250,
+          "y": 450,
+          "parentId": "emergency_treatment",
+          "priority": "medium"
+        }
+      ],
+      "slaSettings": [
+        { "departmentId": "triage_emerg", "maxTime": 5, "timeUnit": "minute", "alertAt": 3 },
+        { "departmentId": "stabilization", "maxTime": 15, "timeUnit": "minute", "alertAt": 10 },
+        { "departmentId": "critical_care", "maxTime": 30, "timeUnit": "minute", "alertAt": 15 },
+        { "departmentId": "diagnosis", "maxTime": 30, "timeUnit": "minute", "alertAt": 20 },
+        { "departmentId": "emergency_treatment", "maxTime": 1, "timeUnit": "hour", "alertAt": 45 }
+      ],
+      "exceptionFlows": [
+        { "condition": "Parada cardíaca", "targetDepartment": "cpr", "priority": "critical" },
+        { "condition": "Trauma grave", "targetDepartment": "trauma_center", "priority": "critical" },
+        { "condition": "Necessidade de cirurgia", "targetDepartment": "emergency_surgery", "priority": "critical" }
+      ],
+      "isActive": true,
+      "createdAt": "2024-03-15T10:00:00Z",
+      "updatedAt": "2024-03-15T10:00:00Z",
+      "createdBy": "USR001"
+    }
+  ],
+  "custom-workflows": [
+    {
+      "id": "cw001",
+      "templateId": "1",
+      "name": "Admissão Hospital Itaim",
+      "description": "Processo de admissão personalizado para o Hospital Itaim",
+      "category": "geral",
+      "nodes": [
+        {
+          "id": "reception",
+          "label": "Recepção",
+          "icon": "Clipboard",
+          "subtitle": "Registro inicial",
+          "color": "blue",
+          "description": "Registro dos dados do paciente e documentação",
+          "x": 50,
+          "y": 50,
+          "priority": "medium"
+        },
+        {
+          "id": "triage",
+          "label": "Triagem",
+          "icon": "FileCheck",
+          "subtitle": "Avaliação inicial",
+          "color": "green",
+          "description": "Classificação de risco e avaliação de sinais vitais",
+          "x": 50,
+          "y": 130,
+          "parentId": "reception",
+          "priority": "medium"
+        },
+        {
+          "id": "patient_history",
+          "label": "Histórico do Paciente",
+          "icon": "ClipboardList",
+          "subtitle": "Anamnese detalhada",
+          "color": "indigo",
+          "description": "Coleta detalhada do histórico médico e familiar",
+          "x": 50,
+          "y": 210,
+          "parentId": "triage",
+          "priority": "medium"
+        },
+        {
+          "id": "medical_eval",
+          "label": "Avaliação Médica",
+          "icon": "Stethoscope",
+          "subtitle": "Exame clínico",
+          "color": "orange",
+          "description": "Anamnese e exame físico pelo médico",
+          "x": 50,
+          "y": 290,
+          "parentId": "patient_history",
+          "priority": "medium"
+        },
+        {
+          "id": "bed_allocation",
+          "label": "Alocação de Leito",
+          "icon": "Building2",
+          "subtitle": "Internação",
+          "color": "purple",
+          "description": "Definição de setor e leito apropriado",
+          "x": 50,
+          "y": 370,
+          "parentId": "medical_eval",
+          "priority": "medium"
+        }
+      ],
+      "slaSettings": [
+        { "departmentId": "reception", "maxTime": 10, "timeUnit": "minute", "alertAt": 8 },
+        { "departmentId": "triage", "maxTime": 20, "timeUnit": "minute", "alertAt": 15 },
+        { "departmentId": "patient_history", "maxTime": 15, "timeUnit": "minute", "alertAt": 12 },
+        { "departmentId": "medical_eval", "maxTime": 45, "timeUnit": "minute", "alertAt": 35 }
+      ],
+      "exceptionFlows": [
+        { "condition": "Paciente de alto risco", "targetDepartment": "emergency", "priority": "critical" },
+        { "condition": "Necessidade de isolamento", "targetDepartment": "isolation", "priority": "high" }
+      ],
+      "status": "active",
+      "lastRun": "2024-04-10T14:30:00Z",
+      "stats": {
+        "completed": 423,
+        "inProgress": 15,
+        "delayed": 2,
+        "efficiency": 94.5
+      },
+      "createdAt": "2024-03-15T10:00:00Z",
+      "updatedAt": "2024-03-15T10:00:00Z",
+      "createdBy": "USR002"
+    },
+    {
+      "id": "cw002",
+      "templateId": "2",
+      "name": "Alta Hospitalar - Protocolo Cardio",
+      "description": "Fluxo de alta especializado para pacientes cardiológicos",
+      "category": "geral",
+      "nodes": [
+        {
+          "id": "med_clearance",
+          "label": "Liberação Médica",
+          "icon": "ClipboardCheck",
+          "subtitle": "Avaliação final",
+          "color": "green",
+          "description": "Avaliação médica final e autorização de alta",
+          "x": 100,
+          "y": 50,
+          "priority": "medium"
+        },
+        {
+          "id": "cardio_exam",
+          "label": "Exame Final Cardiológico",
+          "icon": "Heart",
+          "subtitle": "Avaliação cardíaca",
+          "color": "red",
+          "description": "Avaliação final da função cardíaca antes da alta",
+          "x": 100,
+          "y": 130,
+          "parentId": "med_clearance",
+          "priority": "high"
+        },
+        {
+          "id": "pharmacy",
+          "label": "Farmácia",
+          "icon": "Pill",
+          "subtitle": "Medicação de alta",
+          "color": "blue",
+          "description": "Dispensação de medicamentos para continuidade do tratamento",
+          "x": 100,
+          "y": 210,
+          "parentId": "cardio_exam",
+          "priority": "medium"
+        },
+        {
+          "id": "cardio_education",
+          "label": "Orientação Cardíaca",
+          "icon": "BookOpen",
+          "subtitle": "Educação do paciente",
+          "color": "teal",
+          "description": "Instruções específicas para cuidados cardíacos",
+          "x": 100,
+          "y": 290,
+          "parentId": "pharmacy",
+          "priority": "medium"
+        },
+        {
+          "id": "admin_checkout",
+          "label": "Checkout Administrativo",
+          "icon": "FileText",
+          "subtitle": "Documentação",
+          "color": "amber",
+          "description": "Fechamento de conta e documentação final",
+          "x": 100,
+          "y": 370,
+          "parentId": "cardio_education",
+          "priority": "medium"
+        },
+        {
+          "id": "discharge",
+          "label": "Saída do Paciente",
+          "icon": "UserCheck",
+          "subtitle": "Finalização",
+          "color": "cyan",
+          "description": "Instruções finais e entrega de relatório de alta",
+          "x": 100,
+          "y": 450,
+          "parentId": "admin_checkout",
+          "priority": "medium"
+        },
+        {
+          "id": "followup",
+          "label": "Agendamento de Follow-up",
+          "icon": "CalendarCheck",
+          "subtitle": "Acompanhamento",
+          "color": "indigo",
+          "description": "Agendamento de consulta de retorno com cardiologista",
+          "x": 100,
+          "y": 530,
+          "parentId": "discharge",
+          "priority": "high"
+        }
+      ],
+      "slaSettings": [
+        { "departmentId": "med_clearance", "maxTime": 2, "timeUnit": "hour", "alertAt": 1 },
+        { "departmentId": "cardio_exam", "maxTime": 1, "timeUnit": "hour", "alertAt": 45 },
+        { "departmentId": "pharmacy", "maxTime": 30, "timeUnit": "minute", "alertAt": 25 },
+        { "departmentId": "cardio_education", "maxTime": 40, "timeUnit": "minute", "alertAt": 30 },
+        { "departmentId": "admin_checkout", "maxTime": 1, "timeUnit": "hour", "alertAt": 45 },
+        { "departmentId": "discharge", "maxTime": 30, "timeUnit": "minute", "alertAt": 20 }
+      ],
+      "exceptionFlows": [
+        { "condition": "Alteração nos exames cardíacos", "targetDepartment": "cardiology", "priority": "critical" },
+        { "condition": "Necessidade de home care", "targetDepartment": "social_service", "priority": "medium" }
+      ],
+      "status": "active",
+      "lastRun": "2024-04-12T09:15:00Z",
+      "stats": {
+        "completed": 187,
+        "inProgress": 7,
+        "delayed": 1,
+        "efficiency": 92.3
+      },
+      "createdAt": "2024-03-20T14:30:00Z",
+      "updatedAt": "2024-03-20T14:30:00Z",
+      "createdBy": "DR003"
+    },
+    {
+      "id": "cw003",
+      "templateId": "5",
+      "name": "Protocolo de Emergência - AVC",
+      "description": "Fluxo especializado para atendimento de casos de AVC com tempo crítico para intervenção",
+      "category": "emergência",
+      "nodes": [
+        {
+          "id": "triage_emerg",
+          "label": "Triagem de Emergência",
+          "icon": "FileCheck",
+          "subtitle": "Priorização",
+          "color": "red",
+          "description": "Classificação de risco e priorização imediata",
+          "x": 150,
+          "y": 50,
+          "priority": "critical"
+        },
+        {
+          "id": "stabilization",
+          "label": "Estabilização",
+          "icon": "Stethoscope",
+          "subtitle": "Primeiros cuidados",
+          "color": "orange",
+          "description": "Intervenções iniciais e suporte vital",
+          "x": 150,
+          "y": 130,
+          "parentId": "triage_emerg",
+          "priority": "critical"
+        },
+        {
+          "id": "brain_imaging",
+          "label": "Tomografia de Crânio",
+          "icon": "Scan",
+          "subtitle": "Diagnóstico por imagem",
+          "color": "purple",
+          "description": "TC de crânio imediato para diagnóstico",
+          "x": 150,
+          "y": 210,
+          "parentId": "stabilization",
+          "priority": "critical"
+        },
+        {
+          "id": "neuro_evaluation",
+          "label": "Avaliação Neurológica",
+          "icon": "Brain",
+          "subtitle": "Exame especializado",
+          "color": "blue",
+          "description": "Avaliação por neurologista",
+          "x": 150,
+          "y": 290,
+          "parentId": "brain_imaging",
+          "priority": "critical"
+        },
+        {
+          "id": "thrombolysis_decision",
+          "label": "Decisão de Trombólise",
+          "icon": "GitBranch",
+          "subtitle": "Terapêutica",
+          "color": "amber",
+          "description": "Decisão sobre terapia trombolítica",
+          "x": 150,
+          "y": 370,
+          "parentId": "neuro_evaluation",
+          "priority": "critical"
+        },
+        {
+          "id": "intervention",
+          "label": "Intervenção",
+          "icon": "Activity",
+          "subtitle": "Tratamento",
+          "color": "green",
+          "description": "Administração de trombolítico ou intervenção mecânica",
+          "x": 150,
+          "y": 450,
+          "parentId": "thrombolysis_decision",
+          "priority": "critical"
+        },
+        {
+          "id": "icu_transfer",
+          "label": "Transferência para UTI",
+          "icon": "Bed",
+          "subtitle": "Cuidados intensivos",
+          "color": "indigo",
+          "description": "Monitoramento em unidade de terapia intensiva",
+          "x": 150,
+          "y": 530,
+          "parentId": "intervention",
+          "priority": "high"
+        }
+      ],
+      "slaSettings": [
+        { "departmentId": "triage_emerg", "maxTime": 3, "timeUnit": "minute", "alertAt": 2 },
+        { "departmentId": "stabilization", "maxTime": 5, "timeUnit": "minute", "alertAt": 4 },
+        { "departmentId": "brain_imaging", "maxTime": 15, "timeUnit": "minute", "alertAt": 10 },
+        { "departmentId": "neuro_evaluation", "maxTime": 10, "timeUnit": "minute", "alertAt": 8 },
+        { "departmentId": "thrombolysis_decision", "maxTime": 5, "timeUnit": "minute", "alertAt": 4 },
+        { "departmentId": "intervention", "maxTime": 10, "timeUnit": "minute", "alertAt": 8 }
+      ],
+      "exceptionFlows": [
+        { "condition": "Contraindicação para trombólise", "targetDepartment": "interventional_neuro", "priority": "critical" },
+        { "condition": "Necessidade de neurocirurgia", "targetDepartment": "neurosurgery", "priority": "critical" }
+      ],
+      "status": "active",
+      "lastRun": "2024-04-14T08:45:00Z",
+      "stats": {
+        "completed": 32,
+        "inProgress": 2,
+        "delayed": 0,
+        "efficiency": 98.1
+      },
+      "createdAt": "2024-02-10T09:00:00Z",
+      "updatedAt": "2024-03-05T11:00:00Z",
+      "createdBy": "DR001"
+    },
+    {
+      "id": "cw004",
+      "templateId": "4",
+      "name": "Exames de Imagem Prioritários",
+      "description": "Fluxo otimizado para exames de imagem com prioridade clínica",
+      "category": "diagnósticos",
+      "nodes": [
+        {
+          "id": "exam_request",
+          "label": "Solicitação de Exame",
+          "icon": "FileText",
+          "subtitle": "Pedido médico",
+          "color": "blue",
+          "description": "Requisição médica de exames",
+          "x": 200,
+          "y": 50,
+          "priority": "high"
+        },
+        {
+          "id": "priority_evaluation",
+          "label": "Avaliação de Prioridade",
+          "icon": "AlertTriangle",
+          "subtitle": "Classificação",
+          "color": "red",
+          "description": "Avaliação da urgência e priorização",
+          "x": 200,
+          "y": 130,
+          "parentId": "exam_request",
+          "priority": "high"
+        },
+        {
+          "id": "patient_preparation",
+          "label": "Preparação do Paciente",
+          "icon": "UserCheck",
+          "subtitle": "Preparação",
+          "color": "green",
+          "description": "Orientações e preparo para o exame",
+          "x": 200,
+          "y": 210,
+          "parentId": "priority_evaluation",
+          "priority": "medium"
+        },
+        {
+          "id": "image_acquisition",
+          "label": "Aquisição de Imagem",
+          "icon": "Camera",
+          "subtitle": "Realização",
+          "color": "purple",
+          "description": "Execução do exame de imagem",
+          "x": 200,
+          "y": 290,
+          "parentId": "patient_preparation",
+          "priority": "high"
+        },
+        {
+          "id": "radiologist_analysis",
+          "label": "Análise Radiológica",
+          "icon": "Search",
+          "subtitle": "Interpretação",
+          "color": "amber",
+          "description": "Análise das imagens pelo radiologista",
+          "x": 200,
+          "y": 370,
+          "parentId": "image_acquisition",
+          "priority": "high"
+        },
+        {
+          "id": "urgent_notification",
+          "label": "Notificação Urgente",
+          "icon": "Bell",
+          "subtitle": "Comunicação",
+          "color": "orange",
+          "description": "Comunicação imediata de achados críticos",
+          "x": 200,
+          "y": 450,
+          "parentId": "radiologist_analysis",
+          "priority": "critical"
+        },
+        {
+          "id": "results",
+          "label": "Liberação de Resultados",
+          "icon": "ClipboardCheck",
+          "subtitle": "Entrega",
+          "color": "indigo",
+          "description": "Disponibilização dos resultados para médico e paciente",
+          "x": 200,
+          "y": 530,
+          "parentId": "radiologist_analysis",
+          "priority": "high"
+        }
+      ],
+      "slaSettings": [
+        { "departmentId": "exam_request", "maxTime": 20, "timeUnit": "minute", "alertAt": 15 },
+        { "departmentId": "priority_evaluation", "maxTime": 10, "timeUnit": "minute", "alertAt": 8 },
+        { "departmentId": "patient_preparation", "maxTime": 30, "timeUnit": "minute", "alertAt": 25 },
+        { "departmentId": "image_acquisition", "maxTime": 45, "timeUnit": "minute", "alertAt": 40 },
+        { "departmentId": "radiologist_analysis", "maxTime": 1, "timeUnit": "hour", "alertAt": 45 },
+        { "departmentId": "urgent_notification", "maxTime": 15, "timeUnit": "minute", "alertAt": 10 }
+      ],
+      "exceptionFlows": [
+        { "condition": "Achado crítico", "targetDepartment": "emergency_notification", "priority": "critical" },
+        { "condition": "Necessidade de outro exame", "targetDepartment": "additional_imaging", "priority": "high" },
+        { "condition": "Reação ao contraste", "targetDepartment": "emergency_response", "priority": "critical" }
+      ],
+      "status": "active",
+      "lastRun": "2024-04-13T12:30:00Z",
+      "stats": {
+        "completed": 215,
+        "inProgress": 12,
+        "delayed": 3,
+        "efficiency": 89.7
+      },
+      "createdAt": "2024-03-01T14:20:00Z",
+      "updatedAt": "2024-03-10T09:15:00Z",
+      "createdBy": "DR002"
+    }
+  ],
+  "workflow-settings": {
+    "autoAssignToAvailableStaff": true,
+    "notifyOnSLABreaches": true,
+    "escalateDelayedTasks": true,
+    "requireApprovalForExceptions": true,
+    "enableAIRecommendations": false,
+    "trackMetrics": true,
+    "defaultPriority": "medium",
+    "defaultTimeUnit": "minute",
+    "notifications": {
+      "email": true,
+      "inApp": true,
+      "sms": false,
+      "escalation": {
+        "initial": "department_head",
+        "secondary": "hospital_admin",
+        "final": "medical_director"
+      },
+      "reminderIntervals": [
+        { "threshold": 75, "type": "percentage" },
+        { "threshold": 90, "type": "percentage" },
+        { "threshold": 100, "type": "percentage" }
+      ]
+    },
+    "visualization": {
+      "showCompletedTasks": true,
+      "showTaskDuration": true,
+      "highlightDelayedTasks": true,
+      "colorScheme": "role-based",
+      "compactView": false
+    },
+    "rolePermissions": {
+      "admin": {
+        "canCreateWorkflows": true,
+        "canEditTemplates": true,
+        "canViewAllWorkflows": true,
+        "canAssignToAnyDepartment": true,
+        "canOverridePriorities": true
+      },
+      "médico": {
+        "canCreateWorkflows": true,
+        "canEditTemplates": false,
+        "canViewAllWorkflows": false,
+        "canAssignToAnyDepartment": false,
+        "canOverridePriorities": true
+      },
+      "enfermeiro": {
+        "canCreateWorkflows": false,
+        "canEditTemplates": false,
+        "canViewAllWorkflows": false,
+        "canAssignToAnyDepartment": false,
+        "canOverridePriorities": false
+      },
+      "atendente": {
+        "canCreateWorkflows": false,
+        "canEditTemplates": false,
+        "canViewAllWorkflows": false,
+        "canAssignToAnyDepartment": false,
+        "canOverridePriorities": false
+      },
+      "paciente": {
+        "canCreateWorkflows": false,
+        "canEditTemplates": false,
+        "canViewAllWorkflows": false,
+        "canAssignToAnyDepartment": false,
+        "canOverridePriorities": false
+      }
+    },
+    "departmentSettings": {
+      "emergency": {
+        "autoEscalation": true,
+        "priorityBoost": 1,
+        "maxConcurrentTasks": 5,
+        "requiresApprovalFrom": "medical_director"
+      },
+      "icu": {
+        "autoEscalation": true,
+        "priorityBoost": 1,
+        "maxConcurrentTasks": 3,
+        "requiresApprovalFrom": "icu_head"
+      },
+      "reception": {
+        "autoEscalation": false,
+        "priorityBoost": 0,
+        "maxConcurrentTasks": 10,
+        "requiresApprovalFrom": "admin_supervisor"
+      },
+      "laboratory": {
+        "autoEscalation": false,
+        "priorityBoost": 0,
+        "maxConcurrentTasks": 20,
+        "requiresApprovalFrom": "lab_director"
+      },
+      "radiology": {
+        "autoEscalation": false,
+        "priorityBoost": 0,
+        "maxConcurrentTasks": 8,
+        "requiresApprovalFrom": "radiology_head"
+      },
+      "pharmacy": {
+        "autoEscalation": false,
+        "priorityBoost": 0,
+        "maxConcurrentTasks": 15,
+        "requiresApprovalFrom": "pharmacy_supervisor"
+      },
+      "surgery": {
+        "autoEscalation": true,
+        "priorityBoost": 1,
+        "maxConcurrentTasks": 3,
+        "requiresApprovalFrom": "surgery_director"
+      }
+    },
+    "slaDefaults": {
+      "critical": {
+        "timeValue": 15,
+        "timeUnit": "minute",
+        "alertThreshold": 0.75
+      },
+      "high": {
+        "timeValue": 30,
+        "timeUnit": "minute",
+        "alertThreshold": 0.8
+      },
+      "medium": {
+        "timeValue": 60,
+        "timeUnit": "minute",
+        "alertThreshold": 0.85
+      },
+      "low": {
+        "timeValue": 120,
+        "timeUnit": "minute",
+        "alertThreshold": 0.9
+      }
+    },
+    "integrations": {
+      "electronicHealthRecord": {
+        "enabled": true,
+        "syncInterval": 15,
+        "syncFailureNotification": true
+      },
+      "staffScheduler": {
+        "enabled": true,
+        "considerWorkload": true,
+        "balanceAssignments": true
+      },
+      "emergencyServices": {
+        "enabled": true,
+        "priorityMapping": {
+          "level1": "critical",
+          "level2": "high",
+          "level3": "medium",
+          "level4": "low"
+        }
+      },
+      "laboratorySystem": {
+        "enabled": true,
+        "autoCreateWorkflows": true,
+        "resultNotification": true
+      },
+      "patientPortal": {
+        "enabled": false,
+        "allowPatientTracking": false,
+        "notifyStatusChanges": true
+      }
+    },
+    "auditSettings": {
+      "logAllChanges": true,
+      "retentionPeriod": 365,
+      "logResponsibleUser": true,
+      "trackTimeSpent": true,
+      "requireChangeJustification": false
+    },
+    "updatedAt": "2024-04-01T10:30:00Z",
+    "updatedBy": "USR001"
+  },
+  "workflow-stats": {
+    "activeProcesses": 42,
+    "efficiencyRate": 0.91,
+    "slasCompleted": 38,
+    "occupancyRate": {
+      "overall": 0.81,
+      "byDepartment": {
+        "reception": 0.65,
+        "triage": 0.72,
+        "emergency": 0.78,
+        "icu": 0.92,
+        "surgery": 0.85,
+        "laboratory": 0.77,
+        "radiology": 0.69,
+        "pharmacy": 0.61,
+        "nursing": 0.65,
+        "administration": 0.58
+      }
+    },
+    "distributionByDepartment": {
+      "reception": 8,
+      "triage": 5,
+      "emergency": 7,
+      "icu": 4,
+      "surgery": 6,
+      "laboratory": 5,
+      "radiology": 3,
+      "pharmacy": 2,
+      "nursing": 1,
+      "administration": 1
+    },
+    "distributionByPriority": {
+      "critical": 9,
+      "high": 14,
+      "medium": 15,
+      "low": 4
+    },
+    "processingTimes": {
+      "averageCompletionTime": {
+        "admissionProcess": 125,
+        "dischargeProcess": 95,
+        "emergencyProcess": 62,
+        "surgicalProcess": 215,
+        "diagnosticProcess": 87
+      },
+      "bottlenecks": [
+        {
+          "departmentId": "radiology",
+          "nodeName": "Análise Radiológica",
+          "averageDelay": 22,
+          "timeUnit": "minute",
+          "affectedProcesses": 3
+        },
+        {
+          "departmentId": "pharmacy",
+          "nodeName": "Dispensação de Medicamentos",
+          "averageDelay": 15,
+          "timeUnit": "minute",
+          "affectedProcesses": 2
+        },
+        {
+          "departmentId": "administration",
+          "nodeName": "Checkout Administrativo",
+          "averageDelay": 18,
+          "timeUnit": "minute",
+          "affectedProcesses": 3
+        }
+      ]
+    },
+    "slaPerformance": {
+      "overall": 0.90,
+      "byPriority": {
+        "critical": 0.95,
+        "high": 0.92,
+        "medium": 0.87,
+        "low": 0.83
+      },
+      "byDepartment": {
+        "reception": 0.93,
+        "triage": 0.91,
+        "emergency": 0.94,
+        "icu": 0.97,
+        "surgery": 0.89,
+        "laboratory": 0.92,
+        "radiology": 0.82,
+        "pharmacy": 0.85,
+        "nursing": 0.88,
+        "administration": 0.81
+      },
+      "trend": [
+        { "date": "2024-04-08", "completionRate": 0.88 },
+        { "date": "2024-04-09", "completionRate": 0.87 },
+        { "date": "2024-04-10", "completionRate": 0.89 },
+        { "date": "2024-04-11", "completionRate": 0.91 },
+        { "date": "2024-04-12", "completionRate": 0.90 },
+        { "date": "2024-04-13", "completionRate": 0.92 },
+        { "date": "2024-04-14", "completionRate": 0.91 }
+      ]
+    },
+    "processVolume": {
+      "daily": [
+        { "date": "2024-04-08", "started": 25, "completed": 23 },
+        { "date": "2024-04-09", "started": 28, "completed": 26 },
+        { "date": "2024-04-10", "started": 32, "completed": 29 },
+        { "date": "2024-04-11", "started": 27, "completed": 25 },
+        { "date": "2024-04-12", "started": 31, "completed": 28 },
+        { "date": "2024-04-13", "started": 22, "completed": 20 },
+        { "date": "2024-04-14", "started": 18, "completed": 17 }
+      ],
+      "byCategory": {
+        "geral": 18,
+        "cirurgias": 6,
+        "diagnósticos": 9,
+        "emergência": 9
+      },
+      "byHospital": {
+        "RD4H-SP-ITAIM": 25,
+        "RD4H-SP-MORUMBI": 17
+      }
+    },
+    "exceptions": {
+      "totalCount": 14,
+      "byReason": {
+        "patientCondition": 6,
+        "resourceUnavailability": 4,
+        "specialProcedure": 2,
+        "administrativeIssue": 1,
+        "other": 1
+      },
+      "resolutionRate": 0.85,
+      "averageResolutionTime": 37,
+      "timeUnit": "minute"
+    },
+    "userPerformance": {
+      "topPerformers": [
+        {
+          "userId": "DR001",
+          "name": "Carlos Oliveira",
+          "completedTasks": 32,
+          "averageTime": 85,
+          "timeUnit": "percent",
+          "slaAdherence": 0.97
+        },
+        {
+          "userId": "ENF001",
+          "name": "Fernanda Lima",
+          "completedTasks": 41,
+          "averageTime": 88,
+          "timeUnit": "percent",
+          "slaAdherence": 0.94
+        },
+        {
+          "userId": "ATD001",
+          "name": "Juliana Santos",
+          "completedTasks": 57,
+          "averageTime": 90,
+          "timeUnit": "percent",
+          "slaAdherence": 0.91
+        }
+      ],
+      "departmentPerformance": {
+        "emergency": {
+          "teamSize": 12,
+          "tasksPerHour": 4.2,
+          "averageResolutionTime": 28,
+          "timeUnit": "minute"
+        },
+        "surgery": {
+          "teamSize": 8,
+          "tasksPerHour": 1.5,
+          "averageResolutionTime": 105,
+          "timeUnit": "minute"
+        },
+        "nursing": {
+          "teamSize": 25,
+          "tasksPerHour": 7.8,
+          "averageResolutionTime": 35,
+          "timeUnit": "minute"
+        }
+      }
+    },
+    "lastUpdated": "2024-04-14T16:30:00Z"
+  }
 }

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { TaskParamType, TaskType } from "@/types/workflow/task";
-import { WorkflowTask } from "@/types/workflow/workflow";
+import { WorkflowTask } from "@/types/workflow/workflow-task";
 import {
   Link2Icon,
   LucideProps,
