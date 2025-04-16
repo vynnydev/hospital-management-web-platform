@@ -17,7 +17,6 @@ export const SecurityContent: React.FC = () => {
     allowMultipleDevices: true
   });
   
-  const user = authService.getCurrentUser();
   const isAdmin = authService.isAdministrator();
   const isDoctor = authService.isDoctor();
 

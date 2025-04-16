@@ -1,14 +1,7 @@
 import {
     ChartBarIcon,
-    ExclamationTriangleIcon,
-    CogIcon,
-    ClockIcon,
-    BoltIcon,
-    UserGroupIcon,
     BuildingOfficeIcon,
     ArrowTrendingUpIcon,
-    ClipboardDocumentCheckIcon,
-    ShieldExclamationIcon
   } from '@heroicons/react/24/outline';
   import { ISection } from '@/types/analytics-types';
   

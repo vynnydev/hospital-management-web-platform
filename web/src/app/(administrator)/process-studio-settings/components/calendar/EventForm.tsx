@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from 'react';
 import { Calendar as CalendarIcon, ClockIcon, MapPin, X, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/organisms/button';
@@ -27,7 +28,7 @@ export const EventForm: React.FC<IEventFormProps> = ({
   initialDepartment
 }) => {
   const { staffMembers } = useStaffData();
-  const { events, departments, eventTypes, getEvent } = useCalendarEvents(new Date());
+  const { departments, eventTypes, getEvent } = useCalendarEvents(new Date());
   
   // Estados do formulário
   const [title, setTitle] = useState('');
@@ -143,7 +144,9 @@ export const EventForm: React.FC<IEventFormProps> = ({
     
     // Simular uma pequena demora para feedback de carregamento
     setTimeout(() => {
-      onSubmit && onSubmit(eventData);
+      if (onSubmit) {
+        onSubmit(eventData);
+      }
       setIsLoading(false);
     }, 500);
   };

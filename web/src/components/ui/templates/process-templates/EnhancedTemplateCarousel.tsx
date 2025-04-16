@@ -3,8 +3,8 @@ import React, { useRef, useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, CheckCircle, Clock, Activity, Users, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/organisms/button';
 import { Card } from '@/components/ui/organisms/card';
-import { IWorkflowTemplate } from '@/types/workflow/customize-process-by-workflow-types';
 import { motion } from 'framer-motion';
+import { IWorkflowTemplate } from '@/types/workflow/workflow-types';
 
 type TCategoryType = 'geral' | 'cirurgias' | 'diagnósticos' | 'emergência' | string;
 

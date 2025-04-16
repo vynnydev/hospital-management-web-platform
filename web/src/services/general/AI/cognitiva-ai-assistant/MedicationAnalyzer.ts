@@ -1,4 +1,4 @@
-import { Medication, PatientContext } from "./types/medimind-ai-assistant";
+import { IMedication, IPatientContext } from "@/types/cognitiva-ai-assistant";
 
 interface MedicationInteraction {
     medications: string[];
@@ -35,8 +35,8 @@ interface MedicationInteraction {
     };
   
     public static analyzeMedications(
-      medications: Medication[],
-      context?: PatientContext
+      medications: IMedication[],
+      context?: IPatientContext
     ): MedicationAnalysisResult {
       const interactions: MedicationInteraction[] = [];
       const adjustments: string[] = [];
@@ -93,8 +93,8 @@ interface MedicationInteraction {
     }
   
     private static checkDosageAdjustment(
-      medication: Medication,
-      context?: PatientContext
+      medication: IMedication,
+      context?: IPatientContext
     ): string | null {
       if (!context) return null;
   
@@ -130,7 +130,7 @@ interface MedicationInteraction {
     }
   
     private static generateSummary(
-      medications: Medication[],
+      medications: IMedication[],
       interactions: MedicationInteraction[],
       adjustments: string[]
     ): string {

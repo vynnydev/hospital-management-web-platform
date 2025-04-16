@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { IResourcesData } from "@/types/resources-types";
 import { AxiosError } from "axios";
-import api from "../../api";
+import api from "@/services/api";
 
 export const useResourcesData = () => {
     const [loading, setLoading] = useState(true);

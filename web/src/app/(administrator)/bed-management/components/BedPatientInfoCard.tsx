@@ -195,7 +195,7 @@ export const BedPatientInfoCard: React.FC<PatientInfoCardProps> = ({ selectedBed
                   <span className="text-gray-400">Previsão de Manutenção</span>
                 </div>
                 <div className="space-y-3">
-                  {getMaintenanceSchedule(patient.diagnosis, patient.admissionDate).map((schedule, index) => (
+                  {getMaintenanceSchedule(patient.diagnosis).map((schedule, index) => (
                     <p key={index} className="text-gray-100 text-sm flex items-start gap-2">
                       <span className="text-emerald-400 mt-1">•</span>
                       {schedule}

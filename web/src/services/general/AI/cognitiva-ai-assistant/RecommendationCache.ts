@@ -1,8 +1,8 @@
 import { LRUCache } from 'lru-cache';
-import { CachedRecommendation, PatientContext } from './types/medimind-ai-assistant';
+import { ICachedRecommendation, IPatientContext } from '@/types/cognitiva-ai-assistant';
 
 class RecommendationCache {
-    private cache: LRUCache<string, CachedRecommendation>;
+    private cache: LRUCache<string, ICachedRecommendation>;
   
     constructor() {
       const options = {
@@ -13,23 +13,23 @@ class RecommendationCache {
         ttlAutopurge: true,
         allowStale: false,
         updateAgeOnHas: false,
-        dispose: (value: CachedRecommendation, key: string) => {
+        dispose: (value: ICachedRecommendation, key: string) => {
           console.log(`Cache item removed: ${key}`);
         }
       };
   
-      this.cache = new LRUCache<string, CachedRecommendation>(options);
+      this.cache = new LRUCache<string, ICachedRecommendation>(options);
     }
   
-    get(key: string): CachedRecommendation | undefined {
+    get(key: string): ICachedRecommendation | undefined {
       return this.cache.get(key);
     }
   
-    set(key: string, value: CachedRecommendation): void {
+    set(key: string, value: ICachedRecommendation): void {
       this.cache.set(key, value);
     }
   
-    generateKey(context: PatientContext): string {
+    generateKey(context: IPatientContext): string {
       return JSON.stringify({
         diagnoses: context.diagnoses.sort(),
         riskLevel: context.riskLevel,

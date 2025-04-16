@@ -5,10 +5,7 @@ import { DepartmentAreaCards } from '@/components/ui/templates/DepartmentAreaCar
 import type { 
   INetworkInfo, 
   IHospital,
-  IBed,
-  IDepartmentalCapacity,
   IDepartmentMetric,
-  IDepartmentWithCapacity,
 } from '@/types/hospital-network-types';
 import type { IAppUser } from '@/types/auth-types';
 import { HospitalNetworkListSlider } from '@/components/ui/templates/HospitalNetworkListSlider';

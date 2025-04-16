@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // types/hospital.ts
 
-export interface VitalSignsTrend {
+export interface IVitalSignsTrend {
   timestamp: string;
   temperature: number;
   bloodPressure: string;
@@ -10,14 +10,14 @@ export interface VitalSignsTrend {
   oxygenSaturation: number;
 }
 
-export interface CacheResult {
+export interface ICacheResult {
   recommendations: string[];
   context: PatientContext;
   timestamp: Date;
   score: number;
 }
 
-export interface PreparedContext {
+export interface IPreparedContext {
   age: number;
   diagnoses: string[];
   riskLevel: 'Baixo' | 'Médio' | 'Alto';
@@ -37,7 +37,7 @@ export interface PreparedContext {
   }>;
 }
 
-export interface Analysis {
+export interface IAnalysis {
   riskLevel: string;
   trend: string;
   alerts: string[];
@@ -51,24 +51,24 @@ export interface Analysis {
   }[];
 }
 
-export interface ReportSection {
+export interface IReportSection {
   title: string;
   content: string;
 }
 
-export interface ReportData {
+export interface IReportData {
   title: string;
-  sections: ReportSection[];
+  sections: IReportSection[];
   downloadable: boolean;
   charts: Array<{
     type: string;
     title: string;
-    data: VitalSignsTrend[];
+    data: IVitalSignsTrend[];
   }>;
-  analysis: Analysis;
+  analysis: IAnalysis;
 }
 
-export interface PatientAnalysisResult {
+export interface IPatientAnalysisResult {
   sections: Array<{
     title: string;
     content: string;
@@ -79,7 +79,7 @@ export interface PatientAnalysisResult {
     title: string;
     data: any;
   }>;
-  analysis: Analysis;
+  analysis: IAnalysis;
   riskAnalysis: {
     currentStatus: any;
     medicationImpact: any;
@@ -89,7 +89,7 @@ export interface PatientAnalysisResult {
   predictedOutcomes: any;
 }
   
-export interface Patient {
+export interface IPatient {
   id: string;
   personalInfo: {
     name: string;
@@ -111,9 +111,9 @@ export interface Patient {
   };
   treatment: {
     diagnosis: string[];
-    medications: Medication[];
-    procedures: Procedure[];
-    vitals: VitalSigns[];
+    medications: IMedication[];
+    procedures: IProcedure[];
+    vitals: IVitalSigns[];
   };
   medicalTeam: {
     doctor: {
@@ -133,7 +133,7 @@ export interface Patient {
 }
 
 // Cognitiva AI Assistant
-export interface PatientData {
+export interface IPatientData {
     medicalTeam: any;
     personalInfo: {
         id: string;
@@ -160,9 +160,9 @@ export interface PatientData {
     };
     treatment: {
         diagnosis: string[];     // lista de diagnósticos
-        vitals: VitalSigns[];    // histórico de sinais vitais
-        medications: Medication[];
-        procedures: Procedure[];
+        vitals: IVitalSigns[];    // histórico de sinais vitais
+        medications: IMedication[];
+        procedures: IProcedure[];
         allergies?: string[];
         notes?: string[];
     };
@@ -203,7 +203,7 @@ export interface PatientData {
 }
 
 // Interface para sinais vitais
-export interface VitalSigns {
+export interface IVitalSigns {
     temperature: number;        // Temperatura em Celsius
     bloodPressure: string;     // Formato "120/80"
     heartRate: number;         // Batimentos por minuto
@@ -216,7 +216,7 @@ export interface VitalSigns {
 }
   
 // Interface para medicações
-export interface Medication {
+export interface IMedication {
     name: string;              // Nome do medicamento
     dosage: string;           // Dosagem (ex: "500mg")
     frequency: string;        // Frequência (ex: "8/8h")
@@ -228,7 +228,7 @@ export interface Medication {
 }
 
 // Interface para procedimentos
-export interface Procedure {
+export interface IProcedure {
     type: string;             // Tipo de procedimento
     description: string;      // Descrição detalhada
     date: string;            // Data do procedimento
@@ -239,23 +239,23 @@ export interface Procedure {
 }
 
 // Interface completa do contexto do paciente
-export interface PatientContext {
+export interface IPatientContext {
     age: number;                    // Idade do paciente
     diagnoses: string[];           // Lista de diagnósticos
     riskLevel: string;             // Nível de risco
-    vitals: VitalSigns | null;            // Sinais vitais
-    medications: Medication[];      // Lista de medicações
-    procedures: Procedure[];        // Lista de procedimentos
+    vitals: IVitalSigns | null;            // Sinais vitais
+    medications: IMedication[];      // Lista de medicações
+    procedures: IProcedure[];        // Lista de procedimentos
 }
 
 // Interfaces
-export interface RecommendationFeedback {
+export interface IRecommendationFeedback {
     effective: boolean;
     diagnosis: string[];
     age: number;
     riskLevel: string;
-    medications: Medication[];
-    procedures: Procedure[];
+    medications: IMedication[];
+    procedures: IProcedure[];
     notes: string;
   }
 
@@ -270,12 +270,12 @@ export interface PatientContext {
   age: number;
   diagnoses: string[];
   riskLevel: string;
-  vitals: VitalSigns | null;
-  medications: Medication[];
-  procedures: Procedure[];
+  vitals: IVitalSigns | null;
+  medications: IMedication[];
+  procedures: IProcedure[];
 }
 
-export interface KnowledgeBaseEntry {
+export interface IKnowledgeBaseEntry {
   condition: string;
   recommendations: string[];
   evidenceLevel: 'A' | 'B' | 'C';
@@ -283,26 +283,26 @@ export interface KnowledgeBaseEntry {
   lastUpdated: Date;
 }
 
-export interface ValidationResult {
+export interface IValidationResult {
   isValid: boolean;
   conflicts: string[];
   warnings: string[];
 }
 
-export interface CachedRecommendation {
+export interface ICachedRecommendation {
     recommendations: string[];
-    context: PatientContext;
+    context: IPatientContext;
     timestamp: Date;
     score: number;
 }
 
-export interface RiskAnalysisResult {
+export interface IRiskAnalysisResult {
     getRecommendations(): Promise<string[]>;
     riskLevel: string;
     riskFactors: string[];
 }
 
 // Interface para o serviço de análise de risco
-export interface PatientRiskAnalysis {
-    analyzeRisks(context: PatientContext): Promise<RiskAnalysisResult>;
+export interface IPatientRiskAnalysis {
+    analyzeRisks(context: IPatientContext): Promise<IRiskAnalysisResult>;
 }

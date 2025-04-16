@@ -1,10 +1,10 @@
-import { AppNode } from "@/types/workflow/appNode";
-import { TaskType } from "@/types/workflow/task";
+import { IAppNode } from "@/types/workflow/appNode";
+import { ETaskType } from "@/types/workflow/task";
 
 export function CreateFlowNode(
-  nodeType: TaskType,
+  nodeType: ETaskType,
   position?: { x: number; y: number }
-): AppNode {
+): IAppNode {
   return {
     id: crypto.randomUUID(),
     type: "FlowScrapeNode",

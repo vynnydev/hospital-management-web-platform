@@ -1,11 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 import { 
-  Integration, 
-  IntegrationsResponse, 
-  IntegrationResponse, 
-  ToggleIntegrationRequest, 
-  ToggleIntegrationResponse,
-  UpdateIntegrationConfigResponse
+  Integration,
 } from '@/types/integration-types';
 
 class IntegrationService {

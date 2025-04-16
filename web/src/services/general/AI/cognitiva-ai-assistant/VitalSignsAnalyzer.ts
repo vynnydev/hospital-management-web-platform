@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { VitalSigns } from "./types/medimind-ai-assistant";
+import { IVitalSigns } from "../../../../types/cognitiva-ai-assistant";
 
 // Classes de análise específica
 class VitalSignsAnalyzer {
@@ -12,7 +12,7 @@ class VitalSignsAnalyzer {
       oxygenSaturation: { min: 92, max: 100 }
     };
   
-    public static analyzeVitals(vitals: VitalSigns[]): {
+    public static analyzeVitals(vitals: IVitalSigns[]): {
       summary: string;
       trends: { [key: string]: string };
       alerts: string[];
@@ -68,14 +68,14 @@ class VitalSignsAnalyzer {
       };
     }
   
-    private static calculateTrends(vitals: VitalSigns[]): { [key: string]: string } {
+    private static calculateTrends(vitals: IVitalSigns[]): { [key: string]: string } {
       if (vitals.length < 3) return { status: 'insufficient-data' };
   
       const last3 = vitals.slice(-3);
       const trends: { [key: string]: string } = {};
   
       ['temperature', 'heartRate', 'oxygenSaturation'].forEach(parameter => {
-        const values = last3.map(v => v[parameter as keyof VitalSigns] as number);
+        const values = last3.map(v => v[parameter as keyof IVitalSigns] as number);
         trends[parameter] = this.getTrendDirection(values);
       });
   

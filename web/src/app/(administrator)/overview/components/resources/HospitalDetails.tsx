@@ -2,7 +2,6 @@
 import React from 'react';
 import { IHospital } from "@/types/hospital-network-types";
 import { TViewMode } from '../HospitalsLocations';
-import { Building2, MapPin, TrendingUp } from 'lucide-react';
 import { OverviewView } from './OverviewView';
 import { ResourcesView } from './ResourcesView';
 import { TransfersView } from './TransfersView';

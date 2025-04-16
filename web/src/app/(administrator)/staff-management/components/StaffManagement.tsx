@@ -103,7 +103,7 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
 
     // Utilitários e verificações de departamento
     const normalizedArea = selectedArea ? normalizeDepartmentName(selectedArea) : '';
-    const departmentData = selectedArea ? getDepartmentData(data, selectedArea) : null;
+    const departmentData = selectedArea ? getDepartmentData(data!, selectedArea) : null;
     const isDepartmentAvailable = selectedArea && departmentData;
 
     // Estados para gerar analises o para os profissionais e seus times com IA

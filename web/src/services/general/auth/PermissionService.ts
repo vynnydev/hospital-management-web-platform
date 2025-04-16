@@ -2,11 +2,15 @@ import { TPermission, IPermissionCheck, TRole } from "@/types/auth-types";
 
 export class PermissionService {
     private static rolePermissions: Record<TRole, TPermission[]> = {
-      'Admin': ['VIEW_ALL_HOSPITALS'],
-      'Hospital Manager': ['VIEW_SINGLE_HOSPITAL'],
-      'User': []
+      'administrador': ['VIEW_ALL_HOSPITALS', 'VIEW_SINGLE_HOSPITAL'],
+      'enfermeiro': ['NURSE_ACCESS', 'ADMINISTER_MEDICATION', 'RECORD_VITALS', 'MANAGE_BEDS', 'VIEW_PATIENT_RECORDS_NURSE', 'ASSIGN_TASKS'],
+      'atendente': ['ATTENDANT_ACCESS', 'SCHEDULE_MANAGEMENT', 'PATIENT_REGISTRATION', 'VIEW_BASIC_PATIENT_INFO', 'MANAGE_APPOINTMENTS', 'VIEW_DOCTOR_SCHEDULE', 'GENERATE_REPORTS'],
+      'system': [],
+      'ai': [],
+      'médico': ['DOCTOR_ACCESS', 'PRESCRIBE_MEDICATION', 'VIEW_PATIENT_RECORDS', 'USE_AI_DIAGNOSIS', 'APPROVE_AI_PRESCRIPTIONS'],
+      'paciente': ['PATIENT_ACCESS', 'SCHEDULE_APPOINTMENTS', 'VIEW_OWN_RECORDS', 'REQUEST_TELEMEDICINE']
     };
-  
+
     static validatePermission(
       userPermissions: TPermission[],
       requiredPermission: TPermission,

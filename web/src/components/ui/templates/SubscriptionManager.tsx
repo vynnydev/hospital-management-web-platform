@@ -43,7 +43,6 @@ export const SubscriptionManager = () => {
   
   // Use o hook de assinatura para o hospital selecionado
   const { 
-    loading, 
     error,
     refreshData
   } = useSubscription(selectedHospitalId)

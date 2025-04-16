@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export interface ReportModalData {
+export interface IReportModalData {
     success: boolean;
     raw: {
       data: {
         analysis: {
+          lastVitals: any;
           recommendations: string[];
           vitalsAnalysis: {
             alerts: any[];
@@ -14,7 +15,7 @@ export interface ReportModalData {
             };
           };
           medicationImages: {
-            [medicationId: string]: MedicationImages;
+            [medicationId: string]: IMedicationImages;
           };
         };
         lastVitals: Array<{
@@ -79,13 +80,13 @@ export interface ReportModalData {
     };
 }
 
-export interface MedicationImages {
+export interface IMedicationImages {
   usage: string;
   application: string;
   precaution: string;
 }
   
-export interface VitalSignCardProps {
+export interface IVitalSignCardProps {
     icon: React.ReactNode;
     label: string;
     value: string;
@@ -93,7 +94,7 @@ export interface VitalSignCardProps {
     status: 'normal' | 'warning' | 'critical';
 }
   
-export interface VitalsAnalysis {
+export interface IVitalsAnalysis {
     lastReadings?: {
       temperature?: string | null;
       pressure?: string | null;
@@ -105,14 +106,14 @@ export interface VitalsAnalysis {
     summary?: string | null;
 }
   
-export interface VitalReading {
+export interface IVitalReading {
     label: string;
     value: string | null | undefined;
     reference: string;
 }
   
-  // Interface para funcionalidade de recomendações de tratamento médico
-export interface MedicationInstructions {
+// Interface para funcionalidade de recomendações de tratamento médico
+export interface IMedicationInstructions {
     visual?: {
       imageUrl?: string;
       steps?: {
@@ -129,7 +130,7 @@ export interface MedicationInstructions {
     };
 }
   
-export interface MedicationCardProps {
+export interface IMedicationCardProps {
     medication: {
       name: string;
       dosage: string;
@@ -147,22 +148,22 @@ export interface MedicationCardProps {
         additionalCare?: string[];
       };
     };
-    images?: MedicationImages;
+    images?: IMedicationImages;
 }
   
-export interface ReportModalProps {
+export interface IReportModalProps {
     isOpen: boolean;
     onClose: () => void;
-    data: ReportModalData;
+    data: IReportModalData;
 }
 
-export interface ReportModalComponentsProps {
-  data: ReportModalData;
+export interface IReportModalComponentsProps {
+  data: IReportModalData;
 }
 
 // Interfaces para a impressão
-export interface PrintData {
-  data: ReportModalData;
+export interface IPrintData {
+  data: IReportModalData;
   vitalsData: {
     temperature: string;
     pressure: string;
@@ -178,7 +179,7 @@ export interface PrintData {
 }
 
 // Botões do ReportModal
-export interface ActionButton {
+export interface IActionButton {
   icon: React.ReactNode;
   tooltip: string;
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void | Promise<void>;

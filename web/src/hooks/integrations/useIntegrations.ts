@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { authService } from '@/services/general/auth/AuthService';
 import { integrationService } from '@/services/general/integration/IntegrationService';

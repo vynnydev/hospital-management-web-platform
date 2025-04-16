@@ -1,7 +1,7 @@
 import { Copy, Printer, X, Share2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
-import { ActionButton, ReportModalProps } from './types';
+import { IActionButton, IReportModalProps } from '../../../../../types/report-medication-types';
 import { renderAIRecommendations } from './components/RenderAIRecommendations';
 import { renderVitalSigns } from './components/VitalSignCard';
 import { renderCareInstructions } from './components/CareInstructionsCard';
@@ -9,7 +9,7 @@ import { calculateBloodPressureStatus, calculateHeartRateStatus, calculateSatura
 import { usePrint } from './services/hooks/usePrint';
 import { generatePrintTemplate } from './components/PrintTemplate';
 
-export const ReportModal: React.FC<ReportModalProps> = ({ isOpen, onClose, data }) => {
+export const ReportModal: React.FC<IReportModalProps> = ({ isOpen, onClose, data }) => {
   const [copied, setCopied] = useState(false);
   const { handlePrint, preparePrintData } = usePrint();
 
@@ -23,7 +23,7 @@ export const ReportModal: React.FC<ReportModalProps> = ({ isOpen, onClose, data 
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const buttons: ActionButton[] = [
+  const buttons: IActionButton[] = [
     { 
       icon: <Copy size={20} />, 
       tooltip: copied ? "Copiado!" : "Copiar", 

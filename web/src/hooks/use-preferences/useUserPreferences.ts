@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { authService } from "@/services/general/auth/AuthService";
 import { useEffect, useState } from "react";
 

@@ -9,7 +9,7 @@ interface IPredictionsViewProps {
   predictions?: IHospitalPrediction;
 }
 
-export const PredictionsView: React.FC<IPredictionsViewProps> = ({ hospital, predictions }) => {
+export const PredictionsView: React.FC<IPredictionsViewProps> = ({ predictions }) => {
   if (!predictions) {
     return (
       <div className="p-3">

@@ -5,8 +5,8 @@ import {
   ISavedWorkflow, 
   ISLASettings, 
   IWorkflowNode, 
-  IWorkflowTemplate 
 } from '@/types/workflow/customize-process-by-workflow-types';
+import { IWorkflowTemplate } from '@/types/workflow/workflow-types';
 import { workflowTemplates } from '@/utils/workflowTemplates';
 import { 
   Clipboard, FileCheck, UserCheck, BookOpen, Stethoscope, 
@@ -118,7 +118,12 @@ export const useTemplateWorkflowIntegration = () => {
         const templateSlaSettings = selectedTemplate.slaSettings || [];
         const templateExceptionFlows = selectedTemplate.exceptionFlows || [];
         
-        setSlaSettings([...templateSlaSettings]);
+        setSlaSettings(templateSlaSettings.map(setting => ({
+          ...setting,
+          timeUnit: setting.timeUnit === 'month' ? 'day' : 
+                    setting.timeUnit === 'week' ? 'day' : 
+                    setting.timeUnit
+        })));
         setExceptionFlows([...templateExceptionFlows]);
         
         // Marca que o processo está em andamento

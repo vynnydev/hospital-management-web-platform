@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { motion } from "framer-motion";
 import { VitalsAnalysisCard } from "./VitalsAnalysisCard";
-import { ReportModalComponentsProps } from "../types";
+import { IReportModalComponentsProps } from "../../../../../../types/report-medication-types";
 
 interface VitalsAnalysisSummary {
   temperature: string
@@ -12,7 +12,7 @@ interface VitalsAnalysisSummary {
   riskLevel: string
 }
 
-export const renderAIRecommendations: React.FC<ReportModalComponentsProps> = ({ data }) => {
+export const renderAIRecommendations: React.FC<IReportModalComponentsProps> = ({ data }) => {
     const recommendations = data.raw.data.analysis.recommendations;
     const summary = data?.raw?.data?.analysis.vitalsAnalysis?.summary || "";
 

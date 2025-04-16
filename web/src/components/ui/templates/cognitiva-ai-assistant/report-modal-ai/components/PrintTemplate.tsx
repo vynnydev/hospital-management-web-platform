@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { PrintData } from '../types';
+import { IPrintData } from '@/types/report-medication-types';
 
 interface PrintTemplateProps {
-  printData: PrintData;
+  printData: IPrintData;
   calculateTemperatureStatus: (temp: number) => string;
   calculateBloodPressureStatus: (pressure: string) => string;
   calculateHeartRateStatus: (rate: number) => string;

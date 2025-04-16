@@ -6,7 +6,7 @@ import { VitalSignsAnalyzer } from "@/services/general/AI/cognitiva-ai-assistant
 import { MedicationAnalyzer } from "@/services/general/AI/cognitiva-ai-assistant/MedicationAnalyzer";
 import { RecommendationCache } from "@/services/general/AI/cognitiva-ai-assistant/RecommendationCache";
 import { RecommendationValidator } from "@/services/general/AI/cognitiva-ai-assistant/RecommendationValidator";
-import { Patient, PatientContext, PatientData, Procedure } from "@/services/general/AI/cognitiva-ai-assistant/types/medimind-ai-assistant";
+import { IPatient, IPatientContext, IPatientData, IProcedure } from "@/types/cognitiva-ai-assistant";
 import { ImageGenerationService } from "@/services/general/AI/cognitiva-ai-assistant/ImageGenerationService";
 
 class AssistantFuncionalities {
@@ -21,7 +21,7 @@ class AssistantFuncionalities {
     return AssistantFuncionalities.instance;
   }
 
-  async getPatientById(patientId: string): Promise<PatientData | null> {
+  async getPatientById(patientId: string): Promise<IPatientData | null> {
     try {
       const response = await fetch(`${this.baseUrl}/patients/${patientId}`);
       
@@ -39,7 +39,7 @@ class AssistantFuncionalities {
     }
   }
 
-  async getAllPatients(): Promise<Patient[]> {
+  async getAllPatients(): Promise<IPatient[]> {
     try {
       const response = await fetch(`${this.baseUrl}/patients`);
       
@@ -57,7 +57,7 @@ class AssistantFuncionalities {
     }
   }
 
-  function preparePatientContext(patientData: PatientData): PatientContext {
+  function preparePatientContext(patientData: IPatientData): IPatientContext {
     return {
         age: patientData.personalInfo.age,
         diagnoses: patientData.treatment.diagnosis,
@@ -202,7 +202,7 @@ class AssistantFuncionalities {
           }
   
           const riskAnalyzer = new PatientRiskAnalysis();
-          const context: PatientData = {
+          const context: IPatientData = {
             personalInfo: {
               id: patient.personalInfo.id,
               name: patient.personalInfo.name,
@@ -322,7 +322,7 @@ class AssistantFuncionalities {
   
           const riskAnalyzer = new PatientRiskAnalysis();
   
-          const context: PatientData = {
+          const context: IPatientData = {
             personalInfo: {
               id: patient.personalInfo.id,
               name: patient.personalInfo.name,
@@ -442,7 +442,7 @@ class AssistantFuncionalities {
   
           const riskAnalyzer = new PatientRiskAnalysis();
   
-          const context: PatientData = {
+          const context: IPatientData = {
             personalInfo: {
               id: patient.personalInfo.id,
               name: patient.personalInfo.name,
@@ -495,7 +495,7 @@ class AssistantFuncionalities {
           );
   
           // Organizar exames por tipo
-          const examsByType = patient.treatment.procedures.reduce((acc: any, proc: Procedure) => {
+          const examsByType = patient.treatment.procedures.reduce((acc: any, proc: IProcedure) => {
             if (!acc[proc.type]) acc[proc.type] = [];
             acc[proc.type].push(proc);
             return acc;
@@ -586,7 +586,7 @@ class AssistantFuncionalities {
   
           const riskAnalyzer = new PatientRiskAnalysis();
   
-          const context: PatientData = {
+          const context: IPatientData = {
             personalInfo: {
               id: patient.personalInfo.id,
               name: patient.personalInfo.name,
@@ -756,7 +756,7 @@ class AssistantFuncionalities {
           );
 
           // Criar contexto para recomendações
-          const context: PatientData = {
+          const context: IPatientData = {
             personalInfo: {
               id: patient.personalInfo.id,
               name: patient.personalInfo.name,

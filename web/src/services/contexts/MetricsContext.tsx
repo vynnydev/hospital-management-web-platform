@@ -1,6 +1,6 @@
 import { ICreateMetricPayload, TMetric } from '@/types/hospital-metrics';
 import React, { createContext, useContext, ReactNode } from 'react';
-import { useMetrics } from '../hooks/hospital-metrics/useMetrics';
+import { useMetrics } from '@/hooks/hospital-metrics/useMetrics';
 import { useMetricsBridge } from '../general/hospital-metrics/metricsBridge';
 
 interface MetricsContextType {

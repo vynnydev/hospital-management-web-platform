@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/organisms/card';
 import { Button } from '@/components/ui/organisms/button';
@@ -8,7 +9,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/organisms/a
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/organisms/select';
 import { useToast } from '@/components/ui/hooks/use-toast';
 import { useSecurityCompliance } from '@/hooks/security-compliance/useSecurityCompliance';
-import { IAccessControlConfig, IRBAPolicy } from '@/types/security-compliance-types';
+import { IAccessControlConfig } from '@/types/security-compliance-types';
 import { 
   Shield, 
   Clock, 
@@ -57,9 +58,9 @@ export const AccessControlTab = () => {
         description: "As configurações de controle de acesso foram salvas com sucesso.",
         variant: "default",
       });
-    } catch (error) {
+    } catch (err) {
       toast({
-        title: "Erro",
+        title: "Erro", 
         description: "Ocorreu um erro ao salvar as configurações.",
         variant: "destructive",
       });

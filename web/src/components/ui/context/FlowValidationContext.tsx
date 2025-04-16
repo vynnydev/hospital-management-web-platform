@@ -1,4 +1,4 @@
-import { AppNodeMissingInputs } from "@/types/workflow/appNode";
+import { IAppNodeMissingInputs } from "@/types/workflow/appNode";
 import {
   createContext,
   Dispatch,
@@ -8,8 +8,8 @@ import {
 } from "react";
 
 type FlowValidationContextType = {
-  invalidInputs: AppNodeMissingInputs[];
-  setInvalidInputs: Dispatch<SetStateAction<AppNodeMissingInputs[]>>;
+  invalidInputs: IAppNodeMissingInputs[];
+  setInvalidInputs: Dispatch<SetStateAction<IAppNodeMissingInputs[]>>;
   clearErrors: () => void;
 };
 
@@ -21,7 +21,7 @@ export function FlowValidationContextProvider({
 }: {
   children: ReactNode;
 }) {
-  const [invalidInputs, setInvalidInputs] = useState<AppNodeMissingInputs[]>(
+  const [invalidInputs, setInvalidInputs] = useState<IAppNodeMissingInputs[]>(
     []
   );
 

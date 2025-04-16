@@ -9,14 +9,14 @@ import {
   X,
   MessageSquare
 } from 'lucide-react';
-import { Alert } from '../providers/alerts/AlertsProvider';
+import { IAlert } from '@/types/alert-types';
 
 interface AlertCardProps {
-  alert: Alert;
+  alert: IAlert;
   onMarkAsRead?: (id: string) => void;
   onDismiss?: (id: string) => void;
-  onCreateChat?: (alert: Alert) => void;
-  onViewDetails?: (alert: Alert) => void;
+  onCreateChat?: (alert: IAlert) => void;
+  onViewDetails?: (alert: IAlert) => void;
   compact?: boolean;
 }
 

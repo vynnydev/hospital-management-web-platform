@@ -1,4 +1,4 @@
-import { PatientContext, ValidationResult } from "./types/medimind-ai-assistant";
+import { IPatientContext, IValidationResult } from "../../../../types/cognitiva-ai-assistant";
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 class RecommendationValidator {
@@ -7,8 +7,8 @@ class RecommendationValidator {
     ['corticosteroides', ['infecção ativa não tratada', 'úlcera péptica ativa']]
   ]);
 
-  static validate(recommendations: string[], context: PatientContext): ValidationResult {
-    const result: ValidationResult = {
+  static validate(recommendations: string[], context: IPatientContext): IValidationResult {
+    const result: IValidationResult = {
       isValid: true,
       conflicts: [],
       warnings: []
@@ -29,8 +29,8 @@ class RecommendationValidator {
 
   private static checkContraindications(
     recommendation: string,
-    context: PatientContext,
-    result: ValidationResult
+    context: IPatientContext,
+    result: IValidationResult
   ): void {
     this.contraindications.forEach((contraindicated, treatment) => {
       if (recommendation.toLowerCase().includes(treatment)) {
@@ -47,16 +47,16 @@ class RecommendationValidator {
 
   private static checkMedicationInteractions(
     recommendation: string,
-    context: PatientContext,
-    result: ValidationResult
+    context: IPatientContext,
+    result: IValidationResult
   ): void {
     // Implementar verificação de interações medicamentosas
   }
 
   private static checkAgeAppropriate(
     recommendation: string,
-    context: PatientContext,
-    result: ValidationResult
+    context: IPatientContext,
+    result: IValidationResult
   ): void {
     // Implementar verificação de adequação à idade
   }

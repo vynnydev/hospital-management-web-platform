@@ -1,5 +1,5 @@
-import { IWorkflowTemplate } from "@/types/workflow/customize-process-by-workflow-types";
 import { workflowTemplates } from "./workflowTemplates";
+import { IWorkflowTemplate } from "@/types/workflow/workflow-types";
 
 // Versão melhorada da função para encontrar template por ID
 export const enhancedFindTemplateById = (templateId: string): IWorkflowTemplate | null => {

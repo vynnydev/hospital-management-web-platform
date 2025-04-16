@@ -161,7 +161,7 @@ export const Header = () => {
                 
                 <WelcomeMsg />
 
-                <div className='absolute rounded-full p-1 bg-gray-700 mt-16'>
+                <div className='absolute rounded-full p-1 bg-gray-700 mt-20'>
                     <AlertsProvider hospitalId={selectedHospital as unknown as string || ''} checkInterval={30000}>
                             {/* Barra com Assistente IA e Chat */}
                             <CognitivaAssistantBar showTitle={false} />

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * API para gerenciar as integrações do sistema
  * Este serviço atua como um ponto central para interagir com a API de integrações
@@ -10,15 +11,6 @@ export interface BaseIntegrationConfig {
     lastUpdated?: string;
     createdBy?: string;
   }
-  
-  // Endpoints simulados para dados de integração
-  const API_ENDPOINTS = {
-    LIST: '/api/integrations',
-    DETAILS: (id: string) => `/api/integrations/${id}`,
-    ACTIVATE: (id: string) => `/api/integrations/${id}/activate`,
-    DEACTIVATE: (id: string) => `/api/integrations/${id}/deactivate`,
-    CONFIG: (id: string) => `/api/integrations/${id}/config`,
-  };
   
   // Estrutura JSON simulada para armazenamento local
   const LOCAL_STORAGE_KEY = 'hospital_integrations_config';

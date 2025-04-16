@@ -14,11 +14,6 @@ import { EmptyState } from './EmptyState';
 import { AiPanel } from './AiPanel';
 import { AlertsChatManager } from './integration-hub/integrations-notifications/AlertsChatManager';
 
-// Componentes importados
-
-// Tipos importados
-
-
 // Props para o componente ChatModal
 interface ChatModalProps {
   isOpen: boolean;

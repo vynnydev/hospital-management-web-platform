@@ -3,8 +3,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/organisms/button';
-import { IWorkflowTemplate } from '@/types/workflow/customize-process-by-workflow-types';
-
+import { IWorkflowTemplate } from '@/types/workflow/workflow-types';
 
 interface TemplateCarouselProps {
   templates: IWorkflowTemplate[];

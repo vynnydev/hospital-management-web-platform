@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { IThermalAlert, IThermalCamera, IThermalCameraConfiguration, IThermalCameraReading, IThermalMaintenance } from '@/types/thermal-cameras-types';
 import { thermalCameraService } from '@/services/general/thermal-camera/thermalCameraService';
-import { IRoom } from '@/types/hospital-network-types';
 
 interface UseThermalCameraDataReturn {
   cameras: IThermalCamera[];

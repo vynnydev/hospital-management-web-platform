@@ -13,15 +13,11 @@ import { Separator } from '@/components/ui/organisms/Separator';
 import { useToast } from '@/components/ui/hooks/use-toast';
 import { 
   Shield, 
-  Lock, 
   Key, 
   RefreshCw, 
-  FileCheck, 
-  FileLock, 
   HardDrive, 
   Database, 
   AlertTriangle,
-  Info,
   CheckCircle,
   FileX
 } from 'lucide-react';

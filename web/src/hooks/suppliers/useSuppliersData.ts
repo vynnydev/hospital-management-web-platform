@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import type { ISupplier, ISupplierRecommendation, IHospitalResourceNeeds, TResourceCategory } from '@/types/supplier-types';
 import { useNetworkData } from '../network-hospital/useNetworkData';
-import api from '../../api';
+import api from '@/services/api';
 
 export const useSuppliersData = (selectedHospitalId: string | null) => {
     const [loading, setLoading] = useState(true);

@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/organisms/card';
 import { Button } from '@/components/ui/organisms/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/organisms/tabs';
 import { useSecurityCompliance } from '@/hooks/security-compliance/useSecurityCompliance';
 import { useToast } from '@/components/ui/hooks/use-toast';
-import { Shield, LockKeyhole, Timer, Globe, RefreshCw } from 'lucide-react';
+import { LockKeyhole, Timer, Globe, RefreshCw } from 'lucide-react';
 
 import { APIAuthenticationPanel } from './api-security/APIAuthenticationPanel';
 import { RateLimitingPanel } from './api-security/RateLimitingPanel';

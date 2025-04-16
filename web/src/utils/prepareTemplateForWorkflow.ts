@@ -1,4 +1,4 @@
-import { IWorkflowNode, IWorkflowTemplate } from "@/types/workflow/customize-process-by-workflow-types";
+import { IWorkflowNode, IWorkflowTemplate } from "@/types/workflow/workflow-types";
 
 // Função para converter um template para o formato do workflow
 export const prepareTemplateForWorkflow = (template: IWorkflowTemplate): IWorkflowNode[] => {

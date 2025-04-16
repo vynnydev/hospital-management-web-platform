@@ -1,13 +1,13 @@
 import { AlertTriangle, BarChart3 } from "lucide-react";
-import { VitalReading, VitalsAnalysis } from "../types";
+import { IVitalReading, IVitalsAnalysis } from "../../../../../../types/report-medication-types";
 
-export const VitalsAnalysisCard: React.FC<{ vitalsAnalysis: VitalsAnalysis }> = ({ vitalsAnalysis }) => {
+export const VitalsAnalysisCard: React.FC<{ vitalsAnalysis: IVitalsAnalysis }> = ({ vitalsAnalysis }) => {
   // Funções auxiliares para verificação segura
   const hasAlerts = (): boolean => {
     return Array.isArray(vitalsAnalysis?.alerts) && vitalsAnalysis.alerts.length > 0;
   };
 
-  const getVitalReadings = (): VitalReading[] => {
+  const getVitalReadings = (): IVitalReading[] => {
     const readings = vitalsAnalysis?.lastReadings || {};
     return [
       {

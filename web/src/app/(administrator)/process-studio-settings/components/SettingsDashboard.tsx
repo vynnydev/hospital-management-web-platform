@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/organisms/tabs';
 import { Card, CardContent } from '@/components/ui/organisms/card';
 import { Button } from '@/components/ui/organisms/button';
-import { Settings2, FileText, BarChart2, Bot, Bell, Calendar, Link, UserIcon, CreditCard, Shield } from 'lucide-react';
+import { Settings2, FileText, BarChart2, Bot, Bell, Calendar, Link, UserIcon, Shield } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { WorkflowTab } from './workflow/WorkflowTab';
 import { AnalyticsTab } from './analytics/AnalyticsTab';

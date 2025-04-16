@@ -2,7 +2,7 @@
 import React from 'react';
 import { ScrollArea } from '@/components/ui/organisms/scroll-area';
 import { Badge } from '@/components/ui/organisms/badge';
-import { Clock, Users } from 'lucide-react';
+import { Users } from 'lucide-react';
 import { IStaffCalendarEvent } from '@/types/staff-calendar';
 
 interface StaffEventsListProps {

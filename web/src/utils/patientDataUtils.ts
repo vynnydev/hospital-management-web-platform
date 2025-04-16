@@ -1,5 +1,4 @@
-import { IHospitalMetrics } from '@/app/(administrator)/patient-management/types/types';
-import { IPatient } from '@/types/hospital-network-types';
+import { IHospitalMetrics, IPatient } from '@/types/hospital-network-types';
 
 /**
  * Extrai os sinais vitais mais recentes do paciente a partir dos eventos

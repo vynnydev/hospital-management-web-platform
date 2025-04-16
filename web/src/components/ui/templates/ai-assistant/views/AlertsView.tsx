@@ -7,10 +7,10 @@ import {
   Users, 
   ChevronRight 
 } from 'lucide-react';
-import { Alert } from '../../providers/alerts/AlertsProvider';
+import { IAlert } from '@/types/alert-types';
 
 interface AlertsViewProps {
-  alerts: Alert[];
+  alerts: IAlert[];
   setCurrentView: (view: 'welcome' | 'recommendations' | 'alerts') => void;
   onViewAllAlerts?: () => void;
 }

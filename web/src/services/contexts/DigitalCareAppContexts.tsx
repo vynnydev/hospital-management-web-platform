@@ -4,8 +4,8 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { IAppUser } from '@/types/auth-types';
 import { IBed, ICareEvent, IHospital, INetworkData, IPatientCareHistory, IStatusHistory } from '@/types/hospital-network-types';
 
-import { useNetworkData } from '../hooks/network-hospital/useNetworkData';
-import { usePermissions } from '../hooks/auth/usePermissions';
+import { useNetworkData } from '@/hooks/network-hospital/useNetworkData';
+import { usePermissions } from '@/hooks/auth/usePermissions';
 
 // Interface para pacientes que incluem informações adicionais
 interface IPatient {
@@ -165,9 +165,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   // Função para obter informações de um profissional pelo ID
   const getStaffById = (staffId: string) => {
     if (!selectedHospital) return null;
-    
     // Verificar entre os médicos
-    const doctor = selectedHospital.staff?.doctors.find(d => d.id === staffId);
+    const doctor = selectedHospital.staff?.doctors.find((d: { id: string }) => d.id === staffId);
     if (doctor) {
       return {
         id: doctor.id,
@@ -175,9 +174,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         role: doctor.specialty
       };
     }
-    
     // Verificar entre os enfermeiros
-    const nurse = selectedHospital.staff?.nurses.find(n => n.id === staffId);
+    const nurse = selectedHospital.staff?.nurses.find((n: { id: string }) => n.id === staffId);
     if (nurse) {
       return {
         id: nurse.id,
@@ -283,9 +281,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     registerCareEvent,
     updatePatientStatus
   };
-
   return (
-    <DigitalCareAppContext.Provider value={value}>
+    <DigitalCareAppContext.Provider value={value as DigitalCareAppContextData}>
       {children}
     </DigitalCareAppContext.Provider>
   );

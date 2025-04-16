@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // hooks/usePrint.ts
-import { useMemo, useCallback } from 'react';
+import { useCallback } from 'react';
 import { convertToImageUrl } from '../functions/imagePresenter';
-import { PrintData, ReportModalData } from '../../types';
+import { IPrintData, IReportModalData } from '../../../../../../../types/report-medication-types';
 
 export const usePrint = () => {
   // Função interna para realizar a impressão
@@ -62,13 +63,13 @@ export const usePrint = () => {
     };
   }, []);
 
-  const preparePrintData = useCallback((rawData: ReportModalData): PrintData => {
+  const preparePrintData = useCallback((rawData: IReportModalData): IPrintData => {
     const vitalsData = {
         temperature: String(
             rawData?.raw?.data?.analysis?.lastVitals?.[0]?.temperature || "00.0"
         ),
         pressure: 
-        rawData?.raw?.data?.analysis?.lastVitals?.[0]?.bloodPressure || "000/00",
+            rawData?.raw?.data?.analysis?.lastVitals?.[0]?.bloodPressure || "000/00",
         heartRate: String(
             rawData?.raw?.data?.analysis?.lastVitals?.[0]?.heartRate || "00"
         ),

@@ -3,7 +3,6 @@ import {
     ISubscription, 
     IUpdatePlanRequest,
     TBillingCycle,
-    TPlanType,
     IModuleFeature,
     IPlatformModule,
     TModuleName
@@ -220,9 +219,7 @@ class SubscriptionService {
         if (!response.ok) {
           throw new Error('Falha ao obter assinatura para cancelamento');
         }
-        
-        const subscription = await response.json();
-        
+                
         // Preparar dados para atualização
         const updateData: Partial<ISubscription> = {
           status: immediate ? 'canceled' : 'expired',
@@ -267,8 +264,8 @@ class SubscriptionService {
         
         // Para planos personalizados, verificar nos módulos customizados
         if (subscription.customModules) {
-          const module = subscription.customModules.find(m => m.id === moduleName);
-          return module ? module.enabled : false;
+          const customModule = subscription.customModules.find(m => m.id === moduleName);
+          return customModule ? customModule.enabled : false;
         }
         
         // Para planos padrão, obter plano e verificar módulos
@@ -277,8 +274,8 @@ class SubscriptionService {
           return false;
         }
         
-        const module = plan.modules.find(m => m.id === moduleName);
-        return module ? module.enabled : false;
+        const planModule = plan.modules.find(m => m.id === moduleName);
+        return planModule ? planModule.enabled : false;
       } catch (error) {
         console.error(`Erro ao verificar disponibilidade do módulo ${moduleName}:`, error);
         return false;

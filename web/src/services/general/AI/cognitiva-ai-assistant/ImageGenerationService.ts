@@ -1,22 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { HfInference } from '@huggingface/inference';
 import { 
-    MedicationImageRequest, 
-    ImageGenerationConfig
-} from './types/image-types';
+    IMedicationImageRequest, 
+    IImageGenerationConfig,
+    IMedicationImageResult
+} from '../../../../types/image-types';
 import { isValidBase64Image } from '@/components/ui/templates/cognitiva-ai-assistant/report-modal-ai/services/functions/imagePresenter';
 
 import pQueue from 'p-queue';
 
-interface MedicationImageResult {
-    usage: string;
-    application: string;
-    precaution: string;
-    palliativeCare?: string;
-    monitoring?: string;
-}
-
-interface ImageValidationCriteria {
+interface IImageValidationCriteria {
     minWidth: number;
     minHeight: number;
     aspectRatio: { min: number; max: number };
@@ -31,9 +24,9 @@ export const sharedHfInstance = new HfInference(process.env.NEXT_PUBLIC_HUGGING_
 
 export class ImageGenerationService {
     private hf: HfInference = sharedHfInstance;
-    private readonly config: ImageGenerationConfig;
+    private readonly config: IImageGenerationConfig;
     private readonly model: string = "stabilityai/stable-diffusion-3.5-large";
-    private readonly validationCriteria: Record<string, ImageValidationCriteria>;
+    private readonly validationCriteria: Record<string, IImageValidationCriteria>;
     private queue: pQueue;
 
     constructor() {
@@ -214,7 +207,7 @@ export class ImageGenerationService {
         throw lastError || new Error('Falha na geração da imagem após várias tentativas');
     }
 
-    async generateMedicationImages(medicationRequest: MedicationImageRequest): Promise<MedicationImageResult> {
+    async generateMedicationImages(medicationRequest: IMedicationImageRequest): Promise<IMedicationImageResult> {
         const medicationName = medicationRequest.name;
         return await this.monitorRequest(
             async () => {
@@ -326,7 +319,7 @@ export class ImageGenerationService {
       `.trim().replace(/\s+/g, ' ');
     }  
     
-    private createPalliativeCarePrompt(request: MedicationImageRequest): string {
+    private createPalliativeCarePrompt(request: IMedicationImageRequest): string {
         const { name, dosage, palliativeCare, patientContext } = request;
         return `Guia visual de cuidados paliativos para ${name} (${dosage}).
       
@@ -353,7 +346,7 @@ export class ImageGenerationService {
       `.trim().replace(/\s+/g, ' ');
     }      
     
-    private createMonitoringPrompt(request: MedicationImageRequest): string {
+    private createMonitoringPrompt(request: IMedicationImageRequest): string {
         const { name, dosage, patientContext } = request;
         return `Protocolo visual de monitoramento para o uso de ${name} (${dosage}).
       

@@ -46,7 +46,6 @@ export const useFinanceData = (selectedHospitalId?: string) => {
       const updatedSettings: IFinanceSettings = {
         ...currentSettings,
         ...settings,
-        lastUpdated: new Date().toISOString(),
         updatedBy: authService.getCurrentUser()?.id || 'unknown'
       };
       
@@ -113,7 +112,6 @@ export const useFinanceData = (selectedHospitalId?: string) => {
       const updatedSettings: IFinanceSettings = {
         ...currentSettings,
         ...settings,
-        lastUpdated: new Date().toISOString(),
         updatedBy: authService.getCurrentUser()?.id || 'unknown'
       };
       

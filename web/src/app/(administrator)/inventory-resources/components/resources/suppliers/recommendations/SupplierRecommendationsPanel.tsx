@@ -57,7 +57,6 @@ export const SupplierRecommendationsPanel: React.FC<ISupplierRecommendationsPane
   onShowRoute,
   selectedSupplierId,
   className = '',
-  hospitalId,
   hospitalName
 }) => {
   const [isExpanded, setIsExpanded] = useState(false); // Não expandido por padrão
@@ -230,7 +229,9 @@ export const SupplierRecommendationsPanel: React.FC<ISupplierRecommendationsPane
                       } text-white py-1 px-2 rounded flex items-center`}
                       onClick={(e) => {
                         e.stopPropagation();
-                        onShowRoute && onShowRoute(rec.supplier.id, rec.supplier.coordinates);
+                        if (onShowRoute) {
+                          onShowRoute(rec.supplier.id, rec.supplier.coordinates);
+                        }
                       }}
                     >
                       <MapPin className="h-3 w-3 mr-1" />

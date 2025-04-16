@@ -220,7 +220,6 @@ const Overview: React.FC = () => {
           loading={loading}
           isReorderMode={isReorderMode}
           onSectionsOrderChange={setCurrentSectionsOrder}
-          setMessage={setMessage}
         />
       ) : (
         <>

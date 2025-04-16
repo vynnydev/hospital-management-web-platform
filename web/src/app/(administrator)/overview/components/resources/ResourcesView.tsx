@@ -8,7 +8,7 @@ interface IResourcesViewProps {
   resources?: IHospitalResources;
 }
 
-export const ResourcesView: React.FC<IResourcesViewProps> = ({ hospital, resources }) => {
+export const ResourcesView: React.FC<IResourcesViewProps> = ({ resources }) => {
   if (!resources) {
     return (
       <div className="p-3">

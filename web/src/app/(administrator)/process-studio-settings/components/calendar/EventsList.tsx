@@ -3,22 +3,19 @@ import { Button } from '@/components/ui/organisms/button';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/organisms/card';
 import { 
   Edit, 
-  Eye, 
   Calendar, 
   Clock, 
   MapPin, 
   AlertCircle, 
   ChevronDown, 
   ChevronUp, 
-  ArrowUpDown 
 } from 'lucide-react';
 import { Badge } from '@/components/ui/organisms/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/organisms/tooltip';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/organisms/select';
 import { Switch } from '@/components/ui/organisms/switch';
 import { Label } from '@/components/ui/organisms/label';
-import { format, parseISO, isToday, isFuture } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
+import { parseISO, isToday } from 'date-fns';
 
 export interface IEvent {
   id: string;
@@ -105,12 +102,6 @@ export const EventsList: React.FC<IEventsListProps> = ({
     return isToday(parseISO(event.date));
   };
 
-  // Verificar se um evento é futuro
-  const isEventFuture = (event: IEvent) => {
-    if (!event.date) return false;
-    return isFuture(parseISO(event.date));
-  };
-
   // Alternar evento expandido
   const toggleExpandEvent = (eventId: string, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -123,19 +114,6 @@ export const EventsList: React.FC<IEventsListProps> = ({
     }
     
     setExpandedEvents(newExpanded);
-  };
-
-  // Formatar o prazo do evento
-  const formatEventDeadline = (date?: string) => {
-    if (!date) return '';
-    
-    const eventDate = parseISO(date);
-    
-    if (isToday(eventDate)) {
-      return 'Hoje';
-    }
-    
-    return format(eventDate, "dd 'de' MMMM", { locale: ptBR });
   };
 
   // Eventos filtrados e ordenados
@@ -375,7 +353,7 @@ export const EventsList: React.FC<IEventsListProps> = ({
                         className="h-8 w-8 p-0"
                         onClick={(e) => {
                           e.stopPropagation();
-                          onViewDetails && onViewDetails(event.id);
+                          if (onViewDetails) onViewDetails(event.id);
                         }}
                       >
                         <span className="sr-only">Editar</span>

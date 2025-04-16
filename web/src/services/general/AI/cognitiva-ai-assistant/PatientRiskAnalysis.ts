@@ -3,11 +3,11 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 
 import { 
   PatientContext, 
-  PatientData,
   CachedRecommendation,
-} from './types/medimind-ai-assistant';
+  IPatientData,
+} from '@/types/cognitiva-ai-assistant';
 import { ImageGenerationService } from './ImageGenerationService';
-import { MedicationImageRequest } from './types/image-types';
+import { IMedicationImageRequest } from '@/types/image-types';
 
 class PatientRiskAnalysis {
     private readonly similarityThreshold = 0.85;
@@ -26,7 +26,7 @@ class PatientRiskAnalysis {
         this.imageService = new ImageGenerationService();
     }
 
-    private preparePatientContext(patientData: PatientData): PatientContext {
+    private preparePatientContext(patientData: IPatientData): PatientContext {
       // Pega o sinal vital mais recente de forma segura
       const latestVitals = patientData.treatment.vitals.length > 0
           ? patientData.treatment.vitals[patientData.treatment.vitals.length - 1]
@@ -69,8 +69,8 @@ class PatientRiskAnalysis {
         };
     } 
 
-    async generateMedicationInstructions(medication: any, patientData: PatientData) {
-        const request: MedicationImageRequest = {
+    async generateMedicationInstructions(medication: any, patientData: IPatientData) {
+        const request: IMedicationImageRequest = {
             name: medication.name,
             dosage: medication.dosage,
             instructions: medication.instructions || '',
@@ -96,7 +96,7 @@ class PatientRiskAnalysis {
         return await this.imageService.generateMedicationImages(request);
     }
 
-  async generateRecommendations(patientData: PatientData): Promise<string[]> {
+  async generateRecommendations(patientData: IPatientData): Promise<string[]> {
     console.log("INICIO DA FUNÇÃO DE INTELIGENCIA ARTIFICIAL:")
     console.log(patientData)
 
@@ -352,28 +352,28 @@ class PatientRiskAnalysis {
           return union.size === 0 ? 0 : intersection.size / union.size;
     }
 
-    private assessMobilityStatus(patientData: PatientData): string {
+    private assessMobilityStatus(patientData: IPatientData): string {
         const lastVitals = patientData.treatment.vitals[patientData.treatment.vitals.length - 1];
         
         if (!lastVitals) return 'Não Avaliado';
         return lastVitals.mobility || 'Não Avaliado';
     }
     
-    private assessConsciousnessLevel(patientData: PatientData): string {
+    private assessConsciousnessLevel(patientData: IPatientData): string {
         const lastVitals = patientData.treatment.vitals[patientData.treatment.vitals.length - 1];
         
         if (!lastVitals) return 'Não Avaliado';
         return lastVitals.consciousness || 'Não Avaliado';
     }
     
-    private assessPainLevel(patientData: PatientData): number {
+    private assessPainLevel(patientData: IPatientData): number {
         const lastVitals = patientData.treatment.vitals[patientData.treatment.vitals.length - 1];
         
         if (!lastVitals) return 0;
         return lastVitals.painScale || 0;
     }
     
-    private assessNutritionalStatus(patientData: PatientData): string {
+    private assessNutritionalStatus(patientData: IPatientData): string {
         const { weight, height } = patientData.personalInfo;
         
         if (weight && height) {
@@ -397,7 +397,7 @@ class PatientRiskAnalysis {
         return nutritionalIssues ? 'Comprometido' : 'Não Avaliado';
     }
     
-    private assessRespiratoryStatus(patientData: PatientData): string {
+    private assessRespiratoryStatus(patientData: IPatientData): string {
         const lastVitals = patientData.treatment.vitals[patientData.treatment.vitals.length - 1];
         
         if (!lastVitals) return 'Não Avaliado';
@@ -411,7 +411,7 @@ class PatientRiskAnalysis {
         return 'Normal';
     }
     
-    private identifySpecialNeeds(patientData: PatientData): string[] {
+    private identifySpecialNeeds(patientData: IPatientData): string[] {
         const specialNeeds: string[] = [];
     
         // Verifica condições que requerem cuidados especiais

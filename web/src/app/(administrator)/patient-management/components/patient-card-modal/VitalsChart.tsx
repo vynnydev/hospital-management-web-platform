@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useMemo } from 'react';
 import {
   LineChart,
   Line,
@@ -36,8 +37,6 @@ const vitalSigns = [
 ];
 
 export const VitalsChart: React.FC<VitalsChartProps> = ({ patientData }) => {
-  const [timeRange] = useState('24h');
-
   const generateProgressData = () => {
     if (!patientData) return [];
     

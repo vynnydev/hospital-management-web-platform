@@ -3,7 +3,6 @@ import { FolderPlus, Search, Filter, Tag, AlertCircle, Activity, Clipboard, Micr
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/organisms/card';
 import { Button } from '@/components/ui/organisms/button';
 import { Input } from '@/components/ui/organisms/input';
-import { IWorkflowTemplate } from '@/types/workflow/customize-process-by-workflow-types';
 import { 
   Accordion, 
   AccordionContent, 
@@ -13,6 +12,7 @@ import {
 import { Badge } from '@/components/ui/organisms/badge';
 import { Checkbox } from '@/components/ui/organisms/checkbox';
 import { workflowTemplates } from '@/utils/workflowTemplates';
+import { IWorkflowTemplate } from '@/types/workflow/workflow-types';
 
 // Tipo para as categorias do sistema
 type CategoryType = 'geral' | 'cirurgias' | 'diagnósticos' | 'emergência' | string;

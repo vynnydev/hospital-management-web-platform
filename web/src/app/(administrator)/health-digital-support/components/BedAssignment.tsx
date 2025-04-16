@@ -10,7 +10,6 @@ interface BedAssignmentProps {
 }
 
 export default function BedAssignment({
-  hospitalId,
   departmentId,
   selectedBedId,
   onChange
@@ -33,7 +32,7 @@ export default function BedAssignment({
     
     // Se houver leitos disponíveis, selecionar o primeiro andar por padrão
     if (departmentBeds.length > 0) {
-      const floors = [...new Set(departmentBeds.map(bed => bed.floor))].sort();
+      const floors = Array.from(new Set(departmentBeds.map(bed => bed.floor))).sort();
       if (floors.length > 0 && !selectedFloor) {
         setSelectedFloor(floors[0]);
       }
@@ -42,20 +41,19 @@ export default function BedAssignment({
       setSelectedRoom('');
     }
   }, [networkData, departmentId, beds, selectedFloor]);
-  
   // Obter andares disponíveis
-  const availableFloors = [...new Set(availableBeds.map(bed => bed.floor))].sort();
+  const availableFloors = Array.from(new Set(availableBeds.map(bed => bed.floor))).sort();
   
   // Obter salas do andar selecionado
   const roomsInSelectedFloor = selectedFloor
-    ? [...new Set(availableBeds
+    ? Array.from(new Set(availableBeds
         .filter(bed => bed.floor === selectedFloor)
         .map(bed => {
           // Extrair número da sala do ID do leito (assumindo um formato como "UTI-101A")
           const roomMatch = bed.id.match(/\d+[A-Za-z]*/);
           return roomMatch ? roomMatch[0] : '';
         })
-      )].sort()
+      )).sort()
     : [];
   
   // Obter leitos da sala selecionada

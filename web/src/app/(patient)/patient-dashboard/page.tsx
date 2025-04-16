@@ -1,9 +1,10 @@
+import { HealthDashboard } from "./components/HealthDashboard"
 
 
 const PatientDashboard = () => {
   return (
     <div>
-      <h1>Dashboard do Paciente</h1>
+      <HealthDashboard  />  
     </div>
   )
 }

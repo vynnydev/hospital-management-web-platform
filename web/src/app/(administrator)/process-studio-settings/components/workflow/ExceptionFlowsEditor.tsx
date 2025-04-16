@@ -6,7 +6,8 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { Button } from '@/components/ui/organisms/button';
 import { Input } from '@/components/ui/organisms/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/organisms/select';
-import { IExceptionFlow, IWorkflowTemplate, TPriority } from '@/types/workflow/customize-process-by-workflow-types';
+import { IExceptionFlow, TPriority } from '@/types/workflow/customize-process-by-workflow-types';
+import { IWorkflowTemplate } from '@/types/workflow/workflow-types';
 
 // Definição explícita das props para o componente
 interface ExceptionFlowsEditorProps {

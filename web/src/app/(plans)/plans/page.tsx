@@ -1,7 +1,6 @@
 'use client'
 import { FC, useState } from 'react'
 import Link from "next/link"
-import { useTheme } from 'next-themes'
 
 import { Container } from "@/components/ui/atoms/Container"
 import { FaCircleArrowLeft } from "react-icons/fa6"

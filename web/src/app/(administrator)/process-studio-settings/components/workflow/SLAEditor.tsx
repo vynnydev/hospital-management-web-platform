@@ -5,7 +5,8 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { Button } from '@/components/ui/organisms/button';
 import { Input } from '@/components/ui/organisms/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/organisms/select';
-import { ISLASettings, IWorkflowTemplate } from '@/types/workflow/customize-process-by-workflow-types';
+import { ISLASettings } from '@/types/workflow/customize-process-by-workflow-types';
+import { IWorkflowTemplate } from '@/types/workflow/workflow-types';
 
 // Definição explícita das props para o componente
 interface SLAEditorProps {
@@ -19,7 +20,12 @@ export const SLAEditor: React.FC<SLAEditorProps> = ({ template, onUpdateSLA }) =
   // Atualiza os SLAs quando o template muda
   useEffect(() => {
     if (template?.slaSettings) {
-      setSlaSettings(template.slaSettings);
+      setSlaSettings(template.slaSettings.map(sla => ({
+        ...sla,
+        timeUnit: sla.timeUnit === 'month' ? 'day' : 
+                 sla.timeUnit === 'week' ? 'day' : 
+                 sla.timeUnit
+      })));
     } else {
       setSlaSettings([]);
     }

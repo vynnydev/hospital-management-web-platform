@@ -1,4 +1,8 @@
-import { Medication, PatientData, VitalSigns } from "./types/medimind-ai-assistant";
+import { 
+    IMedication, 
+    IPatientData, 
+    IVitalSigns 
+} from "../../../../types/cognitiva-ai-assistant";
 
 class RiskScoreCalculator {
     private static readonly RISK_FACTORS = {
@@ -32,7 +36,7 @@ class RiskScoreCalculator {
         }
     };
 
-    static calculateRiskScore(patientData: PatientData): {
+    static calculateRiskScore(patientData: IPatientData): {
         score: number;
         factors: string[];
         level: string;
@@ -78,7 +82,7 @@ class RiskScoreCalculator {
         return 0;
     }
 
-    private static calculateVitalsScore(vitals: VitalSigns[]): {
+    private static calculateVitalsScore(vitals: IVitalSigns[]): {
         score: number;
         factors: string[];
     } {
@@ -87,7 +91,7 @@ class RiskScoreCalculator {
         const factors: string[] = [];
 
         Object.entries(this.RISK_FACTORS.vitals.parameters).forEach(([param, config]) => {
-        const value = latest[param as keyof VitalSigns] as number;
+        const value = latest[param as keyof IVitalSigns] as number;
         const [min, max] = config.normal;
         
         if (value < min || value > max) {
@@ -119,7 +123,7 @@ class RiskScoreCalculator {
         };
     }
 
-    private static calculateMedicationScore(medications: Medication[]): {
+    private static calculateMedicationScore(medications: IMedication[]): {
         score: number;
         factors: string[];
     } {

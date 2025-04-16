@@ -1,8 +1,8 @@
-import { KnowledgeBaseEntry } from "./types/medimind-ai-assistant";
+import { IKnowledgeBaseEntry } from "../../../../types/cognitiva-ai-assistant";
 
 class MedicalKnowledgeBase {
     private static instance: MedicalKnowledgeBase;
-    private entries: Map<string, KnowledgeBaseEntry[]>;
+    private entries: Map<string, IKnowledgeBaseEntry[]>;
     private lastUpdate: Date;
   
     private constructor() {
@@ -39,7 +39,7 @@ class MedicalKnowledgeBase {
       // Adicione mais condições conforme necessário
     }
   
-    getRecommendations(condition: string): KnowledgeBaseEntry[] {
+    getRecommendations(condition: string): IKnowledgeBaseEntry[] {
       return this.entries.get(condition.toLowerCase()) || [];
     }
   

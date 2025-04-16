@@ -8,7 +8,7 @@ interface ITransfersViewProps {
   resources?: IHospitalResources;
 }
 
-export const TransfersView: React.FC<ITransfersViewProps> = ({ hospital, resources }) => {
+export const TransfersView: React.FC<ITransfersViewProps> = ({ resources }) => {
   if (!resources?.transferRequests) {
     return (
       <div className="p-3">

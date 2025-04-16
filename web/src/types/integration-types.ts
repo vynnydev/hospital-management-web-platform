@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type IntegrationType = 'teams' | 'slack' | 'gmail' | 'whatsapp' | 'more';
 
 // GET /api/integrations

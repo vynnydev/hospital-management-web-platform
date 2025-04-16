@@ -1,24 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { motion } from "framer-motion";
-import { ReportModalComponentsProps, VitalSignCardProps } from "../types";
+import { IReportModalComponentsProps, IVitalSignCardProps } from "../../../../../../types/report-medication-types";
 import { Activity, Heart, Thermometer } from "lucide-react";
-// import { PatientContext, PatientData } from "@/services/AI/medimind-ai-assistant/types/medimind-ai-assistant";
-
-// function prepareVitalsContext(patientData: PatientData): any {
-//   console.log(patientData)
-//     return {
-//         diagnoses: patientData.treatment.diagnosis || 0,
-//         riskLevel: patientData.complications.risk,
-//         vitals: patientData.treatment.vitals.length > 0 
-//             ? patientData.treatment.vitals[patientData.treatment.vitals.length - 1]
-//             : null,
-//         medications: patientData.treatment.medications,
-//         procedures: patientData.treatment.procedures
-//     };
-// }
 
 // Componente de Sinais Vitais
-const VitalSignCard: React.FC<VitalSignCardProps> = ({ icon, label, value, normal, status }) => (
+const VitalSignCard: React.FC<IVitalSignCardProps> = ({ icon, label, value, normal, status }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
@@ -44,7 +30,7 @@ const VitalSignCard: React.FC<VitalSignCardProps> = ({ icon, label, value, norma
   </motion.div>
 );
 
-export const renderVitalSigns: React.FC<ReportModalComponentsProps> = ({ data }) => {
+export const renderVitalSigns: React.FC<IReportModalComponentsProps> = ({ data }) => {
   console.log(`Sinais Vitais: ${data?.raw?.data?.lastVitals}`)
   const vitalsData = {
     temperature: String(

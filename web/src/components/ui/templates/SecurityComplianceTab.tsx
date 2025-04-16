@@ -20,7 +20,6 @@ export const SecurityComplianceTab = () => {
   const {
     loading,
     error,
-    securityData
   } = useSecurityCompliance();
 
   if (loading) {

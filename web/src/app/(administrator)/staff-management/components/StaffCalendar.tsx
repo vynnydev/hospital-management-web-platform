@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { startOfWeek, addDays, parseISO, format, isSameDay, isValid } from 'date-fns';
+import React, { useState, useMemo } from 'react';
+import { startOfWeek, addDays, parseISO, format, isValid } from 'date-fns';
 import { CalendarDays, Users } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/organisms/scroll-area';
 import { Badge } from '@/components/ui/organisms/badge';

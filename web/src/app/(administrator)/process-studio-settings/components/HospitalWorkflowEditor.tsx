@@ -32,7 +32,6 @@ import { ISavedWorkflow, IWorkflowNode } from '@/types/workflow/customize-proces
 import { departmentTypes } from './workflow/constants/departmentTypes';
 import { SaveWorkflowModal } from './workflow/modals/SaveWorkflowModal';
 import { DeleteWorkflowModal } from './workflow/modals/DeleteWorkflowModal';
-import { WorkflowCanvasWrapper } from './workflow/WorkflowCanvasWrapper';
 
 // Novas props para o componente
 interface HospitalWorkflowEditorProps {

@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/organisms/card';
 import { BarChart3, AlertCircle, Ambulance, Activity, User } from 'lucide-react';
 import { workflowTemplates } from '@/utils/workflowTemplates';
-import { IWorkflowTemplate } from '@/types/workflow/customize-process-by-workflow-types';
 import { EnhancedTemplateCarousel } from './EnhancedTemplateCarousel';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/organisms/tabs';
 import { Badge } from '@/components/ui/organisms/badge';
@@ -11,6 +10,7 @@ import { IAmbulanceData } from '@/types/ambulance-types';
 import { IAlert } from '@/types/alert-types';
 import { INetworkData } from '@/types/hospital-network-types';
 import { IStaffData, IStaffTeam } from '@/types/staff-types';
+import { IWorkflowTemplate } from '@/types/workflow/workflow-types';
 
 interface ISmartTemplateRecommendationsProps {
     networkData: INetworkData | null;

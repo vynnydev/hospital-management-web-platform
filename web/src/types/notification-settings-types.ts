@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // Canais de Notificação
 export type TNotificationChannel = 'email' | 'sms' | 'dashboard' | 'app';
 

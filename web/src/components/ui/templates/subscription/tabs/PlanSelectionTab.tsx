@@ -4,12 +4,7 @@ import { useState, useEffect } from 'react'
 import { 
   Check, 
   AlertCircle, 
-  CreditCard, 
-  Calendar, 
-  Shield, 
-  Zap, 
   Tag, 
-  Clock
 } from 'lucide-react'
 
 // Importando componentes do shadcn/ui

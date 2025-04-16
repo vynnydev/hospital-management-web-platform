@@ -4,12 +4,10 @@ import { useState, useEffect } from 'react'
 import { 
   BarChart2, 
   Users, 
-  Database, 
   CreditCard, 
   Activity,
   User,
   RefreshCw,
-  Calendar,
   HardDrive,
   Cpu,
   AlertTriangle,
@@ -55,7 +53,6 @@ interface UsageData {
 export const UsageStatisticsTab = ({ hospitalId }: UsageStatisticsTabProps) => {
   const { 
     currentPlan, 
-    currentSubscription,
     availableModules,
     loading,
     refreshData

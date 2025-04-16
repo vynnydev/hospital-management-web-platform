@@ -1,10 +1,10 @@
 // metricsCalcService.ts
 import api from '@/services/api'
-import { HospitalMetrics } from '@/types/hospital-metrics-types'
+import { IHospitalMetrics } from '@/types/hospital-metrics-types';
 
 export const metricsCalcService = {
-  getMetrics: async (): Promise<HospitalMetrics> => {
-    const response = await api.get<HospitalMetrics>('/metrics')
+  getMetrics: async (): Promise<IHospitalMetrics> => {
+    const response = await api.get<IHospitalMetrics>('/metrics')
     return response.data;
   },
 

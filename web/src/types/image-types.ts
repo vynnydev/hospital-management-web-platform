@@ -1,4 +1,4 @@
-export interface MedicationImageResult {
+export interface IMedicationImageResult {
     usage: string;
     application: string;
     precaution: string;
@@ -6,7 +6,7 @@ export interface MedicationImageResult {
     monitoring?: string;
   }
   
-export interface PalliativeCareContext {
+export interface IPalliativeCareContext {
     patientCondition: string;
     mobilityStatus: string;
     painLevel: number;
@@ -16,7 +16,7 @@ export interface PalliativeCareContext {
     specialNeeds: string[];
 }
   
-export interface PatientContext {
+export interface IPatientContext {
     age: number;
     weight?: number;
     allergies?: string[];
@@ -25,15 +25,15 @@ export interface PatientContext {
     specialNeeds: string[];
 }
   
-export interface MedicationImageRequest {
+export interface IMedicationImageRequest {
     name: string;
     dosage: string;
     instructions: string;
-    patientContext?: PatientContext;
-    palliativeCare?: PalliativeCareContext;
+    patientContext?: IPatientContext;
+    palliativeCare?: IPalliativeCareContext;
 }
 
-export interface ImageValidationCriteria {
+export interface IImageValidationCriteria {
     minWidth: number;
     minHeight: number;
     requiredElements: string[];
@@ -50,7 +50,7 @@ export interface ImageValidationCriteria {
     };
 }
 
-export interface ImageValidationResult {
+export interface IImageValidationResult {
     isValid: boolean;
     errors: string[];
     warnings: string[];
@@ -68,7 +68,7 @@ export interface ImageValidationResult {
     };
 }
 
-export interface ImageValidationResult {
+export interface IImageValidationResult {
     isValid: boolean;
     errors: string[];
     warnings: string[];
@@ -78,17 +78,17 @@ export interface ImageValidationResult {
             height: number;
         };
         aspectRatio: number;
-        qualityMetrics: ImageQualityMetrics;
+        qualityMetrics: IImageQualityMetrics;
     };
 }
 
-export interface ImageQualityMetrics {
+export interface IImageQualityMetrics {
     sharpness: number;
     contrast: number;
     noise: number;
 }
 
-export interface ImageGenerationConfig {
+export interface IImageGenerationConfig {
     maxRetries: number;
     timeout: number;
     initialDelay: number;

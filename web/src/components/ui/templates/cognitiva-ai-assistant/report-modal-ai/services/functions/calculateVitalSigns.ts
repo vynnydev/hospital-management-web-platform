@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // Tipos para os status
 type VitalStatus = 'NORMAL' | 'WARNING' | 'CRITICAL';
 

@@ -25,7 +25,7 @@ export const getAvailableBeds = (department: IDepartment): number => {
 // Calcula leitos em manutenção
 export const getMaintenanceBeds = (department: IDepartment): number => {
     return department.rooms.reduce((total, room) => 
-        total + room.beds.filter(bed => bed.status === 'maintenance').length, 0
+        total + room.beds.filter(bed => bed.status === 'hygienization').length, 0
     );
 };
 

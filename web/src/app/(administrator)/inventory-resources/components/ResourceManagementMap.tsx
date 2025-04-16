@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect, useMemo } from 'react';
 import { useResourcesData } from '@/hooks/resources/useResourcesData';
 import { useResourceRouteAnalysis } from '@/hooks/resources/useResourceRouteAnalysis';

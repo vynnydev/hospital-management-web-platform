@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { format, parseISO, isWithinInterval, startOfMonth, endOfMonth } from 'date-fns';
 import { useStaffData } from '../staffs/useStaffData';
 import api from '@/services/api';
-import { ICalendarEvent } from '@/types/calendar-types';
+import { ICalendarEvent, IEventType } from '@/types/calendar-types';
 import { IDepartmentSettings } from '@/types/settings-types';
 
 // Hook para gerenciar eventos do calendário
@@ -12,9 +12,10 @@ export const useCalendarEvents = (currentDate: Date) => {
   const [eventTypes, setEventTypes] = useState<IEventType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  
   // Obter dados de equipes e escalas
-  const { staffTeams, staffSchedule, getTasksAsEvents, isLoading: isLoadingStaff } = useStaffData();
+  const { staffData, getTasksAsEvents, loading: isLoadingStaff } = useStaffData();
+  const staffTeams = staffData?.staffTeams;
+  const staffSchedule = staffData?.staffSchedule;
 
   // Função para buscar eventos do mês atual
   const fetchEvents = async () => {
@@ -28,20 +29,20 @@ export const useCalendarEvents = (currentDate: Date) => {
         }
       });
       
-      let calendarEvents: ICalendarEvent[] = response.data || [];
+      const calendarEvents: ICalendarEvent[] = response.data || [];
       
       // 2. Adicionar tarefas agendadas como eventos
       const taskEvents = getTasksAsEvents();
       
       // 3. Adicionar escalas de plantão como eventos
       const shiftEvents: ICalendarEvent[] = [];
-      
       if (staffSchedule) {
         Object.entries(staffSchedule).forEach(([hospitalId, data]) => {
-          data.shifts.forEach(shift => {
-            // Filtrar apenas turnos do mês atual
-            const shiftDate = parseISO(shift.date);
-            const monthStart = startOfMonth(currentDate);
+          if (data && typeof data === 'object' && 'shifts' in data && Array.isArray(data.shifts)) {
+            data.shifts.forEach((shift) => {
+              // Filtrar apenas turnos do mês atual
+              const shiftDate = parseISO(shift.date);
+              const monthStart = startOfMonth(currentDate);
             const monthEnd = endOfMonth(currentDate);
             
             if (isWithinInterval(shiftDate, { start: monthStart, end: monthEnd })) {
@@ -55,11 +56,12 @@ export const useCalendarEvents = (currentDate: Date) => {
                 type: 'shift',
                 location: hospitalId,
                 attendees: shift.staff,
-                status: shift.status
+                status: shift.status,
+                day: 0
               });
             }
           });
-        });
+        }});
       }
       
       // Combinar todos os tipos de eventos
@@ -82,12 +84,15 @@ export const useCalendarEvents = (currentDate: Date) => {
       // Se a API falhar, extrair departamentos das equipes
       if (!response.data && staffTeams) {
         const deptSet = new Set<string>();
-        
         // Extrair departamentos únicos das equipes
-        Object.values(staffTeams).forEach((teams: any[]) => {
-          teams.forEach(team => {
-            deptSet.add(team.department);
-          });
+        Object.values(staffTeams).forEach((teams: unknown) => {
+          if (Array.isArray(teams)) {
+            teams.forEach(team => {
+              if (team && typeof team === 'object' && 'department' in team) {
+                deptSet.add(team.department);
+              }
+            });
+          }
         });
         
         const extractedDepts: IDepartmentSettings[] = Array.from(deptSet).map(dept => ({
@@ -103,20 +108,21 @@ export const useCalendarEvents = (currentDate: Date) => {
       // Fallback: extrair departamentos das equipes
       if (staffTeams) {
         const deptMap = new Map<string, string>();
-        
         // Extrair departamentos únicos
-        Object.values(staffTeams).forEach((teams: any[]) => {
-          teams.forEach(team => {
-            deptMap.set(
-              team.department.toLowerCase().replace(/\s+/g, '-'), 
-              team.department
-            );
-          });
-        });
-        
-        const extractedDepts: IDepartmentSettings[] = Array.from(deptMap).map(([id, name]) => ({
-          id,
-          name
+        Object.values(staffTeams).forEach((teams: unknown) => {
+          if (Array.isArray(teams)) {
+            teams.forEach(team => {
+              if (team && typeof team === 'object' && 'department' in team) {
+                deptMap.set(
+                  team.department.toLowerCase().replace(/\s+/g, '-'),
+                  team.department
+                )};
+              });
+            }});
+
+            const extractedDepts: IDepartmentSettings[] = Array.from(deptMap).map(([id, name]) => ({
+              id,
+              name
         }));
         
         setDepartments(extractedDepts);
@@ -146,7 +152,8 @@ export const useCalendarEvents = (currentDate: Date) => {
           { id: 'other', name: 'Outro', color: 'gray' }
         ]);
       }
-    } catch (err) {
+    } catch (error) {
+      console.error('Erro ao buscar tipos de eventos:', error);
       // Usar tipos padrão em caso de erro
       setEventTypes([
         { id: 'meeting', name: 'Reunião', color: 'blue' },
@@ -196,7 +203,8 @@ export const useCalendarEvents = (currentDate: Date) => {
         location: eventData.location,
         description: eventData.description,
         attendees: eventData.attendees || [],
-        status: 'confirmed'
+        status: 'confirmed',
+        day: 0
       };
       
       // Adicionar ao estado para feedback imediato

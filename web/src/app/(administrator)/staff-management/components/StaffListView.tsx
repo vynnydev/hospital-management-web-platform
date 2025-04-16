@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import { Users, ChevronLeft, ChevronRight, Clock, Activity } from 'lucide-react';
 import {

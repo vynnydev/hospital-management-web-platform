@@ -42,7 +42,7 @@ export const ModuleList = ({
             ref={provided.innerRef}
           >
             {currentModuleOrder.map((moduleId, index) => {
-              const module = availableModules.find(m => m.id === moduleId) || {
+              const foundModule = availableModules.find(m => m.id === moduleId) || {
                 id: moduleId,
                 name: moduleId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
                 description: 'Descrição não disponível',
@@ -53,7 +53,6 @@ export const ModuleList = ({
               
               const isActive = currentActiveModules.includes(moduleId);
               const isAvailable = isModuleAvailableInPlan(moduleId);
-              
               return (
                 <Draggable key={moduleId} draggableId={moduleId} index={index}>
                   {(provided) => (
@@ -72,15 +71,15 @@ export const ModuleList = ({
                         
                         <div className="col-span-6 sm:col-span-4">
                           <div className="font-medium text-gray-900 dark:text-white">
-                            {module.name}
+                            {foundModule.name}
                           </div>
                           <div className="text-xs text-gray-500 dark:text-gray-400 sm:hidden mt-1">
-                            {module.description}
+                            {foundModule.description}
                           </div>
                         </div>
                         
                         <div className="hidden sm:block col-span-4 text-sm text-gray-500 dark:text-gray-400">
-                          {module.description}
+                          {foundModule.description}
                         </div>
                         
                         <div className="col-span-4 sm:col-span-2 flex justify-center">
@@ -97,7 +96,7 @@ export const ModuleList = ({
                             `}
                           >
                             <span className="sr-only">
-                              {isActive ? 'Desativar' : 'Ativar'} {module.name}
+                              {isActive ? 'Desativar' : 'Ativar'} {foundModule.name}
                             </span>
                             <span
                               className={`

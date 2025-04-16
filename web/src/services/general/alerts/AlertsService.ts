@@ -5,7 +5,7 @@ import {
   TAlertStatus,
   IUnreadAlertCount
 } from '@/types/alert-types';
-import api from '../../api';
+import api from '@/services/api';
 import { INotificationSettings } from '@/types/notification-settings-types';
 
 // Serviço para API de Alertas

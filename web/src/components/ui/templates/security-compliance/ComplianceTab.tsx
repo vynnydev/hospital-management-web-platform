@@ -1,9 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/organisms/card';
 import { Button } from '@/components/ui/organisms/button';
 import { Badge } from '@/components/ui/organisms/badge';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/organisms/toggle-group';
-import { Progress } from '@/components/ui/organisms/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/organisms/tabs';
 import { Switch } from '@/components/ui/organisms/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/organisms/select';
@@ -35,9 +35,9 @@ export const ComplianceTab = () => {
         description: `A avaliação de compliance ${activeRegulation} foi concluída com sucesso.`,
         variant: "default",
       });
-    } catch (error) {
+    } catch (error: unknown) {
       toast({
-        title: "Erro",
+        title: "Erro", 
         description: "Ocorreu um erro ao executar a avaliação de compliance.",
         variant: "destructive",
       });

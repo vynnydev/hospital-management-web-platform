@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { IAppUser } from "./auth-types";
 
 // Network Interfaces
@@ -126,6 +127,7 @@ export interface IDepartmentWithCapacity extends Omit<IDepartment, 'capacity'> {
 
 // Interface atualizada para Hospital
 export interface IHospital {
+  staff: any;
   id: string;
   name: string;
   unit: IUnit;

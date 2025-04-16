@@ -99,7 +99,7 @@ export const generatePrintContent = (patient: IPatient) => {
             <div class="info-item">
               <div class="info-label">Previsão de Manutenção:</div>
               <ul>
-                ${getMaintenanceSchedule(patient.diagnosis, patient.admissionDate)
+                ${getMaintenanceSchedule(patient.diagnosis)
                   .map(schedule => `<li>${schedule}</li>`)
                   .join('')}
               </ul>

@@ -7,7 +7,7 @@ import { useNetworkData } from "@/hooks/network-hospital/useNetworkData";
 import { useStaffData } from "@/hooks/staffs/useStaffData";
 
 const NurseDashboard = () => {
-  const { networkData, currentUser, setNetworkData, loading, error } = useNetworkData();
+  const { networkData, loading, error } = useNetworkData();
   const [selectedHospital, setSelectedHospital] = useState<string | null>(null);
 
   const {

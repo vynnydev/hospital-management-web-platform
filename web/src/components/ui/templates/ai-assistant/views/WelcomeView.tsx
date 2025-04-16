@@ -11,14 +11,14 @@ import {
 } from 'lucide-react';
 import { IRecommendation, IStatistics } from '@/types/ai-assistant-types';
 import { IHospital } from '@/types/hospital-network-types';
-import { Alert } from '../../providers/alerts/AlertsProvider';
+import { IAlert } from '@/types/alert-types';
 
 interface WelcomeViewProps {
   userGreeting: string;
   formattedDate: string;
   statistics: IStatistics | null;
   recommendations: IRecommendation[];
-  highPriorityAlerts: Alert[];
+  highPriorityAlerts: IAlert[];
   unreadCount: number;
   onApplyRecommendation: (recommendation: IRecommendation) => void;
   setCurrentView: (view: 'welcome' | 'recommendations' | 'alerts') => void;

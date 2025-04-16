@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Check, ChevronDown, Building } from 'lucide-react'
+import { Building } from 'lucide-react'
 import { useNetworkData } from '@/hooks/network-hospital/useNetworkData'
 import { useAuth } from '@/hooks/auth/useAuth'
 

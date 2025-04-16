@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/organisms/card';
 import { Button } from '@/components/ui/organisms/button';
@@ -9,13 +10,10 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { useSecurityCompliance } from '@/hooks/security-compliance/useSecurityCompliance';
 import { useToast } from '@/components/ui/hooks/use-toast';
 import { 
-  AlertTriangle, 
   AlertCircle, 
   CheckCircle2, 
   Clock, 
-  Search, 
   FileText, 
-  Filter, 
   Bell, 
   ShieldAlert, 
   UserCheck, 

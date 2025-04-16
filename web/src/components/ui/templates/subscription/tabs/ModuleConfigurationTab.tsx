@@ -3,8 +3,7 @@
 import { useState } from 'react'
 import { 
   Check, 
-  AlertCircle, 
-  Info
+  AlertCircle
 } from 'lucide-react'
 import { useSubscription } from '@/hooks/subscription/useSubscription'
 import { Button } from '@/components/ui/organisms/button'

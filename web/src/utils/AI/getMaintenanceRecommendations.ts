@@ -27,7 +27,7 @@ export const getMaintenanceRecommendations = (diagnosis: string): string[] => {
 };
   
 // Função auxiliar para gerar cronograma de manutenção
-export const getMaintenanceSchedule = (diagnosis: string, admissionDate: string): string[] => {
+export const getMaintenanceSchedule = (diagnosis: string): string[] => {
     const baseSchedule: string[] = [
       'Próxima higienização completa: Em 3 dias',
       'Verificação de equipamentos: Diariamente',

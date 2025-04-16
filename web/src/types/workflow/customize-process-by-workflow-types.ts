@@ -25,7 +25,7 @@ export interface IWorkflowNode extends IWorkflowDepartment {
     x: number;
     y: number;
     parentId?: string;
-    priority?: TPriority;
+    priority: TPriority;
 }
 
 export interface ISavedWorkflow {
