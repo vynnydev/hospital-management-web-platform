@@ -5670,9 +5670,9 @@
       "type": "starter",
       "description": "Plano inicial ideal para pequenas clínicas e consultórios",
       "price": {
-        "monthly": 199.9,
-        "yearly": 2149,
-        "quarterly": 569.7,
+        "monthly": 0,
+        "yearly": 0,
+        "quarterly": 0,
         "setup": 0
       },
       "yearlyDiscount": 10,
@@ -5886,9 +5886,9 @@
       "type": "professional",
       "description": "Ideal para clínicas médias e consultórios com múltiplos médicos",
       "price": {
-        "monthly": 599.9,
-        "yearly": 6479,
-        "quarterly": 1709.7,
+        "monthly": 0,
+        "yearly": 0,
+        "quarterly": 0,
         "setup": 0
       },
       "yearlyDiscount": 10,
@@ -6205,9 +6205,9 @@
       "type": "enterprise",
       "description": "Solução completa para hospitais e redes de clínicas",
       "price": {
-        "monthly": 1499.9,
-        "yearly": 16199,
-        "quarterly": 4274.7,
+        "monthly": 0,
+        "yearly": 0,
+        "quarterly": 0,
         "setup": 999
       },
       "yearlyDiscount": 10,
