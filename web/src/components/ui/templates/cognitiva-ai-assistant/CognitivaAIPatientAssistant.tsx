@@ -5,7 +5,7 @@ import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import { Sparkles, Loader, X } from 'lucide-react';
 import AnimatedAIText from './AnimatedAIText';
-import aiAssistant from '@/assets/ai-assistant.png';
+import stethoscopeForAiAssistant from '@/assets/stethoscope-for-assistant-ai.png';
 import { ReportModal } from './report-modal-ai/ReportModal';
 import {
   cardInitialMessages,
@@ -110,7 +110,7 @@ export const CognitivaAIPatientAssistant: React.FC = () => {
       >
         <div className="relative w-12 h-12">
           <Image
-            src={aiAssistant}
+            src={stethoscopeForAiAssistant}
             alt="AI Assistant Icon"
             layout="fill"
             className="object-contain group-hover:animate-pulse"
